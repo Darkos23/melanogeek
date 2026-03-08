@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', config('app.name', 'MelanoGeek'))</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Fonts : chargement dynamique selon le thème actif -->
+    <script>
+    (function(){
+        var t = localStorage.getItem('mg-theme') || 'light';
+        if (t === 'dark') t = 'hogwarts';
+        var f = 'family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Outfit:wght@300;400;500;600';
+        if (t === 'light')    f += '&family=Unbounded:wght@300;400;600;700;900&family=Sora:wght@300;400;500;600';
+        if (t === 'hogwarts') f += '&family=Cinzel:wght@400;600;700;800';
+        var pc1 = document.createElement('link'); pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
+        var pc2 = document.createElement('link'); pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com'; pc2.crossOrigin = 'anonymous';
+        var lk  = document.createElement('link'); lk.rel = 'stylesheet';
+        lk.href = 'https://fonts.googleapis.com/css2?' + f + '&display=swap';
+        document.head.append(pc1, pc2, lk);
+        window._mgFontLoaded = t;
+    })();
+    </script>
+
+    <style>
+    /* ═══════════════════════════════════════════════
+       VARIABLES GLOBALES — 3 THÈMES
+    ═══════════════════════════════════════════════ */
+
+    /* ── Sombre (défaut) ── */
+    :root, [data-theme="dark"] {
+        --bg:           #0D0905;
+        --bg-card:      #141009;
+        --bg-card2:     #1C1810;
+        --bg-hover:     #221C13;
+        --text:         #F0E8D8;
+        --cream:        #F0E8D8;
+        --text-muted:   rgba(240,232,216,0.55);
+        --cream-muted:  rgba(240,232,216,0.55);
+        --text-faint:   rgba(240,232,216,0.18);
+        --muted:        rgba(240,232,216,0.35);
+        --border:       rgba(240,232,216,0.10);
+        --border-hover: rgba(240,232,216,0.22);
+        --nav-bg:       rgba(13,9,5,0.90);
+        --toggle-bg:    rgba(240,232,216,0.08);
+        --terra:        #C8522A;
+        --terracotta:   #C8522A;
+        --terra-soft:   rgba(200,82,42,0.12);
+        --gold:         #D4A843;
+        --gold-soft:    rgba(212,168,67,0.10);
+        --accent:       #E06030;
+        --green:        #2A7A48;
+        --font-head:    'Plus Jakarta Sans', sans-serif;
+        --font-body:    'Outfit', sans-serif;
+        --shadow-sm:    0 4px 12px rgba(0,0,0,0.40);
+        --shadow-md:    0 8px 24px rgba(0,0,0,0.50);
+        --shadow-lg:    0 16px 48px rgba(0,0,0,0.65);
+        --grain:        1;
+    }
+
+    /* ── Clair / v4 Terracotta Africain ── */
+    [data-theme="light"] {
+        --bg:           #F5EDD6;
+        --bg-card:      #FBF5E6;
+        --bg-card2:     #EDE0C0;
+        --bg-hover:     #E8D9B0;
+        --text:         #1E0E04;
+        --cream:        #1E0E04;
+        --text-muted:   rgba(30,14,4,0.55);
+        --cream-muted:  rgba(30,14,4,0.55);
+        --text-faint:   rgba(30,14,4,0.18);
+        --muted:        rgba(30,14,4,0.35);
+        --border:       rgba(30,14,4,0.12);
+        --border-hover: rgba(30,14,4,0.25);
+        --nav-bg:       rgba(245,237,214,0.90);
+        --toggle-bg:    #EDE0C0;
+        --terra:        #C84818;
+        --terracotta:   #C84818;
+        --terra-soft:   rgba(200,72,24,0.10);
+        --gold:         #B87820;
+        --gold-soft:    rgba(184,120,32,0.10);
+        --accent:       #E85A1A;
+        --green:        #1A5A30;
+        --font-head:    'Unbounded', sans-serif;
+        --font-body:    'Sora', sans-serif;
+        --shadow-sm:    0 4px 12px rgba(30,14,4,0.08);
+        --shadow-md:    0 8px 24px rgba(30,14,4,0.12);
+        --shadow-lg:    0 16px 48px rgba(30,14,4,0.20);
+        --grain:        0;
+    }
+
+    /* ── Hogwarts ── */
+    [data-theme="hogwarts"] {
+        --bg:           #05040F;
+        --bg-card:      #0D0B1E;
+        --bg-card2:     #130F2A;
+        --bg-hover:     #1C1640;
+        --text:         #EFE5C8;
+        --cream:        #EFE5C8;
+        --text-muted:   rgba(239,229,200,0.55);
+        --cream-muted:  rgba(239,229,200,0.55);
+        --text-faint:   rgba(239,229,200,0.18);
+        --muted:        rgba(239,229,200,0.35);
+        --border:       rgba(180,148,60,0.14);
+        --border-hover: rgba(180,148,60,0.30);
+        --nav-bg:       rgba(5,4,15,0.92);
+        --toggle-bg:    rgba(180,148,60,0.10);
+        --terra:        #9B5FD1;
+        --terracotta:   #9B5FD1;
+        --terra-soft:   rgba(123,63,190,0.15);
+        --gold:         #D4AF37;
+        --gold-soft:    rgba(212,175,55,0.12);
+        --accent:       #B87AE8;
+        --green:        #2A7A48;
+        --font-head:    'Cinzel', serif;
+        --font-body:    'Outfit', sans-serif;
+        --shadow-sm:    0 4px 12px rgba(0,0,0,0.55);
+        --shadow-md:    0 8px 24px rgba(0,0,0,0.70);
+        --shadow-lg:    0 16px 48px rgba(0,0,0,0.85);
+        --grain:        1;
+    }
+
+    /* ═══════════════════════════════════════════════
+       BASE
+    ═══════════════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body);
+        transition: background .35s, color .35s;
+        overflow-x: hidden;
+    }
+
+    /* Restauration des curseurs natifs */
+    *, *::before, *::after { cursor: auto; }
+    a, button, label, select, [onclick],
+    input[type=submit], input[type=button],
+    input[type=checkbox], input[type=radio],
+    input[type=range], input[type=file] { cursor: pointer; }
+    textarea, input[type=text], input[type=email],
+    input[type=password], input[type=number],
+    input[type=search] { cursor: text; }
+
+    /* ═══════════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════════ */
+    .mg-nav {
+        position: fixed; top:0; left:0; right:0; z-index:200;
+        height: 72px; padding: 0 52px;
+        display: flex; align-items: center; justify-content: space-between;
+        background: var(--nav-bg);
+        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        transition: background .35s, border-color .35s;
+    }
+
+    /* Logo */
+    .mg-logo { display:flex;align-items:center;gap:12px;text-decoration:none; }
+    .mg-logo-svg { width:36px;height:36px;flex-shrink:0; }
+    .mg-logo-name { font-family:var(--font-head);font-weight:700;font-size:.9rem;letter-spacing:-.01em;color:var(--text);transition:color .35s; }
+    .mg-logo-name span { color:var(--terra); }
+
+    /* Liens */
+    .mg-links { display:flex;gap:32px;list-style:none; }
+    .mg-links a { font-size:.72rem;color:var(--text-muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;cursor:pointer; }
+    .mg-links a:hover { color:var(--terra); }
+
+    /* Droite */
+    .mg-right { display:flex;gap:8px;align-items:center; }
+    .mg-btn-ghost { background:none;border:1px solid var(--border);color:var(--text-muted);padding:8px 16px;border-radius:6px;font-family:var(--font-body);font-size:.73rem;cursor:pointer;transition:all .2s;text-decoration:none; }
+    .mg-btn-ghost:hover { border-color:var(--terra);color:var(--terra); }
+    .mg-btn-solid { background:var(--terra);color:white;border:none;padding:8px 16px;border-radius:6px;font-family:var(--font-body);font-size:.73rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none; }
+    .mg-btn-solid:hover { background:var(--accent);transform:translateY(-1px); }
+
+    /* Bouton thème */
+    .theme-toggle {
+        width:36px;height:36px;border-radius:50%;
+        background: var(--toggle-bg);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size:.95rem;
+        display:flex;align-items:center;justify-content:center;
+        cursor:pointer;transition:all .2s;flex-shrink:0;
+    }
+    .theme-toggle:hover { border-color:var(--terra);color:var(--terra);background:var(--terra-soft); }
+
+    /* Hogwarts — logo reste terracotta, nav gold hover */
+    [data-theme="hogwarts"] .mg-logo-hex        { background: #C8522A !important; }
+    [data-theme="hogwarts"] .mg-logo-name span  { color: #C8522A !important; }
+    [data-theme="hogwarts"] .mg-links a:hover   { color: var(--gold); }
+    [data-theme="hogwarts"] .mg-btn-ghost:hover { border-color:var(--gold);color:var(--gold); }
+
+    /* Hogwarts — fond magique : étoiles ✦ éclairs ⚡ lunes 🌙 hiboux 🦉 baguettes */
+    [data-theme="hogwarts"] body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='22' r='1.2' fill='%23D4AF37' opacity='0.55'/%3E%3Ccircle cx='73' cy='58' r='0.8' fill='%23EFE5C8' opacity='0.4'/%3E%3Ccircle cx='142' cy='18' r='1' fill='%23EFE5C8' opacity='0.5'/%3E%3Ccircle cx='195' cy='77' r='1.3' fill='%23D4AF37' opacity='0.4'/%3E%3Ccircle cx='230' cy='30' r='0.9' fill='%23EFE5C8' opacity='0.35'/%3E%3Ccircle cx='310' cy='52' r='1.1' fill='%23D4AF37' opacity='0.45'/%3E%3Ccircle cx='360' cy='20' r='0.8' fill='%23EFE5C8' opacity='0.4'/%3E%3Ccircle cx='45' cy='160' r='0.9' fill='%23D4AF37' opacity='0.3'/%3E%3Ccircle cx='115' cy='195' r='1.2' fill='%23EFE5C8' opacity='0.4'/%3E%3Ccircle cx='270' cy='140' r='1' fill='%23D4AF37' opacity='0.35'/%3E%3Ccircle cx='380' cy='175' r='0.8' fill='%23EFE5C8' opacity='0.4'/%3E%3Ccircle cx='60' cy='290' r='1.1' fill='%23D4AF37' opacity='0.45'/%3E%3Ccircle cx='175' cy='310' r='0.9' fill='%23EFE5C8' opacity='0.35'/%3E%3Ccircle cx='320' cy='260' r='1.2' fill='%23D4AF37' opacity='0.4'/%3E%3Ccircle cx='390' cy='320' r='0.8' fill='%23EFE5C8' opacity='0.3'/%3E%3Ccircle cx='130' cy='370' r='1' fill='%23D4AF37' opacity='0.4'/%3E%3Ccircle cx='250' cy='385' r='0.9' fill='%23EFE5C8' opacity='0.35'/%3E%3Cpath d='M55,87 L56.8,92.2 L62,94 L56.8,95.8 L55,101 L53.2,95.8 L48,94 L53.2,92.2Z' fill='%23D4AF37' opacity='0.25'/%3E%3Cpath d='M180,37 L181.8,42.2 L187,44 L181.8,45.8 L180,51 L178.2,45.8 L173,44 L178.2,42.2Z' fill='%23EFE5C8' opacity='0.2'/%3E%3Cpath d='M295,107 L297.2,113.2 L303,115 L297.2,116.8 L295,123 L292.8,116.8 L287,115 L292.8,113.2Z' fill='%23D4AF37' opacity='0.22'/%3E%3Cpath d='M88,242 L89.8,247.2 L95,249 L89.8,250.8 L88,256 L86.2,250.8 L81,249 L86.2,247.2Z' fill='%23EFE5C8' opacity='0.2'/%3E%3Cpath d='M350,192 L352,198 L358,200 L352,202 L350,208 L348,202 L342,200 L348,198Z' fill='%23D4AF37' opacity='0.22'/%3E%3Cpath d='M220,322 L222,328 L228,330 L222,332 L220,338 L218,332 L212,330 L218,328Z' fill='%23EFE5C8' opacity='0.18'/%3E%3Cpath d='M345,58 L339,72 L343,72 L337,86 L353,68 L348,68Z' fill='%239B5FD1' opacity='0.18'/%3E%3Cpath d='M123,130 L118,141 L121.5,141 L116,152 L129,137 L125,137Z' fill='%23B87AE8' opacity='0.15'/%3E%3Cpath d='M273,310 L268,321 L271.5,321 L266,332 L279,317 L275,317Z' fill='%239B5FD1' opacity='0.15'/%3E%3Cpath d='M168,157 Q180,167 168,177 Q188,175 188,167 Q188,159 168,157Z' fill='%23D4AF37' opacity='0.17'/%3E%3Cpath d='M368,298 Q378,307 368,316 Q386,314 386,307 Q386,300 368,298Z' fill='%23EFE5C8' opacity='0.14'/%3E%3Cellipse cx='30' cy='342' rx='9' ry='12' fill='%23EFE5C8' opacity='0.1'/%3E%3Cpath d='M24,330 L21,324 M36,330 L39,324' stroke='%23EFE5C8' stroke-width='1.8' stroke-linecap='round' opacity='0.12'/%3E%3Ccircle cx='27' cy='338' r='2.5' fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.18'/%3E%3Ccircle cx='33' cy='338' r='2.5' fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.18'/%3E%3Cellipse cx='335' cy='167' rx='9' ry='12' fill='%23EFE5C8' opacity='0.08'/%3E%3Cpath d='M329,155 L326,149 M341,155 L344,149' stroke='%23EFE5C8' stroke-width='1.8' stroke-linecap='round' opacity='0.1'/%3E%3Ccircle cx='332' cy='163' r='2.5' fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.15'/%3E%3Ccircle cx='338' cy='163' r='2.5' fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.15'/%3E%3Cline x1='192' y1='228' x2='208' y2='212' stroke='%23EFE5C8' stroke-width='1.5' stroke-linecap='round' opacity='0.15'/%3E%3Ccircle cx='208' cy='212' r='2' fill='%23D4AF37' opacity='0.25'/%3E%3Ccircle cx='208' cy='212' r='4' fill='none' stroke='%23D4AF37' stroke-width='0.5' opacity='0.18'/%3E%3Cline x1='62' y1='73' x2='78' y2='57' stroke='%23EFE5C8' stroke-width='1.5' stroke-linecap='round' opacity='0.12'/%3E%3Ccircle cx='78' cy='57' r='2' fill='%23D4AF37' opacity='0.2'/%3E%3Cline x1='373' y1='387' x2='387' y2='373' stroke='%23EFE5C8' stroke-width='1.5' stroke-linecap='round' opacity='0.13'/%3E%3Ccircle cx='387' cy='373' r='2' fill='%23D4AF37' opacity='0.22'/%3E%3Cline x1='18' y1='22' x2='55' y2='95' stroke='%23D4AF37' stroke-width='0.4' opacity='0.08'/%3E%3Cline x1='55' y1='95' x2='73' y2='58' stroke='%23D4AF37' stroke-width='0.4' opacity='0.08'/%3E%3Cline x1='295' y1='115' x2='310' y2='52' stroke='%23EFE5C8' stroke-width='0.4' opacity='0.07'/%3E%3Cline x1='310' y1='52' x2='360' y2='20' stroke='%23EFE5C8' stroke-width='0.4' opacity='0.07'/%3E%3Cline x1='88' y1='250' x2='60' y2='290' stroke='%23D4AF37' stroke-width='0.4' opacity='0.07'/%3E%3C/svg%3E");
+        background-size: 400px 400px;
+        animation: hog-twinkle 10s ease-in-out infinite alternate;
+    }
+
+    /* Hogwarts — lueurs nébuleuses violettes et dorées */
+    [data-theme="hogwarts"] body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+            radial-gradient(ellipse at 15% 25%, rgba(123,63,190,0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 85% 75%, rgba(212,175,55,0.06) 0%, transparent 50%),
+            radial-gradient(ellipse at 62% 10%, rgba(184,122,232,0.05) 0%, transparent 38%),
+            radial-gradient(ellipse at 30% 80%, rgba(155,95,209,0.05) 0%, transparent 40%);
+        animation: hog-nebula 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes hog-twinkle {
+        0%   { opacity: 0.55; }
+        55%  { opacity: 1; }
+        100% { opacity: 0.65; }
+    }
+
+    @keyframes hog-nebula {
+        0%   { opacity: 0.45; }
+        100% { opacity: 1; }
+    }
+
+    /* Fond kente — mode light uniquement, sur tout le site */
+    [data-theme="light"] body::before {
+        content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.6' opacity='0.07'%3E%3Crect x='10' y='10' width='20' height='20'/%3E%3Crect x='50' y='10' width='20' height='20'/%3E%3Crect x='10' y='50' width='20' height='20'/%3E%3Crect x='50' y='50' width='20' height='20'/%3E%3Cline x1='0' y1='40' x2='80' y2='40'/%3E%3Cline x1='40' y1='0' x2='40' y2='80'/%3E%3Cpath d='M10 10 L30 30 M50 10 L70 30 M10 50 L30 70 M50 50 L70 70'/%3E%3C/g%3E%3C/svg%3E");
+        background-size: 80px 80px;
+    }
+
+    /* Supprimer le kente terracotta sur la page d'accueil en mode Hogwarts */
+    [data-theme="hogwarts"] .home-page::before { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+        [data-theme="hogwarts"] body::before,
+        [data-theme="hogwarts"] body::after { animation: none !important; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+        .mg-nav { padding: 0 20px; }
+        .mg-links { display: none; }
+    }
+    </style>
+
+    @stack('styles')
+
+    <style>
+    /* ── PROTECTION CONTENU CRÉATEURS ── */
+    img, video {
+        -webkit-user-drag: none;
+        user-drag: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+    /* Overlay transparent sur les médias pour bloquer le clic droit natif */
+    .media-protected { position: relative; display: block; }
+    .media-protected::after {
+        content: '';
+        position: absolute; inset: 0;
+        z-index: 1;
+    }
+    </style>
+</head>
+<body>
+
+<!-- ══ NAVIGATION ══ -->
+<nav class="mg-nav">
+    <a href="{{ route('home') }}" class="mg-logo">
+        <svg class="mg-logo-svg" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 2L38.3 12V32L21 42L3.7 32V12L21 2Z" fill="var(--bg-card2)" stroke="#D4A843" stroke-width="0.8"/>
+            <path d="M10 28V14L16.5 22L21 16L25.5 22L32 14V28" stroke="#C8522A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <div class="mg-logo-name">Melano<span>Geek</span></div>
+    </a>
+
+    <ul class="mg-links">
+        <li><a href="{{ route('explore') }}">Explorer</a></li>
+        <li><a href="{{ route('creators') }}">Créateurs</a></li>
+        <li><a href="{{ route('marketplace.index') }}">Marketplace</a></li>
+        <li><a href="{{ route('subscription.pricing') }}">Tarifs</a></li>
+        <li><a href="{{ route('about') }}">À propos</a></li>
+    </ul>
+
+    <div class="mg-right">
+        @guest
+            <a href="{{ route('login') }}"    class="mg-btn-ghost">Connexion</a>
+            <a href="{{ route('register') }}" class="mg-btn-solid">Rejoindre</a>
+        @else
+            <a href="{{ route('feed') }}" class="mg-btn-ghost">Mon fil</a>
+
+            {{-- Icône messages --}}
+            @auth
+            <a href="{{ route('messages.index') }}" class="mg-msg-btn" id="mgMsgBtn" title="Messages">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span class="mg-msg-dot" id="mgMsgDot" style="display:none;"></span>
+            </a>
+            @endauth
+
+            {{-- Cloche notifications --}}
+            <div class="mg-notif-menu" id="mgNotifMenu">
+                <button class="mg-notif-btn" id="mgNotifToggle" title="Notifications" type="button">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <span class="mg-notif-dot" id="mgNotifDot" style="display:none;"></span>
+                </button>
+
+                <div class="mg-notif-dropdown" id="mgNotifDropdown">
+                    <div class="mg-nd-header">
+                        <span class="mg-nd-title">Notifications</span>
+                        <button class="mg-nd-read-all" id="mgNdReadAll" type="button">Tout marquer lu</button>
+                    </div>
+                    <div class="mg-nd-list" id="mgNdList">
+                        <div class="mg-nd-loading" id="mgNdLoading">
+                            <div class="mg-nd-spinner"></div>
+                        </div>
+                    </div>
+                    <a href="{{ route('notifications') }}" class="mg-nd-footer">
+                        Voir toutes les notifications →
+                    </a>
+                </div>
+            </div>
+
+            {{-- Menu utilisateur --}}
+            <div class="mg-user-menu" id="mgUserMenu">
+                <button class="mg-user-btn" id="mgUserBtn" type="button">
+                    <div class="mg-user-avi">
+                        @if(auth()->user()->avatar)
+                            <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="">
+                        @else
+                            {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
+                        @endif
+                    </div>
+                    <span class="mg-user-name">{{ auth()->user()->username }}</span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="opacity:.5;transition:transform .2s;" id="mgUserChevron">
+                        <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <div class="mg-user-dropdown" id="mgUserDropdown">
+                    <a href="{{ route('profile.show', auth()->user()->username) }}" class="mg-drop-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                        Mon profil
+                    </a>
+                    <a href="{{ route('orders.index') }}" class="mg-drop-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                        Mes commandes
+                    </a>
+                    @if(auth()->user()->isCreator())
+                    <a href="{{ route('services.manage') }}" class="mg-drop-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Mes services
+                    </a>
+                    @endif
+                    <a href="{{ route('profile.edit') }}" class="mg-drop-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        Paramètres
+                    </a>
+                    @if(auth()->user()->isStaff())
+                        <a href="{{ route('admin.dashboard') }}" class="mg-drop-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            Dashboard admin
+                        </a>
+                    @endif
+                    <div class="mg-drop-divider"></div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="mg-drop-item mg-drop-logout">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            Déconnexion
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endguest
+        <button class="theme-toggle" id="themeToggle" title="Changer le thème">☀️</button>
+    </div>
+</nav>
+
+<style>
+/* ── Cloche notifications ── */
+.mg-notif-menu { position: relative; }
+.mg-notif-btn {
+    position: relative;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--toggle-bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center;
+    cursor: none;
+    transition: all .2s;
+    flex-shrink: 0;
+}
+.mg-notif-btn:hover,
+.mg-notif-btn.active { border-color: var(--terra); color: var(--terra); background: var(--terra-soft); }
+.mg-notif-dot {
+    position: absolute;
+    top: 5px; right: 5px;
+    width: 8px; height: 8px;
+    background: var(--terra);
+    border-radius: 50%;
+    border: 2px solid var(--nav-bg);
+    animation: notif-pulse 2s ease-in-out infinite;
+}
+@keyframes notif-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.25); opacity: .7; }
+}
+
+/* ── Dropdown ── */
+.mg-notif-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: -8px;
+    width: 340px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    opacity: 0; visibility: hidden; transform: translateY(-8px) scale(.97);
+    transition: opacity .18s, transform .18s, visibility .18s;
+    z-index: 400;
+}
+.mg-notif-dropdown.open {
+    opacity: 1; visibility: visible; transform: translateY(0) scale(1);
+}
+
+/* Petite flèche */
+.mg-notif-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px; right: 18px;
+    width: 12px; height: 12px;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    transform: rotate(45deg);
+}
+
+.mg-nd-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+}
+.mg-nd-title {
+    font-family: var(--font-head);
+    font-size: .88rem;
+    font-weight: 800;
+    color: var(--text);
+}
+.mg-nd-read-all {
+    font-size: .72rem;
+    color: var(--terra);
+    background: none; border: none;
+    cursor: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+    transition: opacity .2s;
+    padding: 0;
+}
+.mg-nd-read-all:hover { opacity: .7; }
+
+/* Liste d'items */
+.mg-nd-list {
+    max-height: 340px;
+    overflow-y: auto;
+}
+
+/* Spinner */
+.mg-nd-loading {
+    display: flex; align-items: center; justify-content: center;
+    padding: 28px;
+}
+.mg-nd-spinner {
+    width: 22px; height: 22px;
+    border: 2px solid var(--border);
+    border-top-color: var(--terra);
+    border-radius: 50%;
+    animation: nd-spin .7s linear infinite;
+}
+@keyframes nd-spin { to { transform: rotate(360deg); } }
+
+/* Item */
+.mg-nd-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none; color: var(--text);
+    transition: background .15s;
+    cursor: none;
+    position: relative;
+}
+.mg-nd-item:last-child { border-bottom: none; }
+.mg-nd-item:hover { background: var(--bg-hover); }
+.mg-nd-item.unread { background: var(--terra-soft); }
+.mg-nd-item.unread::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--terra);
+}
+
+.mg-nd-avi {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700; color: white;
+    flex-shrink: 0; overflow: hidden; position: relative;
+}
+.mg-nd-avi img { width: 100%; height: 100%; object-fit: cover; }
+.mg-nd-type-icon {
+    position: absolute; bottom: -2px; right: -2px;
+    width: 15px; height: 15px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .5rem;
+    border: 1.5px solid var(--bg-card);
+}
+.mg-nd-type-icon.follow  { background: var(--terra); }
+.mg-nd-type-icon.like    { background: #e85a8c; }
+.mg-nd-type-icon.comment { background: var(--gold); }
+
+.mg-nd-body { flex: 1; min-width: 0; }
+.mg-nd-text {
+    font-size: .8rem; line-height: 1.4;
+    color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mg-nd-text strong { font-weight: 700; }
+.mg-nd-ago { font-size: .7rem; color: var(--text-muted); margin-top: 2px; }
+
+/* Vide */
+.mg-nd-empty {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 32px 16px; gap: 8px; text-align: center;
+}
+.mg-nd-empty-icon { font-size: 1.8rem; }
+.mg-nd-empty-text { font-size: .82rem; color: var(--text-muted); }
+
+/* Footer lien */
+.mg-nd-footer {
+    display: block;
+    text-align: center;
+    padding: 11px 16px;
+    font-size: .76rem;
+    font-weight: 600;
+    color: var(--terra);
+    text-decoration: none;
+    border-top: 1px solid var(--border);
+    transition: background .15s;
+    cursor: none;
+}
+.mg-nd-footer:hover { background: var(--terra-soft); }
+
+/* ── Bouton messages ── */
+.mg-msg-btn {
+    position: relative;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--toggle-bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    display: flex; align-items: center; justify-content: center;
+    cursor: none;
+    transition: all .2s;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+.mg-msg-btn:hover { border-color: var(--terra); color: var(--terra); background: var(--terra-soft); }
+.mg-msg-dot {
+    position: absolute;
+    top: 5px; right: 5px;
+    width: 8px; height: 8px;
+    background: var(--terra);
+    border-radius: 50%;
+    border: 2px solid var(--nav-bg);
+    animation: notif-pulse 2s ease-in-out infinite;
+}
+
+.mg-user-menu { position:relative; }
+.mg-user-btn {
+    display:flex;align-items:center;gap:8px;
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:100px;padding:5px 12px 5px 5px;
+    color:var(--text);cursor:none;transition:border-color .2s;
+}
+.mg-user-btn:hover { border-color:var(--border-hover); }
+.mg-user-avi {
+    width:28px;height:28px;border-radius:50%;
+    background:linear-gradient(135deg,var(--terra),var(--gold));
+    display:flex;align-items:center;justify-content:center;
+    font-size:.72rem;font-weight:700;color:white;
+    flex-shrink:0;overflow:hidden;
+}
+.mg-user-avi img { width:100%;height:100%;object-fit:cover; }
+.mg-user-name { font-size:.78rem;font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.mg-user-dropdown {
+    position:absolute;top:calc(100% + 8px);right:0;
+    background:var(--bg-card);border:1px solid var(--border);
+    border-radius:14px;padding:6px;min-width:180px;
+    box-shadow:var(--shadow-md);
+    opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity .18s,transform .18s,visibility .18s;
+    z-index:300;
+}
+.mg-user-dropdown.open { opacity:1;visibility:visible;transform:translateY(0); }
+.mg-drop-item {
+    display:flex;align-items:center;gap:9px;
+    padding:8px 12px;border-radius:9px;
+    font-size:.82rem;font-weight:500;color:var(--text-muted);
+    text-decoration:none;transition:background .15s,color .15s;
+    width:100%;background:none;border:none;text-align:left;cursor:none;
+    font-family:var(--font-body);
+}
+.mg-drop-item:hover { background:var(--bg-hover);color:var(--text); }
+.mg-drop-divider { height:1px;background:var(--border);margin:4px 0; }
+.mg-drop-logout:hover { color:var(--terra) !important;background:var(--terra-soft) !important; }
+</style>
+
+<!-- ══ CONTENU ══ -->
+@yield('content')
+
+<!-- ══ SCRIPTS GLOBAUX ══ -->
+<script>
+(function () {
+    /* ── Menu utilisateur ── */
+    const userBtn  = document.getElementById('mgUserBtn');
+    const userDrop = document.getElementById('mgUserDropdown');
+    const chevron  = document.getElementById('mgUserChevron');
+    if (userBtn && userDrop) {
+        userBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = userDrop.classList.toggle('open');
+            if (chevron) chevron.style.transform = open ? 'rotate(180deg)' : '';
+        });
+        document.addEventListener('click', () => {
+            userDrop.classList.remove('open');
+            if (chevron) chevron.style.transform = '';
+        });
+    }
+
+    /* ── Thème ── */
+    const THEMES = ['light', 'hogwarts'];
+    const ICONS  = { light: '☀️', hogwarts: '🌙' };
+
+    function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        localStorage.setItem('mg-theme', t);
+        const btn = document.getElementById('themeToggle');
+        if (btn) btn.textContent = ICONS[t] || '☀️';
+        /* Charger les fonts si ce thème ne l'a pas encore fait */
+        if (window._mgFontLoaded !== t) {
+            window._mgFontLoaded = t;
+            var f = 'family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Outfit:wght@300;400;500;600';
+            if (t === 'light')    f += '&family=Unbounded:wght@300;400;600;700;900&family=Sora:wght@300;400;500;600';
+            if (t === 'hogwarts') f += '&family=Cinzel:wght@400;600;700;800';
+            var lk = document.createElement('link'); lk.rel = 'stylesheet';
+            lk.href = 'https://fonts.googleapis.com/css2?' + f + '&display=swap';
+            document.head.appendChild(lk);
+        }
+    }
+
+    /* Initialisation — migration ancien 'dark' → 'hogwarts' */
+    const raw   = localStorage.getItem('mg-theme') || 'light';
+    const saved = raw === 'dark' ? 'hogwarts' : raw;
+    applyTheme(saved);
+
+    /* Cycle au clic : clair ↔ hogwarts */
+    const toggleBtn = document.getElementById('themeToggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            const cur  = document.documentElement.getAttribute('data-theme') || 'light';
+            const next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
+            applyTheme(next);
+        });
+    }
+
+    /* ── Dropdown Notifications ── */
+    @auth
+    (function () {
+        const toggle   = document.getElementById('mgNotifToggle');
+        const dropdown = document.getElementById('mgNotifDropdown');
+        const dot      = document.getElementById('mgNotifDot');
+        const list     = document.getElementById('mgNdList');
+        const readAll  = document.getElementById('mgNdReadAll');
+        if (!toggle || !dropdown) return;
+
+        const CSRF = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+        let loaded = false;
+
+        /* ── Ouvre / ferme ── */
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = dropdown.classList.toggle('open');
+            toggle.classList.toggle('active', isOpen);
+            if (isOpen && !loaded) fetchNotifs();
+        });
+        document.addEventListener('click', (e) => {
+            if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+                toggle.classList.remove('active');
+            }
+        });
+
+        /* ── Fetch & render ── */
+        async function fetchNotifs() {
+            try {
+                const res  = await fetch('{{ route('notifications.dropdown') }}', {
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json();
+                loaded = true;
+                dot.style.display = data.unread > 0 ? 'block' : 'none';
+                renderList(data.items);
+            } catch (e) {
+                list.innerHTML = '<div class="mg-nd-empty"><div class="mg-nd-empty-icon">⚠️</div><div class="mg-nd-empty-text">Erreur de chargement</div></div>';
+            }
+        }
+
+        function renderList(items) {
+            if (!items.length) {
+                list.innerHTML = '<div class="mg-nd-empty"><div class="mg-nd-empty-icon">🔔</div><div class="mg-nd-empty-text">Aucune notification pour l\'instant</div></div>';
+                return;
+            }
+            list.innerHTML = items.map(n => {
+                const isUnread = !n.read_at;
+                const target   = n.post_id ? `/posts/${n.post_id}` : `/@${n.username}`;
+                const avatarEl = n.avatar
+                    ? `<img src="/storage/${n.avatar}" alt="">`
+                    : `<span>${(n.name || '?')[0].toUpperCase()}</span>`;
+                const icons    = { follow: '👤', like: '❤️', comment: '💬' };
+                const typeIcon = icons[n.type] || '🔔';
+
+                let text = '';
+                if (n.type === 'follow')        text = `<strong>${esc(n.name)}</strong> a commencé à te suivre`;
+                else if (n.type === 'like')     text = `<strong>${esc(n.name)}</strong> a aimé ta publication`;
+                else if (n.type === 'comment')  text = `<strong>${esc(n.name)}</strong> a commenté ta publication`;
+                else                            text = 'Nouvelle notification';
+
+                return `<a href="${target}" class="mg-nd-item${isUnread ? ' unread' : ''}" data-id="${n.id}">
+                    <div class="mg-nd-avi">
+                        ${avatarEl}
+                        <div class="mg-nd-type-icon ${n.type}">${typeIcon}</div>
+                    </div>
+                    <div class="mg-nd-body">
+                        <div class="mg-nd-text">${text}</div>
+                        <div class="mg-nd-ago">${esc(n.ago)}</div>
+                    </div>
+                </a>`;
+            }).join('');
+
+            /* marquer comme lu au clic */
+            list.querySelectorAll('.mg-nd-item.unread').forEach(el => {
+                el.addEventListener('click', () => {
+                    fetch(`/notifications/${el.dataset.id}/read`, {
+                        method: 'POST',
+                        headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }
+                    });
+                    el.classList.remove('unread');
+                });
+            });
+        }
+
+        function esc(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        /* ── Marquer tout comme lu ── */
+        if (readAll) {
+            readAll.addEventListener('click', async () => {
+                await fetch('{{ route('notifications.read-all') }}', {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': CSRF, 'Accept': 'application/json' }
+                });
+                list.querySelectorAll('.mg-nd-item.unread').forEach(el => el.classList.remove('unread'));
+                dot.style.display = 'none';
+            });
+        }
+
+        /* ── Badge messages non-lus ── */
+        (function () {
+            const msgDot = document.getElementById('mgMsgDot');
+            if (!msgDot) return;
+            async function pollMsgBadge() {
+                try {
+                    const res  = await fetch('{{ route('messages.unread-count') }}', {
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    const data = await res.json();
+                    msgDot.style.display = (data.count > 0) ? 'block' : 'none';
+                } catch (e) {}
+            }
+            pollMsgBadge();
+            setInterval(pollMsgBadge, 30000);
+        })();
+
+        /* ── Polling badge toutes les 30s ── */
+        async function pollBadge() {
+            try {
+                const res  = await fetch('{{ route('notifications.unread-count') }}', {
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json();
+                dot.style.display = data.count > 0 ? 'block' : 'none';
+                /* recharge si le dropdown est ouvert */
+                if (dropdown.classList.contains('open')) fetchNotifs();
+            } catch (e) {}
+        }
+        pollBadge();
+        setInterval(pollBadge, 30000);
+    })();
+    @endauth
+
+})();
+</script>
+
+@stack('scripts')
+
+<script>
+/* ══════════════════════════════════════════
+   PROTECTION CONTENU CRÉATEURS
+   Empêche le téléchargement des images/vidéos/audio
+══════════════════════════════════════════ */
+(function () {
+    function protect(el) {
+        if (el.dataset.prot) return;
+        el.dataset.prot = '1';
+
+        // Bloquer le menu contextuel (clic droit)
+        el.addEventListener('contextmenu', e => e.preventDefault());
+
+        if (el.tagName === 'IMG') {
+            // Bloquer le drag-and-drop
+            el.addEventListener('dragstart', e => e.preventDefault());
+            // Attribut HTML natif
+            el.setAttribute('draggable', 'false');
+        }
+
+        if (el.tagName === 'VIDEO' || el.tagName === 'AUDIO') {
+            // Cacher le bouton télécharger natif des navigateurs
+            el.setAttribute('controlsList', 'nodownload');
+            el.setAttribute('oncontextmenu', 'return false');
+        }
+    }
+
+    function protectAll() {
+        document.querySelectorAll('img, video, audio').forEach(protect);
+    }
+
+    // Protéger les éléments existants
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', protectAll);
+    } else {
+        protectAll();
+    }
+
+    // Protéger les éléments ajoutés dynamiquement (stories, commentaires, etc.)
+    const obs = new MutationObserver(mutations => {
+        mutations.forEach(m => {
+            m.addedNodes.forEach(node => {
+                if (node.nodeType !== 1) return;
+                if (['IMG','VIDEO','AUDIO'].includes(node.tagName)) protect(node);
+                node.querySelectorAll?.('img,video,audio').forEach(protect);
+            });
+        });
+    });
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+
+    // Bloquer Ctrl+S (Enregistrer la page)
+    document.addEventListener('keydown', e => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+            e.preventDefault();
+        }
+    });
+})();
+</script>
+</body>
+</html>
