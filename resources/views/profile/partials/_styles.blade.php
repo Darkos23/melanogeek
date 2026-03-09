@@ -388,6 +388,29 @@
     }
     .grid-post-locked-overlay:hover .grid-lock-icon { transform: scale(1.15); }
 
+    /* Owner delete button on posts */
+    .grid-post-owner-actions {
+        position: absolute; top: 7px; right: 7px;
+        display: flex; gap: 5px;
+        opacity: 0; transition: opacity .2s;
+        z-index: 10;
+    }
+    .grid-post:hover .grid-post-owner-actions { opacity: 1; }
+    .grid-post-owner-actions .gp-del-btn {
+        width: 28px; height: 28px; border-radius: 50%;
+        background: rgba(0,0,0,.65); border: none; color: white;
+        display: flex; align-items: center; justify-content: center;
+        font-size: .7rem; cursor: pointer; backdrop-filter: blur(4px);
+        transition: background .2s; line-height: 1;
+        text-decoration: none;
+    }
+    .grid-post-owner-actions .gp-del-btn:hover { background: rgba(200,50,50,.8); }
+    /* Always visible on touch devices */
+    @media (hover: none) {
+        .grid-post-owner-actions { opacity: 1; }
+        .pf-card-actions { opacity: 1 !important; }
+    }
+
     .empty-posts {
         grid-column: span 3;
         padding: 60px 20px;

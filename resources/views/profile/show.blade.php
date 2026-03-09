@@ -162,7 +162,8 @@
             </div>
         </div>
 
-        <!-- Stats -->
+        <!-- Stats (masqué pour le créateur sur son propre profil : il a déjà l'espace créateur) -->
+        @if(!(auth()->id() === $user->id && $user->isCreator()))
         <div class="profile-stats">
             <div class="stat-item">
                 <div class="stat-value">{{ number_format($user->posts()->count()) }}</div>
@@ -181,6 +182,7 @@
                 <div class="stat-label">Likes reçus</div>
             </div>
         </div>
+        @endif
     </div>
 
     {{-- ══ STORIES ══ --}}
@@ -280,7 +282,7 @@
             @if($user->isCreator())
             <button class="profile-tab" data-tab="creator">✦ Créateur</button>
             <button class="profile-tab" data-tab="portfolio">
-                🎨 Portfolio
+                🖼️ Portfolio
                 @if($portfolio->isNotEmpty())
                     <span class="tab-count">{{ $portfolio->count() }}</span>
                 @endif
@@ -320,6 +322,17 @@
                     <div class="grid-post"
                          onclick="{{ $postLocked ? 'window.location=\''.route('subscription.pricing').'\'' : 'openPostModal('.$post->id.')' }}"
                          style="cursor:pointer;">
+
+                        @auth @if(auth()->id() === $user->id)
+                        <div class="grid-post-owner-actions" onclick="event.stopPropagation()">
+                            <form method="POST" action="{{ route('posts.destroy', $post) }}"
+                                  onsubmit="return confirm('Supprimer cette publication ?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="gp-del-btn" title="Supprimer">✕</button>
+                            </form>
+                        </div>
+                        @endif @endauth
+
                         <div class="grid-post-media">
                             @if($post->mediaFiles->isNotEmpty())
                                 <img src="{{ Storage::url($post->mediaFiles->first()->media_url) }}"
