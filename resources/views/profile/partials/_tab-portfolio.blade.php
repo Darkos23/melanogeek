@@ -28,9 +28,8 @@
     <div class="pf-masonry" id="pfMasonry">
         @foreach($portfolio as $i => $item)
         <div class="pf-masonry-item" data-cat="{{ $item->category }}"
-             style="animation-delay: {{ $i * 0.06 }}s;"
-             onclick="pfOpenLightbox({{ $item->id }})">
-            <div class="pf-card-inner">
+             style="animation-delay: {{ $i * 0.06 }}s;">
+            <div class="pf-card-inner" onclick="pfOpenLightbox({{ $item->id }})">
 
                 {{-- Cover image or placeholder --}}
                 @if($item->cover_url)
@@ -52,20 +51,22 @@
                     <div class="pf-card-link-badge">↗ Lien</div>
                 @endif
 
-                {{-- Owner: edit / delete --}}
-                @auth
-                @if(auth()->id() === $user->id)
-                <div class="pf-card-actions" onclick="event.stopPropagation()">
-                    <a href="{{ route('portfolio.edit', $item) }}" class="pf-card-action-btn" title="Modifier">✎</a>
-                    <form method="POST" action="{{ route('portfolio.destroy', $item) }}" onsubmit="return confirm('Supprimer ce projet ?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="pf-card-action-btn delete" title="Supprimer">✕</button>
-                    </form>
-                </div>
-                @endif
-                @endauth
-
             </div>
+
+            {{-- Owner: barre d'actions visible sous la carte --}}
+            @auth
+            @if(auth()->id() === $user->id)
+            <div class="pf-owner-bar">
+                <a href="{{ route('portfolio.edit', $item) }}" class="pf-owner-btn edit">✎ Modifier</a>
+                <form method="POST" action="{{ route('portfolio.destroy', $item) }}"
+                      onsubmit="return confirm('Supprimer « {{ $item->title }} » ?')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="pf-owner-btn delete">✕ Supprimer</button>
+                </form>
+            </div>
+            @endif
+            @endauth
+
         </div>
         @endforeach
     </div>

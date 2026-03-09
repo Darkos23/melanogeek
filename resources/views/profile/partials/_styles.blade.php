@@ -719,23 +719,25 @@
     }
     .pf-masonry-item:hover .pf-card-cat { transform: translateY(0); }
 
-    /* Owner controls */
-    .pf-card-actions {
-        position: absolute; top: 10px; right: 10px;
-        display: flex; gap: 6px;
-        opacity: 0.55; transition: opacity .2s;
+    /* Owner controls — barre visible sous chaque carte */
+    .pf-owner-bar {
+        display: flex; gap: 6px; padding: 6px 4px 2px;
     }
-    .pf-masonry-item:hover .pf-card-actions { opacity: 1; }
-    .pf-card-action-btn {
-        width: 30px; height: 30px; border-radius: 50%;
-        background: rgba(0,0,0,.6); border: none; color: white;
-        display: flex; align-items: center; justify-content: center;
-        font-size: .7rem; cursor: pointer; backdrop-filter: blur(4px);
-        transition: background .2s;
-        text-decoration: none;
+    .pf-owner-btn {
+        flex: 1; padding: 6px 0; border-radius: 8px; border: none;
+        font-size: .72rem; font-weight: 600; cursor: pointer;
+        text-align: center; text-decoration: none;
+        display: block; transition: background .15s, color .15s;
+        font-family: var(--font-body);
     }
-    .pf-card-action-btn:hover { background: rgba(0,0,0,.85); color: white; }
-    .pf-card-action-btn.delete:hover { background: rgba(224,85,85,.7); }
+    .pf-owner-btn.edit {
+        background: var(--bg-card2); color: var(--text-muted);
+    }
+    .pf-owner-btn.edit:hover { background: var(--border); color: var(--text); }
+    .pf-owner-btn.delete {
+        background: rgba(200,82,42,.1); color: var(--terra);
+    }
+    .pf-owner-btn.delete:hover { background: var(--terra); color: white; }
 
     /* External link badge */
     .pf-card-link-badge {
