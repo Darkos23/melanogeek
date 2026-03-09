@@ -417,6 +417,8 @@
                     <input type="file" id="imgMoreInput"   accept="image/jpeg,image/png,image/gif,image/webp" multiple style="display:none">
                     {{-- Vidéo: single --}}
                     <input type="file" id="videoInput" name="media" style="display:none" accept="video/mp4,video/quicktime,video/webm">
+                    {{-- Thumbnail vidéo --}}
+                    <input type="file" id="thumbnailInput" name="thumbnail" style="display:none" accept="image/jpeg,image/png,image/webp">
                     {{-- Audio de fond --}}
                     <input type="file" id="audioInput" name="audio" style="display:none" accept="audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/x-m4a">
                 </div>
@@ -608,9 +610,26 @@
         const wrap = document.getElementById('mediaPreview');
         const url  = URL.createObjectURL(this.files[0]);
         wrap.innerHTML = `
-            <video src="${url}" controls style="width:100%;max-height:400px;display:block;"></video>
+            <video src="${url}" controls style="width:100%;max-height:400px;display:block;" id="videoPreviewEl"></video>
+            <div id="thumbRow" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card2);border-top:1px solid var(--border);border-radius:0 0 14px 14px;">
+                <span style="font-size:.8rem;color:var(--text-muted);flex-shrink:0;">🖼 Couverture :</span>
+                <label for="thumbnailInput" id="thumbLabel" style="cursor:pointer;font-size:.78rem;color:var(--terra);font-weight:600;white-space:nowrap;">+ Ajouter une image</label>
+                <span id="thumbName" style="font-size:.75rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                <img id="thumbPreviewImg" style="display:none;height:36px;width:54px;object-fit:cover;border-radius:6px;flex-shrink:0;">
+            </div>
             <button type="button" class="media-preview-remove" onclick="removeVideo()">✕</button>`;
         wrap.classList.add('visible');
+
+        // Thumbnail input listener
+        document.getElementById('thumbnailInput').addEventListener('change', function() {
+            if (!this.files || !this.files[0]) return;
+            const tUrl = URL.createObjectURL(this.files[0]);
+            document.getElementById('thumbPreviewImg').src = tUrl;
+            document.getElementById('thumbPreviewImg').style.display = 'block';
+            document.getElementById('thumbName').textContent = this.files[0].name;
+            document.getElementById('thumbLabel').textContent = '✓ Changer';
+            document.getElementById('videoPreviewEl').poster = tUrl;
+        });
     });
 
     function removeVideo() {
@@ -618,6 +637,7 @@
         wrap.innerHTML = '';
         wrap.classList.remove('visible');
         document.getElementById('videoInput').value = '';
+        document.getElementById('thumbnailInput').value = '';
     }
 
     /* ── Audio ── */

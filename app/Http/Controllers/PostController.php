@@ -27,6 +27,7 @@ class PostController extends Controller
             'images'       => ['nullable', 'array', 'max:10'],
             'images.*'     => ['file', 'image', 'mimetypes:image/jpeg,image/png,image/gif,image/webp', 'max:20480'],
             'media'        => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,video/webm', 'max:51200'],
+            'thumbnail'    => ['nullable', 'file', 'image', 'mimetypes:image/jpeg,image/png,image/webp', 'max:5120'],
             'audio'        => ['nullable', 'file', 'mimetypes:audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/x-m4a', 'max:20480'],
             'is_published'  => ['nullable', 'boolean'],
             'is_exclusive'  => ['nullable', 'boolean'],
@@ -50,15 +51,20 @@ class PostController extends Controller
             return back()->withErrors(['body' => 'Ajoute au moins un texte ou un média.'])->withInput();
         }
 
-        $mediaUrl  = null;
-        $mediaType = 'text';
-        $audioUrl  = null;
-        $audioName = null;
+        $mediaUrl     = null;
+        $mediaType    = 'text';
+        $audioUrl     = null;
+        $audioName    = null;
+        $thumbnailUrl = null;
 
         // Vidéo (toujours une seule)
         if ($hasVideo) {
             $mediaUrl  = $request->file('media')->store('posts/videos', 'public');
             $mediaType = 'video';
+            // Thumbnail optionnel pour les vidéos
+            if ($request->hasFile('thumbnail')) {
+                $thumbnailUrl = $request->file('thumbnail')->store('posts/thumbnails', 'public');
+            }
         }
 
         // Audio de fond
@@ -73,6 +79,7 @@ class PostController extends Controller
             'body'         => $data['body'] ?? null,
             'media_url'    => $mediaUrl,
             'media_type'   => $mediaType,
+            'thumbnail'    => $thumbnailUrl,
             'audio_url'    => $audioUrl,
             'audio_name'   => $audioName,
             'is_published'  => $request->boolean('is_published', true),

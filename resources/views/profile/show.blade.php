@@ -344,7 +344,14 @@
                                 <img src="{{ Storage::url($post->media_url) }}" alt="{{ $post->title }}"
                                      style="{{ $postLocked ? 'filter:blur(6px);transform:scale(1.08);' : '' }}">
                             @elseif($post->media_url && $post->media_type === 'video')
-                                <video src="{{ $post->media_url }}" style="width:100%;height:100%;object-fit:cover;{{ $postLocked ? 'filter:blur(6px);transform:scale(1.08);' : '' }}"></video>
+                                @if($post->thumbnail)
+                                    <img src="{{ Storage::url($post->thumbnail) }}" alt="{{ $post->title }}"
+                                         style="width:100%;height:100%;object-fit:cover;{{ $postLocked ? 'filter:blur(6px);transform:scale(1.08);' : '' }}">
+                                @else
+                                    <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#2d1b3d);display:flex;align-items:center;justify-content:center;{{ $postLocked ? 'filter:blur(4px);' : '' }}">
+                                        <div style="width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">▶</div>
+                                    </div>
+                                @endif
                                 @if(!$postLocked)<div class="grid-post-badge">▶</div>@endif
                             @else
                                 <div style="width:100%;height:100%;background:var(--bg-card2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;gap:6px;{{ $postLocked ? 'filter:blur(4px);' : '' }}">
