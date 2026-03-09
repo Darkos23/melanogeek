@@ -668,6 +668,7 @@
         background: var(--bg-card2);
         border: 1px solid var(--border);
         transition: transform .3s ease, box-shadow .3s ease;
+        min-height: 160px;
     }
     .pf-masonry-item:hover .pf-card-inner {
         transform: translateY(-4px);
