@@ -48,9 +48,12 @@ class ProfileController extends Controller
             ->oldest()
             ->get();
 
+        $portfolio = $user->portfolioItems()->get();
+
         return view('profile.show', [
             'user'             => $user,
             'posts'            => $posts,
+            'portfolio'        => $portfolio,
             'isLocked'         => $isLocked,
             'totalLikes'       => $totalLikes,
             'myCreatorRequest' => $myCreatorRequest,

@@ -13,6 +13,7 @@ use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\BlockController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReviewController;
@@ -120,6 +121,13 @@ Route::middleware(['auth', 'approved'])->group(function () {
 
     // Disponibilité créateur
     Route::post('/availability/toggle', [AvailabilityController::class, 'toggle'])->name('availability.toggle');
+
+    // Portfolio
+    Route::get('/portfolio/create',         [PortfolioController::class, 'create'])->name('portfolio.create');
+    Route::post('/portfolio',               [PortfolioController::class, 'store'])->name('portfolio.store');
+    Route::get('/portfolio/{portfolio}/edit', [PortfolioController::class, 'edit'])->name('portfolio.edit');
+    Route::put('/portfolio/{portfolio}',    [PortfolioController::class, 'update'])->name('portfolio.update');
+    Route::delete('/portfolio/{portfolio}', [PortfolioController::class, 'destroy'])->name('portfolio.destroy');
 
     // Stories
     Route::post('/stories',                              [StoryController::class, 'store'])->name('stories.store');

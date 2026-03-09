@@ -80,6 +80,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function portfolioItems()
+    {
+        return $this->hasMany(PortfolioItem::class)->orderBy('sort_order')->orderByDesc('created_at');
+    }
+
     public function likes()
     {
         return $this->hasMany(Like::class);
