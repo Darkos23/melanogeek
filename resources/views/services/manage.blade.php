@@ -2,7 +2,7 @@
 @section('title', 'Mes services — MelanoGeek')
 @section('content')
 <style>
-.mgr-wrap { max-width: 860px; margin: 0 auto; padding: 44px 20px 80px; }
+.mgr-wrap { max-width: 860px; margin: 0 auto; padding: 88px 20px 80px; }
 .mgr-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
 .mgr-header h1 { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: var(--text); }
 .btn-terra { background: var(--terra); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-family: var(--font-head); font-size: .88rem; font-weight: 700; text-decoration: none; transition: opacity .2s; }

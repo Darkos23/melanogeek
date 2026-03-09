@@ -2,7 +2,7 @@
 @section('title', 'Mes commandes — MelanoGeek')
 @section('content')
 <style>
-.ord-wrap { max-width: 860px; margin: 0 auto; padding: 44px 20px 80px; }
+.ord-wrap { max-width: 860px; margin: 0 auto; padding: 88px 20px 80px; }
 .ord-wrap h1 { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 24px; }
 .tabs { display: flex; gap: 4px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 4px; margin-bottom: 24px; width: fit-content; }
 .tab-btn { padding: 7px 18px; border-radius: 9px; font-size: .84rem; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: all .15s; }

@@ -4,7 +4,7 @@
 
 @section('content')
 <style>
-.mkp-wrap { max-width: 1100px; margin: 0 auto; padding: 48px 20px 80px; }
+.mkp-wrap { max-width: 1100px; margin: 0 auto; padding: 88px 20px 80px; }
 
 /* Hero */
 .mkp-hero { margin-bottom: 40px; }

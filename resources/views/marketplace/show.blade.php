@@ -4,7 +4,7 @@
 
 @section('content')
 <style>
-.svc-wrap { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+.svc-wrap { max-width: 960px; margin: 0 auto; padding: 88px 20px 80px; }
 .svc-back { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--text-muted); text-decoration: none; margin-bottom: 28px; transition: color .15s; }
 .svc-back:hover { color: var(--text); }
 .svc-layout { display: grid; grid-template-columns: 1fr 320px; gap: 28px; align-items: start; }

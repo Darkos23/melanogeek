@@ -2,7 +2,7 @@
 @section('title', 'Modifier le service — MelanoGeek')
 @section('content')
 <style>
-.svc-form-wrap { max-width: 640px; margin: 0 auto; padding: 44px 20px 80px; }
+.svc-form-wrap { max-width: 640px; margin: 0 auto; padding: 88px 20px 80px; }
 .svc-form-wrap h1 { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
 .svc-form-wrap .sub { font-size: .86rem; color: var(--text-muted); margin-bottom: 32px; }
 .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 20px; }

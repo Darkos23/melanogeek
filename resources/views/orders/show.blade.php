@@ -2,7 +2,7 @@
 @section('title', 'Commande #' . $order->id . ' — MelanoGeek')
 @section('content')
 <style>
-.ord-wrap { max-width: 760px; margin: 0 auto; padding: 44px 20px 80px; }
+.ord-wrap { max-width: 760px; margin: 0 auto; padding: 88px 20px 80px; }
 .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--text-muted); text-decoration: none; margin-bottom: 24px; transition: color .15s; }
 .back-link:hover { color: var(--text); }
 .ord-hero { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 28px; }

@@ -723,7 +723,7 @@
     .pf-card-actions {
         position: absolute; top: 10px; right: 10px;
         display: flex; gap: 6px;
-        opacity: 0; transition: opacity .2s;
+        opacity: 0.55; transition: opacity .2s;
     }
     .pf-masonry-item:hover .pf-card-actions { opacity: 1; }
     .pf-card-action-btn {
