@@ -23,6 +23,19 @@
 .submit-btn:hover { opacity: .88; }
 .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--text-muted); text-decoration: none; margin-bottom: 24px; }
 .back-link:hover { color: var(--text); }
+.price-type-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
+.price-type-tab {
+    flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--bg-card2); color: var(--text-muted); font-size: .83rem; font-weight: 600;
+    cursor: pointer; text-align: center; transition: all .15s;
+}
+.price-type-tab.active { border-color: var(--terra); background: rgba(200,82,42,.08); color: var(--terra); }
+.quote-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(212,168,67,.1); border: 1px solid rgba(212,168,67,.3);
+    color: var(--gold); border-radius: 8px; padding: 10px 14px;
+    font-size: .84rem; font-weight: 600; width: 100%;
+}
 .toggle-row { display: flex; align-items: center; justify-content: space-between; }
 .toggle-label { font-size: .84rem; color: var(--text-muted); }
 .toggle { width: 38px; height: 22px; background: var(--border); border-radius: 100px; position: relative; cursor: pointer; transition: background .2s; }
@@ -76,17 +89,45 @@
 
         <div class="form-card">
             <h2>Tarification & délai</h2>
+
+            @php $currentPriceType = old('price_type', $service->price_type ?? 'fixed'); @endphp
+
             <div class="form-group">
-                <label class="form-label">Prix *</label>
-                <div class="price-row">
-                    <input type="number" name="price" class="form-input" min="100" step="100" value="{{ old('price', $service->price) }}">
-                    <select name="currency" class="form-select" style="width:110px;">
-                        <option value="XOF" {{ old('currency', $service->currency) === 'XOF' ? 'selected' : '' }}>FCFA</option>
-                        <option value="EUR" {{ old('currency', $service->currency) === 'EUR' ? 'selected' : '' }}>€ EUR</option>
-                    </select>
+                <label class="form-label">Type de tarification *</label>
+                <div class="price-type-tabs">
+                    <div class="price-type-tab {{ $currentPriceType !== 'quote' ? 'active' : '' }}" onclick="setPriceType('fixed', this)">
+                        💰 Prix fixe
+                    </div>
+                    <div class="price-type-tab {{ $currentPriceType === 'quote' ? 'active' : '' }}" onclick="setPriceType('quote', this)">
+                        📩 Prix sur devis
+                    </div>
                 </div>
-                @error('price')<div class="form-err">{{ $message }}</div>@enderror
+                <input type="hidden" name="price_type" id="priceTypeInput" value="{{ $currentPriceType }}">
             </div>
+
+            <div id="fixedPriceSection" style="{{ $currentPriceType === 'quote' ? 'display:none;' : '' }}">
+                <div class="form-group">
+                    <label class="form-label">Prix *</label>
+                    <div class="price-row">
+                        <input type="number" name="price" id="priceInput" class="form-input" min="100" step="100" value="{{ old('price', $service->price) }}">
+                        <select name="currency" class="form-select" style="width:110px;">
+                            <option value="XOF" {{ old('currency', $service->currency) === 'XOF' ? 'selected' : '' }}>FCFA</option>
+                            <option value="EUR" {{ old('currency', $service->currency) === 'EUR' ? 'selected' : '' }}>€ EUR</option>
+                        </select>
+                    </div>
+                    @error('price')<div class="form-err">{{ $message }}</div>@enderror
+                </div>
+            </div>
+
+            <div id="quotePriceSection" style="{{ $currentPriceType !== 'quote' ? 'display:none;' : '' }}">
+                <div class="form-group">
+                    <div class="quote-badge">
+                        📩 Le client t'enverra ses besoins et tu lui proposeras un montant personnalisé.
+                    </div>
+                    <input type="hidden" name="currency" id="quoteCurrency" value="{{ old('currency', $service->currency ?? 'XOF') }}">
+                </div>
+            </div>
+
             <div class="form-group">
                 <label class="form-label">Délai (jours) *</label>
                 <input type="number" name="delivery_days" class="form-input" min="1" max="90" value="{{ old('delivery_days', $service->delivery_days) }}" style="max-width:160px;">
@@ -111,6 +152,14 @@
 </div>
 
 <script>
+function setPriceType(type, el) {
+    document.getElementById('priceTypeInput').value = type;
+    document.querySelectorAll('.price-type-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('fixedPriceSection').style.display = type === 'fixed' ? '' : 'none';
+    document.getElementById('quotePriceSection').style.display = type === 'quote' ? '' : 'none';
+}
+
 function toggleActive() {
     const t = document.getElementById('activeToggle');
     const i = document.getElementById('isActiveInput');

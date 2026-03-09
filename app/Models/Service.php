@@ -9,13 +9,13 @@ class Service extends Model
 {
     protected $fillable = [
         'user_id', 'title', 'description', 'category',
-        'price', 'currency', 'delivery_days',
+        'price', 'price_type', 'currency', 'delivery_days',
         'cover_image', 'is_active', 'orders_count',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
-        'price'     => 'decimal:2',
+        'is_active'  => 'boolean',
+        'price'      => 'decimal:2',
     ];
 
     const CATEGORIES = [
@@ -41,6 +41,11 @@ class Service extends Model
     }
 
     // ── Helpers ──
+    public function isQuote(): bool
+    {
+        return $this->price_type === 'quote';
+    }
+
     public function getCoverUrlAttribute(): string
     {
         return $this->cover_image
@@ -60,6 +65,8 @@ class Service extends Model
 
     public function getPriceFormattedAttribute(): string
     {
+        if ($this->isQuote()) return 'Prix sur devis';
+
         return $this->currency === 'XOF'
             ? number_format($this->price, 0, ',', ' ') . ' FCFA'
             : number_format($this->price, 2, ',', ' ') . ' €';

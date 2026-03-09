@@ -38,15 +38,22 @@ class ServiceController extends Controller implements HasMiddleware
 
     public function store(Request $request)
     {
+        $isQuote = $request->input('price_type') === 'quote';
+
         $data = $request->validate([
             'title'         => ['required', 'string', 'max:120'],
             'description'   => ['required', 'string', 'max:2000'],
             'category'      => ['required', 'in:' . implode(',', array_keys(Service::CATEGORIES))],
-            'price'         => ['required', 'numeric', 'min:100'],
+            'price_type'    => ['required', 'in:fixed,quote'],
+            'price'         => [$isQuote ? 'nullable' : 'required', 'numeric', 'min:100'],
             'currency'      => ['required', 'in:XOF,EUR'],
             'delivery_days' => ['required', 'integer', 'min:1', 'max:90'],
             'cover_image'   => ['nullable', 'image', 'max:4096'],
         ]);
+
+        if ($isQuote) {
+            $data['price'] = null;
+        }
 
         if ($request->hasFile('cover_image')) {
             $data['cover_image'] = $request->file('cover_image')->store('services', 'public');
@@ -71,16 +78,23 @@ class ServiceController extends Controller implements HasMiddleware
     {
         abort_if($service->user_id !== auth()->id(), 403);
 
+        $isQuote = $request->input('price_type') === 'quote';
+
         $data = $request->validate([
             'title'         => ['required', 'string', 'max:120'],
             'description'   => ['required', 'string', 'max:2000'],
             'category'      => ['required', 'in:' . implode(',', array_keys(Service::CATEGORIES))],
-            'price'         => ['required', 'numeric', 'min:100'],
+            'price_type'    => ['required', 'in:fixed,quote'],
+            'price'         => [$isQuote ? 'nullable' : 'required', 'numeric', 'min:100'],
             'currency'      => ['required', 'in:XOF,EUR'],
             'delivery_days' => ['required', 'integer', 'min:1', 'max:90'],
             'cover_image'   => ['nullable', 'image', 'max:4096'],
             'is_active'     => ['boolean'],
         ]);
+
+        if ($isQuote) {
+            $data['price'] = null;
+        }
 
         if ($request->hasFile('cover_image')) {
             if ($service->cover_image) Storage::disk('public')->delete($service->cover_image);

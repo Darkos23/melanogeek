@@ -997,8 +997,15 @@
                     </div>
                 @endif
 
-                @if($user->bio)
-                    <p class="profile-bio">{{ $user->bio }}</p>
+                @if($user->bio || $user->bio_wolof)
+                    <div class="profile-bio-block">
+                        @if($user->bio)
+                            <p class="profile-bio">{{ $user->bio }}</p>
+                        @endif
+                        @if($user->bio_wolof)
+                            <p class="profile-bio profile-bio-wolof" style="margin-top:4px;font-style:italic;color:var(--text-muted);">{{ $user->bio_wolof }}</p>
+                        @endif
+                    </div>
                 @endif
 
                 <!-- Meta infos -->

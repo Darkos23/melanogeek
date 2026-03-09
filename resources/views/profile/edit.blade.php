@@ -438,10 +438,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="bio">Biographie</label>
+                        <label class="form-label" for="bio">Biographie <span style="font-weight:400;color:var(--text-muted);">(Français)</span></label>
                         <textarea class="form-input" id="bio" name="bio"
                             placeholder="Parle de toi, de ton univers créatif...">{{ old('bio', auth()->user()->bio) }}</textarea>
                         <div class="form-hint">Max 200 caractères</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="bio_wolof">Biographie <span style="font-weight:400;color:var(--text-muted);">(Wolof — optionnel)</span></label>
+                        <textarea class="form-input" id="bio_wolof" name="bio_wolof"
+                            placeholder="Bul ko xamante, wolof bi rekk...">{{ old('bio_wolof', auth()->user()->bio_wolof) }}</textarea>
+                        <div class="form-hint">Max 200 caractères — touche ton audience wolofophone directement</div>
                     </div>
 
                     <div class="form-grid-2">

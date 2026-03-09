@@ -31,6 +31,19 @@
 .back-link { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--text-muted); text-decoration: none; margin-bottom: 24px; }
 .back-link:hover { color: var(--text); }
 .cover-preview { width: 100%; aspect-ratio: 16/9; border-radius: 10px; object-fit: cover; margin-top: 10px; display: none; }
+.price-type-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
+.price-type-tab {
+    flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--bg-card2); color: var(--text-muted); font-size: .83rem; font-weight: 600;
+    cursor: pointer; text-align: center; transition: all .15s;
+}
+.price-type-tab.active { border-color: var(--terra); background: rgba(200,82,42,.08); color: var(--terra); }
+.quote-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(212,168,67,.1); border: 1px solid rgba(212,168,67,.3);
+    color: var(--gold); border-radius: 8px; padding: 10px 14px;
+    font-size: .84rem; font-weight: 600; width: 100%;
+}
 </style>
 
 <div class="svc-form-wrap">
@@ -73,16 +86,41 @@
             <h2>Tarification & délai</h2>
 
             <div class="form-group">
-                <label class="form-label">Prix *</label>
-                <div class="price-row">
-                    <input type="number" name="price" class="form-input" placeholder="2500" min="100" step="100" value="{{ old('price') }}">
-                    <select name="currency" class="form-select" style="width:110px;">
-                        <option value="XOF" {{ old('currency', 'XOF') === 'XOF' ? 'selected' : '' }}>FCFA</option>
-                        <option value="EUR" {{ old('currency') === 'EUR' ? 'selected' : '' }}>€ EUR</option>
-                    </select>
+                <label class="form-label">Type de tarification *</label>
+                <div class="price-type-tabs">
+                    <div class="price-type-tab {{ old('price_type', 'fixed') !== 'quote' ? 'active' : '' }}" onclick="setPriceType('fixed', this)">
+                        💰 Prix fixe
+                    </div>
+                    <div class="price-type-tab {{ old('price_type') === 'quote' ? 'active' : '' }}" onclick="setPriceType('quote', this)">
+                        📩 Prix sur devis
+                    </div>
                 </div>
-                <div class="form-hint">Prix minimum : 100 FCFA ou 1 €</div>
-                @error('price')<div class="form-err">{{ $message }}</div>@enderror
+                <input type="hidden" name="price_type" id="priceTypeInput" value="{{ old('price_type', 'fixed') }}">
+            </div>
+
+            <div id="fixedPriceSection" style="{{ old('price_type') === 'quote' ? 'display:none;' : '' }}">
+                <div class="form-group">
+                    <label class="form-label">Prix *</label>
+                    <div class="price-row">
+                        <input type="number" name="price" id="priceInput" class="form-input" placeholder="2500" min="100" step="100" value="{{ old('price') }}">
+                        <select name="currency" class="form-select" style="width:110px;">
+                            <option value="XOF" {{ old('currency', 'XOF') === 'XOF' ? 'selected' : '' }}>FCFA</option>
+                            <option value="EUR" {{ old('currency') === 'EUR' ? 'selected' : '' }}>€ EUR</option>
+                        </select>
+                    </div>
+                    <div class="form-hint">Prix minimum : 100 FCFA ou 1 €</div>
+                    @error('price')<div class="form-err">{{ $message }}</div>@enderror
+                </div>
+            </div>
+
+            <div id="quotePriceSection" style="{{ old('price_type') !== 'quote' ? 'display:none;' : '' }}">
+                <div class="form-group">
+                    <div class="quote-badge">
+                        📩 Le client t'enverra ses besoins et tu lui proposeras un montant personnalisé.
+                    </div>
+                    <div class="form-hint" style="margin-top:8px;">Idéal pour les projets sur-mesure (shooting, beat, design unique…)</div>
+                    <input type="hidden" name="currency" id="quoteCurrency" value="{{ old('currency', 'XOF') }}">
+                </div>
             </div>
 
             <div class="form-group">
@@ -115,6 +153,14 @@ function previewCover(input) {
         reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function setPriceType(type, el) {
+    document.getElementById('priceTypeInput').value = type;
+    document.querySelectorAll('.price-type-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('fixedPriceSection').style.display = type === 'fixed' ? '' : 'none';
+    document.getElementById('quotePriceSection').style.display = type === 'quote' ? '' : 'none';
 }
 </script>
 @endsection

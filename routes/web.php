@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 // ── Pages publiques ──
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/offline', fn() => view('pages.offline'))->name('offline');
 
 Route::get('/a-propos', function () {
     $settings = [
