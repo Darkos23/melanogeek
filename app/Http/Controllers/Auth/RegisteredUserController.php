@@ -27,6 +27,7 @@ class RegisteredUserController extends Controller
         $request->merge(['email' => strtolower(trim($request->email))]);
 
         $request->validate([
+            'beta_code'        => ['required', 'in:' . env('BETA_CODE', 'MELANO2026')],
             'account_type'     => ['required', 'in:fan,creator'],
             'name'             => ['required', 'string', 'max:255'],
             'username'         => ['required', 'string', 'min:3', 'max:30', 'unique:users,username', 'regex:/^[a-zA-Z0-9_.\\-]+$/'],
@@ -37,6 +38,8 @@ class RegisteredUserController extends Controller
             'creator_bio'      => $isCreator ? ['required', 'string', 'min:30', 'max:500'] : ['nullable'],
             'creator_social'   => $isCreator ? ['required', 'url', 'max:255'] : ['nullable', 'url', 'max:255'],
         ], [
+            'beta_code.required'        => 'Le code d\'accès beta est requis.',
+            'beta_code.in'              => 'Code d\'accès invalide. Contacte-nous pour obtenir un code.',
             'username.unique'           => 'Ce pseudo est déjà pris.',
             'username.regex'            => 'Le pseudo ne peut contenir que des lettres, chiffres, points, tirets et underscores.',
             'username.min'              => 'Le pseudo doit faire au moins 3 caractères.',

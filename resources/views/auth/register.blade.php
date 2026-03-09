@@ -426,6 +426,25 @@
                     </div>
                 </div>
 
+                {{-- ── Code d'accès beta ── --}}
+                <div class="form-group" style="margin-top:8px;">
+                    <label class="form-label" for="beta_code">🔑 Code d'accès beta</label>
+                    <input class="form-input {{ $errors->has('beta_code') ? 'is-error' : '' }}"
+                           type="text"
+                           id="beta_code"
+                           name="beta_code"
+                           value="{{ old('beta_code') }}"
+                           placeholder="MELANO-XXXX"
+                           autocomplete="off"
+                           spellcheck="false"
+                           style="letter-spacing:.08em;text-transform:uppercase;"
+                           required>
+                    <div style="font-size:.72rem;color:var(--muted);margin-top:5px;">
+                        MelanoGeek est en accès anticipé. Tu as reçu un code ? Entre-le ici.
+                    </div>
+                    @error('beta_code')<div class="form-error">⚠ {{ $message }}</div>@enderror
+                </div>
+
                 <button type="submit" class="btn-submit" id="submit-btn">
                     <span id="submit-fan">Créer mon compte →</span>
                     <span id="submit-creator" style="display:none;">Envoyer ma candidature →</span>
