@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Laravel (PHP)",
-      "runtimeExecutable": "php",
+      "runtimeExecutable": "F:\\laragon\\bin\\php\\php-8.3.30-Win32-vs16-x64\\php.exe",
       "runtimeArgs": ["artisan", "serve"],
       "port": 8000,
       "autoPort": true
@@ -16,7 +16,7 @@
     },
     {
       "name": "Queue worker",
-      "runtimeExecutable": "php",
+      "runtimeExecutable": "F:\\laragon\\bin\\php\\php-8.3.30-Win32-vs16-x64\\php.exe",
       "runtimeArgs": ["artisan", "queue:listen", "--tries=1"],
       "port": 8000,
       "autoPort": true
