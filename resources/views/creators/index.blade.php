@@ -266,7 +266,16 @@
         .creators-hero { padding: 32px 16px 24px; }
         .creators-body { padding: 0 16px 60px; }
         .creators-hero-title { font-size: 1.6rem; }
-        .creators-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+        .creators-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+    }
+    @@media (max-width: 480px) {
+        .creators-hero { padding: 24px 16px 20px; }
+        .creators-hero-title { font-size: 1.35rem; }
+        .creators-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+        .filter-search-wrap { min-width: 0; flex: 1 1 100%; }
+        .creators-filters { gap: 8px; }
+        .niche-pills { gap: 6px; }
+        .niche-pill { padding: 5px 10px; font-size: .72rem; }
     }
 </style>
 @endpush
@@ -294,12 +303,20 @@
 
         {{-- Pills niches --}}
         @if($niches->isNotEmpty())
+        @php
+        $nicheEmojis = [
+            'Musique'=>'🎵','Photographie'=>'📸','Mode & Style'=>'👗','Beauté & Soins'=>'💄',
+            'Cuisine'=>'🍽️','Vidéo & Vlog'=>'🎬','Art & Illustration'=>'🎨','Danse'=>'💃',
+            'Comédie & Humour'=>'😂','Business'=>'💼','Voyage & Culture'=>'🌍','Sport & Fitness'=>'⚽',
+            'Artisanat'=>'🪡','Éducation'=>'📚','Podcast'=>'🎙️','Lifestyle'=>'✨',
+        ];
+        @endphp
         <div class="niche-pills">
             <a href="{{ route('creators', array_filter(['search' => request('search')])) }}"
-               class="niche-pill {{ !request('niche') ? 'active' : '' }}">Tous</a>
+               class="niche-pill {{ !request('niche') ? 'active' : '' }}">🌍 Tous</a>
             @foreach($niches as $n)
                 <a href="{{ route('creators', array_filter(['search' => request('search'), 'niche' => $n])) }}"
-                   class="niche-pill {{ request('niche') === $n ? 'active' : '' }}">{{ $n }}</a>
+                   class="niche-pill {{ request('niche') === $n ? 'active' : '' }}">{{ $nicheEmojis[$n] ?? '🌟' }} {{ $n }}</a>
             @endforeach
         </div>
         @endif
@@ -324,6 +341,15 @@
                         ['#1A1530','#3B2D6B'],['#2A1A08','#6B4010'],
                         ['#1E1010','#5A1E1E'],['#0D1F15','#1D5A3A'],
                     ];
+                    $nicheEmojis = [
+                        'Musique'=>'🎵','Photographie'=>'📸','Mode & Style'=>'👗','Beauté & Soins'=>'💄',
+                        'Cuisine'=>'🍽️','Vidéo & Vlog'=>'🎬','Art & Illustration'=>'🎨','Danse'=>'💃',
+                        'Comédie & Humour'=>'😂','Business'=>'💼','Voyage & Culture'=>'🌍','Sport & Fitness'=>'⚽',
+                        'Artisanat'=>'🪡','Éducation'=>'📚','Podcast'=>'🎙️','Lifestyle'=>'✨',
+                        'Photographe'=>'📸','Musicien'=>'🎵','Vidéaste'=>'🎬','Artiste digital'=>'🎨',
+                        'Styliste'=>'👗','Danseur'=>'💃','Cuisinier'=>'🍽️','Podcasteur'=>'🎙️',
+                        'Illustrateur'=>'✏️','Comédien'=>'🎭','Influenceur'=>'⭐',
+                    ];
                 @endphp
                 @foreach($creators as $creator)
                 @php $g = $gradients[$loop->index % count($gradients)]; @endphp
@@ -343,7 +369,7 @@
 
                     {{-- Badge niche --}}
                     @if($creator->niche)
-                        <div class="creator-card-niche">{{ $creator->niche }}</div>
+                        <div class="creator-card-niche">{{ $nicheEmojis[$creator->niche] ?? '🌟' }} {{ $creator->niche }}</div>
                     @endif
 
                     {{-- Badge vérifié --}}

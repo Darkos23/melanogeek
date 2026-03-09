@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Models\Story;
 use App\Models\User;
 use App\Http\Requests\ProfileUpdateRequest;
@@ -50,15 +51,44 @@ class ProfileController extends Controller
 
         $portfolio = $user->portfolioItems()->get();
 
+        // Stats pré-calculées (évite les requêtes N+1 dans le Blade)
+        $postsPublishedCount = $isLocked ? 0 : $user->posts()->where('is_published', true)->count();
+        $postsAllCount       = $user->posts()->count();
+        $followersCount      = $user->followers()->count();
+        $followingCount      = $user->following()->count();
+        $commentsCount       = $user->comments()->count();
+
+        // Services & avis (uniquement pour les créateurs)
+        $services     = $user->isCreator()
+            ? $user->services()->active()->latest()->get()
+            : collect();
+        $reviews      = $user->isCreator()
+            ? Review::with('reviewer:id,name,username,avatar')
+                ->where('reviewed_id', $user->id)
+                ->latest()
+                ->get()
+            : collect();
+        $avgRating    = $user->isCreator() ? Review::avgFor($user->id) : 0;
+        $totalReviews = $user->isCreator() ? Review::countFor($user->id) : 0;
+
         return view('profile.show', [
-            'user'             => $user,
-            'posts'            => $posts,
-            'portfolio'        => $portfolio,
-            'isLocked'         => $isLocked,
-            'totalLikes'       => $totalLikes,
-            'myCreatorRequest' => $myCreatorRequest,
-            'stories'          => $stories,
-            'isBlocking'       => $isBlocking,
+            'user'                => $user,
+            'posts'               => $posts,
+            'portfolio'           => $portfolio,
+            'services'            => $services,
+            'reviews'             => $reviews,
+            'avgRating'           => $avgRating,
+            'totalReviews'        => $totalReviews,
+            'isLocked'            => $isLocked,
+            'totalLikes'          => $totalLikes,
+            'myCreatorRequest'    => $myCreatorRequest,
+            'stories'             => $stories,
+            'isBlocking'          => $isBlocking,
+            'postsPublishedCount' => $postsPublishedCount,
+            'postsAllCount'       => $postsAllCount,
+            'followersCount'      => $followersCount,
+            'followingCount'      => $followingCount,
+            'commentsCount'       => $commentsCount,
         ]);
     }
 

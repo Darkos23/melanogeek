@@ -241,7 +241,7 @@
     /* Fond kente — mode light uniquement, sur tout le site */
     [data-theme="light"] body::before {
         content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.6' opacity='0.07'%3E%3Crect x='10' y='10' width='20' height='20'/%3E%3Crect x='50' y='10' width='20' height='20'/%3E%3Crect x='10' y='50' width='20' height='20'/%3E%3Crect x='50' y='50' width='20' height='20'/%3E%3Cline x1='0' y1='40' x2='80' y2='40'/%3E%3Cline x1='40' y1='0' x2='40' y2='80'/%3E%3Cpath d='M10 10 L30 30 M50 10 L70 30 M10 50 L30 70 M50 50 L70 70'/%3E%3C/g%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.6' opacity='0.08'%3E%3Crect x='10' y='10' width='20' height='20'/%3E%3Crect x='50' y='10' width='20' height='20'/%3E%3Crect x='10' y='50' width='20' height='20'/%3E%3Crect x='50' y='50' width='20' height='20'/%3E%3Cline x1='0' y1='40' x2='80' y2='40'/%3E%3Cline x1='40' y1='0' x2='40' y2='80'/%3E%3Cpath d='M10 10 L30 30 M50 10 L70 30 M10 50 L30 70 M50 50 L70 70'/%3E%3C/g%3E%3C/svg%3E");
         background-size: 80px 80px;
     }
 
@@ -254,11 +254,100 @@
     }
 
     /* ═══════════════════════════════════════════════
+       HAMBURGER
+    ═══════════════════════════════════════════════ */
+    .mg-hamburger {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        width: 36px; height: 36px;
+        background: var(--toggle-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: all .2s;
+    }
+    .mg-hamburger:hover { border-color: var(--terra); background: var(--terra-soft); }
+    .mg-hamburger span {
+        display: block;
+        width: 16px; height: 1.5px;
+        background: var(--text);
+        border-radius: 2px;
+        transition: transform .25s, opacity .2s;
+    }
+    .mg-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .mg-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .mg-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ═══════════════════════════════════════════════
+       MENU MOBILE
+    ═══════════════════════════════════════════════ */
+    .mg-mobile-menu {
+        position: fixed;
+        top: 64px; left: 0; right: 0;
+        background: var(--nav-bg);
+        backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+        border-bottom: 1px solid var(--border);
+        z-index: 198;
+        transform: translateY(-12px);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform .25s, opacity .2s, visibility .2s;
+        max-height: calc(100vh - 64px);
+        overflow-y: auto;
+    }
+    .mg-mobile-menu.open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    .mg-mob-links { list-style: none; padding: 6px 0; }
+    .mg-mob-links a {
+        display: flex; align-items: center; gap: 10px;
+        padding: 15px 24px;
+        font-family: var(--font-body);
+        font-size: .95rem; font-weight: 600;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+        transition: color .15s, background .15s;
+    }
+    .mg-mob-links li:last-child a { border-bottom: none; }
+    .mg-mob-links a:active, .mg-mob-links a:hover { color: var(--terra); background: var(--terra-soft); }
+    .mg-mob-auth {
+        display: flex; gap: 10px;
+        padding: 16px 20px 20px;
+        border-top: 1px solid var(--border);
+    }
+    .mg-mob-ghost, .mg-mob-solid {
+        flex: 1; text-align: center;
+        padding: 13px 16px; border-radius: 10px;
+        font-family: var(--font-body);
+        font-size: .88rem; font-weight: 700;
+        text-decoration: none; transition: all .2s;
+    }
+    .mg-mob-ghost { border: 1px solid var(--border); color: var(--text); }
+    .mg-mob-ghost:hover { border-color: var(--terra); color: var(--terra); }
+    .mg-mob-solid { background: var(--terra); color: white; }
+    .mg-mob-solid:hover { opacity: .88; }
+
+    /* ═══════════════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════════════ */
     @media (max-width: 768px) {
-        .mg-nav { padding: 0 20px; }
+        .mg-nav { padding: 0 16px; height: 64px; }
         .mg-links { display: none; }
+        .mg-hamburger { display: flex; }
+        /* Boutons Connexion / Rejoindre / Mon fil → dans le burger */
+        .mg-btn-ghost, .mg-btn-solid { display: none; }
+        /* Bouton user : avatar seul, sans nom ni chevron */
+        .mg-user-name, #mgUserChevron { display: none; }
+        .mg-user-btn { padding: 4px; border-radius: 50%; }
+        /* Logo : réduire légèrement le nom */
+        .mg-logo-name { font-size: .8rem; }
     }
     </style>
 
@@ -296,6 +385,7 @@
     <ul class="mg-links">
         <li><a href="{{ route('explore') }}">Explorer</a></li>
         <li><a href="{{ route('creators') }}">Créateurs</a></li>
+        <li><a href="{{ route('ranking') }}">🏆 Classement</a></li>
         <li><a href="{{ route('marketplace.index') }}">Marketplace</a></li>
         <li><a href="{{ route('subscription.pricing') }}">Tarifs</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
@@ -395,6 +485,11 @@
                 </div>
             </div>
         @endguest
+        <button class="mg-hamburger" id="mgHamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mgMobileMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <button class="theme-toggle" id="themeToggle" title="Changer le thème">☀️</button>
     </div>
 </nav>
@@ -639,6 +734,27 @@
 .mg-drop-logout:hover { color:var(--terra) !important;background:var(--terra-soft) !important; }
 </style>
 
+<!-- ══ MENU MOBILE ══ -->
+<div class="mg-mobile-menu" id="mgMobileMenu" aria-hidden="true" role="dialog" aria-label="Menu de navigation">
+    <ul class="mg-mob-links">
+        <li><a href="{{ route('explore') }}">🔍 Explorer</a></li>
+        <li><a href="{{ route('creators') }}">✨ Créateurs</a></li>
+        <li><a href="{{ route('ranking') }}">🏆 Classement</a></li>
+        <li><a href="{{ route('marketplace.index') }}">🛒 Marketplace</a></li>
+        <li><a href="{{ route('subscription.pricing') }}">💎 Tarifs</a></li>
+        <li><a href="{{ route('about') }}">📖 À propos</a></li>
+        @auth
+        <li><a href="{{ route('feed') }}">📰 Mon fil</a></li>
+        @endauth
+    </ul>
+    @guest
+    <div class="mg-mob-auth">
+        <a href="{{ route('login') }}"    class="mg-mob-ghost">Connexion</a>
+        <a href="{{ route('register') }}" class="mg-mob-solid">Rejoindre</a>
+    </div>
+    @endguest
+</div>
+
 <!-- ══ CONTENU ══ -->
 @yield('content')
 
@@ -660,6 +776,46 @@
             if (chevron) chevron.style.transform = '';
         });
     }
+
+    /* ── Hamburger mobile ── */
+    (function () {
+        const burger  = document.getElementById('mgHamburger');
+        const mobMenu = document.getElementById('mgMobileMenu');
+        if (!burger || !mobMenu) return;
+
+        function closeMenu() {
+            burger.classList.remove('open');
+            mobMenu.classList.remove('open');
+            burger.setAttribute('aria-expanded', 'false');
+            mobMenu.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        burger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = burger.classList.toggle('open');
+            mobMenu.classList.toggle('open', isOpen);
+            burger.setAttribute('aria-expanded', String(isOpen));
+            mobMenu.setAttribute('aria-hidden', String(!isOpen));
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!burger.contains(e.target) && !mobMenu.contains(e.target)) {
+                closeMenu();
+            }
+        });
+
+        /* Fermer en cliquant un lien dans le menu */
+        mobMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        /* Fermer si on passe en desktop */
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) closeMenu();
+        });
+    })();
 
     /* ── Thème ── */
     const THEMES = ['light', 'hogwarts'];

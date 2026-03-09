@@ -16,6 +16,7 @@ use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\BlockController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RankingController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\NotificationsController;
@@ -50,6 +51,7 @@ Route::get('/marketplace',          [MarketplaceController::class, 'index'])->na
 Route::get('/marketplace/{service}', [MarketplaceController::class, 'show'])->name('marketplace.show');
 
 Route::get('/creators', [CreatorController::class, 'index'])->name('creators');
+Route::get('/classement', [RankingController::class, 'index'])->name('ranking');
 
 // ── Dashboard Breeze (garde pour l'instant) ──
 Route::get('/dashboard', function () {

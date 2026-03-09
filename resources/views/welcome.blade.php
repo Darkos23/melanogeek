@@ -15,8 +15,8 @@
 
 /* ══ HERO ══ */
 .hero { min-height:100vh;padding-top:72px;position:relative;display:grid;grid-template-rows:1fr auto;overflow:hidden; }
-.hero-adinkra { position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:560px;height:560px;opacity:.055;pointer-events:none;z-index:0; }
-.mudcloth-tl,.mudcloth-br { position:absolute;width:220px;height:220px;opacity:.06;pointer-events:none;z-index:0; }
+.hero-adinkra { position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:560px;height:560px;opacity:.13;pointer-events:none;z-index:0; }
+.mudcloth-tl,.mudcloth-br { position:absolute;width:220px;height:220px;opacity:.13;pointer-events:none;z-index:0; }
 .mudcloth-tl{top:72px;left:0;} .mudcloth-br{bottom:0;right:0;}
 .hero-inner { position:relative;z-index:1;padding:64px 52px;display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center; }
 
@@ -87,7 +87,7 @@
 /* ══ SECTIONS ══ */
 .section { padding:88px 52px;position:relative; }
 .section.alt { background:var(--bg2); }
-.section::before { content:'';position:absolute;right:0;top:0;bottom:0;width:300px;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.8' opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3Cline x1='10' y1='30' x2='50' y2='30'/%3E%3Cline x1='30' y1='10' x2='30' y2='50'/%3E%3Cpath d='M16 16 L44 44 M44 16 L16 44'/%3E%3C/g%3E%3C/svg%3E");background-size:60px 60px;pointer-events:none;opacity:.5; }
+.section::before { content:'';position:absolute;right:0;top:0;bottom:0;width:300px;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.8' opacity='0.13'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3Cline x1='10' y1='30' x2='50' y2='30'/%3E%3Cline x1='30' y1='10' x2='30' y2='50'/%3E%3Cpath d='M16 16 L44 44 M44 16 L16 44'/%3E%3C/g%3E%3C/svg%3E");background-size:60px 60px;pointer-events:none;opacity:.85; }
 .s-eye { font-family:'Sora',sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);margin-bottom:9px; }
 .s-tit { font-family:'Unbounded',sans-serif;font-size:clamp(1.5rem,2.8vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink); }
 .s-tit span { color:var(--terra); }
@@ -96,8 +96,9 @@
 .s-link:hover { color:var(--terra) !important;border-color:var(--terra); }
 
 /* ══ CRÉATEURS ══ */
-.cr-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:14px; }
-.cr-card { background:var(--card);border:1px solid var(--ink3);border-radius:16px;padding:22px 18px;transition:all .3s;position:relative;overflow:hidden;display:block;text-decoration:none;color:inherit; }
+.cr-row { display:flex;gap:12px;overflow-x:auto;padding-bottom:14px;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none; }
+.cr-row::-webkit-scrollbar { display:none; }
+.cr-card { flex:0 0 188px;scroll-snap-align:start;background:var(--card);border:1px solid var(--ink3);border-radius:16px;padding:18px 15px;transition:all .3s;position:relative;overflow:hidden;display:block;text-decoration:none;color:inherit; }
 .cr-card::before { content:'';position:absolute;top:0;right:0;width:60px;height:60px;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.7' opacity='0.1'%3E%3Cpath d='M60 0 L30 30 L60 60'/%3E%3Cpath d='M60 15 L45 30 L60 45'/%3E%3Ccircle cx='55' cy='5' r='4'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;opacity:0;transition:opacity .3s; }
 .cr-card::after { content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--terra);transform:scaleX(0);transition:transform .3s;transform-origin:left; }
 .cr-card:hover { border-color:rgba(200,72,24,.3);transform:translateY(-4px);box-shadow:0 18px 44px rgba(30,14,4,.1); }
@@ -118,7 +119,7 @@
 /* ══ MANIFESTE ══ */
 .manifeste { padding:88px 52px;background:var(--bg2);border-top:1px solid var(--ink3);border-bottom:1px solid var(--ink3);position:relative;overflow:hidden; }
 .manifeste::before { content:'';position:absolute;left:0;top:0;bottom:0;width:8px;background:repeating-linear-gradient(180deg,var(--terra) 0,var(--terra) 12px,var(--gold) 12px,var(--gold) 24px,#1E0E04 24px,#1E0E04 36px,var(--gold) 36px,var(--gold) 48px);opacity:.55; }
-.manifeste::after { content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%231E0E04' stroke-width='0.6' opacity='0.04'%3E%3Crect x='20' y='20' width='15' height='15'/%3E%3Crect x='65' y='20' width='15' height='15'/%3E%3Crect x='20' y='65' width='15' height='15'/%3E%3Crect x='65' y='65' width='15' height='15'/%3E%3Ccircle cx='50' cy='50' r='18'/%3E%3Cpath d='M27 27 L73 73 M73 27 L27 73'/%3E%3Cline x1='50' y1='5' x2='50' y2='95'/%3E%3Cline x1='5' y1='50' x2='95' y2='50'/%3E%3C/g%3E%3C/svg%3E");background-size:100px 100px;pointer-events:none; }
+.manifeste::after { content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%231E0E04' stroke-width='0.6' opacity='0.09'%3E%3Crect x='20' y='20' width='15' height='15'/%3E%3Crect x='65' y='20' width='15' height='15'/%3E%3Crect x='20' y='65' width='15' height='15'/%3E%3Crect x='65' y='65' width='15' height='15'/%3E%3Ccircle cx='50' cy='50' r='18'/%3E%3Cpath d='M27 27 L73 73 M73 27 L27 73'/%3E%3Cline x1='50' y1='5' x2='50' y2='95'/%3E%3Cline x1='5' y1='50' x2='95' y2='50'/%3E%3C/g%3E%3C/svg%3E");background-size:100px 100px;pointer-events:none; }
 .manifeste-inner { position:relative;z-index:1;padding-left:32px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center; }
 .m-quote { font-family:'Unbounded',sans-serif;font-size:clamp(1.3rem,2.2vw,2rem);font-weight:800;letter-spacing:-.03em;line-height:1.25;color:var(--ink);margin-bottom:20px; }
 .m-quote span { color:var(--terra); }
@@ -133,7 +134,7 @@
 
 /* ══ TARIFS ══ */
 .tarifs { padding:88px 52px;position:relative;overflow:hidden; }
-.tarifs::before { content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='25,5 45,40 5,40' fill='none' stroke='%23B87820' stroke-width='0.6' opacity='0.055'/%3E%3Cpolygon points='25,45 5,10 45,10' fill='none' stroke='%23C84818' stroke-width='0.5' opacity='0.04'/%3E%3C/svg%3E");background-size:50px 50px;pointer-events:none; }
+.tarifs::before { content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='25,5 45,40 5,40' fill='none' stroke='%23B87820' stroke-width='0.6' opacity='0.11'/%3E%3Cpolygon points='25,45 5,10 45,10' fill='none' stroke='%23C84818' stroke-width='0.5' opacity='0.08'/%3E%3C/svg%3E");background-size:50px 50px;pointer-events:none; }
 .t-inner { position:relative;z-index:1; }
 .pr-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px;max-width:880px; }
 .pr-c { background:var(--card);border:1px solid var(--ink3);border-radius:20px;padding:30px 24px;position:relative;transition:all .3s; }
@@ -431,23 +432,44 @@
 </section>
 
 {{-- TICKER --}}
+@php
+$tickerNiches = [
+    '🎵 Musique','📸 Photographie','👗 Mode & Style','💄 Beauté & Soins',
+    '🍽️ Cuisine','🎬 Vidéo & Vlog','🎨 Art & Illustration','💃 Danse',
+    '😂 Comédie & Humour','💼 Business','🌍 Voyage & Culture','⚽ Sport & Fitness',
+    '🪡 Artisanat','📚 Éducation','🎙️ Podcast','✨ Lifestyle',
+];
+@endphp
 <div class="ticker">
     <div class="ticker-t">
-        @foreach(['Photographes','Musiciens','Stylistes','Artistes digitaux','Vidéastes','Podcasteurs','Danseurs','Comédiens','Illustrateurs','Photographes','Musiciens','Stylistes','Artistes digitaux','Vidéastes','Podcasteurs','Danseurs','Comédiens','Illustrateurs'] as $niche)
-            <span class="tt">{{ $niche }}<span class="tt-dot"></span></span>
+        @foreach(array_merge($tickerNiches, $tickerNiches) as $tn)
+            <span class="tt">{{ $tn }}<span class="tt-dot"></span></span>
         @endforeach
     </div>
 </div>
 
 {{-- CRÉATEURS --}}
+@php
+$nicheEmojis = [
+    'Musique'=>'🎵','Photographie'=>'📸','Mode & Style'=>'👗','Beauté & Soins'=>'💄',
+    'Cuisine'=>'🍽️','Vidéo & Vlog'=>'🎬','Art & Illustration'=>'🎨','Danse'=>'💃',
+    'Comédie & Humour'=>'😂','Business'=>'💼','Voyage & Culture'=>'🌍','Sport & Fitness'=>'⚽',
+    'Artisanat'=>'🪡','Éducation'=>'📚','Podcast'=>'🎙️','Lifestyle'=>'✨',
+    // anciens labels (compat)
+    'Photographe'=>'📸','Musicien'=>'🎵','Vidéaste'=>'🎬','Artiste digital'=>'🎨',
+    'Styliste'=>'👗','Danseur'=>'💃','Cuisinier'=>'🍽️','Podcasteur'=>'🎙️',
+    'Illustrateur'=>'✏️','Comédien'=>'🎭','Influenceur'=>'⭐',
+];
+@endphp
 <section class="section reveal">
     <div class="s-head">
         <div><div class="s-eye">Nos créateurs</div><h2 class="s-tit">Ils créent.<br><span>Tu découvres.</span></h2></div>
         <a href="{{ route('creators') }}" class="s-link">Voir tous →</a>
     </div>
-    <div class="cr-grid">
+    <div class="cr-row">
         @if($featuredCreators->isNotEmpty())
             @foreach($featuredCreators as $i => $cr)
+            @php $ne = $nicheEmojis[$cr->niche ?? ''] ?? '🌟'; @endphp
             <a href="{{ route('profile.show', $cr->username) }}" class="cr-card">
                 <div class="cr-top">
                     <div class="cr-av" style="background:{{ $crBgs[$i % 4] }};">
@@ -461,7 +483,7 @@
                     <span class="cr-bdg {{ $cr->is_verified ? 'v' : 'n' }}">{{ $cr->is_verified ? '✓ Vérifié' : '🆕 Nouveau' }}</span>
                 </div>
                 <div class="cr-name">{{ $cr->name ?? $cr->username }}</div>
-                <div class="cr-niche">🎨 {{ $cr->niche ?: ($cr->location ?: 'Afrique') }}</div>
+                <div class="cr-niche">{{ $ne }} {{ $cr->niche ?: ($cr->location ?: 'Créateur') }}</div>
                 <div class="cr-stats">
                     <div><div class="cr-sn">{{ $fmt($cr->followers_count) }}</div><div class="cr-sl">Abonnés</div></div>
                     <div><div class="cr-sn">{{ $cr->published_posts }}</div><div class="cr-sl">Posts</div></div>
@@ -488,6 +510,7 @@
 </section>
 
 {{-- MANIFESTE --}}
+
 <section class="manifeste reveal">
     <div class="manifeste-inner">
         <div>

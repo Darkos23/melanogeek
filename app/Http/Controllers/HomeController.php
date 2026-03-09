@@ -21,7 +21,7 @@ class HomeController extends Controller
             ->where('is_active', true)
             ->withCount(['followers', 'posts as published_posts' => fn($q) => $q->where('is_published', true)])
             ->orderByDesc('followers_count')
-            ->limit(5)
+            ->limit(10)
             ->get();
 
         // Afficher la carte "Top créateur" dès qu'il y a au moins 1 abonné

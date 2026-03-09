@@ -104,7 +104,12 @@ class PostController extends Controller
     public function show(Post $post): View
     {
         $post->load(['user', 'mediaFiles']);
-        return view('posts.show', compact('post'));
+
+        $liked = auth()->check()
+            ? Like::where('user_id', auth()->id())->where('post_id', $post->id)->exists()
+            : false;
+
+        return view('posts.show', compact('post', 'liked'));
     }
 
     public function data(Post $post): JsonResponse

@@ -22,7 +22,7 @@ function openProfileStory(idx) {
 @endif
 
     // Tabs
-    const tabContents = ['posts', 'about', 'creator', 'portfolio'].map(id => document.getElementById('tab-' + id)).filter(Boolean);
+    const tabContents = ['posts', 'about', 'creator', 'portfolio', 'services', 'avis'].map(id => document.getElementById('tab-' + id)).filter(Boolean);
     document.querySelectorAll('.profile-tab').forEach(tab => {
         tab.addEventListener('click', function() {
             document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));

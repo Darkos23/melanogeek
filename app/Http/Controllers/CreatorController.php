@@ -28,13 +28,12 @@ class CreatorController extends Controller
 
         $creators = $query->latest()->paginate(20)->withQueryString();
 
-        $niches = User::where('is_active', true)
-            ->where('role', 'creator')
-            ->whereNotNull('niche')
-            ->distinct()
-            ->pluck('niche')
-            ->sort()
-            ->values();
+        $niches = collect([
+            'Musique', 'Photographie', 'Mode & Style', 'Beauté & Soins',
+            'Cuisine', 'Vidéo & Vlog', 'Art & Illustration', 'Danse',
+            'Comédie & Humour', 'Business', 'Voyage & Culture', 'Sport & Fitness',
+            'Artisanat', 'Éducation', 'Podcast', 'Lifestyle',
+        ]);
 
         return view('creators.index', compact('creators', 'niches'));
     }

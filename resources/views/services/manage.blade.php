@@ -2,7 +2,7 @@
 @section('title', 'Mes services — MelanoGeek')
 @section('content')
 <style>
-.mgr-wrap { max-width: 860px; margin: 0 auto; padding: 88px 20px 80px; }
+.mgr-wrap { max-width: 860px; margin: 0 auto; padding: 96px 20px 80px; }
 .mgr-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
 .mgr-header h1 { font-family: var(--font-head); font-size: 1.5rem; font-weight: 800; color: var(--text); }
 .btn-terra { background: var(--terra); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-family: var(--font-head); font-size: .88rem; font-weight: 700; text-decoration: none; transition: opacity .2s; }
@@ -10,10 +10,15 @@
 .alert-success { background: rgba(42,122,72,.12); border: 1px solid rgba(42,122,72,.3); color: #2A7A48; padding: 12px 16px; border-radius: 10px; font-size: .84rem; margin-bottom: 20px; }
 
 .svc-table { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.svc-table-overflow { overflow-x: auto; }
 .svc-table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); font-family: var(--font-head); font-size: .88rem; font-weight: 700; color: var(--text); }
-.svc-row { display: grid; grid-template-columns: 64px 1fr auto auto auto; gap: 16px; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--border); transition: background .15s; }
+.svc-row { display: grid; grid-template-columns: 56px 1fr auto auto auto; gap: 12px; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--border); transition: background .15s; min-width: 560px; }
 .svc-row:last-child { border-bottom: none; }
 .svc-row:hover { background: var(--bg-hover); }
+@media (max-width: 600px) {
+    .mgr-wrap { padding-top: 80px; }
+    .mgr-header h1 { font-size: 1.2rem; }
+}
 .svc-thumb { width: 64px; height: 40px; border-radius: 8px; object-fit: cover; background: var(--bg-card2); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; overflow: hidden; flex-shrink: 0; }
 .svc-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .svc-info-title { font-size: .88rem; font-weight: 600; color: var(--text); margin-bottom: 3px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
@@ -43,7 +48,7 @@
         <a href="{{ route('services.create') }}" class="btn-terra">+ Nouveau service</a>
     </div>
 
-    <div class="svc-table">
+    <div class="svc-table"><div class="svc-table-overflow">
         <div class="svc-table-header">
             {{ $services->count() }} service(s) au total
         </div>
@@ -100,7 +105,7 @@
         </div>
         @endforeach
         @endif
-    </div>
+    </div></div>{{-- svc-table-overflow --}}
 
 </div>
 @endsection

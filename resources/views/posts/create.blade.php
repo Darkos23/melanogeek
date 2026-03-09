@@ -317,6 +317,36 @@
     .tip-item { display: flex; align-items: flex-start; gap: 10px; font-size: .8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
     .tip-item:last-child { margin-bottom: 0; }
     .tip-icon { flex-shrink: 0; margin-top: 1px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+        .create-page { padding-top: 70px; }
+        .create-wrap { padding: 20px 12px 40px; }
+        .create-title { font-size: 1.15rem; }
+
+        .author-row { padding: 16px 16px 0; }
+
+        .post-title-input { padding: 14px 16px 0; font-size: 1.1rem; }
+        .post-body-input  { padding: 12px 16px; font-size: .95rem; min-height: 120px; }
+
+        .media-preview-wrap { margin: 0 12px 12px; }
+        .img-grid-wrap      { margin: 0 12px 12px; }
+        .audio-preview-wrap { margin: 0 12px 12px; }
+
+        .post-toolbar { padding: 10px 12px; gap: 6px; }
+
+        .visibility-row { padding: 10px 16px; gap: 8px; }
+        .visibility-label { font-size: .75rem; }
+
+        .submit-row { padding: 12px 16px; }
+        .btn-draft   { flex: 1; text-align: center; padding: 11px 12px; }
+        .btn-publish { flex: 1; justify-content: center; padding: 11px 12px; }
+
+        .emoji-panel { width: 256px; }
+        .emoji-item  { width: 30px; height: 30px; font-size: 1rem; }
+
+        .create-tips { margin-top: 14px; padding: 14px 16px; }
+    }
 </style>
 @endpush
 

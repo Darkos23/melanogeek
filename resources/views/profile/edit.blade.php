@@ -218,6 +218,9 @@
         gap: 8px;
         margin-top: 4px;
     }
+    @media (min-width: 600px) {
+        .niche-grid { grid-template-columns: repeat(5, 1fr); }
+    }
     .niche-option { position: relative; }
     .niche-option input[type="radio"] { position:absolute;opacity:0;width:0;height:0; }
     .niche-option label {
@@ -480,18 +483,22 @@
                 <div class="edit-card-body">
                     <div class="niche-grid">
                         @foreach([
-                            ['val'=>'Photographe',    'emoji'=>'📸'],
-                            ['val'=>'Musicien',       'emoji'=>'🎵'],
-                            ['val'=>'Vidéaste',       'emoji'=>'🎬'],
-                            ['val'=>'Artiste digital','emoji'=>'🎨'],
-                            ['val'=>'Styliste',       'emoji'=>'👗'],
-                            ['val'=>'Danseur',        'emoji'=>'💃'],
-                            ['val'=>'Cuisinier',      'emoji'=>'🍽'],
-                            ['val'=>'Podcasteur',     'emoji'=>'🎙'],
-                            ['val'=>'Illustrateur',   'emoji'=>'✏️'],
-                            ['val'=>'Comédien',       'emoji'=>'🎭'],
-                            ['val'=>'Influenceur',    'emoji'=>'⭐'],
-                            ['val'=>'Autre',          'emoji'=>'🌟'],
+                            ['val'=>'Musique',           'emoji'=>'🎵'],
+                            ['val'=>'Photographie',      'emoji'=>'📸'],
+                            ['val'=>'Mode & Style',      'emoji'=>'👗'],
+                            ['val'=>'Beauté & Soins',    'emoji'=>'💄'],
+                            ['val'=>'Cuisine',           'emoji'=>'🍽️'],
+                            ['val'=>'Vidéo & Vlog',      'emoji'=>'🎬'],
+                            ['val'=>'Art & Illustration','emoji'=>'🎨'],
+                            ['val'=>'Danse',             'emoji'=>'💃'],
+                            ['val'=>'Comédie & Humour',  'emoji'=>'😂'],
+                            ['val'=>'Business',          'emoji'=>'💼'],
+                            ['val'=>'Voyage & Culture',  'emoji'=>'🌍'],
+                            ['val'=>'Sport & Fitness',   'emoji'=>'⚽'],
+                            ['val'=>'Artisanat',         'emoji'=>'🪡'],
+                            ['val'=>'Éducation',         'emoji'=>'📚'],
+                            ['val'=>'Podcast',           'emoji'=>'🎙️'],
+                            ['val'=>'Lifestyle',         'emoji'=>'✨'],
                         ] as $n)
                         <div class="niche-option">
                             <input type="radio" id="niche_{{ $loop->index }}" name="niche"

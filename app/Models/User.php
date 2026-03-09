@@ -105,6 +105,11 @@ class User extends Authenticatable
         return $this->hasMany(Subscription::class);
     }
 
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
+
     // Abonnés (ceux qui me suivent)
     public function followers()
     {

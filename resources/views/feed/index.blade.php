@@ -733,7 +733,14 @@
         .feed-card-title { padding: 0 14px 8px; font-size: .96rem; }
         .feed-card-body { padding: 0 14px 12px; }
         .feed-card-actions { padding: 8px 10px; }
-        .feed-action-btn { padding: 6px 10px; }
+        .feed-action-btn { padding: 6px 10px; font-size: .8rem; gap: 5px; }
+    }
+    @@media (max-width: 400px) {
+        .feed-layout { padding: 16px 10px 60px; }
+        .feed-card-head { padding: 12px 12px 8px; }
+        .feed-card-title { font-size: .9rem; }
+        /* Stories : légèrement plus compactes */
+        .sv-item { min-width: 64px; }
     }
 </style>
 @endpush

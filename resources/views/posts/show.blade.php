@@ -371,6 +371,22 @@
         from { opacity: 0; transform: translateY(8px); }
         to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+        .post-wrap { padding: 16px 12px 40px; }
+        .post-author-row { padding: 16px 14px 12px; }
+        .post-title { padding: 0 14px 10px; font-size: 1.15rem; }
+        .post-body  { padding: 0 14px 16px; font-size: .92rem; }
+
+        .post-actions { padding: 8px 10px; gap: 4px; }
+        .action-btn   { padding: 7px 10px; font-size: .8rem; gap: 5px; }
+        .action-share { padding: 7px 10px; font-size: .8rem; }
+
+        .post-comments { padding: 16px 14px 20px; }
+        .comment-input { font-size: .85rem; }
+        .comment-body  { font-size: .84rem; }
+    }
 </style>
 @endpush
 
@@ -533,7 +549,7 @@
 
         {{-- Actions --}}
         <div class="post-actions">
-            <button class="action-btn" id="likeBtn" onclick="toggleLike({{ $post->id }}, this)">
+            <button class="action-btn {{ $liked ? 'liked' : '' }}" id="likeBtn" onclick="toggleLike({{ $post->id }}, this)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
@@ -599,12 +615,54 @@
 
 @push('scripts')
 <script>
-    function toggleLike(postId, btn) {
-        // Placeholder — à implémenter
-        btn.classList.toggle('liked');
-        const count = document.getElementById('likesCount');
-        const current = parseInt(count.textContent.replace(/\s/g,''));
-        count.textContent = btn.classList.contains('liked') ? current + 1 : current - 1;
+    /* ── Like (toggle) ── */
+    let _liking = false;
+    async function toggleLike(postId, btn) {
+        @guest
+        window.location.href = '{{ route('login') }}';
+        return;
+        @endguest
+
+        if (_liking) return;
+        _liking = true;
+
+        // Optimistic UI
+        const wasLiked = btn.classList.contains('liked');
+        const countEl  = document.getElementById('likesCount');
+        const cur      = parseInt(countEl.textContent.replace(/\D/g, '')) || 0;
+        btn.classList.toggle('liked', !wasLiked);
+        countEl.textContent = !wasLiked ? cur + 1 : Math.max(0, cur - 1);
+
+        try {
+            const res = await fetch(`/posts/${postId}/like`, {
+                method:  'POST',
+                headers: {
+                    'Accept':       'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
+                },
+            });
+
+            if (res.status === 401 || res.status === 403) {
+                window.location.href = '{{ route('login') }}';
+                return;
+            }
+
+            if (res.ok) {
+                const data = await res.json();
+                btn.classList.toggle('liked', data.liked);
+                countEl.textContent = data.count;
+            } else {
+                // Rollback
+                btn.classList.toggle('liked', wasLiked);
+                countEl.textContent = cur;
+            }
+        } catch (e) {
+            // Rollback on network error
+            btn.classList.toggle('liked', wasLiked);
+            countEl.textContent = cur;
+        } finally {
+            _liking = false;
+        }
     }
 
     function sharePost() {

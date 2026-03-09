@@ -166,15 +166,15 @@
         @if(!(auth()->id() === $user->id && $user->isCreator()))
         <div class="profile-stats">
             <div class="stat-item">
-                <div class="stat-value">{{ number_format($user->posts()->count()) }}</div>
+                <div class="stat-value">{{ number_format($postsPublishedCount) }}</div>
                 <div class="stat-label">Publications</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value" id="followersCount">{{ number_format($user->followers()->count()) }}</div>
+                <div class="stat-value" id="followersCount">{{ number_format($followersCount) }}</div>
                 <div class="stat-label">Abonnés</div>
             </div>
             <div class="stat-item">
-                <div class="stat-value">{{ number_format($user->following()->count()) }}</div>
+                <div class="stat-value">{{ number_format($followingCount) }}</div>
                 <div class="stat-label">Abonnements</div>
             </div>
             <div class="stat-item">
@@ -220,11 +220,11 @@
             <div class="creator-panel-title">✦ Espace Créateur</div>
             <div class="creator-quick-stats">
                 <div class="creator-quick-stat">
-                    <div class="creator-quick-stat-val">{{ number_format($user->posts()->count()) }}</div>
+                    <div class="creator-quick-stat-val">{{ number_format($postsAllCount) }}</div>
                     <div class="creator-quick-stat-lbl">Publications</div>
                 </div>
                 <div class="creator-quick-stat">
-                    <div class="creator-quick-stat-val">{{ number_format($user->followers()->count()) }}</div>
+                    <div class="creator-quick-stat-val">{{ number_format($followersCount) }}</div>
                     <div class="creator-quick-stat-lbl">Abonnés</div>
                 </div>
                 <div class="creator-quick-stat">
@@ -232,7 +232,7 @@
                     <div class="creator-quick-stat-lbl">Likes reçus</div>
                 </div>
                 <div class="creator-quick-stat">
-                    <div class="creator-quick-stat-val">{{ number_format($user->comments()->count()) }}</div>
+                    <div class="creator-quick-stat-val">{{ number_format($commentsCount) }}</div>
                     <div class="creator-quick-stat-lbl">Commentaires</div>
                 </div>
             </div>
@@ -276,7 +276,7 @@
         <div class="profile-tabs">
             <button class="profile-tab active" data-tab="posts">
                 @if($isLocked) 🔒 Publications @else ⊞ Publications @endif
-                <span class="tab-count">{{ $isLocked ? '—' : $user->posts()->where('is_published', true)->count() }}</span>
+                <span class="tab-count">{{ $isLocked ? '—' : $postsPublishedCount }}</span>
             </button>
             <button class="profile-tab" data-tab="about">👤 À propos</button>
             @if($user->isCreator())
@@ -285,6 +285,18 @@
                 🖼️ Portfolio
                 @if($portfolio->isNotEmpty())
                     <span class="tab-count">{{ $portfolio->count() }}</span>
+                @endif
+            </button>
+            <button class="profile-tab" data-tab="services">
+                🛍️ Services
+                @if($services->isNotEmpty())
+                    <span class="tab-count">{{ $services->count() }}</span>
+                @endif
+            </button>
+            <button class="profile-tab" data-tab="avis">
+                ⭐ Avis
+                @if($totalReviews > 0)
+                    <span class="tab-count">{{ $totalReviews }}</span>
                 @endif
             </button>
             @endif
@@ -483,11 +495,11 @@
                     <div class="creator-info-card-title">📊 Statistiques</div>
                     <div class="creator-stat-row">
                         <span class="creator-stat-row-label">📝 Publications</span>
-                        <span class="creator-stat-row-value">{{ number_format($user->posts()->count()) }}</span>
+                        <span class="creator-stat-row-value">{{ number_format($postsAllCount) }}</span>
                     </div>
                     <div class="creator-stat-row">
                         <span class="creator-stat-row-label">👥 Abonnés</span>
-                        <span class="creator-stat-row-value">{{ number_format($user->followers()->count()) }}</span>
+                        <span class="creator-stat-row-value">{{ number_format($followersCount) }}</span>
                     </div>
                     <div class="creator-stat-row">
                         <span class="creator-stat-row-label">❤️ Likes reçus</span>
@@ -495,7 +507,7 @@
                     </div>
                     <div class="creator-stat-row">
                         <span class="creator-stat-row-label">💬 Commentaires</span>
-                        <span class="creator-stat-row-value">{{ number_format($user->comments()->count()) }}</span>
+                        <span class="creator-stat-row-value">{{ number_format($commentsCount) }}</span>
                     </div>
                     <div class="creator-stat-row">
                         <span class="creator-stat-row-label">📅 Créateur depuis</span>
@@ -573,6 +585,111 @@
 
         {{-- Tab: Portfolio --}}
         @include('profile.partials._tab-portfolio')
+
+        {{-- Tab: Services --}}
+        <div id="tab-services" style="display:none;">
+            @if($services->isEmpty())
+            <div style="text-align:center;padding:60px 20px;color:var(--text-muted);">
+                <div style="font-size:2.8rem;margin-bottom:12px;">🛍️</div>
+                <div style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:6px;color:var(--text);">Aucun service disponible</div>
+                <p style="font-size:.84rem;margin-bottom:16px;">
+                    @if(auth()->id() === $user->id)
+                        Propose tes premiers services sur le marketplace.
+                    @else
+                        {{ $user->name }} n'a pas encore de services disponibles.
+                    @endif
+                </p>
+                @if(auth()->id() === $user->id)
+                <a href="{{ route('services.create') }}" style="display:inline-block;padding:10px 22px;background:var(--terra);color:white;border-radius:10px;font-weight:700;text-decoration:none;font-size:.86rem;">+ Créer un service</a>
+                @endif
+            </div>
+            @else
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;padding-top:8px;">
+                @foreach($services as $service)
+                <a href="{{ route('marketplace.show', $service) }}" style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;overflow:hidden;text-decoration:none;transition:border-color .15s,transform .2s;display:flex;flex-direction:column;" onmouseover="this.style.borderColor='var(--border-hover)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='translateY(0)'">
+                    @if($service->cover_image)
+                        <img src="{{ Storage::url($service->cover_image) }}" alt="{{ $service->title }}" style="width:100%;aspect-ratio:16/9;object-fit:cover;">
+                    @else
+                        <div style="width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,var(--bg-card2),var(--bg-hover));display:flex;align-items:center;justify-content:center;font-size:2.2rem;">{{ $service->category_icon }}</div>
+                    @endif
+                    <div style="padding:14px;flex:1;display:flex;flex-direction:column;gap:8px;">
+                        <div style="font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--terra-soft);color:var(--terra);border:1px solid rgba(200,82,42,.2);width:fit-content;">{{ $service->category_label }}</div>
+                        <div style="font-family:var(--font-head);font-size:.92rem;font-weight:700;color:var(--text);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $service->title }}</div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+                            <div style="font-family:var(--font-head);font-size:1rem;font-weight:800;color:var(--terra);">{{ $service->price_formatted }}</div>
+                            <div style="font-size:.72rem;color:var(--text-muted);">⏱ {{ $service->delivery_days }}j</div>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+            @if(auth()->id() === $user->id)
+            <div style="text-align:center;margin-top:20px;">
+                <a href="{{ route('services.manage') }}" style="display:inline-block;padding:9px 20px;border:1px solid var(--border);border-radius:10px;color:var(--text-muted);text-decoration:none;font-size:.84rem;font-weight:600;transition:border-color .15s;" onmouseover="this.style.borderColor='var(--terra)';this.style.color='var(--terra)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">⚙ Gérer mes services</a>
+                <a href="{{ route('services.create') }}" style="display:inline-block;padding:9px 20px;background:var(--terra);border-radius:10px;color:white;text-decoration:none;font-size:.84rem;font-weight:700;margin-left:10px;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">+ Nouveau service</a>
+            </div>
+            @endif
+            @endif
+        </div>
+
+        {{-- Tab: Avis --}}
+        <div id="tab-avis" style="display:none;">
+            @if($totalReviews === 0)
+            <div style="text-align:center;padding:60px 20px;color:var(--text-muted);">
+                <div style="font-size:2.8rem;margin-bottom:12px;">⭐</div>
+                <div style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:6px;color:var(--text);">Aucun avis pour l'instant</div>
+                <p style="font-size:.84rem;">Les avis apparaissent après avoir reçu et terminé des commandes.</p>
+            </div>
+            @else
+            {{-- Résumé de la note --}}
+            <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
+                <div style="text-align:center;flex-shrink:0;">
+                    <div style="font-family:var(--font-head);font-size:3rem;font-weight:800;color:var(--text);line-height:1;">{{ number_format($avgRating, 1) }}</div>
+                    <div style="color:#F59E0B;font-size:1.1rem;letter-spacing:2px;margin:4px 0;">
+                        @for($i=1;$i<=5;$i++){{ $i <= round($avgRating) ? '★' : '☆' }}@endfor
+                    </div>
+                    <div style="font-size:.78rem;color:var(--text-muted);">{{ $totalReviews }} avis</div>
+                </div>
+                <div style="flex:1;min-width:160px;">
+                    @for($star=5;$star>=1;$star--)
+                    @php $count = $reviews->where('rating', $star)->count(); $pct = $totalReviews ? round($count / $totalReviews * 100) : 0; @endphp
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                        <span style="font-size:.75rem;color:var(--text-muted);width:10px;text-align:right;">{{ $star }}</span>
+                        <span style="color:#F59E0B;font-size:.8rem;">★</span>
+                        <div style="flex:1;height:6px;background:var(--bg-card2);border-radius:100px;overflow:hidden;">
+                            <div style="height:100%;width:{{ $pct }}%;background:#F59E0B;border-radius:100px;"></div>
+                        </div>
+                        <span style="font-size:.72rem;color:var(--text-muted);width:28px;">{{ $pct }}%</span>
+                    </div>
+                    @endfor
+                </div>
+            </div>
+            {{-- Liste des avis --}}
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                @foreach($reviews as $review)
+                <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--terra),var(--gold));padding:1.5px;flex-shrink:0;">
+                            <div style="width:100%;height:100%;border-radius:50%;background:var(--bg-card2);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;overflow:hidden;">
+                                @if($review->reviewer->avatar)<img src="{{ Storage::url($review->reviewer->avatar) }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">@else{{ mb_strtoupper(mb_substr($review->reviewer->name,0,1)) }}@endif
+                            </div>
+                        </div>
+                        <div>
+                            <div style="font-size:.86rem;font-weight:600;color:var(--text);">{{ $review->reviewer->name }}</div>
+                            <div style="font-size:.72rem;color:var(--text-muted);">{{ $review->created_at->diffForHumans() }}</div>
+                        </div>
+                        <div style="margin-left:auto;color:#F59E0B;font-size:.95rem;letter-spacing:1px;">
+                            @for($i=1;$i<=5;$i++){{ $i <= $review->rating ? '★' : '☆' }}@endfor
+                        </div>
+                    </div>
+                    @if($review->comment)
+                    <p style="font-size:.84rem;color:var(--text-muted);margin:0;line-height:1.6;">{{ $review->comment }}</p>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+            @endif
+        </div>
 
         @endif
 
