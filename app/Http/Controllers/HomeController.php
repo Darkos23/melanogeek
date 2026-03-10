@@ -13,7 +13,7 @@ class HomeController extends Controller
         $stats = [
             'members'          => User::where('is_active', true)->where('role', '!=', 'owner')->count(),
             'creators'         => User::where('role', 'creator')->count(),
-            'posts'            => Post::where('is_published', true)->count(),
+            'posts'            => Post::where('is_published', true)->whereHas('user', fn($q) => $q->where('role', 'creator')->where('is_active', true))->count(),
             'countries'        => User::where('is_active', true)->whereNotNull('country_type')->distinct('country_type')->count('country_type'),
             'new_members_month'=> User::where('is_active', true)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count(),
         ];
