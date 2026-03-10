@@ -7,7 +7,7 @@
 @php $total = max(1, $pending->total() + $approved + $rejected); @endphp
 
 {{-- ── STAT CARDS ── --}}
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px;margin-bottom:28px;">
 
     {{-- En attente --}}
     <div style="background:var(--bg-card);border:1px solid rgba(212,168,67,.25);border-radius:18px;padding:22px 24px;position:relative;overflow:hidden;">

@@ -5,7 +5,7 @@
 
 @push('styles')
 <style>
-    .edit-grid { display:grid;grid-template-columns:1fr 1fr;gap:20px; }
+    .edit-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:20px; }
     .edit-card { background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:24px; }
     .edit-card-title { font-family:var(--font-head);font-size:.88rem;font-weight:700;margin-bottom:18px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em; }
     .field { margin-bottom:16px; }
