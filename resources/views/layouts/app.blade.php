@@ -371,7 +371,7 @@
     }
     </style>
 </head>
-<body>
+<body ontouchstart="">
 
 <!-- ══ NAVIGATION ══ -->
 <nav class="mg-nav">
@@ -1062,6 +1062,19 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(() => {});
     });
 }
+</script>
+<script>
+// Fix iOS PWA : les inputs ne reçoivent pas le focus au tap en mode standalone
+(function () {
+    if (!window.navigator.standalone) return;
+    document.addEventListener('touchend', function (e) {
+        var el = e.target;
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+            e.preventDefault();
+            setTimeout(function () { el.focus(); }, 10);
+        }
+    }, false);
+})();
 </script>
 </body>
 </html>
