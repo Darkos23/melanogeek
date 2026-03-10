@@ -396,7 +396,6 @@
         .mg-right { gap: 4px; }
         /* Corriger les boutons ronds : annuler le min-height: 44px global */
         .mg-notif-btn,
-        .mg-msg-btn,
         .mg-hamburger,
         .mg-user-btn {
             min-height: unset;
@@ -453,17 +452,7 @@
         @else
             <a href="{{ route('feed') }}" class="mg-btn-ghost">Mon fil</a>
 
-            {{-- Icône messages --}}
-            @auth
-            <a href="{{ route('messages.index') }}" class="mg-msg-btn" id="mgMsgBtn" title="Messages">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-                <span class="mg-msg-dot" id="mgMsgDot" style="display:none;"></span>
-            </a>
-            @endauth
-
-            {{-- Cloche notifications --}}
+            {{-- Cloche notifications (contient aussi le lien Messages) --}}
             <div class="mg-notif-menu" id="mgNotifMenu">
                 <button class="mg-notif-btn" id="mgNotifToggle" title="Notifications" type="button">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -476,7 +465,16 @@
                 <div class="mg-notif-dropdown" id="mgNotifDropdown">
                     <div class="mg-nd-header">
                         <span class="mg-nd-title">Notifications</span>
-                        <button class="mg-nd-read-all" id="mgNdReadAll" type="button">Tout marquer lu</button>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            @auth
+                            <a href="{{ route('messages.index') }}" class="mg-nd-msg-link" title="Messages">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                Messages
+                                <span id="mgMsgDot" style="display:none;position:absolute;top:-3px;right:-7px;width:7px;height:7px;background:var(--terra);border-radius:50%;border:1.5px solid var(--nav-bg);"></span>
+                            </a>
+                            @endauth
+                            <button class="mg-nd-read-all" id="mgNdReadAll" type="button">Tout lire</button>
+                        </div>
                     </div>
                     <div class="mg-nd-list" id="mgNdList">
                         <div class="mg-nd-loading" id="mgNdLoading">
@@ -726,30 +724,17 @@
 }
 .mg-nd-footer:hover { background: var(--terra-soft); }
 
-/* ── Bouton messages ── */
-.mg-msg-btn {
+/* ── Lien messages dans dropdown notifs ── */
+.mg-nd-msg-link {
     position: relative;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--toggle-bg);
-    border: 1px solid var(--border);
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: .74rem; font-weight: 600;
     color: var(--text-muted);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: all .2s;
-    flex-shrink: 0;
     text-decoration: none;
+    transition: color .15s;
+    font-family: var(--font-body);
 }
-.mg-msg-btn:hover { border-color: var(--terra); color: var(--terra); background: var(--terra-soft); }
-.mg-msg-dot {
-    position: absolute;
-    top: 5px; right: 5px;
-    width: 8px; height: 8px;
-    background: var(--terra);
-    border-radius: 50%;
-    border: 2px solid var(--nav-bg);
-    animation: notif-pulse 2s ease-in-out infinite;
-}
+.mg-nd-msg-link:hover { color: var(--terra); }
 
 .mg-user-menu { position:relative; }
 .mg-user-btn {
