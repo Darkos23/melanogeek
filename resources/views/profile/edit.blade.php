@@ -330,7 +330,7 @@
 
     <!-- Header -->
     <div class="edit-header">
-        <a href="{{ route('profile.show', auth()->user()->username) }}" class="edit-header-back">←</a>
+        <a href="{{ auth()->user()->isOwner() ? route('owner.dashboard') : route('profile.show', auth()->user()->username) }}" class="edit-header-back">←</a>
         <div>
             <div class="edit-header-title">Modifier mon profil</div>
             <div class="edit-header-sub">Ces informations sont visibles par tous les membres</div>

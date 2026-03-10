@@ -450,10 +450,12 @@
                     </svg>
                 </button>
                 <div class="mg-user-dropdown" id="mgUserDropdown">
+                    @if(!auth()->user()->isOwner())
                     <a href="{{ route('profile.show', auth()->user()->username) }}" class="mg-drop-item">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
                         Mon profil
                     </a>
+                    @endif
                     <a href="{{ route('orders.index') }}" class="mg-drop-item">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
                         Mes commandes
