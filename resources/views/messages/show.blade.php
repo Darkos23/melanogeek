@@ -440,7 +440,7 @@
         background: var(--terra-soft);
         border: 1px solid rgba(200,82,42,.25);
         color: var(--terra);
-        cursor: none;
+        cursor: pointer;
         transition: all .2s;
         flex-shrink: 0;
     }
@@ -479,7 +479,7 @@
     }
     .new-msg-close {
         background: none; border: none; color: var(--text-muted);
-        font-size: 1rem; cursor: none; transition: color .2s; padding: 4px;
+        font-size: 1rem; cursor: pointer; transition: color .2s; padding: 4px;
     }
     .new-msg-close:hover { color: var(--text); }
     .new-msg-search-wrap {
@@ -507,7 +507,7 @@
     .new-msg-result {
         display: flex; align-items: center; gap: 12px;
         padding: 11px 20px;
-        cursor: none;
+        cursor: pointer;
         transition: background .15s;
         text-decoration: none;
         color: var(--text);

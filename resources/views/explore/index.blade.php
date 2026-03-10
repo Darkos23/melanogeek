@@ -113,7 +113,7 @@
         font-size: .78rem; font-weight: 500;
         text-decoration: none;
         transition: all .18s;
-        cursor: none;
+        cursor: pointer;
     }
     .type-pill:hover { border-color: var(--terra); color: var(--terra); background: var(--terra-soft); }
     .type-pill.active { border-color: var(--terra); background: var(--terra-soft); color: var(--terra); font-weight: 600; }
@@ -187,7 +187,7 @@
     .explore-story-item {
         display: flex; flex-direction: column; align-items: center; gap: 5px;
         flex-shrink: 0;
-        background: none; border: none; padding: 0; cursor: none;
+        background: none; border: none; padding: 0; cursor: pointer;
         width: 60px;
     }
     .explore-story-ring {

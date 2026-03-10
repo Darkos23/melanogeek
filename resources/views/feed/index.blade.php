@@ -37,7 +37,7 @@
         background: var(--bg-card2);
         border: 2px solid var(--border);
         padding: 0;
-        cursor: none;
+        cursor: pointer;
         transition: transform .18s, border-color .2s;
         position: relative;
     }
@@ -114,7 +114,7 @@
     .story-upload-close {
         background: none; border: none;
         color: var(--text-muted); font-size: 1rem;
-        cursor: none; transition: color .2s; padding: 4px;
+        cursor: pointer; transition: color .2s; padding: 4px;
     }
     .story-upload-close:hover { color: var(--text); }
 
@@ -124,7 +124,7 @@
         border-radius: 16px;
         padding: 32px 16px;
         text-align: center;
-        cursor: none;
+        cursor: pointer;
         transition: border-color .2s, background .2s;
     }
     .story-upload-drop:hover { border-color: var(--terra); background: var(--terra-soft); }
@@ -139,7 +139,7 @@
         border: none; border-radius: 12px;
         padding: 13px; font-family: var(--font-body);
         font-size: .88rem; font-weight: 700;
-        cursor: none; transition: background .2s, opacity .2s;
+        cursor: pointer; transition: background .2s, opacity .2s;
     }
     .story-upload-submit:disabled { opacity: .4; cursor: not-allowed; }
     .story-upload-submit:not(:disabled):hover { background: var(--accent); }
@@ -152,7 +152,7 @@
     .story-my-delete {
         background: none; border: 1px solid var(--border);
         border-radius: 8px; padding: 6px 10px;
-        font-size: .9rem; cursor: none;
+        font-size: .9rem; cursor: pointer;
         transition: all .2s; color: var(--text-muted);
     }
     .story-my-delete:hover { border-color: #e8445a; color: #e8445a; }
@@ -223,7 +223,7 @@
         color: white; font-size: 1rem;
         width: 32px; height: 32px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        cursor: none;
+        cursor: pointer;
     }
 
     /* Media */
@@ -240,7 +240,7 @@
     /* Navigation zones */
     .sv-nav {
         position: absolute; top: 0; bottom: 0;
-        width: 40%; z-index: 5; cursor: none;
+        width: 40%; z-index: 5; cursor: pointer;
     }
     .sv-nav-prev { left: 0; }
     .sv-nav-next { right: 0; }
@@ -384,7 +384,7 @@
         border-radius: 100px;
         font-family: var(--font-body);
         font-size: .78rem; font-weight: 500;
-        cursor: none;
+        cursor: pointer;
         transition: all .2s;
         flex-shrink: 0;
         white-space: nowrap;
@@ -441,7 +441,7 @@
         max-height: 480px;
         object-fit: cover;
         display: block;
-        cursor: none;
+        cursor: pointer;
     }
 
     /* Lien "Voir plus" */
@@ -541,7 +541,7 @@
         background: transparent; border: 1px solid transparent;
         color: var(--text-muted); font-family: var(--font-body);
         font-size: .82rem; font-weight: 500;
-        cursor: none; transition: all .2s;
+        cursor: pointer; transition: all .2s;
     }
     .feed-action-btn:hover { background: var(--bg-card2); border-color: var(--border); color: var(--text); }
     .feed-action-btn.liked { color: #E05555; }
@@ -554,7 +554,7 @@
         padding: 7px 14px; border-radius: 100px;
         background: transparent; border: 1px solid var(--border);
         color: var(--text-muted); font-family: var(--font-body);
-        font-size: .82rem; cursor: none; transition: all .2s;
+        font-size: .82rem; cursor: pointer; transition: all .2s;
         text-decoration: none;
     }
     .feed-action-share:hover { border-color: var(--gold); color: var(--gold); }
@@ -615,7 +615,7 @@
         font-size: .85rem;
         transition: border-color .2s, background .2s;
         width: 100%;
-        cursor: none;
+        cursor: pointer;
     }
     .sidebar-create-input:hover {
         border-color: var(--terra);
@@ -688,7 +688,7 @@
         border-radius: 100px;
         font-family: var(--font-body);
         font-size: .74rem; font-weight: 500;
-        cursor: none;
+        cursor: pointer;
         transition: all .2s;
         flex-shrink: 0;
         white-space: nowrap;

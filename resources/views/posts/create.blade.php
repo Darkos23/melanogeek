@@ -25,7 +25,7 @@
         display: flex; align-items: center; justify-content: center;
         text-decoration: none; color: var(--text-muted);
         font-size: .95rem; flex-shrink: 0;
-        transition: all .2s; cursor: none;
+        transition: all .2s; cursor: pointer;
     }
     .create-back:hover { border-color: var(--border-hover); color: var(--text); }
     .create-title {
@@ -107,7 +107,7 @@
         border: 1px solid rgba(255,255,255,0.15);
         color: white; font-size: .8rem;
         display: flex; align-items: center; justify-content: center;
-        cursor: none; transition: background .2s;
+        cursor: pointer; transition: background .2s;
     }
     .media-preview-remove:hover { background: rgba(224,85,85,0.7); }
 
@@ -138,7 +138,7 @@
         overflow: hidden;
         background: var(--bg-card2);
         aspect-ratio: 1;
-        cursor: none;
+        cursor: pointer;
     }
     .img-grid.count-1 .img-thumb { aspect-ratio: 4/3; max-height: 420px; }
     .img-thumb img {
@@ -152,7 +152,7 @@
         border: 1px solid rgba(255,255,255,.2);
         color: white; font-size: .7rem;
         display: flex; align-items: center; justify-content: center;
-        cursor: none; transition: background .2s; z-index: 2;
+        cursor: pointer; transition: background .2s; z-index: 2;
     }
     .img-thumb-remove:hover { background: rgba(224,85,85,.8); }
     .img-thumb-more {
@@ -184,7 +184,7 @@
         background: var(--bg-card); border: 1px solid var(--border);
         color: var(--text-muted); font-size: .7rem;
         display: flex; align-items: center; justify-content: center;
-        cursor: none; transition: all .2s; flex-shrink: 0;
+        cursor: pointer; transition: all .2s; flex-shrink: 0;
     }
     .audio-preview-remove:hover { border-color: #E05555; color: #E05555; }
 
@@ -209,7 +209,7 @@
         border: none; background: transparent;
         border-radius: 8px; font-size: 1.15rem;
         display: flex; align-items: center; justify-content: center;
-        cursor: none; transition: background .15s; flex-shrink: 0;
+        cursor: pointer; transition: background .15s; flex-shrink: 0;
         line-height: 1;
     }
     .emoji-item:hover { background: var(--bg-card2); }
@@ -220,7 +220,7 @@
         display: inline-flex; align-items: center; gap: 6px;
         font-size: .78rem; color: var(--text-muted);
         background: var(--bg-card2); border: 1px dashed var(--border);
-        border-radius: 100px; padding: 5px 14px; cursor: none;
+        border-radius: 100px; padding: 5px 14px; cursor: pointer;
         transition: border-color .2s, color .2s;
     }
     .img-add-more:hover { border-color: var(--terra); color: var(--terra); }
@@ -238,7 +238,7 @@
         background: transparent; border: 1px solid transparent;
         color: var(--text-muted); font-size: 1rem;
         display: flex; align-items: center; justify-content: center;
-        cursor: none; transition: all .2s;
+        cursor: pointer; transition: all .2s;
     }
     .toolbar-btn:hover { background: var(--bg-card2); border-color: var(--border); color: var(--text); }
     .toolbar-btn.active { background: var(--terra-soft); border-color: rgba(200,82,42,.3); color: var(--terra); }
@@ -262,7 +262,7 @@
     .toggle-switch { position: relative; display: inline-block; width: 42px; height: 24px; }
     .toggle-switch input { opacity: 0; width: 0; height: 0; }
     .toggle-slider {
-        position: absolute; cursor: none; inset: 0;
+        position: absolute; cursor: pointer; inset: 0;
         background: var(--bg-card2); border: 1px solid var(--border);
         border-radius: 100px; transition: background .2s;
     }
@@ -289,14 +289,14 @@
         color: var(--text-muted);
         padding: 10px 20px; border-radius: 100px;
         font-family: var(--font-body); font-size: .86rem; font-weight: 500;
-        cursor: none; transition: all .2s;
+        cursor: pointer; transition: all .2s;
     }
     .btn-draft:hover { border-color: var(--border-hover); color: var(--text); }
     .btn-publish {
         background: var(--terra); border: none; color: white;
         padding: 10px 24px; border-radius: 100px;
         font-family: var(--font-head); font-size: .9rem; font-weight: 700;
-        cursor: none; transition: background .2s, transform .15s, box-shadow .2s;
+        cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s;
         display: inline-flex; align-items: center; gap: 7px;
     }
     .btn-publish:hover {

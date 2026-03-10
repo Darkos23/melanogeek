@@ -153,6 +153,46 @@
     input[type=search] { cursor: text; }
 
     /* ═══════════════════════════════════════════════
+       MOBILE / PWA — fixes globaux
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+        /* Taille de texte minimale lisible sur mobile */
+        body { font-size: 15px; }
+
+        /* Touch targets : min 44px (recommandation Apple) */
+        button, a, [role="button"],
+        input[type=submit], input[type=button] {
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+
+        /* Inputs plus grands sur mobile */
+        input, textarea, select {
+            font-size: 16px !important; /* évite le zoom auto sur iOS */
+            touch-action: manipulation;
+        }
+
+        /* Éviter les overflow horizontaux */
+        img, video, iframe { max-width: 100%; }
+
+        /* Padding safe area pour iPhone (encoches) */
+        .mg-nav {
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+        }
+
+        /* Contenu principal : safe area bottom (barre iPhone) */
+        main, .feed-page, .profile-page, .page-content {
+            padding-bottom: max(60px, calc(60px + env(safe-area-inset-bottom)));
+        }
+    }
+
+    /* iOS : font-size 16px empêche le zoom automatique sur focus input */
+    @media (max-width: 480px) {
+        input, textarea, select { font-size: 16px !important; }
+    }
+
+    /* ═══════════════════════════════════════════════
        NAVIGATION
     ═══════════════════════════════════════════════ */
     .mg-nav {

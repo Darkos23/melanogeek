@@ -17,7 +17,7 @@
         display: inline-flex; align-items: center; gap: 8px;
         text-decoration: none; color: var(--text-muted);
         font-size: .84rem; margin-bottom: 24px;
-        transition: color .2s; cursor: none;
+        transition: color .2s; cursor: pointer;
     }
     .post-back:hover { color: var(--text); }
 
@@ -121,7 +121,7 @@
         background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.15);
         color: white; font-size: .9rem;
         display: flex; align-items: center; justify-content: center;
-        cursor: none; z-index: 2; transition: background .2s;
+        cursor: pointer; z-index: 2; transition: background .2s;
     }
     .carousel-btn:hover { background: rgba(0,0,0,.8); }
     .carousel-btn.prev { left: 12px; }
@@ -134,7 +134,7 @@
     .carousel-dot {
         width: 7px; height: 7px; border-radius: 50%;
         background: rgba(255,255,255,.45); transition: background .2s, width .2s;
-        cursor: none;
+        cursor: pointer;
     }
     .carousel-dot.active {
         background: white; width: 18px; border-radius: 100px;
@@ -159,7 +159,7 @@
         background: transparent; border: 1px solid transparent;
         color: var(--text-muted); font-family: var(--font-body);
         font-size: .84rem; font-weight: 500;
-        cursor: none; transition: all .2s;
+        cursor: pointer; transition: all .2s;
     }
     .action-btn:hover { background: var(--bg-card2); border-color: var(--border); color: var(--text); }
     .action-btn.liked { color: #E05555; }
@@ -171,7 +171,7 @@
         padding: 8px 16px; border-radius: 100px;
         background: transparent; border: 1px solid var(--border);
         color: var(--text-muted); font-family: var(--font-body);
-        font-size: .84rem; cursor: none; transition: all .2s; text-decoration: none;
+        font-size: .84rem; cursor: pointer; transition: all .2s; text-decoration: none;
     }
     .action-share:hover { border-color: var(--gold); color: var(--gold); }
 
@@ -186,7 +186,7 @@
         width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
         background: var(--terra); border: none; color: white;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1rem; cursor: none; transition: transform .15s, opacity .2s;
+        font-size: 1rem; cursor: pointer; transition: transform .15s, opacity .2s;
     }
     .audio-play-btn:hover { transform: scale(1.08); }
     .audio-play-btn:active { transform: scale(.95); }
@@ -197,7 +197,7 @@
     }
     .audio-progress-wrap {
         height: 3px; background: var(--border); border-radius: 3px;
-        margin-top: 5px; cursor: none; position: relative; overflow: hidden;
+        margin-top: 5px; cursor: pointer; position: relative; overflow: hidden;
     }
     .audio-progress-bar {
         height: 100%; width: 0%; background: var(--terra);
@@ -212,7 +212,7 @@
         background: transparent; border: 1px solid var(--border);
         color: var(--text-muted); font-size: .8rem;
         display: flex; align-items: center; justify-content: center;
-        cursor: none; transition: all .2s;
+        cursor: pointer; transition: all .2s;
     }
     .audio-vol-btn:hover { border-color: var(--terra); color: var(--terra); }
     .audio-loop-indicator {
@@ -238,7 +238,7 @@
         background: transparent; border: 1px solid rgba(224,85,85,.3);
         color: #E05555; padding: 7px 14px; border-radius: 100px;
         font-family: var(--font-body); font-size: .78rem; font-weight: 500;
-        cursor: none; transition: all .2s;
+        cursor: pointer; transition: all .2s;
     }
     .btn-delete-post:hover { background: rgba(224,85,85,.08); border-color: #E05555; }
 
@@ -298,7 +298,7 @@
         background: var(--terra); border: none; color: white;
         padding: 7px 18px; border-radius: 100px;
         font-family: var(--font-body); font-size: .82rem; font-weight: 600;
-        cursor: none; transition: opacity .2s;
+        cursor: pointer; transition: opacity .2s;
     }
     .btn-comment-submit:disabled { opacity: .4; cursor: not-allowed; }
     .btn-comment-submit:not(:disabled):hover { opacity: .85; }
@@ -346,7 +346,7 @@
     }
     .btn-comment-del {
         background: none; border: none; color: var(--text-muted);
-        font-size: .7rem; cursor: none; padding: 2px 6px; border-radius: 6px;
+        font-size: .7rem; cursor: pointer; padding: 2px 6px; border-radius: 6px;
         margin-left: auto; flex-shrink: 0;
         transition: color .2s, background .2s;
     }
@@ -362,7 +362,7 @@
         width: 100%; margin-top: 8px; padding: 10px;
         background: var(--bg-card2); border: 1px solid var(--border);
         color: var(--text-muted); border-radius: 12px;
-        font-family: var(--font-body); font-size: .83rem; cursor: none;
+        font-family: var(--font-body); font-size: .83rem; cursor: pointer;
         transition: border-color .2s, color .2s;
     }
     .btn-load-more:hover { border-color: var(--terra); color: var(--terra); }
@@ -409,7 +409,7 @@
                 @if(auth()->id() === $post->user_id)
                     <form method="POST" action="{{ route('posts.publish', $post->id) }}" style="margin-left:auto;">
                         @csrf @method('PATCH')
-                        <button type="submit" style="background:var(--gold);border:none;color:#000;padding:5px 14px;border-radius:100px;font-size:.78rem;font-weight:700;cursor:none;">
+                        <button type="submit" style="background:var(--gold);border:none;color:#000;padding:5px 14px;border-radius:100px;font-size:.78rem;font-weight:700;cursor:pointer;">
                             Publier maintenant
                         </button>
                     </form>

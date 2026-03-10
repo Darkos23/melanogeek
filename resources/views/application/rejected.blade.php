@@ -38,7 +38,7 @@
         display: inline-block; padding: 12px 28px;
         background: transparent; border: 1px solid var(--border); border-radius: 12px;
         color: var(--cream-muted); font-family: var(--font-head); font-size: .88rem;
-        font-weight: 600; text-decoration: none; cursor: none; width: 100%;
+        font-weight: 600; text-decoration: none; cursor: pointer; width: 100%;
         transition: border-color .2s, color .2s;
     }
     .btn-logout:hover { border-color: var(--terracotta); color: var(--terracotta); }

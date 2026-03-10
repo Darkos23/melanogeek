@@ -28,7 +28,7 @@
         font-size: .78rem;
         font-family: var(--font-body);
         font-weight: 500;
-        cursor: none;
+        cursor: pointer;
         backdrop-filter: blur(8px);
         transition: background .2s;
         text-decoration: none;
@@ -314,7 +314,7 @@
         aspect-ratio: 1;
         position: relative;
         overflow: hidden;
-        cursor: none;
+        cursor: pointer;
         background: var(--bg-card2);
     }
     .grid-post-media {

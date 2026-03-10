@@ -90,7 +90,7 @@
 #storyViewerClose {
     background: rgba(255,255,255,.15); border: none;
     width: 28px; height: 28px; border-radius: 50%;
-    color: white; font-size: .8rem; cursor: none;
+    color: white; font-size: .8rem; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; transition: background .2s;
 }
@@ -115,7 +115,7 @@
     position: absolute;
     top: 0; bottom: 0;
     width: 40%;
-    z-index: 3; cursor: none;
+    z-index: 3; cursor: pointer;
 }
 #storyTapPrev { left: 0; }
 #storyTapNext { right: 0; }

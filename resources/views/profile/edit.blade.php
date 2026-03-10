@@ -26,7 +26,7 @@
         color: var(--text-muted);
         font-size: 1rem;
         transition: all .2s;
-        cursor: none;
+        cursor: pointer;
         flex-shrink: 0;
     }
     .edit-header-back:hover { border-color: var(--border-hover); color: var(--text); }
@@ -120,7 +120,7 @@
         border-radius: 100px;
         font-size: .8rem;
         font-weight: 500;
-        cursor: none;
+        cursor: pointer;
         transition: all .2s;
         font-family: var(--font-body);
         white-space: nowrap;
@@ -134,7 +134,7 @@
         border: 2px dashed var(--border);
         display: flex; align-items: center; justify-content: center;
         flex-direction: column; gap: 8px;
-        cursor: none;
+        cursor: pointer;
         transition: all .2s;
         background: var(--bg-card2);
         position: relative;
@@ -180,7 +180,7 @@
         font-size: .92rem;
         transition: border-color .2s, box-shadow .2s, background .4s;
         outline: none;
-        cursor: none;
+        cursor: pointer;
     }
     .form-input::placeholder { color: var(--text-faint); }
     .form-input:focus {
@@ -229,7 +229,7 @@
         border-radius: 12px;
         border: 1px solid var(--border);
         background: var(--bg-card2);
-        cursor: none;
+        cursor: pointer;
         transition: all .2s;
         text-align: center;
     }
@@ -258,7 +258,7 @@
         font-family: var(--font-body);
         font-size: .88rem;
         font-weight: 500;
-        cursor: none;
+        cursor: pointer;
         transition: all .2s;
         text-decoration: none;
         display: inline-flex; align-items: center;
@@ -273,7 +273,7 @@
         font-family: var(--font-head);
         font-size: .9rem;
         font-weight: 700;
-        cursor: none;
+        cursor: pointer;
         transition: background .2s, transform .15s, box-shadow .2s;
         display: inline-flex; align-items: center; gap: 8px;
     }
@@ -310,7 +310,7 @@
         font-family: var(--font-body);
         font-size: .84rem;
         font-weight: 500;
-        cursor: none;
+        cursor: pointer;
         transition: all .2s;
     }
     .btn-danger:hover { background: rgba(224,85,85,.08); border-color: #E05555; }

@@ -98,7 +98,7 @@
         font-size: .88rem;
         font-weight: 600;
         text-decoration: none;
-        cursor: none;
+        cursor: pointer;
         transition: border-color .2s, color .2s;
     }
     .btn-logout:hover { border-color: var(--terracotta); color: var(--terracotta); }
