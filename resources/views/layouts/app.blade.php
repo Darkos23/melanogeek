@@ -390,6 +390,19 @@
         .mg-user-btn { padding: 4px; border-radius: 50%; }
         /* Logo : réduire légèrement le nom */
         .mg-logo-name { font-size: .8rem; }
+        /* Theme toggle : masqué sur mobile */
+        .theme-toggle { display: none !important; }
+        /* Réduire le gap entre icônes */
+        .mg-right { gap: 4px; }
+        /* Corriger les boutons ronds : annuler le min-height: 44px global */
+        .mg-notif-btn,
+        .mg-msg-btn,
+        .mg-hamburger,
+        .mg-user-btn {
+            min-height: unset;
+            width: 36px;
+            height: 36px;
+        }
     }
     </style>
 
@@ -549,7 +562,7 @@
     border: 1px solid var(--border);
     color: var(--text-muted);
     display: flex; align-items: center; justify-content: center;
-    cursor: none;
+    cursor: pointer;
     transition: all .2s;
     flex-shrink: 0;
 }
@@ -615,7 +628,7 @@
     font-size: .72rem;
     color: var(--terra);
     background: none; border: none;
-    cursor: none;
+    cursor: pointer;
     font-family: var(--font-body);
     font-weight: 600;
     transition: opacity .2s;
@@ -709,7 +722,7 @@
     text-decoration: none;
     border-top: 1px solid var(--border);
     transition: background .15s;
-    cursor: none;
+    cursor: pointer;
 }
 .mg-nd-footer:hover { background: var(--terra-soft); }
 
@@ -722,7 +735,7 @@
     border: 1px solid var(--border);
     color: var(--text-muted);
     display: flex; align-items: center; justify-content: center;
-    cursor: none;
+    cursor: pointer;
     transition: all .2s;
     flex-shrink: 0;
     text-decoration: none;
@@ -743,7 +756,7 @@
     display:flex;align-items:center;gap:8px;
     background:var(--bg-card);border:1px solid var(--border);
     border-radius:100px;padding:5px 12px 5px 5px;
-    color:var(--text);cursor:none;transition:border-color .2s;
+    color:var(--text);cursor:pointer;transition:border-color .2s;
 }
 .mg-user-btn:hover { border-color:var(--border-hover); }
 .mg-user-avi {
@@ -770,7 +783,7 @@
     padding:8px 12px;border-radius:9px;
     font-size:.82rem;font-weight:500;color:var(--text-muted);
     text-decoration:none;transition:background .15s,color .15s;
-    width:100%;background:none;border:none;text-align:left;cursor:none;
+    width:100%;background:none;border:none;text-align:left;cursor:pointer;
     font-family:var(--font-body);
 }
 .mg-drop-item:hover { background:var(--bg-hover);color:var(--text); }
