@@ -153,10 +153,81 @@
         .user-avatar-mini { width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--owner),var(--gold));padding:1.5px;flex-shrink:0;overflow:hidden; }
         .user-avatar-mini-inner { width:100%;height:100%;border-radius:50%;background:var(--bg-card2);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;overflow:hidden; }
         .user-avatar-mini-inner img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
+
+        /* ── MOBILE HAMBURGER ── */
+        .owner-mob-toggle {
+            display:none;
+            align-items:center;justify-content:center;
+            width:36px;height:36px;
+            background:var(--bg-card2);
+            border:1px solid var(--border);
+            border-radius:8px;
+            cursor:pointer;
+            color:var(--text-muted);
+            font-size:1.1rem;
+            flex-shrink:0;
+        }
+
+        /* ── OVERLAY SIDEBAR MOBILE ── */
+        .owner-sidebar-overlay {
+            display:none;
+            position:fixed;inset:0;
+            background:rgba(0,0,0,.55);
+            z-index:49;
+            backdrop-filter:blur(2px);
+        }
+        .owner-sidebar-overlay.open { display:block; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            body { display:block; }
+
+            /* Sidebar : hors écran par défaut */
+            .owner-sidebar {
+                transform:translateX(-100%);
+                transition:transform .25s ease;
+                z-index:50;
+                width:260px;
+            }
+            .owner-sidebar.open { transform:translateX(0); }
+
+            /* Main : pleine largeur */
+            .owner-main { margin-left:0; }
+
+            /* Topbar : ajouter le bouton hamburger */
+            .owner-topbar { padding:12px 16px; gap:8px; }
+            .owner-page-title { font-size:.88rem; }
+
+            /* Boutons topbar : texte court sur mobile */
+            .owner-topbar-right { gap:6px; }
+            .topbar-btn { padding:5px 10px; font-size:.72rem; }
+
+            /* Contenu : moins de padding */
+            .owner-content { padding:16px; }
+
+            /* Stat grid : 2 colonnes max sur mobile */
+            .stat-grid { grid-template-columns:repeat(2,1fr);gap:10px; }
+
+            /* Tables : scroll horizontal */
+            .owner-table-wrap { overflow-x:auto; }
+
+            /* Afficher le bouton hamburger */
+            .owner-mob-toggle { display:flex; }
+        }
+
+        @media (max-width: 480px) {
+            .stat-grid { grid-template-columns:1fr 1fr; }
+            .stat-card { padding:14px; }
+            .stat-card-value { font-size:1.5rem; }
+            .owner-topbar-right .topbar-btn:not(:last-child) { display:none; }
+        }
     </style>
     @stack('styles')
 </head>
 <body>
+
+    <!-- ── OVERLAY SIDEBAR MOBILE ── -->
+    <div class="owner-sidebar-overlay" id="ownerOverlay"></div>
 
     <!-- ── SIDEBAR ── -->
     <aside class="owner-sidebar">
@@ -242,10 +313,11 @@
     <!-- ── MAIN ── -->
     <div class="owner-main">
         <div class="owner-topbar">
+            <button class="owner-mob-toggle" id="ownerMobToggle" aria-label="Ouvrir le menu">☰</button>
             <div class="owner-page-title">@yield('page-title', 'Dashboard Owner')</div>
             <div class="owner-topbar-right">
-                <a href="{{ route('admin.users') }}" class="topbar-btn">🛡 Admin panel</a>
-                <a href="{{ route('home') }}" class="topbar-btn">← Site public</a>
+                <a href="{{ route('admin.users') }}" class="topbar-btn">🛡 Admin</a>
+                <a href="{{ route('home') }}" class="topbar-btn">← Site</a>
             </div>
         </div>
 
@@ -264,6 +336,40 @@
     <script>
         const saved = localStorage.getItem('mg-theme') || 'dark';
         document.documentElement.setAttribute('data-theme', saved);
+
+        /* ── Sidebar mobile ── */
+        (function () {
+            const toggle   = document.getElementById('ownerMobToggle');
+            const sidebar  = document.querySelector('.owner-sidebar');
+            const overlay  = document.getElementById('ownerOverlay');
+            if (!toggle || !sidebar || !overlay) return;
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            toggle.addEventListener('click', openSidebar);
+            overlay.addEventListener('click', closeSidebar);
+
+            /* Fermer en cliquant un lien de la sidebar sur mobile */
+            sidebar.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) closeSidebar();
+                });
+            });
+
+            /* Fermer si on passe en desktop */
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) closeSidebar();
+            });
+        })();
     </script>
     @stack('scripts')
 </body>
