@@ -347,6 +347,7 @@
             <button class="admin-mob-toggle" id="adminMobToggle" aria-label="Ouvrir le menu">☰</button>
             <div class="admin-page-title">@yield('page-title', 'Dashboard')</div>
             <div class="admin-topbar-right">
+                <button id="adminThemeBtn" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;" title="Changer le thème">🌙</button>
                 <a href="{{ route('home') }}" class="topbar-btn">← Site</a>
             </div>
         </div>
@@ -368,6 +369,20 @@
         const html = document.documentElement;
         const saved = localStorage.getItem('mg-theme') || 'dark';
         html.setAttribute('data-theme', saved);
+
+        /* ── Theme toggle ── */
+        (function () {
+            const btn = document.getElementById('adminThemeBtn');
+            if (!btn) return;
+            btn.textContent = saved === 'dark' ? '☀️' : '🌙';
+            btn.addEventListener('click', function () {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('mg-theme', next);
+                btn.textContent = next === 'dark' ? '☀️' : '🌙';
+            });
+        })();
 
         /* ── Sidebar mobile ── */
         (function () {
