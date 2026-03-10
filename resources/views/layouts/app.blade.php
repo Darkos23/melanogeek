@@ -1044,6 +1044,65 @@
     })();
     @endauth
 
+    /* ── Web Push : demande de permission + subscription ────────────── */
+    @auth
+    (function () {
+        // Clé publique VAPID (doit correspondre à celle du serveur)
+        const VAPID_PUBLIC_KEY = '{{ config('services.vapid.public_key') }}';
+
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+            const raw     = atob(base64);
+            return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+        }
+
+        async function subscribeToPush() {
+            if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+            try {
+                const reg = await navigator.serviceWorker.ready;
+
+                // Vérifie si déjà abonné
+                const existing = await reg.pushManager.getSubscription();
+                if (existing) return; // déjà abonné, rien à faire
+
+                // Demande la permission
+                const perm = await Notification.requestPermission();
+                if (perm !== 'granted') return;
+
+                // Crée l'abonnement
+                const sub = await reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+                });
+
+                const key  = sub.getKey('p256dh');
+                const auth = sub.getKey('auth');
+
+                // Envoie l'abonnement au serveur
+                await fetch('{{ route('push.subscribe') }}', {
+                    method:  'POST',
+                    headers: {
+                        'Content-Type':     'application/json',
+                        'X-CSRF-TOKEN':     document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({
+                        endpoint:  sub.endpoint,
+                        publicKey: btoa(String.fromCharCode(...new Uint8Array(key))),
+                        authToken: btoa(String.fromCharCode(...new Uint8Array(auth))),
+                    }),
+                });
+            } catch (e) {
+                console.warn('WebPush subscription failed:', e);
+            }
+        }
+
+        // Lance la subscription après un court délai (pour ne pas bloquer le chargement)
+        window.addEventListener('load', () => setTimeout(subscribeToPush, 3000));
+    })();
+    @endauth
+
 })();
 </script>
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'melanogeek-v1';
+const CACHE_NAME = 'melanogeek-v2';
 
 // Ressources essentielles à pré-cacher
 const PRECACHE_URLS = [
@@ -56,5 +56,45 @@ self.addEventListener('fetch', event => {
                 return response;
             })
             .catch(() => caches.match(request).then(cached => cached || caches.match('/offline')))
+    );
+});
+
+// ── Push : affiche la notification reçue ──────────────────────────────────────
+self.addEventListener('push', event => {
+    let data = { title: 'MelanoGeek', body: 'Vous avez une nouvelle notification', url: '/notifications' };
+
+    if (event.data) {
+        try { data = { ...data, ...event.data.json() }; } catch (_) {}
+    }
+
+    event.waitUntil(
+        self.registration.showNotification(data.title, {
+            body:    data.body,
+            icon:    data.icon  || '/images/icons/icon-192.png',
+            badge:   data.badge || '/images/icons/icon-192.png',
+            tag:     'melanogeek-notif',
+            renotify: true,
+            data:    { url: data.url || '/notifications' },
+        })
+    );
+});
+
+// ── Notification click : ouvre ou focus la bonne page ────────────────────────
+self.addEventListener('notificationclick', event => {
+    event.notification.close();
+    const target = event.notification.data?.url || '/notifications';
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
+            // Si une fenêtre de l'app est déjà ouverte, on la focus
+            for (const client of clientList) {
+                if (client.url.includes(self.location.origin) && 'focus' in client) {
+                    client.navigate(target);
+                    return client.focus();
+                }
+            }
+            // Sinon on ouvre un nouvel onglet
+            return clients.openWindow(target);
+        })
     );
 });

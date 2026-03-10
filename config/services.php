@@ -41,4 +41,10 @@ return [
         'redirect'      => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
     ],
 
+    'vapid' => [
+        'public_key'      => env('VAPID_PUBLIC_KEY'),
+        'private_key_pem' => env('VAPID_PRIVATE_KEY_PEM'),
+        'subject'         => env('VAPID_SUBJECT', 'mailto:contact@melanogeek.com'),
+    ],
+
 ];

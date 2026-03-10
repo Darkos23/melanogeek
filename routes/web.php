@@ -20,6 +20,7 @@ use App\Http\Controllers\RankingController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\Owner\OwnerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -87,6 +88,10 @@ Route::middleware(['auth', 'approved'])->group(function () {
     Route::get('/notifications/unread-count', [NotificationsController::class, 'unreadCount'])->name('notifications.unread-count');
     Route::post('/notifications/read-all',    [NotificationsController::class, 'markAllRead'])->name('notifications.read-all');
     Route::post('/notifications/{id}/read',   [NotificationsController::class, 'markRead'])->name('notifications.read');
+
+    // Push subscriptions (Web Push)
+    Route::post('/push/subscribe',   [PushSubscriptionController::class, 'store'])->name('push.subscribe');
+    Route::post('/push/unsubscribe', [PushSubscriptionController::class, 'destroy'])->name('push.unsubscribe');
 
     // Analytics
     Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics');
