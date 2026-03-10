@@ -5,7 +5,7 @@
 
 @section('content')
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;">
 
     {{-- Admins actuels --}}
     <div>
