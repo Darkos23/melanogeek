@@ -12,6 +12,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MelanoGeek">
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png">
 
     <!-- Fonts : chargement dynamique selon le thème actif -->
     <script>
