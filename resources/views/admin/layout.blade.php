@@ -161,10 +161,78 @@
         .pagination-wrap .pagination li span { display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 8px;border-radius:8px;font-size:.8rem;background:var(--bg-card2);border:1px solid var(--border);color:var(--text-muted);text-decoration:none;transition:all .2s; }
         .pagination-wrap .pagination li.active span { background:var(--terra);border-color:var(--terra);color:white; }
         .pagination-wrap .pagination li a:hover { border-color:var(--terra);color:var(--terra); }
+
+        /* ── MOBILE HAMBURGER ── */
+        .admin-mob-toggle {
+            display:none;
+            align-items:center;justify-content:center;
+            width:36px;height:36px;
+            background:var(--bg-card2);
+            border:1px solid var(--border);
+            border-radius:8px;
+            cursor:pointer;
+            color:var(--text-muted);
+            font-size:1.1rem;
+            flex-shrink:0;
+        }
+
+        /* ── OVERLAY SIDEBAR MOBILE ── */
+        .admin-sidebar-overlay {
+            display:none;
+            position:fixed;inset:0;
+            background:rgba(0,0,0,.55);
+            z-index:49;
+            backdrop-filter:blur(2px);
+        }
+        .admin-sidebar-overlay.open { display:block; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            body { display:block; }
+
+            /* Sidebar : hors écran par défaut */
+            .admin-sidebar {
+                transform:translateX(-100%);
+                transition:transform .25s ease;
+                z-index:50;
+                width:260px;
+            }
+            .admin-sidebar.open { transform:translateX(0); }
+
+            /* Main : pleine largeur */
+            .admin-main { margin-left:0; }
+
+            /* Topbar */
+            .admin-topbar { padding:12px 16px; gap:8px; }
+            .admin-page-title { font-size:.88rem; }
+            .admin-topbar-right { gap:6px; }
+            .topbar-btn { padding:5px 10px; font-size:.72rem; }
+
+            /* Contenu */
+            .admin-content { padding:16px; }
+
+            /* Stat grid : 2 colonnes */
+            .stat-grid { grid-template-columns:repeat(2,1fr);gap:10px; }
+
+            /* Tables : scroll horizontal */
+            .admin-table-wrap { overflow-x:auto; }
+
+            /* Afficher le bouton hamburger */
+            .admin-mob-toggle { display:flex; }
+        }
+
+        @media (max-width: 480px) {
+            .stat-grid { grid-template-columns:1fr 1fr; }
+            .stat-card { padding:14px; }
+            .stat-card-value { font-size:1.5rem; }
+        }
     </style>
     @stack('styles')
 </head>
 <body>
+
+    <!-- ── OVERLAY SIDEBAR MOBILE ── -->
+    <div class="admin-sidebar-overlay" id="adminOverlay"></div>
 
     <!-- ── SIDEBAR ── -->
     <aside class="admin-sidebar">
@@ -276,9 +344,10 @@
     <!-- ── MAIN ── -->
     <div class="admin-main">
         <div class="admin-topbar">
+            <button class="admin-mob-toggle" id="adminMobToggle" aria-label="Ouvrir le menu">☰</button>
             <div class="admin-page-title">@yield('page-title', 'Dashboard')</div>
             <div class="admin-topbar-right">
-                <a href="{{ route('home') }}" class="topbar-btn">← Site public</a>
+                <a href="{{ route('home') }}" class="topbar-btn">← Site</a>
             </div>
         </div>
 
@@ -299,6 +368,38 @@
         const html = document.documentElement;
         const saved = localStorage.getItem('mg-theme') || 'dark';
         html.setAttribute('data-theme', saved);
+
+        /* ── Sidebar mobile ── */
+        (function () {
+            const toggle  = document.getElementById('adminMobToggle');
+            const sidebar = document.querySelector('.admin-sidebar');
+            const overlay = document.getElementById('adminOverlay');
+            if (!toggle || !sidebar || !overlay) return;
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            toggle.addEventListener('click', openSidebar);
+            overlay.addEventListener('click', closeSidebar);
+
+            sidebar.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) closeSidebar();
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) closeSidebar();
+            });
+        })();
     </script>
     @stack('scripts')
 </body>
