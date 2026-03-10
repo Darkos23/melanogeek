@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'owner'    => \App\Http\Middleware\SuperAdminMiddleware::class,
             'admin'    => \App\Http\Middleware\AdminMiddleware::class,
+            'cm'       => \App\Http\Middleware\CMMiddleware::class,
             'approved' => \App\Http\Middleware\EnsureApproved::class,
         ]);
     })

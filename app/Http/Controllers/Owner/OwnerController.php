@@ -86,42 +86,48 @@ class OwnerController extends Controller
         return view('owner.finances', compact('monthly', 'byPlan', 'byMethod', 'totals'));
     }
 
-    // ── Staff (gestion des admins) ─────────────────────────────
+    // ── Staff (gestion du staff) ────────────────────────────────
     public function staff()
     {
         $admins = User::where('role', 'admin')->latest()->get();
-        $users  = User::where('role', 'user')
-                      ->orWhere('role', 'creator')
+        $cms    = User::where('role', 'cm')->latest()->get();
+        $users  = User::whereIn('role', ['user', 'creator'])
                       ->orderBy('name')
                       ->limit(100)
                       ->get();
 
-        return view('owner.staff', compact('admins', 'users'));
+        return view('owner.staff', compact('admins', 'cms', 'users'));
     }
 
     public function staffPromote(Request $request)
     {
-        $request->validate(['user_id' => ['required', 'exists:users,id']]);
+        $request->validate([
+            'user_id' => ['required', 'exists:users,id'],
+            'role'    => ['required', 'in:admin,cm'],
+        ]);
         $user = User::findOrFail($request->user_id);
 
         abort_if($user->isOwner(), 403);
 
-        $user->update(['role' => 'admin']);
+        $role = $request->role;
+        $user->update(['role' => $role]);
 
-        ActivityLog::record('staff.promote', "Promotion de @{$user->username} en admin", 'User', $user->id);
+        $label = $role === 'admin' ? 'admin' : 'Community Manager';
+        ActivityLog::record('staff.promote', "Promotion de @{$user->username} en {$label}", 'User', $user->id);
 
-        return back()->with('success', "{$user->name} est maintenant admin.");
+        return back()->with('success', "{$user->name} est maintenant {$label}.");
     }
 
     public function staffRevoke(User $user)
     {
         abort_if($user->isOwner(), 403);
 
+        $oldRole = $user->role;
         $user->update(['role' => 'user']);
 
-        ActivityLog::record('staff.revoke', "Révocation de @{$user->username} (admin → user)", 'User', $user->id);
+        ActivityLog::record('staff.revoke', "Révocation de @{$user->username} ({$oldRole} → user)", 'User', $user->id);
 
-        return back()->with('success', "{$user->name} n'est plus admin.");
+        return back()->with('success', "{$user->name} n'est plus " . ($oldRole === 'cm' ? 'CM' : 'admin') . ".");
     }
 
     // ── Paramètres ─────────────────────────────────────────────

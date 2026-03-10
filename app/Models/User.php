@@ -174,7 +174,17 @@ class User extends Authenticatable
         return $this->role === 'creator';
     }
 
+    public function isCM(): bool
+    {
+        return $this->role === 'cm';
+    }
+
     public function isStaff(): bool
+    {
+        return in_array($this->role, ['cm', 'admin', 'owner']);
+    }
+
+    public function isAdminOrOwner(): bool
     {
         return in_array($this->role, ['admin', 'owner']);
     }

@@ -21,6 +21,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\CM\CMController;
 use App\Http\Controllers\Owner\OwnerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -212,6 +213,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Page À propos
     Route::get('/about',  [AdminController::class, 'about'])->name('about');
     Route::patch('/about', [AdminController::class, 'aboutUpdate'])->name('about.update');
+});
+
+// ── Community Manager ──
+Route::prefix('cm')->name('cm.')->middleware(['auth', 'cm'])->group(function () {
+    Route::get('/',                              [CMController::class, 'dashboard'])->name('dashboard');
+    Route::get('/posts',                         [CMController::class, 'posts'])->name('posts');
+    Route::delete('/posts/{post}',               [CMController::class, 'deletePost'])->name('posts.delete');
+    Route::post('/posts/{id}/restore',           [CMController::class, 'restorePost'])->name('posts.restore');
+    Route::get('/reports',                       [CMController::class, 'reports'])->name('reports');
+    Route::patch('/reports/{report}/resolve',    [CMController::class, 'resolveReport'])->name('reports.resolve');
+    Route::get('/comments',                      [CMController::class, 'comments'])->name('comments');
+    Route::delete('/comments/{comment}',         [CMController::class, 'deleteComment'])->name('comments.delete');
 });
 
 // ── Owner (owner uniquement) ──
