@@ -920,11 +920,28 @@
         const CSRF = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
         let loaded = false;
 
+        /* ── Positionnement mobile via JS (évite le bug position:fixed + overflow:hidden sur iOS) ── */
+        function positionDropdownMobile() {
+            if (window.innerWidth > 768) {
+                dropdown.style.cssText = '';
+                return;
+            }
+            const rect = toggle.getBoundingClientRect();
+            dropdown.style.position = 'fixed';
+            dropdown.style.top      = (rect.bottom + 6) + 'px';
+            dropdown.style.left     = '10px';
+            dropdown.style.right    = '10px';
+            dropdown.style.width    = 'auto';
+            dropdown.style.maxHeight = '65vh';
+            dropdown.style.overflowY = 'auto';
+        }
+
         /* ── Ouvre / ferme ── */
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
             const isOpen = dropdown.classList.toggle('open');
             toggle.classList.toggle('active', isOpen);
+            if (isOpen) { positionDropdownMobile(); }
             if (isOpen && !loaded) fetchNotifs();
         });
         document.addEventListener('click', (e) => {
@@ -1044,62 +1061,88 @@
     })();
     @endauth
 
-    /* ── Web Push : demande de permission + subscription ────────────── */
+    /* ── Web Push : bannière cliquable (le navigateur exige un geste utilisateur) ── */
     @auth
     (function () {
-        // Clé publique VAPID (doit correspondre à celle du serveur)
-        const VAPID_PUBLIC_KEY = '{{ config('services.vapid.public_key') }}';
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+        if (Notification.permission === 'denied') return; // l'user a déjà refusé
 
-        function urlBase64ToUint8Array(base64String) {
-            const padding = '='.repeat((4 - base64String.length % 4) % 4);
-            const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-            const raw     = atob(base64);
+        const VAPID_PUBLIC_KEY = '{{ config('services.vapid.public_key') }}';
+        const CSRF = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+
+        function urlBase64ToUint8Array(b64) {
+            const pad = '='.repeat((4 - b64.length % 4) % 4);
+            const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
             return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
         }
 
-        async function subscribeToPush() {
-            if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
-
+        async function doSubscribe() {
             try {
                 const reg = await navigator.serviceWorker.ready;
-
-                // Vérifie si déjà abonné
                 const existing = await reg.pushManager.getSubscription();
-                if (existing) return; // déjà abonné, rien à faire
+                if (existing) { hideBanner(); return; }
 
-                // Demande la permission
                 const perm = await Notification.requestPermission();
-                if (perm !== 'granted') return;
+                if (perm !== 'granted') { hideBanner(); return; }
 
-                // Crée l'abonnement
-                const sub = await reg.pushManager.subscribe({
+                const sub  = await reg.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
                 });
-
                 const key  = sub.getKey('p256dh');
                 const auth = sub.getKey('auth');
 
-                // Envoie l'abonnement au serveur
                 await fetch('{{ route('push.subscribe') }}', {
-                    method:  'POST',
-                    headers: {
-                        'Content-Type':     'application/json',
-                        'X-CSRF-TOKEN':     document.querySelector('meta[name="csrf-token"]').content,
-                    },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
                     body: JSON.stringify({
                         endpoint:  sub.endpoint,
                         publicKey: btoa(String.fromCharCode(...new Uint8Array(key))),
                         authToken: btoa(String.fromCharCode(...new Uint8Array(auth))),
                     }),
                 });
-            } catch (e) {
-                console.warn('WebPush subscription failed:', e);
-            }
+                hideBanner();
+            } catch (e) { console.warn('WebPush:', e); hideBanner(); }
         }
 
-        // Lance la subscription après un court délai (pour ne pas bloquer le chargement)
-        window.addEventListener('load', () => setTimeout(subscribeToPush, 3000));
+        function hideBanner() {
+            const b = document.getElementById('mgPushBanner');
+            if (b) b.remove();
+            localStorage.setItem('mg-push-dismissed', '1');
+        }
+
+        async function showBannerIfNeeded() {
+            if (localStorage.getItem('mg-push-dismissed')) return;
+            const reg = await navigator.serviceWorker.ready;
+            const existing = await reg.pushManager.getSubscription();
+            if (existing) return; // déjà abonné
+
+            const banner = document.createElement('div');
+            banner.id = 'mgPushBanner';
+            banner.innerHTML = `
+                <span>🔔 Reçois les notifications même hors de l'app</span>
+                <button id="mgPushAccept">Activer</button>
+                <button id="mgPushDismiss">✕</button>
+            `;
+            banner.style.cssText = `
+                position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+                display:flex;align-items:center;gap:10px;
+                background:var(--bg-card,#1c1810);border:1px solid var(--terra,#C8522A);
+                color:var(--text,#f0e8d8);border-radius:12px;padding:10px 16px;
+                font-size:.82rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.4);
+                white-space:nowrap;max-width:calc(100vw - 32px);
+            `;
+            banner.querySelector('#mgPushAccept').style.cssText =
+                'background:var(--terra,#C8522A);color:#fff;border:none;border-radius:8px;padding:5px 12px;cursor:pointer;font-size:.82rem;';
+            banner.querySelector('#mgPushDismiss').style.cssText =
+                'background:none;border:none;color:var(--text-muted,#999);cursor:pointer;font-size:1rem;padding:2px 4px;';
+
+            banner.querySelector('#mgPushAccept').addEventListener('click', doSubscribe);
+            banner.querySelector('#mgPushDismiss').addEventListener('click', hideBanner);
+            document.body.appendChild(banner);
+        }
+
+        window.addEventListener('load', () => setTimeout(showBannerIfNeeded, 4000));
     })();
     @endauth
 
