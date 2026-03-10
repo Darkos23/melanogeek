@@ -50,7 +50,7 @@
 </div>
 
 {{-- Raccourcis owner --}}
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:28px;">
     @php
     $shortcuts = [
         ['route' => 'owner.finances', 'icon' => '💰', 'label' => 'Finances', 'desc' => 'Revenus & abonnements'],

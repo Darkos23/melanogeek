@@ -29,8 +29,8 @@
     </div>
 </div>
 
-{{-- Deux colonnes ──────────────────────────────── --}}
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+{{-- Deux colonnes (1 colonne sur mobile) ──────── --}}
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px;">
 
     {{-- Derniers inscrits --}}
     <div class="admin-table-wrap">
