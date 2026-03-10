@@ -506,7 +506,7 @@
                         @if(auth()->user()->avatar)
                             <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="">
                         @else
-                            {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
+                            {{ mb_strtoupper(mb_substr(auth()->user()->username, 0, 1)) }}
                         @endif
                     </div>
                     <span class="mg-user-name">{{ auth()->user()->username }}</span>
@@ -535,7 +535,12 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                         Paramètres
                     </a>
-                    @if(auth()->user()->isStaff())
+                    @if(auth()->user()->isCM() && !auth()->user()->isAdminOrOwner())
+                        <a href="{{ route('cm.dashboard') }}" class="mg-drop-item" style="color:#2DB8A0;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Panel CM
+                        </a>
+                    @elseif(auth()->user()->isAdminOrOwner())
                         <a href="{{ route('admin.dashboard') }}" class="mg-drop-item">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                             Dashboard admin

@@ -595,6 +595,7 @@
 
     /* ══ CREATOR BADGE ══ */
     .badge-creator { background: linear-gradient(135deg, var(--gold), #E8A020); color: #1A0A00; font-size: .6rem; padding: 3px 10px; border-radius: 100px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+    .badge-cm { background: linear-gradient(135deg, #2DB8A0, #1E9A87); color: #040E0C; font-size: .6rem; padding: 3px 10px; border-radius: 100px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
 
     /* ══ CREATOR PANEL ══ */
     .creator-panel { background: linear-gradient(135deg, rgba(212,168,67,.07), rgba(200,82,42,.04)); border: 1px solid rgba(212,168,67,.22); border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; }

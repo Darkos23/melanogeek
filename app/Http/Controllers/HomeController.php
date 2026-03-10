@@ -11,10 +11,11 @@ class HomeController extends Controller
     public function index()
     {
         $stats = [
-            'members'   => User::where('is_active', true)->where('role', '!=', 'owner')->count(),
-            'creators'  => User::where('role', 'creator')->count(),
-            'posts'     => Post::where('is_published', true)->count(),
-            'countries' => User::where('is_active', true)->whereNotNull('country_type')->distinct('country_type')->count('country_type'),
+            'members'          => User::where('is_active', true)->where('role', '!=', 'owner')->count(),
+            'creators'         => User::where('role', 'creator')->count(),
+            'posts'            => Post::where('is_published', true)->count(),
+            'countries'        => User::where('is_active', true)->whereNotNull('country_type')->distinct('country_type')->count('country_type'),
+            'new_members_month'=> User::where('is_active', true)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count(),
         ];
 
         $allCreators = User::where('role', 'creator')

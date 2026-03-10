@@ -353,7 +353,7 @@
             <div class="kente-bg"></div>
             <div class="badge-f a">
                 <div class="bf-l">Nouveaux abonnés</div>
-                <div class="bf-v">+248</div>
+                <div class="bf-v">+{{ $fmt($stats['new_members_month']) }}</div>
                 <div class="bf-s">ce mois · Dakar 🇸🇳</div>
             </div>
             <div class="card-prof">
@@ -368,12 +368,12 @@
                             @if($topCreator->avatar)
                                 <img src="{{ asset('storage/'.$topCreator->avatar) }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" alt="">
                             @else
-                                {{ mb_strtoupper(mb_substr($topCreator->name ?? $topCreator->username, 0, 1)) }}
+                                {{ mb_strtoupper(mb_substr($topCreator->username, 0, 1)) }}
                             @endif
                         </div>
                         <span class="cp-bdg">{{ $topCreator->is_verified ? '✓ Vérifié' : '🆕 Créateur' }}</span>
                     </div>
-                    <div class="cp-name">{{ $topCreator->name ?? $topCreator->username }}</div>
+                    <div class="cp-name">{{ $topCreator->username }}</div>
                     <div class="cp-niche">🎨 {{ $topCreator->niche ?: 'Créateur' }}{{ $topCreator->location ? ' · '.$topCreator->location : '' }}</div>
                     <div class="cp-stats">
                         <div class="cps"><div class="cps-n">{{ $fmt($topCreator->followers_count) }}</div><div class="cps-l">Abonnés</div></div>
@@ -417,7 +417,7 @@
             </div>
             <div class="badge-f b">
                 <div class="bf-l">Publications</div>
-                <div class="bf-v">18K</div>
+                <div class="bf-v">{{ $fmt($stats['posts']) }}</div>
                 <div class="bf-s">sur la plateforme</div>
             </div>
         </div>
@@ -476,13 +476,13 @@ $nicheEmojis = [
                         @if($cr->avatar)
                             <img src="{{ asset('storage/'.$cr->avatar) }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" alt="">
                         @else
-                            {{ mb_strtoupper(mb_substr($cr->name ?? $cr->username, 0, 1)) }}
+                            {{ mb_strtoupper(mb_substr($cr->username, 0, 1)) }}
                         @endif
                         <div class="cr-ring"></div>
                     </div>
                     <span class="cr-bdg {{ $cr->is_verified ? 'v' : 'n' }}">{{ $cr->is_verified ? '✓ Vérifié' : '🆕 Nouveau' }}</span>
                 </div>
-                <div class="cr-name">{{ $cr->name ?? $cr->username }}</div>
+                <div class="cr-name">{{ $cr->username }}</div>
                 <div class="cr-niche">{{ $ne }} {{ $cr->niche ?: ($cr->location ?: 'Créateur') }}</div>
                 <div class="cr-stats">
                     <div><div class="cr-sn">{{ $fmt($cr->followers_count) }}</div><div class="cr-sl">Abonnés</div></div>

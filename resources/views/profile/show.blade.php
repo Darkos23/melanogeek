@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $user->name)
+@section('title', $user->username)
 
 @push('styles')
 @include('profile.partials._styles')
@@ -57,7 +57,9 @@
                             </svg>
                         </span>
                     @endif
-                    @if($user->isCreator())
+                    @if($user->isCM())
+                        <span class="badge-cm">🛡️ CM</span>
+                    @elseif($user->isCreator())
                         <span class="badge-creator">✦ Créateur</span>
                     @endif
                 </div>
