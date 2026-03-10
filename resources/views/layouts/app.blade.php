@@ -1125,7 +1125,8 @@
                 <button id="mgPushDismiss">✕</button>
             `;
             banner.style.cssText = `
-                position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+                position:fixed;bottom:calc(env(safe-area-inset-bottom, 0px) + 72px);
+                left:50%;transform:translateX(-50%);
                 display:flex;align-items:center;gap:10px;
                 background:var(--bg-card,#1c1810);border:1px solid var(--terra,#C8522A);
                 color:var(--text,#f0e8d8);border-radius:12px;padding:10px 16px;
