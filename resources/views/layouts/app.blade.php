@@ -197,7 +197,8 @@
     ═══════════════════════════════════════════════ */
     .mg-nav {
         position: fixed; top:0; left:0; right:0; z-index:200;
-        height: 72px; padding: 0 52px;
+        height: calc(72px + env(safe-area-inset-top));
+        padding: env(safe-area-inset-top) 52px 0;
         display: flex; align-items: center; justify-content: space-between;
         background: var(--nav-bg);
         backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -379,7 +380,7 @@
        RESPONSIVE
     ═══════════════════════════════════════════════ */
     @media (max-width: 768px) {
-        .mg-nav { padding: 0 16px; height: 64px; }
+        .mg-nav { padding: env(safe-area-inset-top) 16px 0; height: calc(64px + env(safe-area-inset-top)); }
         .mg-links { display: none; }
         .mg-hamburger { display: flex; }
         /* Boutons Connexion / Rejoindre / Mon fil → dans le burger */

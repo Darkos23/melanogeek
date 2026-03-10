@@ -4,7 +4,7 @@
 
 @push('styles')
 <style>
-    .create-page { padding-top: 80px; min-height: 100vh; }
+    .create-page { padding-top: calc(80px + env(safe-area-inset-top)); min-height: 100vh; }
 
     .create-wrap {
         max-width: 680px;

@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     .creators-page {
-        padding-top: 80px;
+        padding-top: calc(80px + env(safe-area-inset-top));
         min-height: 100vh;
     }
 

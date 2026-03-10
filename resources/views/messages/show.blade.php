@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     .messages-page {
-        padding-top: 72px;
+        padding-top: calc(72px + env(safe-area-inset-top));
         height: 100vh;
         display: flex;
         flex-direction: column;

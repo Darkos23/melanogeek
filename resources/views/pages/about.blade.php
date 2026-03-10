@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     .about-page {
-        padding-top: 80px;
+        padding-top: calc(80px + env(safe-area-inset-top));
         padding-bottom: 80px;
     }
     .about-hero {

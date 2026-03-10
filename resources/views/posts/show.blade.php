@@ -4,7 +4,7 @@
 
 @push('styles')
 <style>
-    .post-page { padding-top: 80px; min-height: 100vh; }
+    .post-page { padding-top: calc(80px + env(safe-area-inset-top)); min-height: 100vh; }
 
     .post-wrap {
         max-width: 680px;

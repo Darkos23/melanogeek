@@ -1,5 +1,5 @@
 <style>
-    .profile-page { padding-top: 64px; }
+    .profile-page { padding-top: calc(64px + env(safe-area-inset-top)); }
 
     /* ══ COVER ══ */
     .profile-cover {

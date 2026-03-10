@@ -4,7 +4,7 @@
 
 @push('styles')
 <style>
-    .edit-page { padding-top: 80px; min-height: 100vh; }
+    .edit-page { padding-top: calc(80px + env(safe-area-inset-top)); min-height: 100vh; }
 
     /* ── HEADER ── */
     .edit-header {

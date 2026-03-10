@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     .notif-page {
-        padding-top: 72px;
+        padding-top: calc(72px + env(safe-area-inset-top));
         min-height: 100vh;
     }
 
