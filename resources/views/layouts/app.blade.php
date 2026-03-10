@@ -390,8 +390,8 @@
         .mg-user-btn { padding: 4px; border-radius: 50%; }
         /* Logo : réduire légèrement le nom */
         .mg-logo-name { font-size: .8rem; }
-        /* Theme toggle : masqué sur mobile */
-        .theme-toggle { display: none !important; }
+        /* Theme toggle : visible sur mobile (la place libérée par le bouton message) */
+        .theme-toggle { display: flex !important; min-height: unset; width: 36px; height: 36px; }
         /* Réduire le gap entre icônes */
         .mg-right { gap: 4px; }
         /* Corriger les boutons ronds : annuler le min-height: 44px global */
@@ -402,6 +402,17 @@
             width: 36px;
             height: 36px;
         }
+        /* Dropdown notifications : fixé sur mobile pour ne pas déborder */
+        .mg-notif-dropdown {
+            position: fixed;
+            top: calc(64px + env(safe-area-inset-top) + 6px);
+            left: 10px;
+            right: 10px;
+            width: auto;
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+        .mg-notif-dropdown::before { display: none; }
     }
     </style>
 
