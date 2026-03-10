@@ -403,7 +403,7 @@
                             </div>
                         </div>
                         <div class="creator-card-text">
-                            <div class="creator-card-name">{{ $creator->name }}</div>
+                            <div class="creator-card-name">{{ $creator->username }}</div>
                             <div class="creator-card-meta">
                                 <span>{{ number_format($creator->followers_count) }} abonnés</span>
                                 <span>·</span>

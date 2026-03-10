@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $post->title ?? 'Publication de ' . $post->user->name)
+@section('title', $post->title ?? 'Publication de @' . $post->user->username)
 
 @push('styles')
 <style>
@@ -431,14 +431,13 @@
                 </a>
                 <div>
                     <a href="{{ route('profile.show', $post->user->username) }}" class="post-author-name">
-                        {{ $post->user->name }}
+                        {{ $post->user->username }}
                     </a>
                     <div class="post-author-meta">
-                        &#64;{{ $post->user->username }}
                         @if($post->user->niche)
-                            · <span class="post-author-niche">{{ $post->user->niche }}</span>
+                            <span class="post-author-niche">{{ $post->user->niche }}</span> ·
                         @endif
-                        · {{ $post->created_at?->diffForHumans() ?? "-" }}
+                        {{ $post->created_at?->diffForHumans() ?? "-" }}
                     </div>
                 </div>
             </div>

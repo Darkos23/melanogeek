@@ -379,7 +379,7 @@
                 @endif
             </div>
             <div class="pod-rank">#{{ $rank }}</div>
-            <div class="pod-name">{{ $cr->name ?? $cr->username }}</div>
+            <div class="pod-name">{{ $cr->username }}</div>
             <div class="pod-niche">{{ ($nicheEmojis[$cr->niche ?? ''] ?? '🌟') }} {{ $cr->niche ?: 'Créateur' }}</div>
             <div class="pod-count">{{ $fmt($score) }}</div>
             <div class="pod-count-label">{{ $countLabel }}</div>
@@ -407,7 +407,7 @@
                 @endif
             </div>
             <div class="rk-info">
-                <div class="rk-uname">{{ $cr->name ?? $cr->username }}</div>
+                <div class="rk-uname">{{ $cr->username }}</div>
                 <div class="rk-uniche">{{ ($nicheEmojis[$cr->niche ?? ''] ?? '🌟') }} {{ $cr->niche ?: 'Créateur' }}</div>
             </div>
             <span class="rk-badge {{ $cr->is_verified ? 'v' : 'n' }}">

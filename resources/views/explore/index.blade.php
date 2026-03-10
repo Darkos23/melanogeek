@@ -565,7 +565,7 @@
                                 @endif
                             </div>
                         </div>
-                        <span class="explore-author-name">{{ $post->user->name }}</span>
+                        <span class="explore-author-name">{{ $post->user->username }}</span>
                         <span class="explore-author-likes">{{ $post->created_at?->diffForHumans(null, true) ?? "-" }}</span>
                     </div>
 

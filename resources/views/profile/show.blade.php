@@ -48,7 +48,7 @@
             <!-- Identité -->
             <div class="profile-identity">
                 <div class="profile-name">
-                    {{ $user->name }}
+                    {{ $user->username }}
                     @if($user->is_verified)
                         <span class="badge-verified" title="Compte vérifié">
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -61,7 +61,9 @@
                         <span class="badge-creator">✦ Créateur</span>
                     @endif
                 </div>
-                <div class="profile-username">&#64;{{ $user->username }}</div>
+                @if($user->name !== $user->username)
+                    <div class="profile-username">{{ $user->name }}</div>
+                @endif
 
                 @if($user->niche)
                     <div class="profile-niche">🎨 {{ $user->niche }}</div>
@@ -400,7 +402,7 @@
                             @if(auth()->id() === $user->id)
                                 Tu n'as pas encore publié de contenu. <a href="{{ route('posts.create') }}" style="color:var(--terra);text-decoration:none;font-weight:600;">Créer ta première publication →</a>
                             @else
-                                {{ $user->name }} n'a pas encore publié de contenu.
+                                {{ $user->username }} n'a pas encore publié de contenu.
                             @endif
                         </div>
                     </div>
@@ -562,7 +564,7 @@
                     <div style="font-size:2rem;margin-bottom:10px;">🔒</div>
                     <div style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px;">Contenu exclusif</div>
                     <div style="font-size:.86rem;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">
-                        Abonne-toi à MelanoGeek pour accéder au contenu premium de {{ $user->name }}.
+                        Abonne-toi à MelanoGeek pour accéder au contenu premium de {{ $user->username }}.
                     </div>
                     <a href="{{ route('feed') }}" style="display:inline-flex;align-items:center;gap:8px;background:var(--terra);color:white;padding:11px 24px;border-radius:100px;font-family:var(--font-head);font-size:.88rem;font-weight:700;text-decoration:none;">
                         ⭐ Voir les offres
@@ -574,7 +576,7 @@
                     <div style="font-size:2rem;margin-bottom:10px;">🌟</div>
                     <div style="font-family:var(--font-head);font-size:1rem;font-weight:700;margin-bottom:8px;">Rejoins MelanoGeek</div>
                     <div style="font-size:.86rem;color:var(--text-muted);margin-bottom:16px;line-height:1.6;">
-                        Crée un compte pour suivre {{ $user->name }} et accéder à tout le contenu.
+                        Crée un compte pour suivre {{ $user->username }} et accéder à tout le contenu.
                     </div>
                     <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:8px;background:var(--terra);color:white;padding:11px 24px;border-radius:100px;font-family:var(--font-head);font-size:.88rem;font-weight:700;text-decoration:none;">
                         S'inscrire gratuitement →

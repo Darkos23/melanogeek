@@ -788,7 +788,7 @@
                             @endif
                         </div>
                     </button>
-                    <span class="story-name">{{ $s->user->name }}</span>
+                    <span class="story-name">{{ $s->user->username }}</span>
                 </div>
                 @endif
             @endforeach
@@ -925,7 +925,7 @@
                     </div>
                 </a>
                 <div class="suggestion-info">
-                    <a href="{{ route('profile.show', $user->username) }}" class="suggestion-name">{{ $user->name }}</a>
+                    <a href="{{ route('profile.show', $user->username) }}" class="suggestion-name">{{ $user->username }}</a>
                     <div class="suggestion-meta">
                         {{ number_format($user->followers_count) }} abonné{{ $user->followers_count > 1 ? 's' : '' }}
                         @if($user->niche) · {{ $user->niche }} @endif

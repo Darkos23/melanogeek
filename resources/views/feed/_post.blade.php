@@ -14,7 +14,7 @@
             </div>
             <div class="feed-author-info">
                 <div class="feed-author-name">
-                    {{ $post->user->name }}
+                    {{ $post->user->username }}
                     @if($post->user->is_verified)
                         <span class="verified-badge">✓</span>
                     @endif
@@ -23,7 +23,7 @@
                     @endif
                 </div>
                 <div class="feed-author-meta" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                    &#64;{{ $post->user->username }} · {{ $post->created_at?->diffForHumans() ?? "-" }}
+                    {{ $post->created_at?->diffForHumans() ?? "-" }}
                     @if($post->is_exclusive)
                         <span class="exclusive-badge">🔒 Exclusif</span>
                     @endif

@@ -214,7 +214,7 @@
                             @if($service->user->avatar)<img src="{{ Storage::url($service->user->avatar) }}" alt="">@else{{ mb_strtoupper(mb_substr($service->user->name,0,1)) }}@endif
                         </div>
                     </div>
-                    <span class="service-creator-name">{{ $service->user->name }}</span>
+                    <span class="service-creator-name">{{ $service->user->username }}</span>
                     <span class="service-cat-badge" style="margin-left:auto;">{{ $service->category_icon }}</span>
                 </div>
                 <div class="service-title">{{ $service->title }}</div>

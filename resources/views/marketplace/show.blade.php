@@ -130,7 +130,7 @@
                     </div>
                     <div>
                         <div class="creator-name" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                            {{ $service->user->name }}
+                            {{ $service->user->username }}
                             <span style="font-size:.68rem;font-weight:600;padding:2px 8px;border-radius:100px;
                                 {{ $service->user->is_available ? 'background:rgba(34,197,94,.12);color:#16a34a;' : 'background:rgba(224,85,85,.1);color:#E05555;' }}">
                                 {{ $service->user->is_available ? '🟢 Disponible' : '🔴 Non disponible' }}
@@ -185,7 +185,7 @@
     {{-- Autres services du créateur --}}
     @if($moreServices->count())
     <div class="more-services">
-        <div class="more-title">Autres services de {{ $service->user->name }}</div>
+        <div class="more-title">Autres services de {{ $service->user->username }}</div>
         <div class="more-grid">
             @foreach($moreServices as $ms)
             <a href="{{ route('marketplace.show', $ms) }}" class="more-card">

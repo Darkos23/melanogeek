@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', isset($user) ? 'Messages — ' . $user->name : 'Messages')
+@section('title', isset($user) ? 'Messages — ' . $user->username : 'Messages')
 
 @push('styles')
 <style>
@@ -643,12 +643,12 @@
                 </a>
                 <div class="chat-header-info">
                     <div class="chat-header-name">
-                        {{ $user->name }}
+                        {{ $user->username }}
                         @if($user->is_verified)
                             <svg width="14" height="14" viewBox="0 0 24 24" style="vertical-align:middle;"><circle cx="12" cy="12" r="12" fill="#3897F0"/><path d="M7 12.3L10.4 15.8L17 8.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
                         @endif
                     </div>
-                    <div class="chat-header-sub">&#64;{{ $user->username }}</div>
+                    @if($user->niche)<div class="chat-header-sub">{{ $user->niche }}</div>@endif
                 </div>
                 <div class="chat-header-actions">
                     <a href="{{ route('profile.show', $user->username) }}" class="chat-header-btn" title="Voir le profil">
@@ -694,7 +694,7 @@
                         <div class="chat-empty-icon">👋</div>
                         <div class="chat-empty-title">Démarrez la conversation</div>
                         <div class="chat-empty-desc">
-                            Envoie ton premier message à {{ $user->name }} !
+                            Envoie ton premier message à {{ $user->username }} !
                         </div>
                     </div>
                 @endforelse
