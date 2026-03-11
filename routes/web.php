@@ -27,19 +27,6 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoryController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
-
-// ── Setup storage symlink (à supprimer après usage) ──
-Route::get('/setup-storage', function () {
-    if (request('key') !== 'mg2025setup') abort(403);
-    try {
-        Artisan::call('storage:link');
-        $exists = file_exists(public_path('storage'));
-        return '<pre>✅ storage:link exécuté.<br>public/storage existe : ' . ($exists ? 'OUI ✅' : 'NON ❌') . '</pre>';
-    } catch (\Exception $e) {
-        return '<pre>❌ Erreur : ' . $e->getMessage() . '</pre>';
-    }
-});
 
 // ── Pages publiques ──
 Route::get('/', [HomeController::class, 'index'])->name('home');
