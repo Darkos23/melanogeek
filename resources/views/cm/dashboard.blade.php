@@ -76,7 +76,7 @@
     .post-item:last-child { border-bottom: none; }
     .post-item:hover { background: var(--bg-hover); }
     .post-title { font-size: .82rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
-    .post-meta { font-size: .73rem; color: var(--text-muted); margin-top: 2px; }
+    .post-meta { font-size: .73rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
 @endpush
 
