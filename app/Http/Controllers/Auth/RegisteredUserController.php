@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\CreatorRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -65,6 +66,15 @@ class RegisteredUserController extends Controller
             'creator_bio'      => $isCreator ? $request->creator_bio : null,
             'creator_socials'  => ($isCreator && $request->creator_social) ? [$request->creator_social] : null,
         ]);
+
+        // Créer la demande creator pour que l'admin puisse l'approuver
+        if ($isCreator) {
+            CreatorRequest::create([
+                'user_id'    => $user->id,
+                'motivation' => $user->creator_bio ?? 'Inscription via le formulaire créateur.',
+                'status'     => 'pending',
+            ]);
+        }
 
         event(new Registered($user));
 
