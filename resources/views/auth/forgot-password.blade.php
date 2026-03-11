@@ -79,7 +79,7 @@
             <p class="auth-desc">Saisis ton adresse email et nous t'enverrons un lien pour créer un nouveau mot de passe.</p>
 
             @if(session('status'))
-                <div class="flash-success">✓ {{ session('status') }}</div>
+                <div class="flash-success">✓ Un lien de réinitialisation a été envoyé à ton adresse email.</div>
             @endif
 
             <form method="POST" action="{{ route('password.email') }}">
