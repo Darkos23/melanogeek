@@ -133,8 +133,8 @@
                 <div style="flex:1;min-width:0;">
                     <div class="report-reason">{{ $report->reason ?? 'Signalement' }}</div>
                     <div class="report-meta">
-                        par <strong>@{{ $report->reporter?->username ?? '?' }}</strong>
-                        · post de <strong>@{{ $report->post?->user?->username ?? '?' }}</strong>
+                        par <strong>{{ $report->reporter?->username ?? '?' }}</strong>
+                        · post de <strong>{{ $report->post?->user?->username ?? '?' }}</strong>
                         · {{ $report->created_at->diffForHumans() }}
                     </div>
                 </div>
@@ -166,7 +166,7 @@
                 </div>
                 <div style="flex:1;min-width:0;">
                     <div class="post-title">{{ $post->title ?: '(sans titre)' }}</div>
-                    <div class="post-meta">@{{ $post->user?->username ?? '?' }} · {{ $post->created_at->diffForHumans() }}</div>
+                    <div class="post-meta">{{ $post->user?->username ?? '?' }} · {{ $post->created_at->diffForHumans() }}</div>
                 </div>
                 @if($post->is_exclusive)
                     <span class="badge badge-gold" style="font-size:.65rem;">✦</span>
