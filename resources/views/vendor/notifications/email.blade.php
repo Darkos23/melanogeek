@@ -37,11 +37,7 @@
                     <td style="background:#1A1410;border:1px solid rgba(212,168,67,.15);border-radius:16px;padding:40px 36px;">
 
                         {{-- Greeting --}}
-                        @foreach ($greeting ?? ['Bonjour !'] as $line)
-                            @if ($loop->first)
-                                <p style="font-size:1.25rem;font-weight:700;color:#F5EFE6;margin:0 0 20px;">{{ $line }}</p>
-                            @endif
-                        @endforeach
+                        <p style="font-size:1.25rem;font-weight:700;color:#F5EFE6;margin:0 0 20px;">{{ $greeting ?? 'Bonjour !' }}</p>
 
                         {{-- Intro lines --}}
                         @foreach ($introLines as $line)
