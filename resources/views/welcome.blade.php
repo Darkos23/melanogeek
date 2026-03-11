@@ -330,14 +330,14 @@
 
     <div class="hero-inner">
         <div>
-            <div class="hero-pill"><div class="pill-dot"></div> Réseau des créateurs africains</div>
+            <div class="hero-pill"><div class="pill-dot"></div> {{ \App\Models\Setting::get('home_hero_pill', 'Réseau des créateurs africains') }}</div>
             <h1 class="hero-h1">
-                Ta<br>
-                <em>créativité</em><br>
-                mérite une<br>
-                <span class="outline">vraie scène.</span>
+                {{ \App\Models\Setting::get('home_hero_h1_1', 'Ta') }}<br>
+                <em>{{ \App\Models\Setting::get('home_hero_h1_2', 'créativité') }}</em><br>
+                {{ \App\Models\Setting::get('home_hero_h1_3', 'mérite une') }}<br>
+                <span class="outline">{{ \App\Models\Setting::get('home_hero_h1_4', 'vraie scène.') }}</span>
             </h1>
-            <p class="hero-desc">MelanoGeek connecte photographes, musiciens, artistes et stylistes sénégalais. Partage ton art, construis ta communauté. 100% gratuit pour le Sénégal.</p>
+            <p class="hero-desc">{{ \App\Models\Setting::get('home_hero_desc', 'MelanoGeek connecte photographes, musiciens, artistes et stylistes sénégalais. Partage ton art, construis ta communauté. 100% gratuit pour le Sénégal.') }}</p>
             <div class="hero-btns">
                 @guest
                     <a href="{{ route('register') }}" class="btn-main">Créer mon profil →</a>
@@ -514,15 +514,19 @@ $nicheEmojis = [
 <section class="manifeste reveal">
     <div class="manifeste-inner">
         <div>
-            <div class="s-eye">Notre mission</div>
-            <div class="m-quote">La créativité africaine mérite une plateforme à sa <span>hauteur.</span></div>
-            <div class="m-sub">Pas d'algorithme qui punit. Pas de barrières. Juste de la création pure, une vraie communauté, et un espace où le talent sénégalais rayonne au-delà des frontières.</div>
+            <div class="s-eye">{{ \App\Models\Setting::get('home_manifeste_eye', 'Notre mission') }}</div>
+            <div class="m-quote">{{ \App\Models\Setting::get('home_manifeste_quote', 'La créativité africaine mérite une plateforme à sa') }} <span>{{ \App\Models\Setting::get('home_manifeste_quote_end', 'hauteur.') }}</span></div>
+            <div class="m-sub">{{ \App\Models\Setting::get('home_manifeste_sub', "Pas d'algorithme qui punit. Pas de barrières. Juste de la création pure, une vraie communauté, et un espace où le talent sénégalais rayonne au-delà des frontières.") }}</div>
         </div>
         <div class="v-grid">
-            <div class="v-item"><div class="v-ico">🇸🇳</div><div class="v-tit">100% Local</div><div class="v-dsc">Conçu à Dakar, pour les créateurs sénégalais en premier.</div></div>
-            <div class="v-item"><div class="v-ico">🎁</div><div class="v-tit">1 mois gratuit</div><div class="v-dsc">Essai gratuit d'un mois pour tous les Sénégalais.</div></div>
-            <div class="v-item"><div class="v-ico">⚡</div><div class="v-tit">Sans censure</div><div class="v-dsc">Ton contenu est vu par ceux qui t'ont choisi.</div></div>
-            <div class="v-item"><div class="v-ico">💳</div><div class="v-tit">Paiement local</div><div class="v-dsc">Wave et Orange Money. Pas besoin de carte.</div></div>
+            @php $vals = [1,2,3,4]; @endphp
+            @foreach($vals as $n)
+            <div class="v-item">
+                <div class="v-ico">{{ \App\Models\Setting::get("home_val{$n}_icon", ['🇸🇳','🎁','⚡','💳'][$n-1]) }}</div>
+                <div class="v-tit">{{ \App\Models\Setting::get("home_val{$n}_title", ['100% Local','1 mois gratuit','Sans censure','Paiement local'][$n-1]) }}</div>
+                <div class="v-dsc">{{ \App\Models\Setting::get("home_val{$n}_desc", ['Conçu à Dakar, pour les créateurs sénégalais en premier.',"Essai gratuit d'un mois pour tous les Sénégalais.","Ton contenu est vu par ceux qui t'ont choisi.",'Wave et Orange Money. Pas besoin de carte.'][$n-1]) }}</div>
+            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -580,9 +584,9 @@ $nicheEmojis = [
     <div class="cta-kente"></div>
     <div class="cta-glow"></div>
     <div class="cta-l">
-        <div class="cta-eye">Rejoins la communauté</div>
-        <h2 class="cta-h">Prêt à faire<br><span>rayonner</span><br>ton art ?</h2>
-        <p class="cta-sub">Inscription gratuite en 2 minutes. Aucune carte requise pour les Sénégalais.</p>
+        <div class="cta-eye">{{ \App\Models\Setting::get('home_cta_eye', 'Rejoins la communauté') }}</div>
+        <h2 class="cta-h">{{ \App\Models\Setting::get('home_cta_h2_1', 'Prêt à faire') }}<br><span>{{ \App\Models\Setting::get('home_cta_h2_2', 'rayonner') }}</span><br>{{ \App\Models\Setting::get('home_cta_h2_3', 'ton art ?') }}</h2>
+        <p class="cta-sub">{{ \App\Models\Setting::get('home_cta_sub', 'Inscription gratuite en 2 minutes. Aucune carte requise pour les Sénégalais.') }}</p>
     </div>
     <div class="cta-r">
         <a href="{{ route('register') }}" class="btn-ctam">Créer mon profil gratuitement</a>

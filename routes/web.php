@@ -225,6 +225,10 @@ Route::prefix('cm')->name('cm.')->middleware(['auth', 'cm'])->group(function () 
     Route::patch('/reports/{report}/resolve',    [CMController::class, 'resolveReport'])->name('reports.resolve');
     Route::get('/comments',                      [CMController::class, 'comments'])->name('comments');
     Route::delete('/comments/{comment}',         [CMController::class, 'deleteComment'])->name('comments.delete');
+    Route::get('/homepage',                      [CMController::class, 'homepageEdit'])->name('homepage');
+    Route::patch('/homepage',                    [CMController::class, 'homepageUpdate'])->name('homepage.update');
+    Route::get('/about',                         [CMController::class, 'aboutEdit'])->name('about');
+    Route::patch('/about',                       [CMController::class, 'aboutUpdate'])->name('about.update');
 });
 
 // ── Owner (owner uniquement) ──

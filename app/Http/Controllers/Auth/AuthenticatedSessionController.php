@@ -32,7 +32,10 @@ class AuthenticatedSessionController extends Controller
         if ($request->user()->isOwner()) {
             return redirect()->route('owner.dashboard');
         }
-        if ($request->user()->isStaff()) {
+        if ($request->user()->isCM()) {
+            return redirect()->route('cm.dashboard');
+        }
+        if ($request->user()->isAdminOrOwner()) {
             return redirect()->route('admin.dashboard');
         }
 

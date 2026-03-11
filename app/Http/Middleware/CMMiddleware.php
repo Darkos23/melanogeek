@@ -9,8 +9,8 @@ class CMMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check() || !auth()->user()->isStaff()) {
-            abort(403, 'Accès réservé au staff.');
+        if (!auth()->check() || !auth()->user()->isCM()) {
+            abort(403, 'Accès réservé au Community Manager.');
         }
 
         return $next($request);

@@ -287,6 +287,12 @@
             </a>
 
             <div class="sidebar-section">Site</div>
+            <a href="{{ route('cm.homepage') }}" class="sidebar-link {{ request()->routeIs('cm.homepage') ? 'active' : '' }}">
+                <span class="icon">🏠</span> Page d'accueil
+            </a>
+            <a href="{{ route('cm.about') }}" class="sidebar-link {{ request()->routeIs('cm.about') ? 'active' : '' }}">
+                <span class="icon">📖</span> À propos
+            </a>
             <a href="{{ route('home') }}" class="sidebar-link" target="_blank">
                 <span class="icon">🌐</span> Voir le site
             </a>
