@@ -24,7 +24,6 @@ class FeedController extends Controller
                 ->whereHas('user', fn ($q) => $q
                     ->where('is_active', true)
                     ->where('is_private', false)
-                    ->where('role', 'creator')
                 );
         }
 

@@ -22,7 +22,6 @@ class ExploreController extends Controller
             ->whereHas('user', fn ($q) => $q
                 ->where('is_active', true)
                 ->where('is_private', false)
-                ->where('role', 'creator')
             )
             ->when($query, fn ($q) =>
                 $q->where(fn ($sub) =>
@@ -44,7 +43,6 @@ class ExploreController extends Controller
         // Niches disponibles pour les filtres
         $niches = User::where('is_active', true)
             ->where('is_private', false)
-            ->where('role', 'creator')
             ->whereNotNull('niche')
             ->distinct()
             ->pluck('niche')
@@ -56,7 +54,6 @@ class ExploreController extends Controller
             ->whereHas('stories', fn ($q) => $q->where('expires_at', '>', now()))
             ->where('is_active', true)
             ->where('is_private', false)
-            ->where('role', 'creator')
             ->limit(30)
             ->get();
 
