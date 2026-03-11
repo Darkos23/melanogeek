@@ -1,13 +1,13 @@
 @extends('cm.layout')
 
 @section('title', 'Dashboard CM')
-@section('page-title', 'Dashboard')
+@section('page-title', '✦ Tableau de bord')
 
 @push('styles')
 <style>
     /* ── HERO BANNER ── */
     .cm-hero {
-        background: linear-gradient(135deg, var(--cm-soft) 0%, transparent 60%);
+        background: linear-gradient(135deg, var(--cm-soft) 0%, rgba(122,181,144,.07) 60%, transparent 100%);
         border: 1px solid var(--cm-border);
         border-radius: 20px;
         padding: 28px 32px;
@@ -19,22 +19,34 @@
         position: relative;
         overflow: hidden;
     }
-    .cm-hero::before {
-        content: '🛡️';
-        position: absolute;
-        right: 28px; top: 50%; transform: translateY(-50%);
-        font-size: 5rem;
-        opacity: .08;
+    /* Motif losange dans le hero */
+    .cm-hero::after {
+        content: '';
+        position: absolute; inset: 0;
+        background-image:
+            linear-gradient(45deg,  rgba(196,162,84,.06) 1px, transparent 1px),
+            linear-gradient(-45deg, rgba(196,162,84,.06) 1px, transparent 1px);
+        background-size: 28px 28px;
+        pointer-events: none;
+        border-radius: 20px;
+    }
+    /* Orbe décorative */
+    .cm-hero-orb {
+        position: absolute; right: -20px; top: -30px;
+        width: 200px; height: 200px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(196,162,84,.12) 0%, transparent 70%);
         pointer-events: none;
     }
     .cm-hero-title {
-        font-family: var(--font-head);
-        font-size: 1.4rem; font-weight: 800;
+        font-family: var(--font-elvish);
+        font-size: 1.35rem; font-weight: 600;
+        letter-spacing: .02em;
         color: var(--text);
-        margin-bottom: 6px;
+        margin-bottom: 8px;
+        position: relative; z-index: 1;
     }
     .cm-hero-title span { color: var(--cm); }
-    .cm-hero-subtitle { font-size: .84rem; color: var(--text-muted); line-height: 1.6; }
+    .cm-hero-subtitle { font-size: .84rem; color: var(--text-muted); line-height: 1.65; position: relative; z-index: 1; }
 
     /* ── RECENT CARDS (dashboard 2-col) ── */
     .cm-dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -72,11 +84,12 @@
 
 {{-- Hero --}}
 <div class="cm-hero">
+    <div class="cm-hero-orb"></div>
     <div>
-        <div class="cm-hero-title">Bonjour, <span>{{ auth()->user()->name }}</span> 👋</div>
+        <div class="cm-hero-title">Bienvenue, <span>{{ auth()->user()->name }}</span> ✦</div>
         <div class="cm-hero-subtitle">
-            Bienvenue dans votre espace Community Manager.<br>
-            Gardez la communauté saine et bienveillante.
+            Votre studio de Community Management vous attend.<br>
+            Prenez soin de la communauté MelanoGeek.
         </div>
     </div>
 </div>
