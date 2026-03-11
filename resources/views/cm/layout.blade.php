@@ -36,8 +36,8 @@
             --border:rgba(28,26,13,.09);
             --border-hover:rgba(28,26,13,.18);
             --shadow-md:0 8px 32px rgba(0,0,0,.08);
-            --pat:rgba(196,162,84,.16);
-            --pat2:rgba(122,181,144,.10);
+            --pat:rgba(196,162,84,.30);
+            --pat2:rgba(122,181,144,.18);
         }
         :root {
             --cm:#C4A254;
