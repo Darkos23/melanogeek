@@ -4,6 +4,7 @@
 
 @push('styles')
 <style>
+    .mg-nav { display:none !important; }
     .auth-page { min-height:100vh;display:grid;grid-template-columns:1fr 1fr; }
 
     .auth-left { position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:48px;background:linear-gradient(160deg,#0A0705 0%,#060402 60%); }

@@ -4,6 +4,7 @@
 
 @push('styles')
 <style>
+    .mg-nav { display:none !important; }
     .auth-page { min-height:100vh;display:grid;grid-template-columns:1fr 1fr; }
 
     /* LEFT */
