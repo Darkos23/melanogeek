@@ -22,7 +22,7 @@
     /* RIGHT */
     .auth-right { display:flex;align-items:center;justify-content:center;padding:48px 40px;background:var(--bg);transition:background .35s; }
     .auth-form-wrap { width:100%;max-width:420px; }
-    .auth-title { font-family:var(--font-head);font-size:2rem;font-weight:800;letter-spacing:-.02em;color:var(--cream);margin-bottom:6px; }
+    .auth-title { font-family:var(--font-head);font-size:clamp(1.3rem,3.5vw,1.75rem);font-weight:800;letter-spacing:-.02em;color:var(--cream);margin-bottom:6px;white-space:nowrap; }
     .auth-subtitle { font-size:.9rem;color:var(--cream-muted);margin-bottom:32px; }
     .auth-subtitle a { color:var(--gold);text-decoration:none;font-weight:500; }
     .auth-subtitle a:hover { text-decoration:underline; }
