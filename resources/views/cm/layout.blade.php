@@ -22,8 +22,8 @@
             --border:rgba(255,255,255,.06);
             --border-hover:rgba(255,255,255,.14);
             --shadow-md:0 8px 32px rgba(0,0,0,.60);
-            --pat:rgba(196,162,84,.042);
-            --pat2:rgba(122,181,144,.028);
+            --pat:rgba(196,162,84,.13);
+            --pat2:rgba(122,181,144,.07);
         }
         [data-theme="light"] {
             --bg:#F7F4EB;
@@ -36,8 +36,8 @@
             --border:rgba(28,26,13,.09);
             --border-hover:rgba(28,26,13,.18);
             --shadow-md:0 8px 32px rgba(0,0,0,.08);
-            --pat:rgba(196,162,84,.09);
-            --pat2:rgba(122,181,144,.06);
+            --pat:rgba(196,162,84,.16);
+            --pat2:rgba(122,181,144,.10);
         }
         :root {
             --cm:#C4A254;
@@ -61,8 +61,8 @@
         body {
             background-color:var(--bg);
             background-image:
-                linear-gradient(45deg,  var(--pat) 1px, transparent 1px),
-                linear-gradient(-45deg, var(--pat) 1px, transparent 1px);
+                linear-gradient(45deg,  var(--pat) 1.5px, transparent 1.5px),
+                linear-gradient(-45deg, var(--pat) 1.5px, transparent 1.5px);
             background-size:36px 36px;
             color:var(--text);
             font-family:var(--font-body);
