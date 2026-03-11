@@ -22,8 +22,6 @@
             --border:rgba(255,255,255,.06);
             --border-hover:rgba(255,255,255,.14);
             --shadow-md:0 8px 32px rgba(0,0,0,.60);
-            --pat:rgba(196,162,84,.13);
-            --pat2:rgba(122,181,144,.07);
         }
         [data-theme="light"] {
             --bg:#F7F4EB;
@@ -36,8 +34,6 @@
             --border:rgba(28,26,13,.09);
             --border-hover:rgba(28,26,13,.18);
             --shadow-md:0 8px 32px rgba(0,0,0,.08);
-            --pat:rgba(196,162,84,.30);
-            --pat2:rgba(122,181,144,.18);
         }
         :root {
             --cm:#C4A254;
@@ -57,17 +53,20 @@
 
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 
-        /* ══ FOND ELFIQUE — motif losange ══ */
+        /* ══ FOND ELFIQUE — losange imbriqué SVG ══ */
         body {
             background-color:var(--bg);
-            background-image:
-                linear-gradient(45deg,  var(--pat) 1.5px, transparent 1.5px),
-                linear-gradient(-45deg, var(--pat) 1.5px, transparent 1.5px);
-            background-size:36px 36px;
+            background-size:48px 48px;
             color:var(--text);
             font-family:var(--font-body);
             -webkit-font-smoothing:antialiased;
             display:flex;min-height:100vh;
+        }
+        html[data-theme="dark"] body {
+            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 0L48 24L24 48L0 24Z' fill='none' stroke='%23C4A254' stroke-width='1' stroke-opacity='.20'/%3E%3Cpath d='M24 10L38 24L24 38L10 24Z' fill='none' stroke='%23C4A254' stroke-width='.6' stroke-opacity='.12'/%3E%3Ccircle cx='24' cy='24' r='2' fill='%23C4A254' fill-opacity='.16'/%3E%3C/svg%3E");
+        }
+        html[data-theme="light"] body {
+            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 0L48 24L24 48L0 24Z' fill='none' stroke='%23C4A254' stroke-width='1' stroke-opacity='.36'/%3E%3Cpath d='M24 10L38 24L24 38L10 24Z' fill='none' stroke='%23C4A254' stroke-width='.6' stroke-opacity='.22'/%3E%3Ccircle cx='24' cy='24' r='2' fill='%23C4A254' fill-opacity='.28'/%3E%3C/svg%3E");
         }
 
         /* ══ SIDEBAR ══ */
