@@ -432,34 +432,24 @@
 </section>
 
 {{-- TICKER --}}
-@php
-$tickerNiches = [
-    '🎵 Musique','📸 Photographie','👗 Mode & Style','💄 Beauté & Soins',
-    '🍽️ Cuisine','🎬 Vidéo & Vlog','🎨 Art & Illustration','💃 Danse',
-    '😂 Comédie & Humour','💼 Business','🌍 Voyage & Culture','⚽ Sport & Fitness',
-    '🪡 Artisanat','📚 Éducation','🎙️ Podcast','✨ Lifestyle',
-];
-@endphp
+@php $dynNiches = \App\Models\Setting::getNiches(); @endphp
 <div class="ticker">
     <div class="ticker-t">
-        @foreach(array_merge($tickerNiches, $tickerNiches) as $tn)
-            <span class="tt">{{ $tn }}<span class="tt-dot"></span></span>
+        @foreach(array_merge($dynNiches, $dynNiches) as $tn)
+            <span class="tt">{{ $tn['emoji'] }} {{ $tn['label'] }}<span class="tt-dot"></span></span>
         @endforeach
     </div>
 </div>
 
 {{-- CRÉATEURS --}}
 @php
-$nicheEmojis = [
-    'Musique'=>'🎵','Photographie'=>'📸','Mode & Style'=>'👗','Beauté & Soins'=>'💄',
-    'Cuisine'=>'🍽️','Vidéo & Vlog'=>'🎬','Art & Illustration'=>'🎨','Danse'=>'💃',
-    'Comédie & Humour'=>'😂','Business'=>'💼','Voyage & Culture'=>'🌍','Sport & Fitness'=>'⚽',
-    'Artisanat'=>'🪡','Éducation'=>'📚','Podcast'=>'🎙️','Lifestyle'=>'✨',
-    // anciens labels (compat)
-    'Photographe'=>'📸','Musicien'=>'🎵','Vidéaste'=>'🎬','Artiste digital'=>'🎨',
-    'Styliste'=>'👗','Danseur'=>'💃','Cuisinier'=>'🍽️','Podcasteur'=>'🎙️',
-    'Illustrateur'=>'✏️','Comédien'=>'🎭','Influenceur'=>'⭐',
-];
+// Construit la map emoji depuis les niches dynamiques + compat anciens labels
+$nicheEmojis = array_merge(
+    array_column($dynNiches, 'emoji', 'label'),
+    ['Photographe'=>'📸','Musicien'=>'🎵','Vidéaste'=>'🎬','Artiste digital'=>'🎨',
+     'Styliste'=>'👗','Danseur'=>'💃','Cuisinier'=>'🍽️','Podcasteur'=>'🎙️',
+     'Illustrateur'=>'✏️','Comédien'=>'🎭','Influenceur'=>'⭐']
+);
 @endphp
 <section class="section reveal">
     <div class="s-head">

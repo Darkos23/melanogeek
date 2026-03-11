@@ -229,6 +229,8 @@ Route::prefix('cm')->name('cm.')->middleware(['auth', 'cm'])->group(function () 
     Route::patch('/homepage',                    [CMController::class, 'homepageUpdate'])->name('homepage.update');
     Route::get('/about',                         [CMController::class, 'aboutEdit'])->name('about');
     Route::patch('/about',                       [CMController::class, 'aboutUpdate'])->name('about.update');
+    Route::get('/niches',                        [CMController::class, 'nichesEdit'])->name('niches');
+    Route::patch('/niches',                      [CMController::class, 'nichesUpdate'])->name('niches.update');
 });
 
 // ── Owner (owner uniquement) ──

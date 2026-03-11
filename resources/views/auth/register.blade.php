@@ -395,19 +395,11 @@
                         <label class="form-label" for="creator_category">Ta catégorie créateur</label>
                         <select class="form-input {{ $errors->has('creator_category') ? 'is-error' : '' }}" id="creator_category" name="creator_category">
                             <option value="" disabled {{ !old('creator_category') ? 'selected' : '' }}>Choisir une catégorie…</option>
-                            <option value="Mode & Beauté" {{ old('creator_category') === 'Mode & Beauté' ? 'selected' : '' }}>👗 Mode & Beauté</option>
-                            <option value="Musique" {{ old('creator_category') === 'Musique' ? 'selected' : '' }}>🎵 Musique</option>
-                            <option value="Humour & Divertissement" {{ old('creator_category') === 'Humour & Divertissement' ? 'selected' : '' }}>😂 Humour & Divertissement</option>
-                            <option value="Cuisine & Food" {{ old('creator_category') === 'Cuisine & Food' ? 'selected' : '' }}>🍲 Cuisine & Food</option>
-                            <option value="Photographie" {{ old('creator_category') === 'Photographie' ? 'selected' : '' }}>📸 Photographie</option>
-                            <option value="Vidéo & Film" {{ old('creator_category') === 'Vidéo & Film' ? 'selected' : '' }}>🎬 Vidéo & Film</option>
-                            <option value="Fitness & Bien-être" {{ old('creator_category') === 'Fitness & Bien-être' ? 'selected' : '' }}>💪 Fitness & Bien-être</option>
-                            <option value="Business & Entrepreneuriat" {{ old('creator_category') === 'Business & Entrepreneuriat' ? 'selected' : '' }}>💼 Business & Entrepreneuriat</option>
-                            <option value="Design & Art" {{ old('creator_category') === 'Design & Art' ? 'selected' : '' }}>🎨 Design & Art</option>
-                            <option value="Écriture & Poésie" {{ old('creator_category') === 'Écriture & Poésie' ? 'selected' : '' }}>✍️ Écriture & Poésie</option>
-                            <option value="Coaching & Formation" {{ old('creator_category') === 'Coaching & Formation' ? 'selected' : '' }}>🎓 Coaching & Formation</option>
-                            <option value="Lifestyle & Voyage" {{ old('creator_category') === 'Lifestyle & Voyage' ? 'selected' : '' }}>✈️ Lifestyle & Voyage</option>
-                            <option value="Autre" {{ old('creator_category') === 'Autre' ? 'selected' : '' }}>💡 Autre</option>
+                            @foreach(\App\Models\Setting::getNiches() as $_niche)
+                            <option value="{{ $_niche['label'] }}" {{ old('creator_category') === $_niche['label'] ? 'selected' : '' }}>
+                                {{ $_niche['emoji'] }} {{ $_niche['label'] }}
+                            </option>
+                            @endforeach
                         </select>
                         @error('creator_category')<div class="form-error">⚠ {{ $message }}</div>@enderror
                     </div>

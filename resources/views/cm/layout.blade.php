@@ -293,6 +293,9 @@
             <a href="{{ route('cm.about') }}" class="sidebar-link {{ request()->routeIs('cm.about') ? 'active' : '' }}">
                 <span class="icon">📖</span> À propos
             </a>
+            <a href="{{ route('cm.niches') }}" class="sidebar-link {{ request()->routeIs('cm.niches') ? 'active' : '' }}">
+                <span class="icon">🏷️</span> Niches
+            </a>
             <a href="{{ route('home') }}" class="sidebar-link" target="_blank">
                 <span class="icon">🌐</span> Voir le site
             </a>

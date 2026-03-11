@@ -199,6 +199,37 @@ class CMController extends Controller
         return back()->with('success', 'Page "À propos" mise à jour.');
     }
 
+    // ── Niches ────────────────────────────────────────────────────────
+
+    public function nichesEdit()
+    {
+        $niches = Setting::getNiches();
+        $nichesText = implode("\n", array_map(fn($n) => $n['emoji'].' '.$n['label'], $niches));
+        return view('cm.niches', compact('nichesText'));
+    }
+
+    public function nichesUpdate(Request $request)
+    {
+        $request->validate(['niches_text' => 'required|string|max:5000']);
+
+        $lines = array_filter(array_map('trim', explode("\n", $request->niches_text)));
+        $niches = [];
+        foreach ($lines as $line) {
+            preg_match('/^(\S+)\s+(.+)$/', $line, $m);
+            if (isset($m[1], $m[2])) {
+                $niches[] = ['emoji' => trim($m[1]), 'label' => trim($m[2])];
+            }
+        }
+
+        if (count($niches) === 0) {
+            return back()->withErrors(['niches_text' => 'Liste invalide — format attendu : emoji Nom']);
+        }
+
+        Setting::set('niches_list', json_encode($niches, JSON_UNESCAPED_UNICODE));
+        ActivityLog::record('cm_niches_update', count($niches).' niches mises à jour', 'settings', null);
+        return back()->with('success', count($niches).' niches enregistrées.');
+    }
+
     private static function homepageDefaults(): array
     {
         return [

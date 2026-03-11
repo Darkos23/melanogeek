@@ -482,24 +482,8 @@
                 </div>
                 <div class="edit-card-body">
                     <div class="niche-grid">
-                        @foreach([
-                            ['val'=>'Musique',           'emoji'=>'🎵'],
-                            ['val'=>'Photographie',      'emoji'=>'📸'],
-                            ['val'=>'Mode & Style',      'emoji'=>'👗'],
-                            ['val'=>'Beauté & Soins',    'emoji'=>'💄'],
-                            ['val'=>'Cuisine',           'emoji'=>'🍽️'],
-                            ['val'=>'Vidéo & Vlog',      'emoji'=>'🎬'],
-                            ['val'=>'Art & Illustration','emoji'=>'🎨'],
-                            ['val'=>'Danse',             'emoji'=>'💃'],
-                            ['val'=>'Comédie & Humour',  'emoji'=>'😂'],
-                            ['val'=>'Business',          'emoji'=>'💼'],
-                            ['val'=>'Voyage & Culture',  'emoji'=>'🌍'],
-                            ['val'=>'Sport & Fitness',   'emoji'=>'⚽'],
-                            ['val'=>'Artisanat',         'emoji'=>'🪡'],
-                            ['val'=>'Éducation',         'emoji'=>'📚'],
-                            ['val'=>'Podcast',           'emoji'=>'🎙️'],
-                            ['val'=>'Lifestyle',         'emoji'=>'✨'],
-                        ] as $n)
+                        @foreach(\App\Models\Setting::getNiches() as $_n)
+                        @php $n = ['val' => $_n['label'], 'emoji' => $_n['emoji']]; @endphp
                         <div class="niche-option">
                             <input type="radio" id="niche_{{ $loop->index }}" name="niche"
                                 value="{{ $n['val'] }}"
