@@ -33,6 +33,7 @@ class User extends Authenticatable
         'bio_wolof',
         'niche',
         'niche_wolof',
+        'specialty',
         'location',
         'website',
         'instagram',
@@ -205,6 +206,40 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Review::class, 'reviewed_id');
+    }
+
+    // ── E-learning (Waxtu) ──
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'instructor_id');
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function progress()
+    {
+        return $this->hasMany(UserProgress::class);
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
+    }
+
+    public function isEnrolledIn(Course $course): bool
+    {
+        return $this->enrollments()
+            ->where('course_id', $course->id)
+            ->where('status', 'active')
+            ->exists();
+    }
+
+    public function isInstructor(): bool
+    {
+        return $this->role === 'instructor';
     }
 
     // Blocages
