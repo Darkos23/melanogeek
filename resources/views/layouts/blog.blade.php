@@ -13,8 +13,8 @@
     <script>
     (function(){
         var t = localStorage.getItem('mg-theme') || 'light';
-        var f = 'family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Outfit:wght@300;400;500;600';
-        if (t === 'light') f += '&family=Unbounded:wght@300;400;600;700;900&family=Sora:wght@300;400;500;600';
+        var f = 'family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Outfit:wght@300;400;500;600';
+        if (t === 'light') f += '&family=Sora:wght@300;400;500;600';
         var pc1 = document.createElement('link'); pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
         var pc2 = document.createElement('link'); pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com'; pc2.crossOrigin = 'anonymous';
         var lk  = document.createElement('link'); lk.rel = 'stylesheet';
@@ -34,7 +34,7 @@
         --terra: #C8522A; --terra-soft: rgba(200,82,42,0.12);
         --gold: #D4A843; --gold-soft: rgba(212,168,67,0.10);
         --accent: #E06030; --green: #2A7A48;
-        --font-head: 'Plus Jakarta Sans', sans-serif; --font-body: 'Outfit', sans-serif;
+        --font-head: 'Bricolage Grotesque', sans-serif; --font-body: 'Outfit', sans-serif;
         --shadow-sm: 0 4px 12px rgba(0,0,0,0.40); --shadow-md: 0 8px 24px rgba(0,0,0,0.50);
     }
     [data-theme="light"] {
@@ -45,7 +45,7 @@
         --terra: #C84818; --terra-soft: rgba(200,72,24,0.10);
         --gold: #B87820; --gold-soft: rgba(184,120,32,0.10);
         --accent: #E85A1A; --green: #1A5A30;
-        --font-head: 'Unbounded', sans-serif; --font-body: 'Sora', sans-serif;
+        --font-head: 'Bricolage Grotesque', sans-serif; --font-body: 'Sora', sans-serif;
         --shadow-sm: 0 4px 12px rgba(30,14,4,0.08); --shadow-md: 0 8px 24px rgba(30,14,4,0.12);
     }
 
