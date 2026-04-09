@@ -1,611 +1,1068 @@
 @extends('layouts.app')
 
-@section('title', 'MelanoGeek — Le Réseau des Créateurs')
+@section('title', 'MelanoGeek — La Culture Geek, Vue d\'Afrique')
 
 @push('styles')
 <style>
-/* ── Variables ── */
-.home-page {
-    --bg:#F5EDD6; --bg2:#EDE0C0; --card:#FBF5E6;
-    --ink:#1E0E04; --ink2:rgba(30,14,4,.52); --ink3:rgba(30,14,4,.14);
-    --terra:#C84818; --terra2:#E85A1A; --gold:#B87820; --green:#1A5A30;
-    position:relative; background:var(--bg);
+/* ══ LANDING PAGE ══ */
+.lp { --accent: var(--terra); --accent2: var(--gold); }
+
+/* ── HERO ── */
+.lp-hero {
+    min-height: 100vh;
+    padding-top: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
-
-/* ══ HERO ══ */
-.hero { min-height:100vh;padding-top:72px;position:relative;display:grid;grid-template-rows:1fr auto;overflow:hidden; }
-.hero-adinkra { position:absolute;right:-80px;top:50%;transform:translateY(-50%);width:560px;height:560px;opacity:.13;pointer-events:none;z-index:0; }
-.mudcloth-tl,.mudcloth-br { position:absolute;width:220px;height:220px;opacity:.13;pointer-events:none;z-index:0; }
-.mudcloth-tl{top:72px;left:0;} .mudcloth-br{bottom:0;right:0;}
-.hero-inner { position:relative;z-index:1;padding:64px 52px;display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center; }
-
-.hero-pill { display:inline-flex;align-items:center;gap:8px;background:rgba(200,72,24,.09);border:1px solid rgba(200,72,24,.22);color:var(--terra);font-family:'Unbounded',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:32px;width:fit-content; }
-.pill-dot { width:6px;height:6px;background:var(--terra);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0; }
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-
-.hero-h1 { font-family:'Unbounded',sans-serif;font-size:clamp(2.6rem,5vw,5.2rem);font-weight:900;line-height:.98;letter-spacing:-.04em;color:var(--ink);margin-bottom:24px; }
-.hero-h1 em { color:var(--terra);font-style:normal; }
-.hero-h1 .outline { -webkit-text-stroke:2.5px var(--terra);color:transparent; }
-.hero-desc { font-size:.9rem;line-height:1.82;color:var(--ink2);max-width:400px;margin-bottom:40px;font-weight:300; }
-.hero-btns { display:flex;align-items:center;gap:16px;flex-wrap:wrap; }
-.btn-main { background:var(--terra);color:white !important;border:none;padding:14px 30px;border-radius:6px;font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:8px; }
-.btn-main:hover { background:var(--terra2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(200,72,24,.28); }
-.btn-sec { color:var(--ink2) !important;font-family:'Sora',sans-serif;font-size:.78rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:color .2s; }
-.btn-sec:hover { color:var(--terra) !important; }
-.play-o { width:38px;height:38px;border:1.5px solid var(--ink3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;transition:all .2s;color:var(--ink2); }
-.btn-sec:hover .play-o { border-color:var(--terra);color:var(--terra); }
-
-/* Carte profil */
-.hero-r { position:relative; }
-.kente-bg { position:absolute;inset:-20px;border-radius:24px;background-image:repeating-linear-gradient(0deg,rgba(200,72,24,.07) 0,rgba(200,72,24,.07) 2px,transparent 2px,transparent 20px),repeating-linear-gradient(90deg,rgba(184,120,32,.06) 0,rgba(184,120,32,.06) 2px,transparent 2px,transparent 20px);z-index:0; }
-.card-prof { position:relative;z-index:1;background:var(--card);border:1px solid var(--ink3);border-radius:20px;overflow:hidden;box-shadow:0 28px 72px rgba(30,14,4,.11);max-width:370px;margin:0 auto; }
-.cp-cover { height:152px;background:linear-gradient(135deg,#2A1206,#7A3010,#C84818);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:3.5rem; }
-.cp-cover::before { content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='white' stroke-width='0.5' opacity='0.12'%3E%3Ccircle cx='20' cy='20' r='12'/%3E%3Ccircle cx='20' cy='20' r='6'/%3E%3Cline x1='0' y1='20' x2='40' y2='20'/%3E%3Cline x1='20' y1='0' x2='20' y2='40'/%3E%3Cpath d='M8 8 L32 32 M32 8 L8 32'/%3E%3C/g%3E%3C/svg%3E");background-size:40px 40px; }
-.cp-cover::after { content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(30,14,4,.55) 0%,transparent 55%); }
-.cp-live { position:absolute;top:10px;right:10px;z-index:2;background:rgba(190,30,10,.88);color:white;font-family:'Unbounded',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:100px;display:flex;align-items:center;gap:4px; }
-.cp-live-d { width:5px;height:5px;background:white;border-radius:50%;animation:pulse 1.5s infinite; }
-.cp-body { padding:18px 20px; }
-.cp-top { display:flex;align-items:center;justify-content:space-between;margin-bottom:12px; }
-.cp-av { width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,var(--terra),var(--gold));display:flex;align-items:center;justify-content:center;font-size:1.3rem;border:3px solid var(--card);margin-top:-28px;position:relative;z-index:2; }
-.cp-bdg { font-family:'Unbounded',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(200,72,24,.09);border:1px solid rgba(200,72,24,.18);color:var(--terra); }
-.cp-name { font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:2px; }
-.cp-niche { font-family:'Sora',sans-serif;font-size:.68rem;color:var(--ink2);margin-bottom:13px; }
-.cp-stats { display:flex;border-top:1px solid var(--ink3);border-bottom:1px solid var(--ink3);padding:9px 0;margin-bottom:13px; }
-.cps { flex:1;text-align:center; }
-.cps-n { font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700;color:var(--ink); }
-.cps-l { font-family:'Sora',sans-serif;font-size:.56rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;margin-top:1px; }
-.cp-acts { display:flex;gap:8px; }
-.cp-act { flex:1;padding:9px;border-radius:6px;font-family:'Sora',sans-serif;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;text-decoration:none; }
-.cp-act.f { background:var(--terra);color:white !important;border:none; } .cp-act.f:hover { background:var(--terra2); }
-.cp-act.m { background:var(--bg2);border:1px solid var(--ink3);color:var(--ink2) !important; }
-
-/* Badges flottants */
-.badge-f { position:absolute;background:var(--card);border:1px solid var(--ink3);border-radius:12px;padding:9px 13px;box-shadow:0 10px 28px rgba(30,14,4,.1);animation:float 4s ease-in-out infinite;z-index:2; }
-.badge-f.a { top:10%;left:-32px;animation-delay:.3s; } .badge-f.b { bottom:14%;right:-24px;animation-delay:.9s; }
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.bf-l { font-family:'Sora',sans-serif;font-size:.52rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink2);margin-bottom:1px; }
-.bf-v { font-family:'Unbounded',sans-serif;font-size:.85rem;font-weight:700;color:var(--terra); }
-.bf-s { font-family:'Sora',sans-serif;font-size:.55rem;color:var(--ink2);margin-top:1px; }
-
-/* Stats bas hero */
-.hero-stats { position:relative;z-index:1;border-top:1px solid var(--ink3);display:flex;background:rgba(245,237,214,.7);backdrop-filter:blur(8px); }
-.hs { flex:1;text-align:center;padding:18px;border-right:1px solid var(--ink3); } .hs:last-child { border-right:none; }
-.hs-n { font-family:'Unbounded',sans-serif;font-size:1.4rem;font-weight:800;color:var(--ink);letter-spacing:-.02em; }
-.hs-l { font-family:'Sora',sans-serif;font-size:.6rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.07em;margin-top:2px; }
-
-/* ══ TICKER ══ */
-.ticker { position:relative;z-index:1;background:var(--terra);padding:10px 0;overflow:hidden;white-space:nowrap; }
-.ticker::before,.ticker::after { content:'';position:absolute;top:0;bottom:0;width:40px;z-index:2; }
-.ticker::before { left:0;background:linear-gradient(90deg,var(--terra),transparent); }
-.ticker::after { right:0;background:linear-gradient(-90deg,var(--terra),transparent); }
-.ticker-t { display:inline-flex;animation:tickr 24s linear infinite; }
-@keyframes tickr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.tt { font-family:'Unbounded',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.88);padding:0 24px;display:inline-flex;align-items:center;gap:12px; }
-.tt-dot { width:4px;height:4px;background:rgba(255,255,255,.35);border-radius:50%;flex-shrink:0; }
-
-/* ══ SECTIONS ══ */
-.section { padding:88px 52px;position:relative; }
-.section.alt { background:var(--bg2); }
-.section::before { content:'';position:absolute;right:0;top:0;bottom:0;width:300px;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.8' opacity='0.13'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='10'/%3E%3Ccircle cx='30' cy='30' r='3'/%3E%3Cline x1='10' y1='30' x2='50' y2='30'/%3E%3Cline x1='30' y1='10' x2='30' y2='50'/%3E%3Cpath d='M16 16 L44 44 M44 16 L16 44'/%3E%3C/g%3E%3C/svg%3E");background-size:60px 60px;pointer-events:none;opacity:.85; }
-.s-eye { font-family:'Sora',sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);margin-bottom:9px; }
-.s-tit { font-family:'Unbounded',sans-serif;font-size:clamp(1.5rem,2.8vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--ink); }
-.s-tit span { color:var(--terra); }
-.s-head { display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:44px; }
-.s-link { font-family:'Sora',sans-serif;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2) !important;text-decoration:none;border-bottom:1px solid var(--ink3);padding-bottom:2px;transition:all .2s;cursor:pointer; }
-.s-link:hover { color:var(--terra) !important;border-color:var(--terra); }
-
-/* ══ CRÉATEURS ══ */
-.cr-row { display:flex;gap:12px;overflow-x:auto;padding-bottom:14px;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none; }
-.cr-row::-webkit-scrollbar { display:none; }
-.cr-card { flex:0 0 188px;scroll-snap-align:start;background:var(--card);border:1px solid var(--ink3);border-radius:16px;padding:18px 15px;transition:all .3s;position:relative;overflow:hidden;display:block;text-decoration:none;color:inherit; }
-.cr-card::before { content:'';position:absolute;top:0;right:0;width:60px;height:60px;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.7' opacity='0.1'%3E%3Cpath d='M60 0 L30 30 L60 60'/%3E%3Cpath d='M60 15 L45 30 L60 45'/%3E%3Ccircle cx='55' cy='5' r='4'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;opacity:0;transition:opacity .3s; }
-.cr-card::after { content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--terra);transform:scaleX(0);transition:transform .3s;transform-origin:left; }
-.cr-card:hover { border-color:rgba(200,72,24,.3);transform:translateY(-4px);box-shadow:0 18px 44px rgba(30,14,4,.1); }
-.cr-card:hover::before { opacity:1; } .cr-card:hover::after { transform:scaleX(1); }
-.cr-top { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:13px; }
-.cr-av { width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;position:relative; }
-.cr-ring { position:absolute;inset:-2px;border-radius:14px;border:2px solid var(--terra);opacity:0;transition:opacity .3s; }
-.cr-card:hover .cr-ring { opacity:1; }
-.cr-bdg { font-family:'Unbounded',sans-serif;font-size:.54rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:4px; }
-.cr-bdg.v { background:rgba(200,72,24,.08);border:1px solid rgba(200,72,24,.18);color:var(--terra); }
-.cr-bdg.n { background:rgba(26,90,48,.08);border:1px solid rgba(26,90,48,.18);color:var(--green); }
-.cr-name { font-family:'Unbounded',sans-serif;font-size:.76rem;font-weight:700;color:var(--ink);margin-bottom:3px; }
-.cr-niche { font-family:'Sora',sans-serif;font-size:.66rem;color:var(--ink2);margin-bottom:13px; }
-.cr-stats { display:flex;gap:12px; }
-.cr-sn { font-family:'Unbounded',sans-serif;font-size:.8rem;font-weight:700;color:var(--ink); }
-.cr-sl { font-family:'Sora',sans-serif;font-size:.54rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em; }
-
-/* ══ MANIFESTE ══ */
-.manifeste { padding:88px 52px;background:var(--bg2);border-top:1px solid var(--ink3);border-bottom:1px solid var(--ink3);position:relative;overflow:hidden; }
-.manifeste::before { content:'';position:absolute;left:0;top:0;bottom:0;width:8px;background:repeating-linear-gradient(180deg,var(--terra) 0,var(--terra) 12px,var(--gold) 12px,var(--gold) 24px,#1E0E04 24px,#1E0E04 36px,var(--gold) 36px,var(--gold) 48px);opacity:.55; }
-.manifeste::after { content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%231E0E04' stroke-width='0.6' opacity='0.09'%3E%3Crect x='20' y='20' width='15' height='15'/%3E%3Crect x='65' y='20' width='15' height='15'/%3E%3Crect x='20' y='65' width='15' height='15'/%3E%3Crect x='65' y='65' width='15' height='15'/%3E%3Ccircle cx='50' cy='50' r='18'/%3E%3Cpath d='M27 27 L73 73 M73 27 L27 73'/%3E%3Cline x1='50' y1='5' x2='50' y2='95'/%3E%3Cline x1='5' y1='50' x2='95' y2='50'/%3E%3C/g%3E%3C/svg%3E");background-size:100px 100px;pointer-events:none; }
-.manifeste-inner { position:relative;z-index:1;padding-left:32px;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center; }
-.m-quote { font-family:'Unbounded',sans-serif;font-size:clamp(1.3rem,2.2vw,2rem);font-weight:800;letter-spacing:-.03em;line-height:1.25;color:var(--ink);margin-bottom:20px; }
-.m-quote span { color:var(--terra); }
-.m-sub { font-family:'Sora',sans-serif;font-size:.86rem;line-height:1.82;color:var(--ink2);font-weight:300; }
-.v-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
-.v-item { background:rgba(245,237,214,.7);border:1px solid var(--ink3);border-radius:14px;padding:18px 16px;transition:all .3s;cursor:pointer;position:relative;overflow:hidden; }
-.v-item::after { content:'';position:absolute;bottom:-8px;right:-8px;width:40px;height:40px;background-image:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='14' fill='none' stroke='%23C84818' stroke-width='1' opacity='0.12'/%3E%3Ccircle cx='20' cy='20' r='7' fill='none' stroke='%23C84818' stroke-width='1' opacity='0.12'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none; }
-.v-item:hover { border-color:rgba(200,72,24,.25);box-shadow:0 6px 20px rgba(30,14,4,.06); }
-.v-ico { font-size:1.4rem;margin-bottom:9px; }
-.v-tit { font-family:'Unbounded',sans-serif;font-size:.66rem;font-weight:700;color:var(--ink);margin-bottom:5px; }
-.v-dsc { font-family:'Sora',sans-serif;font-size:.7rem;line-height:1.6;color:var(--ink2);font-weight:300; }
-
-/* ══ TARIFS ══ */
-.tarifs { padding:88px 52px;position:relative;overflow:hidden; }
-.tarifs::before { content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='25,5 45,40 5,40' fill='none' stroke='%23B87820' stroke-width='0.6' opacity='0.11'/%3E%3Cpolygon points='25,45 5,10 45,10' fill='none' stroke='%23C84818' stroke-width='0.5' opacity='0.08'/%3E%3C/svg%3E");background-size:50px 50px;pointer-events:none; }
-.t-inner { position:relative;z-index:1; }
-.pr-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px;max-width:880px; }
-.pr-c { background:var(--card);border:1px solid var(--ink3);border-radius:20px;padding:30px 24px;position:relative;transition:all .3s; }
-.pr-c:hover { border-color:rgba(200,72,24,.28);transform:translateY(-4px);box-shadow:0 18px 44px rgba(30,14,4,.1); }
-.pr-c.hot { background:var(--terra);border-color:var(--terra); } .pr-c.hot:hover { background:var(--terra2); }
-.pr-hot { position:absolute;top:-10px;left:22px;background:var(--gold);color:white !important;font-family:'Unbounded',sans-serif;font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:100px; }
-.pr-fl { font-size:1.6rem;margin-bottom:12px; }
-.pr-nm { font-family:'Unbounded',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin-bottom:16px; }
-.pr-c.hot .pr-nm { color:rgba(255,255,255,.6); }
-.pr-p { font-family:'Unbounded',sans-serif;font-size:2rem;font-weight:900;color:var(--ink);letter-spacing:-.03em;line-height:1; }
-.pr-c.hot .pr-p { color:white; }
-.pr-p sub { font-family:'Sora',sans-serif;font-size:.6rem;font-weight:400;color:var(--ink2);vertical-align:bottom;margin-left:2px; }
-.pr-c.hot .pr-p sub { color:rgba(255,255,255,.55); }
-.pr-free { font-family:'Unbounded',sans-serif;font-size:1.3rem;font-weight:900;color:var(--green); }
-.pr-pd { font-family:'Sora',sans-serif;font-size:.65rem;color:var(--ink2);margin-top:3px;margin-bottom:22px; }
-.pr-c.hot .pr-pd { color:rgba(255,255,255,.5); }
-.pr-ul { list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:22px; }
-.pr-ul li { font-family:'Sora',sans-serif;font-size:.74rem;color:var(--ink2);display:flex;align-items:center;gap:6px; }
-.pr-ul li::before { content:'✓';color:var(--terra);font-weight:700;flex-shrink:0; }
-.pr-c.hot .pr-ul li { color:rgba(255,255,255,.72); } .pr-c.hot .pr-ul li::before { color:rgba(255,255,255,.55); }
-.btn-pr { display:block;width:100%;text-align:center;padding:11px;border-radius:8px;font-family:'Unbounded',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.03em;transition:all .2s;text-decoration:none;cursor:pointer; }
-.btn-pr.o { background:none;border:1px solid var(--ink3);color:var(--ink2) !important; }
-.btn-pr.o:hover { border-color:var(--terra);color:var(--terra) !important;background:rgba(200,72,24,.04); }
-.btn-pr.f { background:white;border:none;color:var(--terra) !important; } .btn-pr.f:hover { background:var(--bg); }
-
-/* ══ CTA FINAL ══ */
-.cta-s { padding:96px 52px;background:#1E0E04;position:relative;overflow:hidden;display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:center; }
-.cta-s::before { content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23F5EDD6' stroke-width='0.5' opacity='0.04'%3E%3Crect x='5' y='5' width='20' height='20'/%3E%3Crect x='35' y='5' width='20' height='20'/%3E%3Crect x='5' y='35' width='20' height='20'/%3E%3Crect x='35' y='35' width='20' height='20'/%3E%3Cline x1='0' y1='30' x2='60' y2='30'/%3E%3Cline x1='30' y1='0' x2='30' y2='60'/%3E%3C/g%3E%3C/svg%3E");background-size:60px 60px;pointer-events:none; }
-.cta-kente { position:absolute;left:0;top:0;bottom:0;width:6px;background:repeating-linear-gradient(180deg,var(--terra) 0,var(--terra) 10px,var(--gold) 10px,var(--gold) 20px,rgba(245,237,214,.3) 20px,rgba(245,237,214,.3) 30px,var(--gold) 30px,var(--gold) 40px);opacity:.6; }
-.cta-glow { position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 35% 50%,rgba(200,72,24,.1) 0%,transparent 60%);pointer-events:none; }
-.cta-l { position:relative;z-index:1; }
-.cta-eye { font-family:'Sora',sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,237,214,.32);margin-bottom:14px; }
-.cta-h { font-family:'Unbounded',sans-serif;font-size:clamp(1.8rem,3.8vw,3.5rem);font-weight:900;letter-spacing:-.04em;line-height:1;color:#F5EDD6;margin-bottom:12px; }
-.cta-h span { color:var(--terra2); }
-.cta-sub { font-family:'Sora',sans-serif;font-size:.86rem;color:rgba(245,237,214,.42);font-weight:300;line-height:1.75; }
-.cta-r { position:relative;z-index:1;display:flex;flex-direction:column;gap:11px; }
-.btn-ctam { background:var(--terra);color:white !important;border:none;padding:14px 26px;border-radius:8px;font-family:'Unbounded',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.02em;cursor:pointer;transition:all .25s;text-decoration:none;text-align:center;display:block; }
-.btn-ctam:hover { background:var(--terra2);transform:translateY(-2px);box-shadow:0 12px 32px rgba(200,72,24,.35); }
-.btn-ctag { background:none;border:1px solid rgba(245,237,214,.1);color:rgba(245,237,214,.42) !important;padding:14px 26px;border-radius:8px;font-family:'Sora',sans-serif;font-size:.78rem;cursor:pointer;transition:all .2s;text-decoration:none;text-align:center;display:block; }
-.btn-ctag:hover { border-color:rgba(245,237,214,.28);color:rgba(245,237,214,.75) !important; }
-.cta-note { font-family:'Sora',sans-serif;font-size:.6rem;color:rgba(245,237,214,.2);text-align:center; }
-
-/* ══ FOOTER ══ */
-.home-page footer { background:#1E0E04;padding:28px 52px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(245,237,214,.05); }
-.f-logo { font-family:'Unbounded',sans-serif;font-size:.78rem;font-weight:700;color:rgba(245,237,214,.3); }
-.f-logo span { color:var(--terra); }
-.f-links { display:flex;gap:18px;list-style:none; }
-.f-links a { font-family:'Sora',sans-serif;font-size:.6rem;color:rgba(245,237,214,.2) !important;text-decoration:none;letter-spacing:.04em;transition:color .2s; }
-.f-links a:hover { color:rgba(245,237,214,.55) !important; }
-.f-copy { font-family:'Sora',sans-serif;font-size:.6rem;color:rgba(245,237,214,.16);letter-spacing:.04em; }
-
-/* ══ ANIMATIONS ══ */
-@keyframes fadeup{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
-.hero-pill { animation:fadeup .7s ease both; }
-.hero-h1   { animation:fadeup .7s .1s ease both; }
-.hero-desc { animation:fadeup .7s .2s ease both; }
-.hero-btns { animation:fadeup .7s .3s ease both; }
-.card-prof  { animation:fadeup .8s .15s ease both; }
-.reveal { opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease; }
-.reveal.visible { opacity:1;transform:translateY(0); }
-
-/* ══ RESPONSIVE ══ */
-@media(max-width:768px){
-    .hero-inner { grid-template-columns:1fr;padding:32px 20px; }
-    .hero-r,.hero-adinkra,.mudcloth-tl,.mudcloth-br { display:none; }
-    .hero-stats { flex-wrap:wrap; } .hs { min-width:50%; }
-    .section,.manifeste,.tarifs,.cta-s { padding:60px 20px; }
-    .manifeste-inner,.cta-s { grid-template-columns:1fr; }
-    .cr-grid { grid-template-columns:1fr 1fr; }
-    .pr-grid { grid-template-columns:1fr; }
-    .home-page footer { flex-direction:column;gap:16px;padding:24px 20px;align-items:flex-start; }
-    .manifeste-inner { padding-left:16px; }
+/* Grille de fond */
+.lp-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-/* ══ THÈME SOMBRE ══ */
-[data-theme="dark"] .home-page { --bg:#0D0905;--bg2:#141009;--card:#1C1810;--ink:#F0E8D8;--ink2:rgba(240,232,216,.55);--ink3:rgba(240,232,216,.18);--terra:#C8522A;--terra2:#E06030;--gold:#D4A843;--green:#2A7A48;background:#0D0905; }
-[data-theme="dark"] .home-page::before { opacity:.3; }
-[data-theme="dark"] .hero-stats { background:rgba(13,9,5,.8);border-top-color:rgba(240,232,216,.1); }
-[data-theme="dark"] .hs { border-right-color:rgba(240,232,216,.1); }
-[data-theme="dark"] .card-prof { background:#1C1810;border-color:rgba(240,232,216,.1); }
-[data-theme="dark"] .cp-body { background:#1C1810; }
-[data-theme="dark"] .cp-name { color:#F0E8D8 !important; }
-[data-theme="dark"] .cp-av { border-color:#1C1810; }
-[data-theme="dark"] .badge-f { background:#1C1810;border-color:rgba(240,232,216,.1);box-shadow:0 10px 28px rgba(0,0,0,.6); }
-[data-theme="dark"] .cr-card { background:#1C1810;border-color:rgba(240,232,216,.1); }
-[data-theme="dark"] .cr-name { color:#F0E8D8; } [data-theme="dark"] .cr-sn { color:#F0E8D8; }
-[data-theme="dark"] .manifeste { background:#141009;border-color:rgba(240,232,216,.1); }
-[data-theme="dark"] .v-item { background:rgba(28,24,16,.8);border-color:rgba(240,232,216,.1); }
-[data-theme="dark"] .v-tit { color:#F0E8D8 !important; }
-[data-theme="dark"] .pr-c { background:#1C1810;border-color:rgba(240,232,216,.1); }
-[data-theme="dark"] .pr-p { color:#F0E8D8 !important; } [data-theme="dark"] .pr-nm { color:rgba(240,232,216,.45) !important; }
-[data-theme="dark"] .cta-s { background:#0D0905 !important; }
-[data-theme="dark"] .home-page footer { background:#141009 !important;border-top-color:rgba(240,232,216,.06) !important; }
+/* Lueur centrale */
+.lp-hero::after {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(200,72,24,.13) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+}
 
-/* ══ THÈME HOGWARTS ══ */
-[data-theme="hogwarts"] .home-page { --bg:#05040F;--bg2:#0D0B1E;--card:#130F2A;--ink:#EFE5C8;--ink2:rgba(239,229,200,.55);--ink3:rgba(180,148,60,.18);--terra:#9B5FD1;--terra2:#B87AE8;--gold:#D4AF37;--green:#2A7A48;background:#05040F; }
-[data-theme="hogwarts"] .home-page::before { opacity:.25; }
-[data-theme="hogwarts"] .ticker { background:#2A1460; }
-[data-theme="hogwarts"] .hero-pill { background:rgba(155,95,209,.15);border-color:rgba(155,95,209,.35);color:#D4AF37; }
-[data-theme="hogwarts"] .pill-dot { background:#D4AF37; }
-[data-theme="hogwarts"] .hero-h1 { color:#EFE5C8; } [data-theme="hogwarts"] .hero-h1 em { color:#D4AF37; }
-[data-theme="hogwarts"] .hero-h1 .outline { -webkit-text-stroke-color:#9B5FD1; }
-[data-theme="hogwarts"] .btn-main { background:linear-gradient(135deg,#6B35A8,#9B5FD1) !important; }
-[data-theme="hogwarts"] .hero-stats { background:rgba(5,4,15,.8);border-top-color:rgba(180,148,60,.14); }
-[data-theme="hogwarts"] .hs { border-right-color:rgba(180,148,60,.14); } [data-theme="hogwarts"] .hs-n { color:#D4AF37; }
-[data-theme="hogwarts"] .card-prof { background:#0D0B1E;border-color:rgba(180,148,60,.2); }
-[data-theme="hogwarts"] .cp-body { background:#0D0B1E; } [data-theme="hogwarts"] .cp-name { color:#EFE5C8 !important; }
-[data-theme="hogwarts"] .badge-f { background:#0D0B1E;border-color:rgba(180,148,60,.18); }
-[data-theme="hogwarts"] .cr-card { background:#0D0B1E;border-color:rgba(180,148,60,.12); }
-[data-theme="hogwarts"] .cr-card::after { background:#D4AF37; } [data-theme="hogwarts"] .cr-ring { border-color:#D4AF37; }
-[data-theme="hogwarts"] .cr-name { color:#EFE5C8; } [data-theme="hogwarts"] .cr-sn { color:#EFE5C8; }
-[data-theme="hogwarts"] .manifeste { background:#0D0B1E;border-color:rgba(180,148,60,.12); }
-[data-theme="hogwarts"] .v-item { background:rgba(13,11,30,.8);border-color:rgba(180,148,60,.12); }
-[data-theme="hogwarts"] .v-tit { color:#EFE5C8 !important; }
-[data-theme="hogwarts"] .pr-c { background:#0D0B1E;border-color:rgba(180,148,60,.14); }
-[data-theme="hogwarts"] .pr-c.hot { background:linear-gradient(155deg,#1C1740,#2A1A55);border-color:rgba(180,148,60,.3); }
-[data-theme="hogwarts"] .pr-p { color:#EFE5C8 !important; } [data-theme="hogwarts"] .pr-free { color:#D4AF37 !important; }
-[data-theme="hogwarts"] .pr-ul li::before { color:#D4AF37; }
-[data-theme="hogwarts"] .btn-ctam { background:linear-gradient(135deg,#6B35A8,#9B5FD1) !important; }
-[data-theme="hogwarts"] .cta-s { background:#0D0B1E !important; }
-[data-theme="hogwarts"] .home-page footer { background:#05040F !important;border-top-color:rgba(180,148,60,.06) !important; }
-[data-theme="hogwarts"] .f-logo { color:rgba(239,229,200,.3) !important; }
-[data-theme="hogwarts"] .f-links a { color:rgba(239,229,200,.2) !important; }
-[data-theme="hogwarts"] .f-links a:hover { color:rgba(239,229,200,.55) !important; }
-[data-theme="hogwarts"] .f-copy { color:rgba(239,229,200,.16) !important; }
+.lp-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    padding: 0 24px;
+}
+
+.lp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--terra-soft);
+    border: 1px solid rgba(200,72,24,.22);
+    color: var(--terra);
+    font-family: var(--font-head);
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+}
+.lp-badge-dot {
+    width: 5px; height: 5px;
+    background: var(--terra);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+.lp-h1 {
+    font-family: var(--font-head);
+    font-size: clamp(2.8rem, 6vw, 5.8rem);
+    font-weight: 900;
+    line-height: .95;
+    letter-spacing: -.04em;
+    color: var(--text);
+    margin-bottom: 24px;
+}
+.lp-h1 .grad {
+    background: linear-gradient(135deg, var(--terra) 0%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.lp-h1 .outline {
+    -webkit-text-stroke: 2px var(--terra);
+    color: transparent;
+}
+
+.lp-sub {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 36px;
+}
+
+.lp-ctas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+}
+.lp-btn-main {
+    background: var(--terra);
+    color: white !important;
+    border: none;
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-family: var(--font-head);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .22s;
+}
+.lp-btn-main:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(200,72,24,.30); }
+.lp-btn-ghost {
+    background: none;
+    color: var(--text-muted) !important;
+    border: 1px solid var(--border);
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-size: .75rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .2s;
+}
+.lp-btn-ghost:hover { border-color: var(--terra); color: var(--terra) !important; }
+
+/* Stats inline hero */
+.lp-hero-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg-card);
+    overflow: hidden;
+    width: fit-content;
+    margin: 0 auto;
+}
+.lp-hs {
+    padding: 16px 32px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+}
+.lp-hs:last-child { border-right: none; }
+.lp-hs-n {
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--terra);
+    letter-spacing: -.02em;
+}
+.lp-hs-l {
+    font-size: .6rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-top: 3px;
+}
+
+/* ── TICKER ── */
+.lp-ticker {
+    background: var(--terra);
+    padding: 9px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+}
+.lp-ticker::before, .lp-ticker::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 60px;
+    z-index: 2;
+}
+.lp-ticker::before { left: 0; background: linear-gradient(90deg, var(--terra), transparent); }
+.lp-ticker::after  { right: 0; background: linear-gradient(-90deg, var(--terra), transparent); }
+.lp-ticker-t { display: inline-flex; animation: tickr 28s linear infinite; }
+@keyframes tickr { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.lp-tt {
+    font-family: var(--font-head);
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.85);
+    padding: 0 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+.lp-tt-dot { width: 4px; height: 4px; background: rgba(255,255,255,.35); border-radius: 50%; }
+
+/* ── SECTIONS COMMUNES ── */
+.lp-section { padding: 80px 52px; position: relative; }
+.lp-section-inner { max-width: 1200px; margin: 0 auto; }
+
+.lp-sec-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 44px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.lp-sec-label {
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 8px;
+}
+.lp-sec-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+    color: var(--text);
+}
+.lp-sec-title span { color: var(--terra); }
+.lp-sec-link {
+    font-size: .68rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-muted) !important;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    white-space: nowrap;
+    transition: all .2s;
+}
+.lp-sec-link:hover { color: var(--terra) !important; border-color: var(--terra); }
+
+/* ── ARTICLES GRID ── */
+.art-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--border);
+}
+
+.art-card {
+    background: var(--bg-card);
+    padding: 28px;
+    text-decoration: none;
+    display: block;
+    transition: background .2s;
+    position: relative;
+}
+.art-card:hover { background: var(--bg-hover); }
+.art-card:hover .art-title { color: var(--terra); }
+
+.art-cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--terra);
+    background: var(--terra-soft);
+    border: 1px solid rgba(200,72,24,.18);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.art-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+    background: var(--bg-card2);
+    margin-bottom: 16px;
+    overflow: hidden;
+    position: relative;
+}
+.art-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.art-thumb-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    background: linear-gradient(135deg, var(--bg-card2), var(--bg-hover));
+}
+
+.art-title {
+    font-family: var(--font-head);
+    font-size: .92rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--text);
+    margin-bottom: 10px;
+    transition: color .2s;
+}
+.art-excerpt {
+    font-size: .75rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.art-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: .62rem;
+    color: var(--text-muted);
+}
+.art-avi {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--gold));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .58rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+.art-dot { width: 3px; height: 3px; background: var(--text-faint); border-radius: 50%; }
+
+/* Article featured (grande carte gauche) */
+.art-grid-featured {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--border);
+}
+.art-featured {
+    background: var(--bg-card);
+    padding: 36px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    transition: background .2s;
+}
+.art-featured:hover { background: var(--bg-hover); }
+.art-featured:hover .art-title { color: var(--terra); }
+.art-featured .art-thumb { aspect-ratio: 16/8; margin-bottom: 24px; }
+.art-featured .art-title { font-size: 1.2rem; }
+
+.art-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+}
+.art-side-card {
+    background: var(--bg-card);
+    padding: 24px 28px;
+    text-decoration: none;
+    display: block;
+    flex: 1;
+    transition: background .2s;
+}
+.art-side-card:hover { background: var(--bg-hover); }
+.art-side-card:hover .art-title { color: var(--terra); }
+.art-side-card .art-title { font-size: .82rem; }
+
+/* ── CATÉGORIES ── */
+.cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--border);
+}
+.cat-card {
+    background: var(--bg-card);
+    padding: 28px 24px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: background .2s;
+    position: relative;
+    overflow: hidden;
+}
+.cat-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--terra);
+    transform: scaleX(0);
+    transition: transform .25s;
+    transform-origin: left;
+}
+.cat-card:hover { background: var(--bg-hover); }
+.cat-card:hover::before { transform: scaleX(1); }
+.cat-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    background: var(--terra-soft);
+    border: 1px solid rgba(200,72,24,.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+.cat-name {
+    font-family: var(--font-head);
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--text);
+}
+.cat-count {
+    font-size: .62rem;
+    color: var(--text-muted);
+    letter-spacing: .04em;
+}
+
+/* ── FORUM PREVIEW ── */
+.forum-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--border);
+}
+.forum-threads {
+    background: var(--bg-card);
+}
+.forum-thread {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 14px;
+    text-decoration: none;
+    transition: background .18s;
+}
+.forum-thread:last-child { border-bottom: none; }
+.forum-thread:hover { background: var(--bg-hover); }
+
+.ft-avi {
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--terra), var(--gold));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .85rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+.ft-body { flex: 1; min-width: 0; }
+.ft-cat {
+    font-size: .56rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 4px;
+}
+.ft-title {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.ft-meta {
+    font-size: .6rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ft-replies {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 16px;
+    min-width: 52px;
+    flex-shrink: 0;
+}
+.ft-r-n {
+    font-family: var(--font-head);
+    font-size: .85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+.ft-r-l { font-size: .52rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: .07em; }
+
+/* Forum cats (colonne droite) */
+.forum-cats {
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+}
+.forum-cat-item {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: background .18s;
+}
+.forum-cat-item:last-child { border-bottom: none; }
+.forum-cat-item:hover { background: var(--bg-hover); }
+.fci-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    background: var(--bg-card2);
+    flex-shrink: 0;
+}
+.fci-name {
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--text);
+}
+.fci-desc {
+    font-size: .62rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+.fci-count {
+    margin-left: auto;
+    font-family: var(--font-head);
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--text-faint);
+}
+
+/* ── CTA SECTION ── */
+.lp-cta-section {
+    padding: 80px 52px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.lp-cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(200,72,24,.09) 0%, transparent 65%);
+    pointer-events: none;
+}
+.lp-cta-box {
+    position: relative;
+    z-index: 1;
+    max-width: 620px;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 52px 44px;
+    background: var(--bg-card);
+}
+.lp-cta-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: var(--terra-soft);
+    border: 1px solid rgba(200,72,24,.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin: 0 auto 20px;
+}
+.lp-cta-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    color: var(--text);
+    margin-bottom: 14px;
+}
+.lp-cta-desc {
+    font-size: .82rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+/* ── FOOTER ── */
+.lp-footer {
+    border-top: 1px solid var(--border);
+    padding: 36px 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.lp-footer-copy {
+    font-size: .65rem;
+    color: var(--text-faint);
+    letter-spacing: .04em;
+}
+.lp-footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+}
+.lp-footer-links a {
+    font-size: .65rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    transition: color .18s;
+}
+.lp-footer-links a:hover { color: var(--terra); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+    .art-grid { grid-template-columns: repeat(2, 1fr); }
+    .art-grid-featured { grid-template-columns: 1fr; }
+    .art-side { flex-direction: row; }
+    .forum-grid { grid-template-columns: 1fr; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .lp-section { padding: 52px 20px; }
+    .lp-cta-section { padding: 52px 20px; }
+    .lp-cta-box { padding: 36px 24px; }
+    .lp-h1 { font-size: clamp(2.2rem, 10vw, 3.2rem); }
+    .lp-hero-stats { flex-direction: column; width: 100%; border-radius: 10px; }
+    .lp-hs { border-right: none; border-bottom: 1px solid var(--border); }
+    .lp-hs:last-child { border-bottom: none; }
+    .art-grid { grid-template-columns: 1fr; }
+    .art-side { flex-direction: column; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); }
+    .lp-footer { flex-direction: column; text-align: center; padding: 28px 20px; }
+    .lp-footer-links { flex-wrap: wrap; justify-content: center; }
+}
 </style>
 @endpush
 
 @section('content')
-@php
-    $fmt = fn($n) => $n >= 1000000 ? round($n/1000000,1).'M' : ($n >= 1000 ? round($n/1000,1).'K' : $n);
-    $crBgs = [
-        'linear-gradient(135deg,#3A1A08,#8B3A18)',
-        'linear-gradient(135deg,#0D2015,#1A5A30)',
-        'linear-gradient(135deg,#120D25,#2A1E60)',
-        'linear-gradient(135deg,#1E0A1A,#5A1A5A)',
-    ];
-    $demoCreators = [
-        ['emoji'=>'📸','name'=>'Fatou Diallo','niche'=>'Photographe · Dakar','bg'=>$crBgs[0],'ab'=>'8.4K','po'=>'342','b'=>'v','bt'=>'✓ Vérifié'],
-        ['emoji'=>'🎵','name'=>'Ibou Seck','niche'=>'Musicien · Saint-Louis','bg'=>$crBgs[1],'ab'=>'21K','po'=>'187','b'=>'v','bt'=>'✓ Vérifié'],
-        ['emoji'=>'🎨','name'=>'Cheikh Ndiaye','niche'=>'Artiste digital · Thiès','bg'=>$crBgs[2],'ab'=>'34K','po'=>'98','b'=>'n','bt'=>'🆕 Nouveau'],
-        ['emoji'=>'👗','name'=>'Mariama Ba','niche'=>'Styliste · Ziguinchor','bg'=>$crBgs[3],'ab'=>'15K','po'=>'214','b'=>'v','bt'=>'✓ Vérifié'],
-    ];
-@endphp
-<div class="home-page">
+<div class="lp">
 
-{{-- HERO --}}
-<section class="hero">
-
-    {{-- Grand adinkra SVG --}}
-    <svg class="hero-adinkra" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="200" cy="200" r="190" stroke="#C84818" stroke-width="2"/>
-        <circle cx="200" cy="200" r="150" stroke="#C84818" stroke-width="1.5"/>
-        <circle cx="200" cy="200" r="110" stroke="#B87820" stroke-width="1"/>
-        <circle cx="200" cy="200" r="70" stroke="#C84818" stroke-width="1.5"/>
-        <circle cx="200" cy="200" r="30" stroke="#B87820" stroke-width="1"/>
-        <line x1="10" y1="200" x2="390" y2="200" stroke="#C84818" stroke-width="1"/>
-        <line x1="200" y1="10" x2="200" y2="390" stroke="#C84818" stroke-width="1"/>
-        <line x1="55" y1="55" x2="345" y2="345" stroke="#B87820" stroke-width=".8"/>
-        <line x1="345" y1="55" x2="55" y2="345" stroke="#B87820" stroke-width=".8"/>
-        <path d="M200 10 L260 110 L140 110 Z" stroke="#C84818" stroke-width="1" fill="none"/>
-        <path d="M200 390 L260 290 L140 290 Z" stroke="#C84818" stroke-width="1" fill="none"/>
-        <path d="M10 200 L110 140 L110 260 Z" stroke="#B87820" stroke-width="1" fill="none"/>
-        <path d="M390 200 L290 140 L290 260 Z" stroke="#B87820" stroke-width="1" fill="none"/>
-        <rect x="185" y="100" width="30" height="200" rx="4" stroke="#C84818" stroke-width="1" fill="none"/>
-        <rect x="100" y="185" width="200" height="30" rx="4" stroke="#C84818" stroke-width="1" fill="none"/>
-    </svg>
-
-    {{-- Mudcloth coins --}}
-    <svg class="mudcloth-tl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="10" y="10" width="30" height="30" stroke="#C84818" stroke-width="1.2"/>
-        <rect x="50" y="10" width="30" height="30" stroke="#B87820" stroke-width="1"/>
-        <rect x="10" y="50" width="30" height="30" stroke="#B87820" stroke-width="1"/>
-        <path d="M10 10 L40 40 M40 10 L10 40" stroke="#C84818" stroke-width=".8"/>
-        <path d="M50 10 L80 40 M80 10 L50 40" stroke="#B87820" stroke-width=".8"/>
-        <path d="M10 50 L40 80 M40 50 L10 80" stroke="#C84818" stroke-width=".8"/>
-        <circle cx="100" cy="30" r="15" stroke="#C84818" stroke-width="1"/>
-        <circle cx="100" cy="30" r="6" stroke="#B87820" stroke-width=".8"/>
-        <circle cx="30" cy="110" r="15" stroke="#B87820" stroke-width="1"/>
-        <line x1="0" y1="95" x2="200" y2="95" stroke="#C84818" stroke-width=".6"/>
-        <line x1="95" y1="0" x2="95" y2="200" stroke="#B87820" stroke-width=".6"/>
-    </svg>
-    <svg class="mudcloth-br" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="160" y="160" width="30" height="30" stroke="#C84818" stroke-width="1.2"/>
-        <rect x="120" y="160" width="30" height="30" stroke="#B87820" stroke-width="1"/>
-        <rect x="160" y="120" width="30" height="30" stroke="#B87820" stroke-width="1"/>
-        <path d="M160 160 L190 190 M190 160 L160 190" stroke="#C84818" stroke-width=".8"/>
-        <circle cx="100" cy="160" r="15" stroke="#C84818" stroke-width="1"/>
-        <circle cx="160" cy="100" r="15" stroke="#B87820" stroke-width="1"/>
-        <line x1="0" y1="105" x2="200" y2="105" stroke="#C84818" stroke-width=".6"/>
-        <line x1="105" y1="0" x2="105" y2="200" stroke="#B87820" stroke-width=".6"/>
-    </svg>
-
-    <div class="hero-inner">
-        <div>
-            <div class="hero-pill"><div class="pill-dot"></div> {{ \App\Models\Setting::get('home_hero_pill', 'Réseau des créateurs africains') }}</div>
-            <h1 class="hero-h1">
-                {{ \App\Models\Setting::get('home_hero_h1_1', 'Ta') }}<br>
-                <em>{{ \App\Models\Setting::get('home_hero_h1_2', 'créativité') }}</em><br>
-                {{ \App\Models\Setting::get('home_hero_h1_3', 'mérite une') }}<br>
-                <span class="outline">{{ \App\Models\Setting::get('home_hero_h1_4', 'vraie scène.') }}</span>
-            </h1>
-            <p class="hero-desc">{{ \App\Models\Setting::get('home_hero_desc', 'MelanoGeek connecte photographes, musiciens, artistes et stylistes sénégalais. Partage ton art, construis ta communauté. 100% gratuit pour le Sénégal.') }}</p>
-            <div class="hero-btns">
-                @guest
-                    <a href="{{ route('register') }}" class="btn-main">Créer mon profil →</a>
-                    <a href="{{ route('login') }}" class="btn-sec"><div class="play-o">▶</div> Se connecter</a>
-                @else
-                    <a href="{{ route('feed') }}" class="btn-main">Voir mon fil →</a>
-                    <a href="{{ route('profile.show', auth()->user()->username) }}" class="btn-sec"><div class="play-o">👤</div> Mon profil</a>
-                @endguest
-            </div>
+{{-- ══ HERO ══ --}}
+<section class="lp-hero">
+    <div class="lp-hero-inner">
+        <div class="lp-badge">
+            <span class="lp-badge-dot"></span>
+            Blog · Forum · Communauté
         </div>
 
-        <div class="hero-r">
-            <div class="kente-bg"></div>
-            <div class="badge-f a">
-                <div class="bf-l">Nouveaux abonnés</div>
-                <div class="bf-v">+{{ $fmt($stats['new_members_month']) }}</div>
-                <div class="bf-s">ce mois · Dakar 🇸🇳</div>
+        <h1 class="lp-h1">
+            La culture <span class="grad">geek</span>,<br>
+            vue <span class="outline">d'Afrique</span>
+        </h1>
+
+        <p class="lp-sub">
+            Articles, débats, reviews et discussions autour du manga, du gaming,
+            de la tech et de la culture nerd — par et pour la communauté africaine.
+        </p>
+
+        <div class="lp-ctas">
+            <a href="{{ route('register') }}" class="lp-btn-main">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                Rejoindre la communauté
+            </a>
+            <a href="{{ route('blog.index') }}" class="lp-btn-ghost">
+                Lire le blog
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <div class="lp-hero-stats">
+            <div class="lp-hs">
+                <div class="lp-hs-n">2.4k+</div>
+                <div class="lp-hs-l">Membres</div>
             </div>
-            <div class="card-prof">
-                @if($topCreator)
-                <div class="cp-cover" style="{{ $topCreator->cover_photo ? 'background:url('.asset('storage/'.$topCreator->cover_photo).') center/cover no-repeat;' : '' }}">
-                    @if(!$topCreator->cover_photo)🎨@endif
-                    <div class="cp-live"><div class="cp-live-d"></div> Top créateur</div>
-                </div>
-                <div class="cp-body">
-                    <div class="cp-top">
-                        <div class="cp-av" style="{{ $topCreator->avatar ? '' : 'font-size:1.1rem;' }}">
-                            @if($topCreator->avatar)
-                                <img src="{{ asset('storage/'.$topCreator->avatar) }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" alt="">
-                            @else
-                                {{ mb_strtoupper(mb_substr($topCreator->username, 0, 1)) }}
-                            @endif
-                        </div>
-                        <span class="cp-bdg">{{ $topCreator->is_verified ? '✓ Vérifié' : '🆕 Créateur' }}</span>
-                    </div>
-                    <div class="cp-name">{{ $topCreator->username }}</div>
-                    <div class="cp-niche">🎨 {{ $topCreator->niche ?: 'Créateur' }}{{ $topCreator->location ? ' · '.$topCreator->location : '' }}</div>
-                    <div class="cp-stats">
-                        <div class="cps"><div class="cps-n">{{ $fmt($topCreator->followers_count) }}</div><div class="cps-l">Abonnés</div></div>
-                        <div class="cps"><div class="cps-n">{{ $topCreator->published_posts }}</div><div class="cps-l">Posts</div></div>
-                        <div class="cps"><div class="cps-n">#1</div><div class="cps-l">Rang</div></div>
-                    </div>
-                    <div class="cp-acts">
-                        <a href="{{ route('profile.show', $topCreator->username) }}" class="cp-act f">Voir le profil →</a>
-                        @auth
-                            @if(auth()->id() !== $topCreator->id)
-                                <a href="{{ route('messages.show', $topCreator) }}" class="cp-act m">💬 Message</a>
-                            @endif
-                        @else
-                            <a href="{{ route('register') }}" class="cp-act m">💬 Message</a>
-                        @endauth
-                    </div>
-                </div>
-                @else
-                {{-- Fallback si aucun créateur en base --}}
-                <div class="cp-cover">🎨
-                    <div class="cp-live"><div class="cp-live-d"></div> Bientôt</div>
-                </div>
-                <div class="cp-body">
-                    <div class="cp-top">
-                        <div class="cp-av">🌟</div>
-                        <span class="cp-bdg">Créateur</span>
-                    </div>
-                    <div class="cp-name">Ton profil ici</div>
-                    <div class="cp-niche">🎨 Deviens le premier créateur</div>
-                    <div class="cp-stats">
-                        <div class="cps"><div class="cps-n">0</div><div class="cps-l">Abonnés</div></div>
-                        <div class="cps"><div class="cps-n">0</div><div class="cps-l">Posts</div></div>
-                        <div class="cps"><div class="cps-n">#1</div><div class="cps-l">Rang</div></div>
-                    </div>
-                    <div class="cp-acts">
-                        <a href="{{ route('register') }}" class="cp-act f">Créer mon profil →</a>
-                        <a href="{{ route('register') }}" class="cp-act m">💬 Message</a>
-                    </div>
-                </div>
-                @endif
+            <div class="lp-hs">
+                <div class="lp-hs-n">380+</div>
+                <div class="lp-hs-l">Articles</div>
             </div>
-            <div class="badge-f b">
-                <div class="bf-l">Publications</div>
-                <div class="bf-v">{{ $fmt($stats['posts']) }}</div>
-                <div class="bf-s">sur la plateforme</div>
+            <div class="lp-hs">
+                <div class="lp-hs-n">1.1k+</div>
+                <div class="lp-hs-l">Sujets forum</div>
+            </div>
+            <div class="lp-hs">
+                <div class="lp-hs-n">12+</div>
+                <div class="lp-hs-l">Pays</div>
             </div>
         </div>
-    </div>
-
-    <div class="hero-stats">
-        <div class="hs"><div class="hs-n">{{ $fmt($stats['members']) }}</div><div class="hs-l">Membres</div></div>
-        <div class="hs"><div class="hs-n">{{ $fmt($stats['creators']) }}</div><div class="hs-l">Créateurs</div></div>
-        <div class="hs"><div class="hs-n">{{ $fmt($stats['posts']) }}</div><div class="hs-l">Publications</div></div>
-        <div class="hs"><div class="hs-n">🇸🇳</div><div class="hs-l">Fait à Dakar</div></div>
     </div>
 </section>
 
-{{-- TICKER --}}
-@php $dynNiches = \App\Models\Setting::getNiches(); @endphp
-<div class="ticker">
-    <div class="ticker-t">
-        @foreach(array_merge($dynNiches, $dynNiches) as $tn)
-            <span class="tt">{{ $tn['emoji'] }} {{ $tn['label'] }}<span class="tt-dot"></span></span>
+{{-- ══ TICKER ══ --}}
+<div class="lp-ticker">
+    <div class="lp-ticker-t">
+        @foreach(array_fill(0, 2, null) as $_)
+        <span class="lp-tt"><span class="lp-tt-dot"></span> Manga africain</span>
+        <span class="lp-tt"><span class="lp-tt-dot"></span> Gaming</span>
+        <span class="lp-tt"><span class="lp-tt-dot"></span> Animé</span>
+        <span class="lp-tt"><span class="lp-tt-dot"></span> Science-fiction</span>
+        <span class="lp-tt"><span class="lp-tt-dot"></span> Tech & IA</span>
+        <span class="lp-tt"><span class="lp-tt-dot"></span> BD & Comics</span>
+        <span class="lp-tt"><span class="lp-tt-dot"></span> Cinéma de genre</span>
+        <span class="lp-tt"><span class="lp-tt-dot"></span> Cosplay</span>
+        <span class="lp-tt"><span class="lp-tt-dot"></span> Geek culture</span>
         @endforeach
     </div>
 </div>
 
-{{-- CRÉATEURS --}}
-@php
-// Construit la map emoji depuis les niches dynamiques + compat anciens labels
-$nicheEmojis = array_merge(
-    array_column($dynNiches, 'emoji', 'label'),
-    ['Photographe'=>'📸','Musicien'=>'🎵','Vidéaste'=>'🎬','Artiste digital'=>'🎨',
-     'Styliste'=>'👗','Danseur'=>'💃','Cuisinier'=>'🍽️','Podcasteur'=>'🎙️',
-     'Illustrateur'=>'✏️','Comédien'=>'🎭','Influenceur'=>'⭐']
-);
-@endphp
-<section class="section reveal">
-    <div class="s-head">
-        <div><div class="s-eye">Nos créateurs</div><h2 class="s-tit">Ils créent.<br><span>Tu découvres.</span></h2></div>
-        <a href="{{ route('creators') }}" class="s-link">Voir tous →</a>
-    </div>
-    <div class="cr-row">
-        @if($featuredCreators->isNotEmpty())
-            @foreach($featuredCreators as $i => $cr)
-            @php $ne = $nicheEmojis[$cr->niche ?? ''] ?? '🌟'; @endphp
-            <a href="{{ route('profile.show', $cr->username) }}" class="cr-card">
-                <div class="cr-top">
-                    <div class="cr-av" style="background:{{ $crBgs[$i % 4] }};">
-                        @if($cr->avatar)
-                            <img src="{{ asset('storage/'.$cr->avatar) }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" alt="">
-                        @else
-                            {{ mb_strtoupper(mb_substr($cr->username, 0, 1)) }}
-                        @endif
-                        <div class="cr-ring"></div>
-                    </div>
-                    <span class="cr-bdg {{ $cr->is_verified ? 'v' : 'n' }}">{{ $cr->is_verified ? '✓ Vérifié' : '🆕 Nouveau' }}</span>
+{{-- ══ ARTICLES À LA UNE ══ --}}
+<section class="lp-section">
+    <div class="lp-section-inner">
+        <div class="lp-sec-top">
+            <div>
+                <div class="lp-sec-label">À la une</div>
+                <div class="lp-sec-title">Les derniers <span>articles</span></div>
+            </div>
+            <a href="{{ route('blog.index') }}" class="lp-sec-link">Tous les articles →</a>
+        </div>
+
+        <div class="art-grid-featured">
+            {{-- Article featured --}}
+            <a href="#" class="art-featured">
+                <div class="art-thumb">
+                    <div class="art-thumb-placeholder">🎌</div>
                 </div>
-                <div class="cr-name">{{ $cr->username }}</div>
-                <div class="cr-niche">{{ $ne }} {{ $cr->niche ?: ($cr->location ?: 'Créateur') }}</div>
-                <div class="cr-stats">
-                    <div><div class="cr-sn">{{ $fmt($cr->followers_count) }}</div><div class="cr-sl">Abonnés</div></div>
-                    <div><div class="cr-sn">{{ $cr->published_posts }}</div><div class="cr-sl">Posts</div></div>
+                <div class="art-cat">Manga africain</div>
+                <div class="art-title">Anansi : le retour du dieu-araignée dans le manga afrofuturiste</div>
+                <div class="art-excerpt">Comment les auteurs africains réinventent la mythologie continentale à travers les codes du manga japonais pour créer un genre hybride unique.</div>
+                <div class="art-meta" style="margin-top:auto">
+                    <div class="art-avi">K</div>
+                    <span>Kemi Adeyemi</span>
+                    <span class="art-dot"></span>
+                    <span>12 jan. 2026</span>
+                    <span class="art-dot"></span>
+                    <span>8 min</span>
                 </div>
             </a>
-            @endforeach
-        @else
-            @foreach($demoCreators as $c)
-            <div class="cr-card">
-                <div class="cr-top">
-                    <div class="cr-av" style="background:{{ $c['bg'] }};">{{ $c['emoji'] }}<div class="cr-ring"></div></div>
-                    <span class="cr-bdg {{ $c['b'] }}">{{ $c['bt'] }}</span>
+
+            {{-- Articles côté --}}
+            <div class="art-side">
+                <a href="#" class="art-side-card">
+                    <div class="art-cat">Gaming</div>
+                    <div class="art-title">African Game Week 2026 : les studios locaux à surveiller</div>
+                    <div class="art-excerpt">Tour d'horizon des studios indépendants africains qui font parler d'eux.</div>
+                    <div class="art-meta" style="margin-top:12px">
+                        <div class="art-avi">D</div>
+                        <span>Djiby Fall</span>
+                        <span class="art-dot"></span>
+                        <span>5 min</span>
+                    </div>
+                </a>
+                <a href="#" class="art-side-card">
+                    <div class="art-cat">Tech & IA</div>
+                    <div class="art-title">L'IA générative au service des langues africaines</div>
+                    <div class="art-excerpt">Des chercheurs forment des LLMs sur le wolof, le yoruba et le swahili.</div>
+                    <div class="art-meta" style="margin-top:12px">
+                        <div class="art-avi">A</div>
+                        <span>Amara Koné</span>
+                        <span class="art-dot"></span>
+                        <span>6 min</span>
+                    </div>
+                </a>
+                <a href="#" class="art-side-card">
+                    <div class="art-cat">Cinéma</div>
+                    <div class="art-title">Nollywood SF : quand Lagos se réinvente en dystopie</div>
+                    <div class="art-excerpt">Top 5 des films de science-fiction nigérians à ne pas manquer en 2026.</div>
+                    <div class="art-meta" style="margin-top:12px">
+                        <div class="art-avi">F</div>
+                        <span>Fatou Diallo</span>
+                        <span class="art-dot"></span>
+                        <span>4 min</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ══ CATÉGORIES ══ --}}
+<section class="lp-section" style="padding-top:0">
+    <div class="lp-section-inner">
+        <div class="lp-sec-top">
+            <div>
+                <div class="lp-sec-label">Explorer par thème</div>
+                <div class="lp-sec-title">Toutes les <span>catégories</span></div>
+            </div>
+        </div>
+        <div class="cat-grid">
+            <a href="{{ route('blog.index') }}?cat=manga" class="cat-card">
+                <div class="cat-icon">🎌</div>
+                <div class="cat-name">Manga & Animé</div>
+                <div class="cat-count">142 articles</div>
+            </a>
+            <a href="{{ route('blog.index') }}?cat=gaming" class="cat-card">
+                <div class="cat-icon">🎮</div>
+                <div class="cat-name">Gaming</div>
+                <div class="cat-count">98 articles</div>
+            </a>
+            <a href="{{ route('blog.index') }}?cat=tech" class="cat-card">
+                <div class="cat-icon">💻</div>
+                <div class="cat-name">Tech & IA</div>
+                <div class="cat-count">76 articles</div>
+            </a>
+            <a href="{{ route('blog.index') }}?cat=cinema" class="cat-card">
+                <div class="cat-icon">🎬</div>
+                <div class="cat-name">Cinéma & Séries</div>
+                <div class="cat-count">64 articles</div>
+            </a>
+            <a href="{{ route('blog.index') }}?cat=bd" class="cat-card">
+                <div class="cat-icon">📚</div>
+                <div class="cat-name">BD & Comics</div>
+                <div class="cat-count">47 articles</div>
+            </a>
+            <a href="{{ route('blog.index') }}?cat=cosplay" class="cat-card">
+                <div class="cat-icon">🎭</div>
+                <div class="cat-name">Cosplay</div>
+                <div class="cat-count">31 articles</div>
+            </a>
+            <a href="{{ route('blog.index') }}?cat=scifi" class="cat-card">
+                <div class="cat-icon">🚀</div>
+                <div class="cat-name">Science-Fiction</div>
+                <div class="cat-count">58 articles</div>
+            </a>
+            <a href="{{ route('blog.index') }}?cat=culture" class="cat-card">
+                <div class="cat-icon">🌍</div>
+                <div class="cat-name">Culture africaine</div>
+                <div class="cat-count">89 articles</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+{{-- ══ FORUM PREVIEW ══ --}}
+<section class="lp-section" style="background:var(--bg-card2)">
+    <div class="lp-section-inner">
+        <div class="lp-sec-top">
+            <div>
+                <div class="lp-sec-label">Communauté</div>
+                <div class="lp-sec-title">Le <span>forum</span> des geeks</div>
+            </div>
+            <a href="{{ route('forum.index') }}" class="lp-sec-link">Accéder au forum →</a>
+        </div>
+
+        <div class="forum-grid">
+            {{-- Threads récents --}}
+            <div class="forum-threads">
+                <a href="#" class="forum-thread">
+                    <div class="ft-avi">N</div>
+                    <div class="ft-body">
+                        <div class="ft-cat">Gaming</div>
+                        <div class="ft-title">Quelqu'un a testé Anansi Chronicles sur PS5 ? Mon avis après 20h de jeu</div>
+                        <div class="ft-meta">
+                            <span>Nana Osei</span>
+                            <span>·</span>
+                            <span>il y a 2h</span>
+                        </div>
+                    </div>
+                    <div class="ft-replies">
+                        <div class="ft-r-n">24</div>
+                        <div class="ft-r-l">rép.</div>
+                    </div>
+                </a>
+                <a href="#" class="forum-thread">
+                    <div class="ft-avi" style="background:linear-gradient(135deg,#1A5A30,#B87820)">Z</div>
+                    <div class="ft-body">
+                        <div class="ft-cat">Manga africain</div>
+                        <div class="ft-title">Top 10 des mangas afrofuturistes — ma liste après 3 ans de lecture intensive</div>
+                        <div class="ft-meta">
+                            <span>Zeynab Ibrahim</span>
+                            <span>·</span>
+                            <span>il y a 5h</span>
+                        </div>
+                    </div>
+                    <div class="ft-replies">
+                        <div class="ft-r-n">61</div>
+                        <div class="ft-r-l">rép.</div>
+                    </div>
+                </a>
+                <a href="#" class="forum-thread">
+                    <div class="ft-avi" style="background:linear-gradient(135deg,#0A3A7A,#C84818)">M</div>
+                    <div class="ft-body">
+                        <div class="ft-cat">Tech & IA</div>
+                        <div class="ft-title">Comment j'ai créé une IA qui parle lingala — retour d'expérience</div>
+                        <div class="ft-meta">
+                            <span>Mwana Kitoko</span>
+                            <span>·</span>
+                            <span>il y a 8h</span>
+                        </div>
+                    </div>
+                    <div class="ft-replies">
+                        <div class="ft-r-n">38</div>
+                        <div class="ft-r-l">rép.</div>
+                    </div>
+                </a>
+                <a href="#" class="forum-thread">
+                    <div class="ft-avi" style="background:linear-gradient(135deg,#7A2080,#D4A843)">A</div>
+                    <div class="ft-body">
+                        <div class="ft-cat">Cosplay</div>
+                        <div class="ft-title">Partage de costume — Shuri (Black Panther) fait maison, budget 25€</div>
+                        <div class="ft-meta">
+                            <span>Aïssata Barry</span>
+                            <span>·</span>
+                            <span>il y a 12h</span>
+                        </div>
+                    </div>
+                    <div class="ft-replies">
+                        <div class="ft-r-n">17</div>
+                        <div class="ft-r-l">rép.</div>
+                    </div>
+                </a>
+                <a href="#" class="forum-thread">
+                    <div class="ft-avi" style="background:linear-gradient(135deg,#5A3010,#E85A1A)">O</div>
+                    <div class="ft-body">
+                        <div class="ft-cat">Cinéma</div>
+                        <div class="ft-title">Débat : Wakanda Forever était-il à la hauteur des attentes ?</div>
+                        <div class="ft-meta">
+                            <span>Olu Adebayo</span>
+                            <span>·</span>
+                            <span>il y a 1j</span>
+                        </div>
+                    </div>
+                    <div class="ft-replies">
+                        <div class="ft-r-n">112</div>
+                        <div class="ft-r-l">rép.</div>
+                    </div>
+                </a>
+            </div>
+
+            {{-- Catégories forum --}}
+            <div class="forum-cats">
+                <div style="padding:20px 24px;border-bottom:1px solid var(--border)">
+                    <div class="lp-sec-label" style="margin-bottom:0">Catégories</div>
                 </div>
-                <div class="cr-name">{{ $c['name'] }}</div>
-                <div class="cr-niche">{{ $c['emoji'] }} {{ $c['niche'] }}</div>
-                <div class="cr-stats">
-                    <div><div class="cr-sn">{{ $c['ab'] }}</div><div class="cr-sl">Abonnés</div></div>
-                    <div><div class="cr-sn">{{ $c['po'] }}</div><div class="cr-sl">Posts</div></div>
-                </div>
-            </div>
-            @endforeach
-        @endif
-    </div>
-</section>
-
-{{-- MANIFESTE --}}
-
-<section class="manifeste reveal">
-    <div class="manifeste-inner">
-        <div>
-            <div class="s-eye">{{ \App\Models\Setting::get('home_manifeste_eye', 'Notre mission') }}</div>
-            <div class="m-quote">{{ \App\Models\Setting::get('home_manifeste_quote', 'La créativité africaine mérite une plateforme à sa') }} <span>{{ \App\Models\Setting::get('home_manifeste_quote_end', 'hauteur.') }}</span></div>
-            <div class="m-sub">{{ \App\Models\Setting::get('home_manifeste_sub', "Pas d'algorithme qui punit. Pas de barrières. Juste de la création pure, une vraie communauté, et un espace où le talent sénégalais rayonne au-delà des frontières.") }}</div>
-        </div>
-        <div class="v-grid">
-            @php $vals = [1,2,3,4]; @endphp
-            @foreach($vals as $n)
-            <div class="v-item">
-                <div class="v-ico">{{ \App\Models\Setting::get("home_val{$n}_icon", ['🇸🇳','🎁','⚡','💳'][$n-1]) }}</div>
-                <div class="v-tit">{{ \App\Models\Setting::get("home_val{$n}_title", ['100% Local','1 mois gratuit','Sans censure','Paiement local'][$n-1]) }}</div>
-                <div class="v-dsc">{{ \App\Models\Setting::get("home_val{$n}_desc", ['Conçu à Dakar, pour les créateurs sénégalais en premier.',"Essai gratuit d'un mois pour tous les Sénégalais.","Ton contenu est vu par ceux qui t'ont choisi.",'Wave et Orange Money. Pas besoin de carte.'][$n-1]) }}</div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-{{-- TARIFS --}}
-<section class="tarifs reveal" id="tarifs">
-    <div class="t-inner">
-        <div class="s-eye">Nos offres</div>
-        <h2 class="s-tit">Simple.<br><span>Transparent.</span></h2>
-        <div class="pr-grid">
-            <div class="pr-c">
-                <div class="pr-fl">
-                    <svg width="32" height="21" viewBox="0 0 32 21" xmlns="http://www.w3.org/2000/svg" style="border-radius:3px;display:block;">
-                        <rect width="11" height="21" fill="#00A859"/>
-                        <rect x="10" width="12" height="21" fill="#FDEF42"/>
-                        <rect x="21" width="11" height="21" fill="#E31B23"/>
-                        <polygon points="16,4.5 17,7.5 20.2,7.5 17.6,9.3 18.6,12.3 16,10.5 13.4,12.3 14.4,9.3 11.8,7.5 15,7.5" fill="#00A859"/>
-                    </svg>
-                </div><div class="pr-nm">Sénégal</div>
-                <div class="pr-free">GRATUIT</div>
-                <div class="pr-pd">1 mois offert · Aucune carte</div>
-                <ul class="pr-ul"><li>Profil créateur complet</li><li>Publications illimitées</li><li>Messagerie directe</li><li>Accès au marketplace</li></ul>
-                <a href="{{ route('register') }}" class="btn-pr o">Créer mon compte</a>
-            </div>
-            <div class="pr-c hot">
-                <div class="pr-hot">🔥 Populaire</div>
-                <div class="pr-fl">🌍</div><div class="pr-nm">Afrique</div>
-                <div class="pr-p">2 500<sub>FCFA/mois</sub></div>
-                <div class="pr-pd">~4€ · Wave & Orange Money</div>
-                <ul class="pr-ul"><li>Tout du plan Sénégal</li><li>Badge 🌍 Afrique sur ton profil</li><li>Paiement Wave & Orange Money</li><li>Réponse support sous 48h</li></ul>
-                @auth
-                    <a href="{{ route('subscription.checkout', 'african') }}" class="btn-pr f">Commencer →</a>
-                @else
-                    <a href="{{ route('register') }}" class="btn-pr f">Commencer →</a>
-                @endauth
-            </div>
-            <div class="pr-c">
-                <div class="pr-fl">✈️</div><div class="pr-nm">Diaspora</div>
-                <div class="pr-p">9,99<sub>€/mois</sub></div>
-                <div class="pr-pd">Stripe · Carte bancaire</div>
-                <ul class="pr-ul"><li>Tout du plan Afrique</li><li>Badge ✈️ Diaspora sur ton profil</li><li>Paiement par carte bancaire</li><li>Réponse support sous 24h</li></ul>
-                @auth
-                    <a href="{{ route('subscription.checkout', 'global') }}" class="btn-pr o">S'abonner</a>
-                @else
-                    <a href="{{ route('register') }}" class="btn-pr o">S'abonner</a>
-                @endauth
+                <a href="{{ route('forum.index') }}?cat=manga" class="forum-cat-item">
+                    <div class="fci-icon">🎌</div>
+                    <div>
+                        <div class="fci-name">Manga & Animé</div>
+                        <div class="fci-desc">Débats, recommandations</div>
+                    </div>
+                    <div class="fci-count">312</div>
+                </a>
+                <a href="{{ route('forum.index') }}?cat=gaming" class="forum-cat-item">
+                    <div class="fci-icon">🎮</div>
+                    <div>
+                        <div class="fci-name">Gaming</div>
+                        <div class="fci-desc">Reviews, tournois, news</div>
+                    </div>
+                    <div class="fci-count">248</div>
+                </a>
+                <a href="{{ route('forum.index') }}?cat=tech" class="forum-cat-item">
+                    <div class="fci-icon">💻</div>
+                    <div>
+                        <div class="fci-name">Tech & IA</div>
+                        <div class="fci-desc">Projets, outils, tutoriels</div>
+                    </div>
+                    <div class="fci-count">187</div>
+                </a>
+                <a href="{{ route('forum.index') }}?cat=culture" class="forum-cat-item">
+                    <div class="fci-icon">🌍</div>
+                    <div>
+                        <div class="fci-name">Culture africaine</div>
+                        <div class="fci-desc">Mythes, arts, traditions</div>
+                    </div>
+                    <div class="fci-count">143</div>
+                </a>
+                <a href="{{ route('forum.index') }}?cat=cosplay" class="forum-cat-item">
+                    <div class="fci-icon">🎭</div>
+                    <div>
+                        <div class="fci-name">Cosplay</div>
+                        <div class="fci-desc">Créations, conseils</div>
+                    </div>
+                    <div class="fci-count">95</div>
+                </a>
+                <a href="{{ route('forum.index') }}?cat=offtopic" class="forum-cat-item">
+                    <div class="fci-icon">☕</div>
+                    <div>
+                        <div class="fci-name">Off-topic</div>
+                        <div class="fci-desc">Détente & bavardages</div>
+                    </div>
+                    <div class="fci-count">124</div>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-{{-- CTA FINAL --}}
-@guest
-<section class="cta-s reveal">
-    <div class="cta-kente"></div>
-    <div class="cta-glow"></div>
-    <div class="cta-l">
-        <div class="cta-eye">{{ \App\Models\Setting::get('home_cta_eye', 'Rejoins la communauté') }}</div>
-        <h2 class="cta-h">{{ \App\Models\Setting::get('home_cta_h2_1', 'Prêt à faire') }}<br><span>{{ \App\Models\Setting::get('home_cta_h2_2', 'rayonner') }}</span><br>{{ \App\Models\Setting::get('home_cta_h2_3', 'ton art ?') }}</h2>
-        <p class="cta-sub">{{ \App\Models\Setting::get('home_cta_sub', 'Inscription gratuite en 2 minutes. Aucune carte requise pour les Sénégalais.') }}</p>
-    </div>
-    <div class="cta-r">
-        <a href="{{ route('register') }}" class="btn-ctam">Créer mon profil gratuitement</a>
-        <a href="{{ route('explore') }}" class="btn-ctag">Explorer les créateurs</a>
-        <div class="cta-note">🇸🇳 Fait à Dakar avec ❤️</div>
+{{-- ══ CTA REJOINDRE ══ --}}
+<section class="lp-cta-section">
+    <div class="lp-cta-box">
+        <div class="lp-cta-icon">🌍</div>
+        <div class="lp-cta-title">Tu es geek et africain·e ?<br>Tu es chez toi ici.</div>
+        <p class="lp-cta-desc">
+            Rejoins une communauté qui célèbre la culture geek africaine —
+            sans complexe, sans filtre. Crée ton compte gratuitement et
+            commence à lire, écrire et débattre dès aujourd'hui.
+        </p>
+        <div class="lp-ctas" style="margin-bottom:0">
+            <a href="{{ route('register') }}" class="lp-btn-main">
+                Créer mon compte gratuit
+            </a>
+            <a href="{{ route('login') }}" class="lp-btn-ghost">
+                Se connecter
+            </a>
+        </div>
     </div>
 </section>
-@endguest
 
-{{-- FOOTER --}}
-<footer>
-    <div class="f-logo">Melano<span>Geek</span></div>
-    <ul class="f-links">
+{{-- ══ FOOTER ══ --}}
+<footer class="lp-footer">
+    <div class="lp-footer-copy">© {{ date('Y') }} MelanoGeek — La culture geek, vue d'Afrique.</div>
+    <ul class="lp-footer-links">
+        <li><a href="{{ route('blog.index') }}">Blog</a></li>
+        <li><a href="{{ route('forum.index') }}">Forum</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
-        <li><a href="#">Confidentialité</a></li>
-        <li><a href="#">CGU</a></li>
+        <li><a href="#">Mentions légales</a></li>
         <li><a href="#">Contact</a></li>
     </ul>
-    <div class="f-copy">© {{ date('Y') }} MelanoGeek · Dakar 🇸🇳</div>
 </footer>
 
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    const obs = new IntersectionObserver(e => e.forEach(el => {
-        if (el.isIntersecting) el.target.classList.add('visible');
-    }), { threshold: .1 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-</script>
-@endpush
