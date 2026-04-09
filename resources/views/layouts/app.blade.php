@@ -216,7 +216,7 @@
     /* Liens */
     .mg-links { display:flex;gap:32px;list-style:none; }
     .mg-links a { font-size:.72rem;color:var(--text-muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;cursor:pointer; }
-    .mg-links a:hover { color:var(--terra); }
+    .mg-links a:hover, .mg-links a.mg-link-active { color:var(--terra); }
 
     /* Droite */
     .mg-right { display:flex;gap:8px;align-items:center; }
@@ -449,11 +449,8 @@
     </a>
 
     <ul class="mg-links">
-        <li><a href="{{ route('explore') }}">Explorer</a></li>
-        <li><a href="{{ route('creators') }}">Créateurs</a></li>
-        <li><a href="{{ route('ranking') }}">🏆 Classement</a></li>
-        <li><a href="{{ route('marketplace.index') }}">Marketplace</a></li>
-        <li><a href="{{ route('subscription.pricing') }}">Tarifs</a></li>
+        <li><a href="{{ route('blog.index') }}" class="{{ request()->routeIs('blog.*') ? 'mg-link-active' : '' }}">Blog</a></li>
+        <li><a href="{{ route('forum.index') }}" class="{{ request()->routeIs('forum.*') ? 'mg-link-active' : '' }}">Forum</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
     </ul>
 
@@ -462,9 +459,7 @@
             <a href="{{ route('login') }}"    class="mg-btn-ghost">Connexion</a>
             <a href="{{ route('register') }}" class="mg-btn-solid">Rejoindre</a>
         @else
-            <a href="{{ route('feed') }}" class="mg-btn-ghost">Mon fil</a>
-
-            {{-- Cloche notifications (contient aussi le lien Messages) --}}
+            {{-- Cloche notifications --}}
             <div class="mg-notif-menu" id="mgNotifMenu">
                 <button class="mg-notif-btn" id="mgNotifToggle" title="Notifications" type="button">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -473,20 +468,10 @@
                     </svg>
                     <span class="mg-notif-dot" id="mgNotifDot" style="display:none;"></span>
                 </button>
-
                 <div class="mg-notif-dropdown" id="mgNotifDropdown">
                     <div class="mg-nd-header">
                         <span class="mg-nd-title">Notifications</span>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            @auth
-                            <a href="{{ route('messages.index') }}" class="mg-nd-msg-link" title="Messages">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                                Messages
-                                <span id="mgMsgDot" style="display:none;position:absolute;top:-3px;right:-7px;width:7px;height:7px;background:var(--terra);border-radius:50%;border:1.5px solid var(--nav-bg);"></span>
-                            </a>
-                            @endauth
-                            <button class="mg-nd-read-all" id="mgNdReadAll" type="button">Tout lire</button>
-                        </div>
+                        <button class="mg-nd-read-all" id="mgNdReadAll" type="button">Tout lire</button>
                     </div>
                     <div class="mg-nd-list" id="mgNdList">
                         <div class="mg-nd-loading" id="mgNdLoading">
@@ -515,32 +500,11 @@
                     </svg>
                 </button>
                 <div class="mg-user-dropdown" id="mgUserDropdown">
-                    @if(!auth()->user()->isOwner())
-                    <a href="{{ route('profile.show', auth()->user()->username) }}" class="mg-drop-item">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                        Mon profil
-                    </a>
-                    @endif
-                    <a href="{{ route('orders.index') }}" class="mg-drop-item">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                        Mes commandes
-                    </a>
-                    @if(auth()->user()->isCreator())
-                    <a href="{{ route('services.manage') }}" class="mg-drop-item">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                        Mes services
-                    </a>
-                    @endif
                     <a href="{{ route('profile.edit') }}" class="mg-drop-item">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                         Paramètres
                     </a>
-                    @if(auth()->user()->isCM() && !auth()->user()->isAdminOrOwner())
-                        <a href="{{ route('cm.dashboard') }}" class="mg-drop-item" style="color:#2DB8A0;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                            Panel CM
-                        </a>
-                    @elseif(auth()->user()->isAdminOrOwner())
+                    @if(auth()->user()->isAdminOrOwner())
                         <a href="{{ route('admin.dashboard') }}" class="mg-drop-item">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                             Dashboard admin
