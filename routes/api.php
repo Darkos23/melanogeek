@@ -7,8 +7,11 @@ use App\Http\Controllers\Api\ExploreController;
 use App\Http\Controllers\Api\FeedController;
 use App\Http\Controllers\Api\FollowController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\StoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -97,4 +100,34 @@ Route::middleware('auth:sanctum')->prefix('messages')->group(function () {
     Route::get('/{username}',          [\App\Http\Controllers\Api\MessageController::class, 'show']);
     Route::post('/{username}',         [\App\Http\Controllers\Api\MessageController::class, 'store'])->middleware('throttle:30,1');
     Route::delete('/{message}',        [\App\Http\Controllers\Api\MessageController::class, 'destroy']);
+});
+
+// ── Stories ────────────────────────────────────────────────────
+Route::get('/stories/{user:username}',  [StoryController::class, 'show']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/stories',              [StoryController::class, 'index']);
+    Route::post('/stories',             [StoryController::class, 'store']);
+    Route::delete('/stories/{story}',   [StoryController::class, 'destroy']);
+});
+
+// ── Marketplace — Services ─────────────────────────────────────
+Route::get('/services',               [ServiceController::class, 'index']);
+Route::get('/services/{service}',     [ServiceController::class, 'show']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/services',           [ServiceController::class, 'store']);
+    Route::put('/services/{service}',  [ServiceController::class, 'update']);
+    Route::delete('/services/{service}', [ServiceController::class, 'destroy']);
+});
+
+// ── Marketplace — Orders ───────────────────────────────────────
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/orders',                          [OrderController::class, 'index']);
+    Route::post('/orders',                         [OrderController::class, 'store']);
+    Route::get('/orders/{order}',                  [OrderController::class, 'show']);
+    Route::patch('/orders/{order}/accept',         [OrderController::class, 'accept']);
+    Route::patch('/orders/{order}/start-work',     [OrderController::class, 'startWork']);
+    Route::patch('/orders/{order}/deliver',        [OrderController::class, 'deliver']);
+    Route::patch('/orders/{order}/complete',       [OrderController::class, 'complete']);
+    Route::patch('/orders/{order}/cancel',         [OrderController::class, 'cancel']);
+    Route::post('/orders/{order}/review',          [OrderController::class, 'review']);
 });

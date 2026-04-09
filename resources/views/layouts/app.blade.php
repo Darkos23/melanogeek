@@ -1216,9 +1216,153 @@
 })();
 </script>
 <script>
+/* ── PWA : Bannière d'installation (Android + iOS) ── */
+(function () {
+    var forceShow = location.search.includes('pwa-test');
+    if (!forceShow) {
+        // Déjà installé (mode standalone) → rien à faire
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) return;
+        // Déjà refusé
+        if (localStorage.getItem('mg-install-dismissed')) return;
+    }
+    // En mode test : reset le flag pour pouvoir re-tester
+    if (forceShow) localStorage.removeItem('mg-install-dismissed');
+
+    var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+    var deferredPrompt = null;
+
+    // Capture beforeinstallprompt dès qu'il se déclenche (Chrome mobile/Android)
+    window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+    });
+
+    /* ── Styles communs de la bannière ── */
+    var BANNER_CSS =
+        'position:fixed;' +
+        'top:calc(env(safe-area-inset-top,0px) + 64px);' +   /* juste sous la nav */
+        'left:0;right:0;' +
+        'display:flex;align-items:center;gap:10px;' +
+        'background:var(--bg-card,#1c1810);' +
+        'border-bottom:2px solid var(--terra,#C8522A);' +
+        'color:var(--text,#f0e8d8);padding:10px 16px;' +
+        'font-size:.82rem;z-index:9998;box-shadow:0 4px 20px rgba(0,0,0,.5);' +
+        'box-sizing:border-box;';
+
+    var BTN_CSS =
+        'flex-shrink:0;background:var(--terra,#C8522A);color:#fff;border:none;' +
+        'border-radius:8px;padding:6px 14px;cursor:pointer;font-size:.82rem;font-weight:700;white-space:nowrap;';
+    var CLOSE_CSS =
+        'flex-shrink:0;background:none;border:none;color:var(--text-muted,#aaa);' +
+        'cursor:pointer;font-size:1.2rem;padding:2px 8px;line-height:1;margin-left:auto;';
+
+    function dismiss() {
+        var b = document.getElementById('mgInstallBanner');
+        if (b) b.remove();
+        localStorage.setItem('mg-install-dismissed', '1');
+    }
+
+    function showBanner() {
+        if (document.getElementById('mgInstallBanner')) return;
+        var banner = document.createElement('div');
+        banner.id = 'mgInstallBanner';
+
+        if (isIOS) {
+            /* ══ CAS iOS : instructions manuelles ══ */
+            banner.innerHTML =
+                '<span style="flex:1">📲 Installe l\'app : <strong>⬆️ Partager</strong> → <strong>"Sur l\'écran d\'accueil"</strong></span>' +
+                '<button id="mgInstallX" aria-label="Fermer">✕</button>';
+        } else {
+            /* ══ CAS Chrome / Android / Desktop ══ */
+            banner.innerHTML =
+                '<span style="flex:1">📲 Installe MelanoGeek sur ton appareil</span>' +
+                '<button id="mgInstallBtn">Installer</button>' +
+                '<button id="mgInstallX" aria-label="Fermer">✕</button>';
+        }
+
+        banner.style.cssText = BANNER_CSS;
+        if (banner.querySelector('#mgInstallBtn')) banner.querySelector('#mgInstallBtn').style.cssText = BTN_CSS;
+        banner.querySelector('#mgInstallX').style.cssText = CLOSE_CSS;
+
+        if (banner.querySelector('#mgInstallBtn')) {
+            banner.querySelector('#mgInstallBtn').addEventListener('click', async function () {
+                if (deferredPrompt) {
+                    // Chrome a fourni le prompt natif → on l'utilise
+                    banner.remove();
+                    deferredPrompt.prompt();
+                    var result = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    if (result.outcome === 'accepted') localStorage.setItem('mg-install-dismissed', '1');
+                } else {
+                    // Fallback : icône ⊕ dans la barre d'adresse (Chrome desktop)
+                    banner.querySelector('span').textContent = '👆 Cherche l\'icône ⊕ dans la barre d\'adresse pour installer l\'app';
+                    banner.querySelector('#mgInstallBtn').remove();
+                }
+            });
+        }
+
+        banner.querySelector('#mgInstallX').addEventListener('click', dismiss);
+        document.body.appendChild(banner);
+    }
+
+    // Afficher la bannière après 1 seconde dans tous les cas
+    setTimeout(showBanner, 1000);
+
+    // Nettoyage si installation confirmée via une autre méthode
+    window.addEventListener('appinstalled', dismiss);
+})();
+</script>
+<script>
+/* ── Service Worker : enregistrement + détection de mise à jour ── */
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').then(function (reg) {
+
+            /* Affiche un toast quand une nouvelle version est prête */
+            function showUpdateToast(sw) {
+                if (document.getElementById('mgUpdateToast')) return;
+                var toast = document.createElement('div');
+                toast.id = 'mgUpdateToast';
+                toast.innerHTML =
+                    '<span>✨ Mise à jour disponible</span>' +
+                    '<button id="mgUpdateBtn">Actualiser</button>';
+                toast.style.cssText =
+                    'position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 72px);' +
+                    'left:50%;transform:translateX(-50%);' +
+                    'display:flex;align-items:center;gap:12px;' +
+                    'background:var(--bg-card,#1c1810);border:1px solid var(--gold,#D4A843);' +
+                    'color:var(--text,#f0e8d8);border-radius:12px;padding:10px 18px;' +
+                    'font-size:.82rem;z-index:9999;box-shadow:0 4px 24px rgba(0,0,0,.55);' +
+                    'white-space:nowrap;max-width:calc(100vw - 32px);';
+                toast.querySelector('#mgUpdateBtn').style.cssText =
+                    'background:var(--gold,#D4A843);color:#1a1208;border:none;' +
+                    'border-radius:8px;padding:6px 14px;cursor:pointer;font-weight:700;font-size:.82rem;';
+                toast.querySelector('#mgUpdateBtn').addEventListener('click', function () {
+                    sw.postMessage({ type: 'SKIP_WAITING' });
+                });
+                document.body.appendChild(toast);
+            }
+
+            /* SW déjà en attente au moment du chargement de la page */
+            if (reg.waiting) showUpdateToast(reg.waiting);
+
+            /* Nouveau SW qui s'installe en arrière-plan */
+            reg.addEventListener('updatefound', function () {
+                var newSW = reg.installing;
+                newSW.addEventListener('statechange', function () {
+                    if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+                        showUpdateToast(newSW);
+                    }
+                });
+            });
+
+            /* Quand le nouveau SW prend le contrôle → rechargement automatique */
+            var refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', function () {
+                if (!refreshing) { refreshing = true; location.reload(); }
+            });
+
+        }).catch(function () {});
     });
 }
 </script>

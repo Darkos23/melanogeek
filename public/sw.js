@@ -1,4 +1,4 @@
-const CACHE_NAME = 'melanogeek-v2';
+const CACHE_NAME = 'melanogeek-v3';
 
 // Ressources essentielles à pré-cacher
 const PRECACHE_URLS = [
@@ -57,6 +57,13 @@ self.addEventListener('fetch', event => {
             })
             .catch(() => caches.match(request).then(cached => cached || caches.match('/offline')))
     );
+});
+
+// ── Message : permet à la page d'ordonner skipWaiting (mise à jour) ──────────
+self.addEventListener('message', event => {
+    if (event.data?.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
 
 // ── Push : affiche la notification reçue ──────────────────────────────────────
