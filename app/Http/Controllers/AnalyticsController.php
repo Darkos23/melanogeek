@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AnalyticsController extends Controller
 {
@@ -51,22 +49,10 @@ class AnalyticsController extends Controller
             ->limit(5)
             ->get(['id', 'content', 'likes_count', 'comments_count', 'created_at', 'media_type']);
 
-        // ── Stats marketplace (créateurs uniquement) ─────────────────
-        $ordersReceived  = null;
-        $ordersCompleted = null;
-        $servicesCount   = null;
-
-        if ($user->isCreator()) {
-            $servicesCount   = DB::table('services')->where('user_id', $user->id)->count();
-            $ordersReceived  = Order::where('seller_id', $user->id)->count();
-            $ordersCompleted = Order::where('seller_id', $user->id)->where('status', 'completed')->count();
-        }
-
         return view('analytics.index', compact(
             'totalPosts', 'totalDrafts', 'totalLikes', 'totalComments',
             'totalFollowers', 'totalFollowing',
-            'months', 'topPosts',
-            'servicesCount', 'ordersReceived', 'ordersCompleted'
+            'months', 'topPosts'
         ));
     }
 }

@@ -41,20 +41,11 @@ class User extends Authenticatable
         'youtube',
         'twitter',
         'country_type',
-        'plan',
-        'plan_expires_at',
         'is_verified',
         'is_active',
         'is_private',
-        'is_available',
         'role',
-        'wave_number',
-        'orange_money_number',
         'status',
-        'creator_category',
-        'creator_bio',
-        'creator_socials',
-        'approved_at',
     ];
 
     // ── Colonnes cachées ──
@@ -68,14 +59,10 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'plan_expires_at'   => 'datetime',
             'password'          => 'hashed',
             'is_verified'       => 'boolean',
             'is_active'         => 'boolean',
             'is_private'        => 'boolean',
-            'is_available'      => 'boolean',
-            'creator_socials'   => 'array',
-            'approved_at'       => 'datetime',
         ];
     }
 
@@ -86,11 +73,6 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
-    }
-
-    public function portfolioItems()
-    {
-        return $this->hasMany(PortfolioItem::class)->orderBy('sort_order')->orderByDesc('created_at');
     }
 
     public function likes()
@@ -106,16 +88,6 @@ class User extends Authenticatable
     public function stories()
     {
         return $this->hasMany(Story::class);
-    }
-
-    public function subscriptions()
-    {
-        return $this->hasMany(Subscription::class);
-    }
-
-    public function services()
-    {
-        return $this->hasMany(Service::class);
     }
 
     public function pushSubscriptions()
@@ -145,70 +117,7 @@ class User extends Authenticatable
         )->withTimestamps();
     }
 
-    // ══════════════════════════════════════════
-    // HELPERS
-    // ══════════════════════════════════════════
-
-    // Statut candidature
-    public function isApproved(): bool
-    {
-        return $this->status === 'approved';
-    }
-
-    public function isPending(): bool
-    {
-        return $this->status === 'pending';
-    }
-
-    public function isRejected(): bool
-    {
-        return $this->status === 'rejected';
-    }
-
-    // Rôles
-    public function isOwner(): bool
-    {
-        return $this->role === 'owner';
-    }
-
-    public function isAdmin(): bool
-    {
-        return in_array($this->role, ['admin', 'owner']);
-    }
-
-    public function isCreator(): bool
-    {
-        return $this->role === 'creator';
-    }
-
-    public function isCM(): bool
-    {
-        return $this->role === 'cm';
-    }
-
-    public function isStaff(): bool
-    {
-        return in_array($this->role, ['cm', 'admin', 'owner']);
-    }
-
-    public function isAdminOrOwner(): bool
-    {
-        return in_array($this->role, ['admin', 'owner']);
-    }
-
-    // Demande creator
-    public function creatorRequest()
-    {
-        return $this->hasOne(CreatorRequest::class);
-    }
-
-    // Avis reçus
-    public function reviews()
-    {
-        return $this->hasMany(Review::class, 'reviewed_id');
-    }
-
-    // ── E-learning (Waxtu) ──
+    // ── Waxtu (e-learning — tables conservées bien que projet séparé) ──
     public function courses()
     {
         return $this->hasMany(Course::class, 'instructor_id');
@@ -237,6 +146,36 @@ class User extends Authenticatable
             ->exists();
     }
 
+    // ══════════════════════════════════════════
+    // HELPERS
+    // ══════════════════════════════════════════
+
+    // Rôles
+    public function isOwner(): bool
+    {
+        return $this->role === 'owner';
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, ['admin', 'owner']);
+    }
+
+    public function isCM(): bool
+    {
+        return $this->role === 'cm';
+    }
+
+    public function isStaff(): bool
+    {
+        return in_array($this->role, ['cm', 'admin', 'owner']);
+    }
+
+    public function isAdminOrOwner(): bool
+    {
+        return in_array($this->role, ['admin', 'owner']);
+    }
+
     public function isInstructor(): bool
     {
         return $this->role === 'instructor';
@@ -262,26 +201,6 @@ class User extends Authenticatable
     public function isFollowing(User $user): bool
     {
         return $this->following()->where('following_id', $user->id)->exists();
-    }
-
-    // A-t-il accès au contenu premium ?
-    public function hasPremiumAccess(): bool
-    {
-        if ($this->country_type === 'senegal') return true;
-        return $this->plan !== 'free' && $this->plan_expires_at?->isFuture();
-    }
-
-    // A-t-il un abonnement actif ? (utilisé pour l'accès au contenu exclusif)
-    public function hasActiveSubscription(): bool
-    {
-        // Accès gratuit pendant la phase de lancement pour les utilisateurs sénégalais
-        if ($this->country_type === 'senegal') return true;
-
-        // Vérifier dans la table subscriptions
-        return $this->subscriptions()
-            ->where('status', 'active')
-            ->where('expires_at', '>', now())
-            ->exists();
     }
 
     // Nombre de notifications non lues

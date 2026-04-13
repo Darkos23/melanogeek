@@ -22,7 +22,7 @@ function openProfileStory(idx) {
 @endif
 
     // Tabs
-    const tabContents = ['posts', 'about', 'creator', 'portfolio', 'services', 'avis'].map(id => document.getElementById('tab-' + id)).filter(Boolean);
+    const tabContents = ['posts', 'about'].map(id => document.getElementById('tab-' + id)).filter(Boolean);
     document.querySelectorAll('.profile-tab').forEach(tab => {
         tab.addEventListener('click', function() {
             document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
@@ -114,52 +114,6 @@ function openProfileStory(idx) {
             } else {
                 btn.textContent = '⊘ Bloquer';
                 btn.classList.remove('blocking');
-            }
-            btn.style.opacity = '';
-            delete btn.dataset.loading;
-        })
-        .catch(() => {
-            btn.style.opacity = '';
-            delete btn.dataset.loading;
-        });
-    }
-
-    function toggleAvailability(btn) {
-        if (btn.dataset.loading) return;
-        btn.dataset.loading = '1';
-        btn.style.opacity = '0.6';
-
-        fetch('/availability/toggle', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        })
-        .then(r => r.json())
-        .then(data => {
-            const badge = document.getElementById('availabilityBadge');
-            if (data.available) {
-                btn.textContent = '🟢 Disponible';
-                btn.style.color = '';
-                btn.style.borderColor = '';
-                if (badge) {
-                    badge.textContent = '🟢 Disponible aux commandes';
-                    badge.style.background = 'rgba(34,197,94,.1)';
-                    badge.style.color = '#16a34a';
-                    badge.style.border = '1px solid rgba(34,197,94,.25)';
-                }
-            } else {
-                btn.textContent = '🔴 Indisponible';
-                btn.style.color = '#E05555';
-                btn.style.borderColor = '#E05555';
-                if (badge) {
-                    badge.textContent = '🔴 Non disponible';
-                    badge.style.background = 'rgba(224,85,85,.08)';
-                    badge.style.color = '#E05555';
-                    badge.style.border = '1px solid rgba(224,85,85,.2)';
-                }
             }
             btn.style.opacity = '';
             delete btn.dataset.loading;

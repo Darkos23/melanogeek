@@ -466,20 +466,6 @@
                 <span class="visibility-text" id="visibilityText">Publié</span>
             </div>
 
-            <!-- Contenu exclusif -->
-            <div class="visibility-row" style="border-top:1px solid var(--border);">
-                <span style="font-size:1rem;">🔒</span>
-                <span class="visibility-label">
-                    Contenu exclusif
-                    <span style="display:block;font-size:.72rem;color:var(--text-faint);font-weight:400;margin-top:1px;">Réservé aux abonnés payants</span>
-                </span>
-                <label class="toggle-switch">
-                    <input type="checkbox" name="is_exclusive" value="1" id="exclusiveToggle">
-                    <span class="toggle-slider" id="exclusiveSlider"></span>
-                </label>
-                <span class="visibility-text" id="exclusiveText" style="color:var(--text-faint);min-width:68px;">Gratuit</span>
-            </div>
-
             <!-- Boutons submit -->
             <div class="submit-row">
                 <button type="submit" name="_action" value="draft" class="btn-draft" id="draftBtn">
@@ -697,26 +683,6 @@
     draftBtn.addEventListener('click', function() {
         toggle.checked = false;
         visText.textContent = 'Brouillon';
-    });
-
-    /* ── Toggle contenu exclusif ── */
-    const exclusiveToggle  = document.getElementById('exclusiveToggle');
-    const exclusiveText    = document.getElementById('exclusiveText');
-    const exclusiveSlider  = document.getElementById('exclusiveSlider');
-
-    exclusiveToggle.addEventListener('change', function() {
-        if (this.checked) {
-            exclusiveText.textContent  = '🔒 Exclusif';
-            exclusiveText.style.color  = 'var(--gold)';
-            exclusiveSlider.style.background = 'rgba(212,168,67,.2)';
-            exclusiveSlider.style.borderColor = 'rgba(212,168,67,.4)';
-            exclusiveSlider.style.setProperty('--knob', 'var(--gold)');
-        } else {
-            exclusiveText.textContent  = 'Gratuit';
-            exclusiveText.style.color  = 'var(--text-faint)';
-            exclusiveSlider.style.background   = '';
-            exclusiveSlider.style.borderColor  = '';
-        }
     });
 
     /* ── Emoji Picker ── */

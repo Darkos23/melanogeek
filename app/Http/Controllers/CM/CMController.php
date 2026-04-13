@@ -55,7 +55,6 @@ class CMController extends Controller
         if ($filter = $request->get('filter')) {
             match ($filter) {
                 'deleted'    => $q->onlyTrashed(),
-                'exclusive'  => $q->where('is_exclusive', true),
                 'unpublished'=> $q->where('is_published', false),
                 default      => null,
             };

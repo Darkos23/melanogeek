@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -17,9 +17,9 @@
     <!-- Fonts : chargement dynamique selon le thème actif -->
     <script>
     (function(){
-        var t = localStorage.getItem('mg-theme') || 'light';
-        if (t === 'dark') t = 'hogwarts';
-        var f = 'family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Outfit:wght@300;400;500;600';
+        var t = 'dark';
+        try { localStorage.setItem('mg-theme', 'dark'); } catch(e) {}
+        var f = 'family=DM+Serif+Display&family=Unbounded:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600';
         if (t === 'light')    f += '&family=Sora:wght@300;400;500;600';
         if (t === 'hogwarts') f += '&family=Cinzel:wght@400;600;700;800';
         var pc1 = document.createElement('link'); pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
@@ -38,10 +38,10 @@
 
     /* ── Sombre (défaut) ── */
     :root, [data-theme="dark"] {
-        --bg:           #0D0905;
-        --bg-card:      #141009;
-        --bg-card2:     #1C1810;
-        --bg-hover:     #221C13;
+        --bg:           #1a1a1a;
+        --bg-card:      #1f1f1f;
+        --bg-card2:     #242424;
+        --bg-hover:     #2a2a2a;
         --text:         #F0E8D8;
         --cream:        #F0E8D8;
         --text-muted:   rgba(240,232,216,0.55);
@@ -50,7 +50,7 @@
         --muted:        rgba(240,232,216,0.35);
         --border:       rgba(240,232,216,0.10);
         --border-hover: rgba(240,232,216,0.22);
-        --nav-bg:       rgba(13,9,5,0.90);
+        --nav-bg:       rgba(26,26,26,0.90);
         --toggle-bg:    rgba(240,232,216,0.08);
         --terra:        #C8522A;
         --terracotta:   #C8522A;
@@ -197,33 +197,32 @@
        NAVIGATION
     ═══════════════════════════════════════════════ */
     .mg-nav {
-        position: fixed; top:0; left:0; right:0; z-index:200;
-        height: calc(72px + env(safe-area-inset-top));
-        padding: env(safe-area-inset-top) 52px 0;
+        position: relative;
+        padding: 40px 48px 0;
         display: flex; align-items: center; justify-content: space-between;
-        background: var(--nav-bg);
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid var(--border);
-        transition: background .35s, border-color .35s;
+        background: transparent;
+        border: none;
+        max-width: 1280px;
+        margin: 0 auto;
     }
 
-    /* Logo */
-    .mg-logo { display:flex;align-items:center;gap:12px;text-decoration:none; }
-    .mg-logo-svg { width:36px;height:36px;flex-shrink:0; }
-    .mg-logo-name { font-family:var(--font-head);font-weight:700;font-size:.9rem;letter-spacing:-.01em;color:var(--text);transition:color .35s; }
-    .mg-logo-name span { color:var(--terra); }
+    /* Logo — texte seul, style ngrok */
+    .mg-logo { display:flex;align-items:center;text-decoration:none; }
+    .mg-logo-name { font-family:var(--font-head);font-weight:800;font-size:1.4rem;letter-spacing:-.04em;color:rgba(255,255,255,.92); }
+    .mg-logo-name:hover { color:#fff; }
+    .mg-logo-name span { color:inherit; }
 
-    /* Liens */
-    .mg-links { display:flex;gap:32px;list-style:none; }
-    .mg-links a { font-size:.72rem;color:var(--text-muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s;cursor:pointer; }
-    .mg-links a:hover, .mg-links a.mg-link-active { color:var(--terra); }
+    /* Liens — JetBrains Mono comme ngrok */
+    .mg-links { display:flex;gap:28px;list-style:none; }
+    .mg-links a { font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:500;color:rgba(255,255,255,.50);text-decoration:none;letter-spacing:.05em;text-transform:uppercase;transition:color .2s;cursor:pointer; }
+    .mg-links a:hover, .mg-links a.mg-link-active { color:rgba(255,255,255,.92); }
 
-    /* Droite */
+    /* Droite — boutons style ngrok */
     .mg-right { display:flex;gap:8px;align-items:center; }
-    .mg-btn-ghost { background:none;border:1px solid var(--border);color:var(--text-muted);padding:8px 16px;border-radius:6px;font-family:var(--font-body);font-size:.73rem;cursor:pointer;transition:all .2s;text-decoration:none; }
-    .mg-btn-ghost:hover { border-color:var(--terra);color:var(--terra); }
-    .mg-btn-solid { background:var(--terra);color:white;border:none;padding:8px 16px;border-radius:6px;font-family:var(--font-body);font-size:.73rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none; }
-    .mg-btn-solid:hover { background:var(--accent);transform:translateY(-1px); }
+    .mg-btn-ghost { background:rgba(0,0,0,.15);border:1px solid transparent;color:rgba(255,255,255,.92);padding:0 14px;height:36px;display:inline-flex;align-items:center;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.8125rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .2s;text-decoration:none; }
+    .mg-btn-ghost:hover { background:rgba(0,0,0,.25); }
+    .mg-btn-solid { background:rgba(255,255,255,.90);color:rgba(0,0,0,.90);border:1px solid transparent;padding:0 14px;height:36px;display:inline-flex;align-items:center;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.8125rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .2s;text-decoration:none; }
+    .mg-btn-solid:hover { background:#fff; }
 
     /* Bouton thème */
     .theme-toggle {
@@ -235,7 +234,7 @@
         display:flex;align-items:center;justify-content:center;
         cursor:pointer;transition:all .2s;flex-shrink:0;
     }
-    .theme-toggle:hover { border-color:var(--terra);color:var(--terra);background:var(--terra-soft); }
+    .theme-toggle:hover { border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.9);background:rgba(255,255,255,.06); }
 
     /* Hogwarts — logo reste terracotta, nav gold hover */
     [data-theme="hogwarts"] .mg-logo-hex        { background: #C8522A !important; }
@@ -313,7 +312,7 @@
         flex-shrink: 0;
         transition: all .2s;
     }
-    .mg-hamburger:hover { border-color: var(--terra); background: var(--terra-soft); }
+    .mg-hamburger:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.06); }
     .mg-hamburger span {
         display: block;
         width: 16px; height: 1.5px;
@@ -359,7 +358,7 @@
         transition: color .15s, background .15s;
     }
     .mg-mob-links li:last-child a { border-bottom: none; }
-    .mg-mob-links a:active, .mg-mob-links a:hover { color: var(--terra); background: var(--terra-soft); }
+    .mg-mob-links a:active, .mg-mob-links a:hover { color: rgba(255,255,255,.92); background: rgba(255,255,255,.05); }
     .mg-mob-auth {
         display: flex; gap: 10px;
         padding: 16px 20px 20px;
@@ -373,7 +372,7 @@
         text-decoration: none; transition: all .2s;
     }
     .mg-mob-ghost { border: 1px solid var(--border); color: var(--text); }
-    .mg-mob-ghost:hover { border-color: var(--terra); color: var(--terra); }
+    .mg-mob-ghost:hover { border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.92); }
     .mg-mob-solid { background: var(--terra); color: white; }
     .mg-mob-solid:hover { opacity: .88; }
 
@@ -441,17 +440,14 @@
 <!-- ══ NAVIGATION ══ -->
 <nav class="mg-nav">
     <a href="{{ route('home') }}" class="mg-logo">
-        <svg class="mg-logo-svg" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 2L38.3 12V32L21 42L3.7 32V12L21 2Z" fill="var(--bg-card2)" stroke="#D4A843" stroke-width="0.8"/>
-            <path d="M10 28V14L16.5 22L21 16L25.5 22L32 14V28" stroke="#C8522A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
-        <div class="mg-logo-name">Melano<span>Geek</span></div>
+        <div class="mg-logo-name">melanogeek</div>
     </a>
 
     <ul class="mg-links">
         <li><a href="{{ route('blog.index') }}" class="{{ request()->routeIs('blog.*') ? 'mg-link-active' : '' }}">Blog</a></li>
         <li><a href="{{ route('forum.index') }}" class="{{ request()->routeIs('forum.*') ? 'mg-link-active' : '' }}">Forum</a></li>
-        <li><a href="{{ route('about') }}">À propos</a></li>
+        <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'mg-link-active' : '' }}">Communauté</a></li>
+        <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'mg-link-active' : '' }}">À propos</a></li>
     </ul>
 
     <div class="mg-right">
@@ -526,7 +522,6 @@
             <span></span>
             <span></span>
         </button>
-        <button class="theme-toggle" id="themeToggle" title="Changer le thème">☀️</button>
     </div>
 </nav>
 
@@ -546,7 +541,7 @@
     flex-shrink: 0;
 }
 .mg-notif-btn:hover,
-.mg-notif-btn.active { border-color: var(--terra); color: var(--terra); background: var(--terra-soft); }
+.mg-notif-btn.active { border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.9); background: rgba(255,255,255,.06); }
 .mg-notif-dot {
     position: absolute;
     top: 5px; right: 5px;
@@ -605,7 +600,7 @@
 }
 .mg-nd-read-all {
     font-size: .72rem;
-    color: var(--terra);
+    color: var(--text-muted);
     background: none; border: none;
     cursor: pointer;
     font-family: var(--font-body);
@@ -629,7 +624,7 @@
 .mg-nd-spinner {
     width: 22px; height: 22px;
     border: 2px solid var(--border);
-    border-top-color: var(--terra);
+    border-top-color: var(--gold);
     border-radius: 50%;
     animation: nd-spin .7s linear infinite;
 }
@@ -669,7 +664,7 @@
     font-size: .5rem;
     border: 1.5px solid var(--bg-card);
 }
-.mg-nd-type-icon.follow  { background: var(--terra); }
+.mg-nd-type-icon.follow  { background: var(--gold); }
 .mg-nd-type-icon.like    { background: #e85a8c; }
 .mg-nd-type-icon.comment { background: var(--gold); }
 
@@ -697,13 +692,13 @@
     padding: 11px 16px;
     font-size: .76rem;
     font-weight: 600;
-    color: var(--terra);
+    color: var(--text-muted);
     text-decoration: none;
     border-top: 1px solid var(--border);
-    transition: background .15s;
+    transition: background .15s, color .15s;
     cursor: pointer;
 }
-.mg-nd-footer:hover { background: var(--terra-soft); }
+.mg-nd-footer:hover { background: rgba(255,255,255,.04); color: var(--text); }
 
 /* ── Lien messages dans dropdown notifs ── */
 .mg-nd-msg-link {
@@ -715,7 +710,7 @@
     transition: color .15s;
     font-family: var(--font-body);
 }
-.mg-nd-msg-link:hover { color: var(--terra); }
+.mg-nd-msg-link:hover { color: var(--text); }
 
 .mg-user-menu { position:relative; }
 .mg-user-btn {
@@ -754,20 +749,18 @@
 }
 .mg-drop-item:hover { background:var(--bg-hover);color:var(--text); }
 .mg-drop-divider { height:1px;background:var(--border);margin:4px 0; }
-.mg-drop-logout:hover { color:var(--terra) !important;background:var(--terra-soft) !important; }
+.mg-drop-logout:hover { color:#f87171 !important;background:rgba(248,113,113,.08) !important; }
 </style>
 
 <!-- ══ MENU MOBILE ══ -->
 <div class="mg-mobile-menu" id="mgMobileMenu" aria-hidden="true" role="dialog" aria-label="Menu de navigation">
     <ul class="mg-mob-links">
-        <li><a href="{{ route('explore') }}">🔍 Explorer</a></li>
-        <li><a href="{{ route('creators') }}">✨ Créateurs</a></li>
-        <li><a href="{{ route('ranking') }}">🏆 Classement</a></li>
-        <li><a href="{{ route('marketplace.index') }}">🛒 Marketplace</a></li>
-        <li><a href="{{ route('subscription.pricing') }}">💎 Tarifs</a></li>
+        <li><a href="{{ route('blog.index') }}">✍️ Blog</a></li>
+        <li><a href="{{ route('forum.index') }}">💬 Forum</a></li>
+        <li><a href="{{ route('home') }}">👥 Communauté</a></li>
         <li><a href="{{ route('about') }}">📖 À propos</a></li>
         @auth
-        <li><a href="{{ route('feed') }}">📰 Mon fil</a></li>
+        <li><a href="{{ route('profile.edit') }}">⚙️ Paramètres</a></li>
         @endauth
     </ul>
     @guest
@@ -852,8 +845,7 @@
         /* Charger les fonts si ce thème ne l'a pas encore fait */
         if (window._mgFontLoaded !== t) {
             window._mgFontLoaded = t;
-            var f = 'family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Outfit:wght@300;400;500;600';
-            if (t === 'light')    f += '&family=Unbounded:wght@300;400;600;700;900&family=Sora:wght@300;400;500;600';
+            var f = 'family=Inter:wght@300;400;500;600;700&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600';
             if (t === 'hogwarts') f += '&family=Cinzel:wght@400;600;700;800';
             var lk = document.createElement('link'); lk.rel = 'stylesheet';
             lk.href = 'https://fonts.googleapis.com/css2?' + f + '&display=swap';
@@ -861,10 +853,8 @@
         }
     }
 
-    /* Initialisation — migration ancien 'dark' → 'hogwarts' */
-    const raw   = localStorage.getItem('mg-theme') || 'light';
-    const saved = raw === 'dark' ? 'hogwarts' : raw;
-    applyTheme(saved);
+    /* Initialisation — thème dark forcé partout */
+    applyTheme('dark');
 
     /* Cycle au clic : clair ↔ hogwarts */
     const toggleBtn = document.getElementById('themeToggle');
@@ -996,22 +986,6 @@
             });
         }
 
-        /* ── Badge messages non-lus ── */
-        (function () {
-            const msgDot = document.getElementById('mgMsgDot');
-            if (!msgDot) return;
-            async function pollMsgBadge() {
-                try {
-                    const res  = await fetch('{{ route('messages.unread-count') }}', {
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    const data = await res.json();
-                    msgDot.style.display = (data.count > 0) ? 'block' : 'none';
-                } catch (e) {}
-            }
-            pollMsgBadge();
-            setInterval(pollMsgBadge, 30000);
-        })();
 
         /* ── Polling badge toutes les 30s ── */
         async function pollBadge() {

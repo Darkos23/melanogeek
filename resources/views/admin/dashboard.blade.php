@@ -17,16 +17,6 @@
         <div class="stat-card-value">{{ number_format($stats['posts_total']) }}</div>
         <div class="stat-card-sub">{{ $stats['posts_published'] }} publiées</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-card-label">Abonnements actifs</div>
-        <div class="stat-card-value">{{ number_format($stats['subs_active']) }}</div>
-        <div class="stat-card-sub">plans en cours</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-card-label">Revenus XOF</div>
-        <div class="stat-card-value">{{ number_format($stats['revenue_xof']) }}</div>
-        <div class="stat-card-sub">abonnements actifs</div>
-    </div>
 </div>
 
 {{-- Deux colonnes (1 colonne sur mobile) ──────── --}}

@@ -66,8 +66,6 @@
                         <span class="badge badge-red">🗑 Supprimé</span>
                     @elseif(!$post->is_published)
                         <span class="badge badge-gray">⏸ Brouillon</span>
-                    @elseif($post->is_exclusive)
-                        <span class="badge badge-gold">✦ Exclusif</span>
                     @else
                         <span class="badge badge-cm">✓ Publié</span>
                     @endif

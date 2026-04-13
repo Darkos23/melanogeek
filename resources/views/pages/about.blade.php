@@ -1,295 +1,391 @@
 @extends('layouts.app')
 
-@section('title', $settings['about_title'] ?: 'À propos de MelanoGeek')
+@section('title', $settings['about_title'] ?: 'À propos — MelanoGeek')
 
 @push('styles')
 <style>
-    .about-page {
-        padding-top: calc(80px + env(safe-area-inset-top));
-        padding-bottom: 80px;
-    }
-    .about-hero {
-        max-width: 760px;
-        margin: 0 auto;
-        padding: 0 32px;
-        text-align: center;
-        margin-bottom: 64px;
-    }
-    .about-hero-eyebrow {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: var(--terra-soft);
-        border: 1px solid rgba(200,82,42,.2);
-        color: var(--terra);
-        font-size: .72rem;
-        font-weight: 700;
-        letter-spacing: .07em;
-        text-transform: uppercase;
-        padding: 5px 14px;
-        border-radius: 100px;
-        margin-bottom: 20px;
-    }
-    .about-hero-title {
-        font-family: var(--font-head);
-        font-size: clamp(2rem, 5vw, 3.2rem);
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        line-height: 1.1;
-        color: var(--text);
-        margin-bottom: 20px;
-    }
-    .about-hero-title span { color: var(--terra); }
-    .about-hero-tagline {
-        font-size: 1.05rem;
-        color: var(--text-muted);
-        line-height: 1.7;
-        max-width: 540px;
-        margin: 0 auto;
-    }
+/* ══ ABOUT PAGE ══ */
+.about {
+    padding-top: calc(72px + env(safe-area-inset-top));
+    padding-bottom: 100px;
+}
 
-    /* ── DIVIDER ── */
-    .about-divider {
-        max-width: 760px;
-        margin: 48px auto;
-        padding: 0 32px;
-        display: flex; align-items: center; gap: 16px;
-    }
-    .about-divider::before, .about-divider::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-    }
-    .about-divider-icon { color: var(--gold); font-size: .9rem; flex-shrink: 0; }
+/* ── HERO ── */
+.about-hero {
+    position: relative;
+    text-align: center;
+    padding: 80px 24px 72px;
+    overflow: hidden;
+}
+.about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: radial-gradient(ellipse 70% 80% at 50% 50%, black 30%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+.about-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+}
+.about-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    color: rgba(255,255,255,.70);
+    font-family: var(--font-head);
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+}
+.about-badge-dot {
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+}
+.about-hero-title {
+    font-family: var(--font-head);
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+.about-hero-title .grad {
+    background: linear-gradient(90deg, var(--gold), var(--terra));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.about-hero-lead {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    max-width: 520px;
+    margin: 0 auto;
+}
 
-    /* ── SECTIONS ── */
-    .about-section {
-        max-width: 760px;
-        margin: 0 auto 48px;
-        padding: 0 32px;
-    }
-    .about-section-label {
-        font-family: var(--font-head);
-        font-size: .7rem;
-        font-weight: 700;
-        letter-spacing: .09em;
-        text-transform: uppercase;
-        color: var(--terra);
-        margin-bottom: 14px;
-        display: flex; align-items: center; gap: 8px;
-    }
-    .about-section-label::after {
-        content: '';
-        display: inline-block;
-        width: 32px;
-        height: 2px;
-        background: var(--terra);
-        border-radius: 2px;
-        opacity: .4;
-    }
-    .about-section-title {
-        font-family: var(--font-head);
-        font-size: 1.5rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: var(--text);
-        margin-bottom: 14px;
-    }
-    .about-section-body {
-        font-size: .96rem;
-        color: var(--text-muted);
-        line-height: 1.8;
-        white-space: pre-wrap;
-    }
+/* ── STATS ── */
+.about-stats-wrap {
+    max-width: 760px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+}
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--bg-card);
+}
+.about-stat {
+    padding: 32px 20px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+}
+.about-stat:last-child { border-right: none; }
+.about-stat-n {
+    font-family: var(--font-head);
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+.about-stat-n span { color: var(--gold); }
+.about-stat-l {
+    font-size: .78rem;
+    color: var(--text-faint);
+    font-weight: 500;
+    letter-spacing: .02em;
+}
 
-    /* ── STATS STRIP ── */
-    .about-stats {
-        max-width: 760px;
-        margin: 0 auto 56px;
-        padding: 0 32px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-    }
-    .about-stat-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 24px 20px;
-        text-align: center;
-        transition: background .4s, border-color .4s;
-    }
-    .about-stat-val {
-        font-family: var(--font-head);
-        font-size: 2.4rem;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        color: var(--terra);
-        line-height: 1;
-        margin-bottom: 8px;
-    }
-    .about-stat-lbl {
-        font-size: .78rem;
-        color: var(--text-muted);
-        font-weight: 500;
-    }
+/* ── CONTENT SECTIONS ── */
+.about-body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+.about-block {
+    margin-bottom: 64px;
+}
+.about-block-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-head);
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+}
+.about-block-label::after {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    opacity: .4;
+}
+.about-block-title {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.25;
+}
+.about-block-text {
+    font-size: .97rem;
+    color: var(--text-muted);
+    line-height: 1.85;
+    white-space: pre-wrap;
+}
 
-    /* ── VALUES GRID ── */
-    .about-values-body {
-        font-size: .96rem;
-        color: var(--text-muted);
-        line-height: 1.8;
-        white-space: pre-wrap;
-    }
+/* Separator */
+.about-sep {
+    max-width: 680px;
+    margin: 0 auto 64px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.about-sep::before, .about-sep::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+.about-sep-icon {
+    color: var(--border-hover);
+    font-size: .8rem;
+    flex-shrink: 0;
+}
 
-    /* ── CTA ── */
-    .about-cta {
-        max-width: 760px;
-        margin: 0 auto;
-        padding: 0 32px 40px;
-        text-align: center;
-    }
-    .about-cta-box {
-        background: linear-gradient(135deg, var(--terra-soft), var(--gold-soft));
-        border: 1px solid rgba(200,82,42,.2);
-        border-radius: 20px;
-        padding: 44px 32px;
-    }
-    .about-cta-title {
-        font-family: var(--font-head);
-        font-size: 1.5rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        margin-bottom: 12px;
-        color: var(--text);
-    }
-    .about-cta-desc {
-        font-size: .92rem;
-        color: var(--text-muted);
-        margin-bottom: 24px;
-        line-height: 1.65;
-    }
-    .about-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn-cta-primary {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: var(--terra); color: white;
-        padding: 12px 28px;
-        border-radius: 100px;
-        font-family: var(--font-head);
-        font-size: .9rem; font-weight: 700;
-        text-decoration: none;
-        transition: background .2s, transform .15s;
-    }
-    .btn-cta-primary:hover { background: var(--accent); transform: translateY(-1px); }
-    .btn-cta-secondary {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: var(--bg-card); color: var(--text);
-        padding: 12px 28px;
-        border-radius: 100px;
-        border: 1px solid var(--border);
-        font-size: .9rem; font-weight: 500;
-        text-decoration: none;
-        transition: all .2s;
-    }
-    .btn-cta-secondary:hover { border-color: var(--border-hover); }
+/* ── EMPTY STATE ── */
+.about-empty {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--text-faint);
+    font-size: .9rem;
+}
 
-    @@media (max-width: 640px) {
-        .about-hero, .about-section, .about-stats, .about-cta { padding: 0 20px; }
-        .about-stats { grid-template-columns: 1fr; }
-        .about-hero-title { font-size: 2rem; }
-    }
+/* ── CTA ── */
+.about-cta-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+.about-cta {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 56px 40px;
+    text-align: center;
+    overflow: hidden;
+}
+.about-cta::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 400px; height: 200px;
+    background: radial-gradient(ellipse, rgba(212,168,67,.10) 0%, transparent 70%);
+    pointer-events: none;
+}
+.about-cta-title {
+    font-family: var(--font-head);
+    font-size: 1.7rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 12px;
+    position: relative;
+}
+.about-cta-desc {
+    font-size: .95rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 420px;
+    margin: 0 auto 28px;
+    position: relative;
+}
+.about-cta-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+.about-btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,.90);
+    color: rgba(0,0,0,.90) !important;
+    padding: 0 22px;
+    height: 46px;
+    border-radius: 9999px;
+    font-family: var(--font-head);
+    font-size: .8125rem;
+    font-weight: 500;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background .15s;
+}
+.about-btn-primary:hover { background: #fff; }
+.about-btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    color: rgba(255,255,255,.75) !important;
+    border: 1px solid rgba(255,255,255,.18);
+    padding: 0 22px;
+    height: 46px;
+    border-radius: 9999px;
+    font-family: var(--font-head);
+    font-size: .8125rem;
+    font-weight: 500;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color .15s, color .15s, background .15s;
+}
+.about-btn-secondary:hover {
+    border-color: rgba(255,255,255,.40);
+    color: #fff !important;
+    background: rgba(255,255,255,.05);
+}
+
+@@media (max-width: 640px) {
+    .about-hero { padding: 60px 20px 56px; }
+    .about-stats { grid-template-columns: 1fr; }
+    .about-stat { border-right: none; border-bottom: 1px solid var(--border); }
+    .about-stat:last-child { border-bottom: none; }
+    .about-stats-wrap, .about-body, .about-cta-wrap { padding: 0 16px; }
+    .about-cta { padding: 40px 24px; }
+}
 </style>
 @endpush
 
 @section('content')
-<div class="about-page">
+<div class="about">
 
-    {{-- Hero --}}
+    {{-- ── HERO ── --}}
     <div class="about-hero">
-        <div class="about-hero-eyebrow">✦ À propos</div>
-        <h1 class="about-hero-title">
-            @if($settings['about_title'])
-                {!! nl2br(e($settings['about_title'])) !!}
-            @else
-                La plateforme des <span>créateurs africains</span>
-            @endif
-        </h1>
-        @if($settings['about_tagline'])
-            <p class="about-hero-tagline">{{ $settings['about_tagline'] }}</p>
-        @endif
-    </div>
-
-    {{-- Stats --}}
-    @php
-        $statUsers    = \App\Models\User::where('is_active', true)->where('role', '!=', 'owner')->count();
-        $statCreators = \App\Models\User::where('role', 'creator')->count();
-        $statPosts    = \App\Models\Post::where('is_published', true)->count();
-    @endphp
-    <div class="about-stats">
-        <div class="about-stat-card">
-            <div class="about-stat-val">{{ number_format($statUsers) }}</div>
-            <div class="about-stat-lbl">Membres</div>
-        </div>
-        <div class="about-stat-card">
-            <div class="about-stat-val">{{ number_format($statCreators) }}</div>
-            <div class="about-stat-lbl">Créateurs actifs</div>
-        </div>
-        <div class="about-stat-card">
-            <div class="about-stat-val">{{ number_format($statPosts) }}</div>
-            <div class="about-stat-lbl">Publications</div>
-        </div>
-    </div>
-
-    {{-- Mission --}}
-    @if($settings['about_mission'])
-    <div class="about-section">
-        <div class="about-section-label">🎯 Notre mission</div>
-        <p class="about-section-body">{{ $settings['about_mission'] }}</p>
-    </div>
-    <div class="about-divider"><span class="about-divider-icon">✦</span></div>
-    @endif
-
-    {{-- Histoire --}}
-    @if($settings['about_story'])
-    <div class="about-section">
-        <div class="about-section-label">📖 Notre histoire</div>
-        <p class="about-section-body">{{ $settings['about_story'] }}</p>
-    </div>
-    @if($settings['about_values'])
-    <div class="about-divider"><span class="about-divider-icon">✦</span></div>
-    @endif
-    @endif
-
-    {{-- Valeurs --}}
-    @if($settings['about_values'])
-    <div class="about-section">
-        <div class="about-section-label">✨ Nos valeurs</div>
-        <p class="about-section-body">{{ $settings['about_values'] }}</p>
-    </div>
-    @endif
-
-    {{-- Si aucun contenu n'est encore rempli --}}
-    @if(!$settings['about_mission'] && !$settings['about_story'] && !$settings['about_values'])
-    <div class="about-section" style="text-align:center;padding-top:20px;padding-bottom:20px;">
-        <div style="color:var(--text-faint);font-size:.9rem;">
-            La page est en cours de rédaction. Revenez bientôt.
-        </div>
-    </div>
-    @endif
-
-    {{-- CTA --}}
-    <div class="about-cta">
-        <div class="about-cta-box">
-            <div class="about-cta-title">Rejoins la communauté</div>
-            <div class="about-cta-desc">
-                Que tu sois créateur ou fan de contenu africain, MelanoGeek est fait pour toi.
+        <div class="about-hero-inner">
+            <div class="about-badge">
+                <span class="about-badge-dot"></span>
+                À propos de MelanoGeek
             </div>
+            <h1 class="about-hero-title">
+                @if($settings['about_title'])
+                    {!! nl2br(e($settings['about_title'])) !!}
+                @else
+                    La culture <span class="grad">geek</span>,<br>vue d'Afrique
+                @endif
+            </h1>
+            @if($settings['about_tagline'])
+                <p class="about-hero-lead">{{ $settings['about_tagline'] }}</p>
+            @else
+                <p class="about-hero-lead">
+                    Une communauté africaine autour du manga, du gaming, de la tech et de la culture nerd. Blog, forum, débats — par et pour les geeks du continent.
+                </p>
+            @endif
+        </div>
+    </div>
+
+    {{-- ── STATS ── --}}
+    @php
+        $statMembers  = \App\Models\User::where('is_active', true)->where('role', '!=', 'owner')->count();
+        $statPosts    = \App\Models\Post::where('is_published', true)->count();
+        $statComments = \App\Models\Comment::count();
+    @endphp
+    <div class="about-stats-wrap">
+        <div class="about-stats">
+            <div class="about-stat">
+                <div class="about-stat-n">{{ number_format($statMembers) }}<span>+</span></div>
+                <div class="about-stat-l">Membres</div>
+            </div>
+            <div class="about-stat">
+                <div class="about-stat-n">{{ number_format($statPosts) }}<span>+</span></div>
+                <div class="about-stat-l">Publications</div>
+            </div>
+            <div class="about-stat">
+                <div class="about-stat-n">{{ number_format($statComments) }}<span>+</span></div>
+                <div class="about-stat-l">Commentaires</div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ── CONTENT ── --}}
+    <div class="about-body">
+
+        @if($settings['about_mission'])
+        <div class="about-block">
+            <div class="about-block-label">Notre mission</div>
+            <p class="about-block-text">{{ $settings['about_mission'] }}</p>
+        </div>
+        @if($settings['about_story'] || $settings['about_values'])
+            <div class="about-sep"><span class="about-sep-icon">✦</span></div>
+        @endif
+        @endif
+
+        @if($settings['about_story'])
+        <div class="about-block">
+            <div class="about-block-label">Notre histoire</div>
+            <p class="about-block-text">{{ $settings['about_story'] }}</p>
+        </div>
+        @if($settings['about_values'])
+            <div class="about-sep"><span class="about-sep-icon">✦</span></div>
+        @endif
+        @endif
+
+        @if($settings['about_values'])
+        <div class="about-block">
+            <div class="about-block-label">Nos valeurs</div>
+            <p class="about-block-text">{{ $settings['about_values'] }}</p>
+        </div>
+        @endif
+
+        @if(!$settings['about_mission'] && !$settings['about_story'] && !$settings['about_values'])
+        <div class="about-empty">La page est en cours de rédaction. Revenez bientôt.</div>
+        @endif
+
+    </div>
+
+    {{-- ── CTA ── --}}
+    <div class="about-cta-wrap">
+        <div class="about-cta">
+            <div class="about-cta-title">Rejoins la communauté</div>
+            <p class="about-cta-desc">
+                Que tu sois passionné de manga, de gaming ou de tech africaine — MelanoGeek est fait pour toi.
+            </p>
             <div class="about-cta-btns">
                 @guest
-                    <a href="{{ route('register') }}" class="btn-cta-primary">Créer un compte →</a>
-                    <a href="{{ route('home') }}" class="btn-cta-secondary">En savoir plus</a>
+                    <a href="{{ route('register') }}" class="about-btn-primary">Créer un compte →</a>
+                    <a href="{{ route('blog.index') }}" class="about-btn-secondary">Lire le blog</a>
                 @else
-                    <a href="{{ route('feed') }}" class="btn-cta-primary">Voir le feed →</a>
-                    <a href="{{ route('creators') }}" class="btn-cta-secondary">Découvrir les créateurs</a>
+                    <a href="{{ route('home') }}" class="about-btn-primary">Accueil →</a>
+                    <a href="{{ route('blog.index') }}" class="about-btn-secondary">Lire le blog</a>
                 @endguest
             </div>
         </div>

@@ -24,9 +24,6 @@
                 </div>
                 <div class="feed-author-meta" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                     {{ $post->created_at?->diffForHumans() ?? "-" }}
-                    @if($post->is_exclusive)
-                        <span class="exclusive-badge">🔒 Exclusif</span>
-                    @endif
                 </div>
             </div>
         </a>
@@ -40,16 +37,6 @@
             </button>
         @endif
     </div>
-
-    @php
-        $canSee = !$post->is_exclusive
-            || (auth()->check() && (
-                auth()->id() === $post->user_id
-                || auth()->user()->hasActiveSubscription()
-            ));
-    @endphp
-
-    @if($canSee)
 
         {{-- Titre --}}
         @if($post->title)
@@ -79,39 +66,6 @@
                 @endif
             </div>
         @endif
-
-    @else
-
-        {{-- ══ LOCK : contenu exclusif ══ --}}
-        <div class="exclusive-gate">
-            <div class="exclusive-blur-zone" aria-hidden="true">
-                @if($post->title)
-                    <div class="feed-card-title">{{ $post->title }}</div>
-                @endif
-                @if($post->body)
-                    <div class="feed-card-body">{{ mb_substr($post->body, 0, 200) }}</div>
-                @endif
-                @if($post->mediaFiles->isNotEmpty())
-                    <img src="{{ Storage::url($post->mediaFiles->first()->media_url) }}"
-                         alt="" style="width:100%;max-height:180px;object-fit:cover;display:block;">
-                @elseif($post->media_url && $post->media_type !== 'video')
-                    <img src="{{ Storage::url($post->media_url) }}"
-                         alt="" style="width:100%;max-height:180px;object-fit:cover;display:block;">
-                @else
-                    <div style="height:120px;background:linear-gradient(135deg,rgba(212,168,67,.08),rgba(200,82,42,.08));"></div>
-                @endif
-            </div>
-            <div class="exclusive-overlay">
-                <div class="exclusive-lock-icon">🔒</div>
-                <div class="exclusive-lock-label">Contenu exclusif</div>
-                <div class="exclusive-lock-sub">Réservé aux abonnés MelanoGeek</div>
-                <a href="{{ route('subscription.pricing') }}" class="exclusive-lock-btn">
-                    S'abonner pour voir ✦
-                </a>
-            </div>
-        </div>
-
-    @endif
 
     {{-- Actions --}}
     <div class="feed-card-actions">

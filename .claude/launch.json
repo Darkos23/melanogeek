@@ -21,5 +21,36 @@
       "port": 8000,
       "autoPort": true
     }
+  ,
+    {
+      "name": "Rosmie (static)",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d D:\\www\\rosmie-platform && F:\\laragon\\bin\\php\\php-8.3.30-Win32-vs16-x64\\php.exe artisan serve --host=127.0.0.1 --port=8001"],
+      "port": 8001
+    },
+    {
+      "name": "melo-app (Expo Web)",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d F:\\Apps\\melo-app && npx expo start --web --port 19006"],
+      "port": 19006
+    },
+    {
+      "name": "melo-mag (Laravel)",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d D:\\www\\melo-mag && F:\\laragon\\bin\\php\\php-8.3.30-Win32-vs16-x64\\php.exe artisan serve --host=127.0.0.1 --port=8002"],
+      "port": 8002
+    },
+    {
+      "name": "melo-mag (Vite)",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d D:\\www\\melo-mag && npm run dev"],
+      "port": 5174
+    },
+    {
+      "name": "korilab (Laravel)",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d D:\\www\\KoriLab && F:\\laragon\\bin\\php\\php-8.3.30-Win32-vs16-x64\\php.exe artisan serve --host=127.0.0.1 --port=8004"],
+      "port": 8004
+    }
   ]
 }

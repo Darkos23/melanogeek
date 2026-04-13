@@ -456,30 +456,6 @@
             @endauth
         </div>
 
-        @php
-            $canSeePost = !$post->is_exclusive
-                || (auth()->check() && (
-                    auth()->id() === $post->user_id
-                    || auth()->user()->hasActiveSubscription()
-                ));
-        @endphp
-
-        @if(!$canSeePost)
-        {{-- ══ LOCK : contenu exclusif ══ --}}
-        <div style="text-align:center;padding:48px 24px;">
-            <div style="font-size:3rem;line-height:1;margin-bottom:16px;">🔒</div>
-            <div style="font-family:var(--font-head);font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:8px;">Contenu exclusif</div>
-            <div style="font-size:.9rem;color:var(--text-muted);margin-bottom:24px;line-height:1.5;">
-                Cette publication est réservée aux abonnés MelanoGeek.<br>
-                Abonne-toi pour accéder à tout le contenu exclusif des créateurs.
-            </div>
-            <a href="{{ route('subscription.pricing') }}"
-               style="display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#1C1208;font-family:var(--font-head);font-size:.92rem;font-weight:700;padding:12px 28px;border-radius:100px;text-decoration:none;transition:opacity .2s;">
-                ✦ Voir les abonnements
-            </a>
-        </div>
-        @else
-
         {{-- Titre --}}
         @if($post->title)
             <div class="post-title">{{ $post->title }}</div>
@@ -543,8 +519,6 @@
             <button class="audio-vol-btn" id="audioVolBtn" onclick="audioMuteToggle()" title="Couper le son">🔊</button>
         </div>
         @endif
-
-        @endif {{-- fin @else canSeePost --}}
 
         {{-- Actions --}}
         <div class="post-actions">

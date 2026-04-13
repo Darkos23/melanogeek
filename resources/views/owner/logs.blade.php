@@ -15,7 +15,6 @@
                 <option value="">Toutes</option>
                 <option value="user"     {{ request('action') === 'user'     ? 'selected' : '' }}>👤 Utilisateurs</option>
                 <option value="post"     {{ request('action') === 'post'     ? 'selected' : '' }}>📝 Publications</option>
-                <option value="creator"  {{ request('action') === 'creator'  ? 'selected' : '' }}>⭐ Creators</option>
                 <option value="staff"    {{ request('action') === 'staff'    ? 'selected' : '' }}>🛡️ Staff</option>
                 <option value="settings" {{ request('action') === 'settings' ? 'selected' : '' }}>⚙️ Paramètres</option>
             </select>
@@ -82,7 +81,6 @@
                             $actionColors = [
                                 'user.'     => 'badge-gray',
                                 'post.'     => 'badge-gray',
-                                'creator.'  => 'badge-admin',
                                 'staff.'    => 'badge-owner',
                                 'settings.' => 'badge-green',
                             ];
@@ -96,7 +94,7 @@
                     <td style="font-size:.82rem;max-width:280px;">{{ $log->description }}</td>
                     <td style="font-size:.75rem;color:var(--text-muted);font-family:monospace;">{{ $log->ip_address ?? '—' }}</td>
                     <td style="font-size:.75rem;color:var(--text-muted);white-space:nowrap;">
-                        {{ $log->created_at->format('d/m/Y H:i') }}<br>
+                        {{ $log->created_at?->format('d/m/Y H:i') ?? '—' }}<br>
                         <span style="font-size:.7rem;">{{ $log->created_at?->diffForHumans() ?? "-" }}</span>
                     </td>
                 </tr>

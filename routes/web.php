@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\PostAdminController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\Owner\OwnerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MessagesController;
 use Illuminate\Support\Facades\Route;
 
 // ── Pages publiques ──
@@ -23,8 +26,11 @@ Route::get('/a-propos', function () {
     return view('pages.about', compact('settings'));
 })->name('about');
 
+// ── Profils publics ──
+Route::get('/@{user:username}', [ProfileController::class, 'show'])->name('profile.show');
+
 // ── Blog ──
-Route::get('/blog', fn() => view('blog.index'))->name('blog.index');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 
 // ── Forum ──
 Route::get('/forum', fn() => view('forum.index'))->name('forum.index');
@@ -63,6 +69,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('/users/{id}/restore',  [AdminController::class, 'userRestore'])->name('users.restore');
     Route::get('/about',                 [AdminController::class, 'about'])->name('about');
     Route::patch('/about',               [AdminController::class, 'aboutUpdate'])->name('about.update');
+    Route::get('/posts',                 [PostAdminController::class, 'index'])->name('posts');
+    Route::patch('/posts/{post}/toggle', [PostAdminController::class, 'toggle'])->name('posts.toggle');
+    Route::delete('/posts/{post}',       [PostAdminController::class, 'destroy'])->name('posts.delete');
 });
 
 // ── Owner ──

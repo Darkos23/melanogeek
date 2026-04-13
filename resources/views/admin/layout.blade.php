@@ -254,9 +254,6 @@
                 <a href="{{ route('owner.dashboard') }}" class="sidebar-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
                     <span class="icon">👑</span> Vue d'ensemble
                 </a>
-                <a href="{{ route('owner.finances') }}" class="sidebar-link {{ request()->routeIs('owner.finances') ? 'active' : '' }}">
-                    <span class="icon">💰</span> Finances
-                </a>
                 <a href="{{ route('owner.staff') }}" class="sidebar-link {{ request()->routeIs('owner.staff') ? 'active' : '' }}">
                     <span class="icon">🛡️</span> Gestion du staff
                 </a>
@@ -302,15 +299,6 @@
                     <span style="margin-left:auto;background:#E05555;color:white;font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:100px;">{{ $pendingReports }}</span>
                 @endif
             </a>
-            <div class="sidebar-section">Marketplace</div>
-            <a href="{{ route('marketplace.index') }}" class="sidebar-link" target="_blank">
-                <span class="icon">🛍️</span> Voir le marketplace
-                @php $pendingOrders = \App\Models\Order::where('status','pending')->count(); @endphp
-                @if($pendingOrders > 0)
-                    <span style="margin-left:auto;background:var(--gold);color:#1C1208;font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:100px;">{{ $pendingOrders }}</span>
-                @endif
-            </a>
-
             <div class="sidebar-section">Site</div>
             <a href="{{ route('admin.about') }}" class="sidebar-link {{ request()->routeIs('admin.about*') ? 'active' : '' }}">
                 <span class="icon">📄</span> Page À propos

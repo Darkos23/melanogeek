@@ -15,12 +15,22 @@ class Post extends Model
         'media_url', 'media_type', 'thumbnail',
         'audio_url', 'audio_name',
         'likes_count', 'comments_count',
-        'is_published', 'is_exclusive',
+        'is_published',
+        'category', 'tags',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
-        'is_exclusive' => 'boolean',
+        'tags'         => 'array',
+    ];
+
+    const CATEGORIES = [
+        'manga-anime'    => 'Manga & Animé',
+        'gaming'         => 'Gaming',
+        'tech'           => 'Tech & IA',
+        'cinema-series'  => 'Cinéma & Séries',
+        'culture'        => 'Culture & Société',
+        'debat'          => 'Débat',
     ];
 
     public function user()
@@ -47,5 +57,16 @@ class Post extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
+    }
+
+    public function scopeInCategory($query, string $category)
+    {
+        return $query->where('category', $category);
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────
+    public function getCategoryLabelAttribute(): string
+    {
+        return self::CATEGORIES[$this->category] ?? '';
     }
 }

@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td style="font-size:.75rem;color:var(--text-muted);">{{ $admin->created_at->format('d/m/Y') }}</td>
+                            <td style="font-size:.75rem;color:var(--text-muted);">{{ $admin->created_at?->format('d/m/Y') ?? '—' }}</td>
                             <td>
                                 <form method="POST" action="{{ route('owner.staff.revoke', $admin->username) }}" onsubmit="return confirm('Révoquer les droits admin de {{ $admin->name }} ?')">
                                     @csrf @method('PATCH')
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td style="font-size:.75rem;color:var(--text-muted);">{{ $cm->created_at->format('d/m/Y') }}</td>
+                            <td style="font-size:.75rem;color:var(--text-muted);">{{ $cm->created_at?->format('d/m/Y') ?? '—' }}</td>
                             <td>
                                 <form method="POST" action="{{ route('owner.staff.revoke', $cm->username) }}" onsubmit="return confirm('Révoquer les droits CM de {{ $cm->name }} ?')">
                                     @csrf @method('PATCH')
@@ -145,8 +145,7 @@
                 ['label' => 'Modérer posts & commentaires', 'cm' => true,  'admin' => true,  'owner' => true],
                 ['label' => 'Traiter les signalements',     'cm' => true,  'admin' => true,  'owner' => true],
                 ['label' => 'Gérer les utilisateurs',       'cm' => false, 'admin' => true,  'owner' => true],
-                ['label' => 'Approuver creators',           'cm' => false, 'admin' => true,  'owner' => true],
-                ['label' => 'Abonnements',                  'cm' => false, 'admin' => true,  'owner' => true],
+                ['label' => 'Page À propos',                'cm' => false, 'admin' => true,  'owner' => true],
                 ['label' => 'Supprimer/éditer un admin',    'cm' => false, 'admin' => false, 'owner' => true],
                 ['label' => 'Finances avancées',            'cm' => false, 'admin' => false, 'owner' => true],
                 ['label' => 'Paramètres plateforme',        'cm' => false, 'admin' => false, 'owner' => true],

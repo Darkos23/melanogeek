@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -12,8 +12,8 @@
     {{-- Fonts --}}
     <script>
     (function(){
-        var t = localStorage.getItem('mg-theme') || 'light';
-        var f = 'family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Outfit:wght@300;400;500;600';
+        var t = localStorage.getItem('mg-theme') || 'dark';
+        var f = 'family=DM+Serif+Display&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600';
         if (t === 'light') f += '&family=Sora:wght@300;400;500;600';
         var pc1 = document.createElement('link'); pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
         var pc2 = document.createElement('link'); pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com'; pc2.crossOrigin = 'anonymous';
@@ -27,10 +27,10 @@
     <style>
     /* ═══ VARIABLES (reprise de app.blade.php) ═══ */
     :root, [data-theme="dark"] {
-        --bg: #0D0905; --bg-card: #141009; --bg-card2: #1C1810; --bg-hover: #221C13;
+        --bg: #1a1a1a; --bg-card: #1f1f1f; --bg-card2: #242424; --bg-hover: #2a2a2a;
         --text: #F0E8D8; --text-muted: rgba(240,232,216,0.55); --text-faint: rgba(240,232,216,0.18);
         --border: rgba(240,232,216,0.10); --border-hover: rgba(240,232,216,0.22);
-        --nav-bg: rgba(13,9,5,0.90); --toggle-bg: rgba(240,232,216,0.08);
+        --nav-bg: rgba(26,26,26,0.90); --toggle-bg: rgba(240,232,216,0.08);
         --terra: #C8522A; --terra-soft: rgba(200,82,42,0.12);
         --gold: #D4A843; --gold-soft: rgba(212,168,67,0.10);
         --accent: #E06030; --green: #2A7A48;
@@ -57,60 +57,61 @@
     /* ─── NAVIGATION ─── */
     .blog-nav {
         position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-        height: 64px;
+        height: 56px;
         padding: 0 52px;
         display: flex; align-items: center; justify-content: space-between; gap: 24px;
-        background: var(--nav-bg);
+        background: rgba(26,26,26,.92);
         backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         border-bottom: 1px solid var(--border);
     }
 
     .blog-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .blog-nav-logo svg { width: 30px; height: 30px; flex-shrink: 0; }
+    .blog-nav-logo svg { width: 26px; height: 26px; flex-shrink: 0; }
     .blog-nav-logo-name {
-        font-family: var(--font-head);
-        font-weight: 700; font-size: .82rem;
-        color: var(--text);
+        font-family: 'Bricolage Grotesque', sans-serif;
+        font-weight: 800; font-size: 1rem; letter-spacing: -.04em;
+        color: rgba(255,255,255,.92);
     }
-    .blog-nav-logo-name span { color: var(--terra); }
+    .blog-nav-logo-name span { color: var(--gold); }
 
-    .blog-nav-links { display: flex; gap: 4px; list-style: none; }
+    .blog-nav-links { display: flex; gap: 24px; list-style: none; }
     .blog-nav-links a {
-        font-size: .72rem; font-weight: 600;
-        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .7rem; font-weight: 500;
+        color: rgba(255,255,255,.45);
         text-decoration: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        transition: all .18s;
-        letter-spacing: .03em;
+        letter-spacing: .05em; text-transform: uppercase;
+        transition: color .18s;
     }
     .blog-nav-links a:hover,
-    .blog-nav-links a.active { color: var(--terra); background: var(--terra-soft); }
+    .blog-nav-links a.active { color: rgba(255,255,255,.90); }
 
     .blog-nav-right { display: flex; align-items: center; gap: 8px; }
     .blog-nav-search {
         display: flex; align-items: center; gap: 8px;
-        background: var(--bg-card);
+        background: rgba(255,255,255,.04);
         border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 7px 12px;
+        border-radius: 7px;
+        padding: 6px 12px;
         transition: border-color .2s;
     }
-    .blog-nav-search:focus-within { border-color: var(--terra); }
+    .blog-nav-search:focus-within { border-color: rgba(255,255,255,.20); }
     .blog-nav-search input {
         background: none; border: none; outline: none;
-        color: var(--text); font-family: var(--font-body);
-        font-size: .72rem; width: 160px;
+        color: var(--text); font-family: 'JetBrains Mono', monospace;
+        font-size: .68rem; width: 140px; letter-spacing: .02em;
     }
     .blog-nav-search input::placeholder { color: var(--text-faint); }
     .blog-nav-search svg { color: var(--text-faint); flex-shrink: 0; }
     .blog-nav-btn {
-        background: var(--terra); color: white; border: none;
-        padding: 7px 16px; border-radius: 7px;
-        font-family: var(--font-body); font-size: .72rem; font-weight: 600;
-        text-decoration: none; transition: all .18s;
+        background: rgba(255,255,255,.90); color: rgba(0,0,0,.90); border: none;
+        padding: 0 16px; height: 32px; border-radius: 999px;
+        font-family: 'JetBrains Mono', monospace; font-size: .68rem; font-weight: 500;
+        letter-spacing: .05em; text-transform: uppercase;
+        text-decoration: none; display: inline-flex; align-items: center;
+        transition: background .15s;
     }
-    .blog-nav-btn:hover { background: var(--accent); }
+    .blog-nav-btn:hover { background: #fff; }
 
     /* Theme toggle */
     .blog-theme-toggle {
@@ -120,7 +121,7 @@
         display: flex; align-items: center; justify-content: center;
         cursor: pointer; transition: all .2s;
     }
-    .blog-theme-toggle:hover { border-color: var(--terra); color: var(--terra); background: var(--terra-soft); }
+    .blog-theme-toggle:hover { border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.9); background: rgba(255,255,255,.06); }
 
     /* Hamburger */
     .blog-hamburger {
@@ -138,80 +139,84 @@
     .blog-wrap {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 88px 52px 64px;
+        padding: 76px 52px 64px;
         display: grid;
-        grid-template-columns: 1fr 300px;
-        gap: 40px;
+        grid-template-columns: 1fr 260px;
+        gap: 48px;
         align-items: start;
     }
     .blog-main { min-width: 0; }
 
     /* ─── SIDEBAR ─── */
-    .blog-sidebar { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 20px; }
+    .blog-sidebar { position: sticky; top: 72px; display: flex; flex-direction: column; gap: 28px; }
 
     .sidebar-block {
         border: 1px solid var(--border);
-        border-radius: 12px;
+        border-radius: 8px;
         overflow: hidden;
-        background: var(--bg-card);
+        background: transparent;
     }
     .sidebar-block-head {
-        padding: 14px 18px;
+        padding: 10px 16px;
         border-bottom: 1px solid var(--border);
-        font-family: var(--font-head);
-        font-size: .68rem;
-        font-weight: 700;
-        letter-spacing: .08em;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .58rem;
+        font-weight: 600;
+        letter-spacing: .12em;
         text-transform: uppercase;
-        color: var(--text-muted);
+        color: var(--gold);
     }
     .sidebar-block-body { padding: 4px 0; }
 
     .sb-item {
         display: flex; align-items: center; gap: 10px;
-        padding: 10px 18px;
+        padding: 9px 16px;
         text-decoration: none;
-        font-size: .75rem;
-        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .68rem; letter-spacing: .03em;
+        color: rgba(255,255,255,.45);
         transition: all .16s;
         border-bottom: 1px solid var(--border);
     }
     .sb-item:last-child { border-bottom: none; }
-    .sb-item:hover { background: var(--bg-hover); color: var(--terra); }
-    .sb-item-icon { font-size: 1rem; flex-shrink: 0; }
-    .sb-item-name { flex: 1; font-weight: 500; }
-    .sb-item-count { font-family: var(--font-head); font-size: .65rem; font-weight: 700; color: var(--text-faint); }
+    .sb-item:hover { color: rgba(255,255,255,.85); background: rgba(255,255,255,.03); }
+    .sb-item.active { color: var(--gold); }
+    .sb-item-icon { font-size: .9rem; flex-shrink: 0; }
+    .sb-item-name { flex: 1; }
 
     /* Tags */
-    .sb-tags { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .sb-tags { padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
     .sb-tag {
-        font-size: .62rem; font-weight: 600;
-        color: var(--text-muted);
-        background: var(--bg-card2);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .58rem; font-weight: 500;
+        color: rgba(255,255,255,.35);
+        background: transparent;
         border: 1px solid var(--border);
-        padding: 3px 10px; border-radius: 100px;
+        padding: 3px 9px; border-radius: 100px;
         text-decoration: none;
         transition: all .16s;
-        letter-spacing: .03em;
+        letter-spacing: .04em;
     }
-    .sb-tag:hover { border-color: var(--terra); color: var(--terra); background: var(--terra-soft); }
+    .sb-tag:hover { border-color: rgba(255,255,255,.20); color: rgba(255,255,255,.70); }
 
     /* Newsletter */
-    .sb-newsletter { padding: 18px; }
-    .sb-newsletter p { font-size: .72rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 12px; }
+    .sb-newsletter { padding: 16px; }
+    .sb-newsletter p { font-size: .7rem; color: var(--text-faint); line-height: 1.55; margin-bottom: 12px; font-family: 'JetBrains Mono', monospace; letter-spacing: .02em; }
     .sb-newsletter input {
-        width: 100%; background: var(--bg-card2); border: 1px solid var(--border);
-        color: var(--text); font-family: var(--font-body); font-size: .72rem;
-        padding: 9px 12px; border-radius: 7px; outline: none; margin-bottom: 8px;
+        width: 100%; background: rgba(255,255,255,.04); border: 1px solid var(--border);
+        color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: .68rem;
+        padding: 8px 12px; border-radius: 6px; outline: none; margin-bottom: 8px;
         transition: border-color .2s;
     }
-    .sb-newsletter input:focus { border-color: var(--terra); }
+    .sb-newsletter input:focus { border-color: rgba(255,255,255,.20); }
     .sb-newsletter button {
-        width: 100%; background: var(--terra); color: white; border: none;
-        padding: 9px 16px; border-radius: 7px; font-family: var(--font-body);
-        font-size: .72rem; font-weight: 600; cursor: pointer; transition: background .18s;
+        width: 100%; background: rgba(255,255,255,.90); color: rgba(0,0,0,.90); border: none;
+        padding: 9px 16px; border-radius: 6px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .68rem; font-weight: 500; letter-spacing: .05em; text-transform: uppercase;
+        cursor: pointer; transition: background .15s;
     }
-    .sb-newsletter button:hover { background: var(--accent); }
+    .sb-newsletter button:hover { background: #fff; }
 
     /* ─── BREADCRUMB ─── */
     .blog-breadcrumb {
@@ -221,7 +226,7 @@
         flex-wrap: wrap;
     }
     .blog-breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color .16s; }
-    .blog-breadcrumb a:hover { color: var(--terra); }
+    .blog-breadcrumb a:hover { color: var(--text); }
     .blog-breadcrumb-sep { color: var(--text-faint); }
 
     /* ─── FOOTER ─── */
@@ -234,7 +239,7 @@
     }
     .blog-footer-links { display: flex; gap: 20px; list-style: none; }
     .blog-footer-links a { color: var(--text-muted); text-decoration: none; transition: color .16s; }
-    .blog-footer-links a:hover { color: var(--terra); }
+    .blog-footer-links a:hover { color: var(--text); }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1024px) {
@@ -270,7 +275,8 @@
         <li><a href="{{ route('home') }}">Accueil</a></li>
         <li><a href="{{ route('blog.index') }}" class="{{ request()->routeIs('blog.*') ? 'active' : '' }}">Blog</a></li>
         <li><a href="{{ route('forum.index') }}" class="{{ request()->routeIs('forum.*') ? 'active' : '' }}">Forum</a></li>
-        <li><a href="{{ route('about') }}">À propos</a></li>
+        <li><a href="{{ route('home') }}">Communauté</a></li>
+        <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">À propos</a></li>
     </ul>
 
     <div class="blog-nav-right">
@@ -284,7 +290,7 @@
         </button>
 
         @guest
-            <a href="{{ route('login') }}" style="font-size:.72rem;color:var(--text-muted);text-decoration:none;padding:7px 12px;border:1px solid var(--border);border-radius:7px;transition:all .18s;" onmouseover="this.style.borderColor='var(--terra)';this.style.color='var(--terra)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Connexion</a>
+            <a href="{{ route('login') }}" style="font-size:.72rem;color:var(--text-muted);text-decoration:none;padding:7px 12px;border:1px solid var(--border);border-radius:7px;transition:all .18s;" onmouseover="this.style.borderColor='rgba(255,255,255,.3)';this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Connexion</a>
             <a href="{{ route('register') }}" class="blog-nav-btn">Rejoindre</a>
         @else
             <div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--terra),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:white;text-decoration:none;cursor:pointer;">
@@ -326,36 +332,25 @@
             <div class="sidebar-block">
                 <div class="sidebar-block-head">Catégories</div>
                 <div class="sidebar-block-body">
-                    <a href="{{ route('blog.index') }}?cat=manga" class="sb-item">
-                        <span class="sb-item-icon">🎌</span>
-                        <span class="sb-item-name">Manga & Animé</span>
-                        <span class="sb-item-count">142</span>
+                    @php $activeCategory = request('category'); @endphp
+                    <a href="{{ route('blog.index') }}" class="sb-item {{ !$activeCategory ? 'active' : '' }}">
+                        <span class="sb-item-icon">✦</span>
+                        <span class="sb-item-name">Tout</span>
                     </a>
-                    <a href="{{ route('blog.index') }}?cat=gaming" class="sb-item">
-                        <span class="sb-item-icon">🎮</span>
-                        <span class="sb-item-name">Gaming</span>
-                        <span class="sb-item-count">98</span>
+                    @foreach([
+                        ['manga-anime',   '🎌', 'Manga & Animé'],
+                        ['gaming',        '🎮', 'Gaming'],
+                        ['tech',          '💻', 'Tech & IA'],
+                        ['cinema-series', '🎬', 'Cinéma & Séries'],
+                        ['culture',       '🌍', 'Culture & Société'],
+                        ['debat',         '💬', 'Débat'],
+                    ] as [$slug, $icon, $name])
+                    <a href="{{ route('blog.index') }}?category={{ $slug }}"
+                       class="sb-item {{ $activeCategory === $slug ? 'active' : '' }}">
+                        <span class="sb-item-icon">{{ $icon }}</span>
+                        <span class="sb-item-name">{{ $name }}</span>
                     </a>
-                    <a href="{{ route('blog.index') }}?cat=tech" class="sb-item">
-                        <span class="sb-item-icon">💻</span>
-                        <span class="sb-item-name">Tech & IA</span>
-                        <span class="sb-item-count">76</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?cat=cinema" class="sb-item">
-                        <span class="sb-item-icon">🎬</span>
-                        <span class="sb-item-name">Cinéma & Séries</span>
-                        <span class="sb-item-count">64</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?cat=bd" class="sb-item">
-                        <span class="sb-item-icon">📚</span>
-                        <span class="sb-item-name">BD & Comics</span>
-                        <span class="sb-item-count">47</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?cat=culture" class="sb-item">
-                        <span class="sb-item-icon">🌍</span>
-                        <span class="sb-item-name">Culture africaine</span>
-                        <span class="sb-item-count">89</span>
-                    </a>
+                    @endforeach
                 </div>
             </div>
 
@@ -396,6 +391,7 @@
         <li><a href="{{ route('home') }}">Accueil</a></li>
         <li><a href="{{ route('blog.index') }}">Blog</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
+        <li><a href="{{ route('home') }}">Communauté</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
     </ul>
 </footer>
@@ -411,7 +407,7 @@
         localStorage.setItem('mg-theme', t);
         icon.textContent = t === 'light' ? '🌙' : '☀️';
     }
-    apply(localStorage.getItem('mg-theme') || 'light');
+    apply(localStorage.getItem('mg-theme') || 'dark');
     btn && btn.addEventListener('click', function(){
         apply(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
     });

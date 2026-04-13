@@ -4,86 +4,31 @@ namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
-use App\Models\CreatorRequest;
 use App\Models\Post;
+use App\Models\Report;
 use App\Models\Setting;
-use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class OwnerController extends Controller
 {
     // ── Dashboard owner ────────────────────────────────────────
     public function dashboard()
     {
-        // Stats générales
         $stats = [
             'users_total'    => User::count(),
             'users_active'   => User::where('is_active', true)->count(),
             'users_new_week' => User::whereDate('created_at', '>=', now()->subDays(7))->count(),
-            'creators_total' => User::where('role', 'creator')->count(),
+            'users_today'    => User::whereDate('created_at', today())->count(),
             'admins_total'   => User::where('role', 'admin')->count(),
             'posts_total'    => Post::count(),
-            'subs_active'    => Subscription::where('status', 'active')->count(),
-            'requests_pending' => CreatorRequest::where('status', 'pending')->count(),
-
-            // Finances
-            'revenue_xof'    => Subscription::where('status', 'active')->where('currency', 'XOF')->sum('amount'),
-            'revenue_eur'    => Subscription::where('status', 'active')->where('currency', 'EUR')->sum('amount'),
-            'revenue_month'  => Subscription::where('status', 'active')
-                                    ->whereMonth('created_at', now()->month)
-                                    ->whereYear('created_at', now()->year)
-                                    ->sum('amount'),
-
-            // Par plan
-            'subs_african'   => Subscription::where('status', 'active')->where('plan', 'african')->count(),
-            'subs_global'    => Subscription::where('status', 'active')->where('plan', 'global')->count(),
         ];
 
-        $recent_logs = ActivityLog::with('staff')->latest('created_at')->limit(10)->get();
+        $recent_logs    = ActivityLog::with('staff')->latest()->limit(8)->get();
+        $pending_reports = Report::with(['reporter', 'post'])->where('status', 'pending')->latest()->limit(8)->get();
+        $latest_posts   = Post::with('user')->latest()->limit(8)->get();
 
-        return view('owner.dashboard', compact('stats', 'recent_logs'));
-    }
-
-    // ── Finances ───────────────────────────────────────────────
-    public function finances()
-    {
-        // Revenus par mois (6 derniers mois)
-        $monthly = Subscription::where('status', 'active')
-            ->where('created_at', '>=', now()->subMonths(6))
-            ->select(
-                DB::raw('YEAR(created_at) as year'),
-                DB::raw('MONTH(created_at) as month'),
-                DB::raw('currency'),
-                DB::raw('SUM(amount) as total'),
-                DB::raw('COUNT(*) as count')
-            )
-            ->groupBy('year', 'month', 'currency')
-            ->orderBy('year')->orderBy('month')
-            ->get();
-
-        // Revenus par plan
-        $byPlan = Subscription::where('status', 'active')
-            ->select('plan', 'currency', DB::raw('SUM(amount) as total'), DB::raw('COUNT(*) as count'))
-            ->groupBy('plan', 'currency')
-            ->get();
-
-        // Par méthode de paiement
-        $byMethod = Subscription::where('status', 'active')
-            ->select('payment_method', DB::raw('COUNT(*) as count'), DB::raw('SUM(amount) as total'))
-            ->groupBy('payment_method')
-            ->get();
-
-        $totals = [
-            'xof'     => Subscription::where('status', 'active')->where('currency', 'XOF')->sum('amount'),
-            'eur'     => Subscription::where('status', 'active')->where('currency', 'EUR')->sum('amount'),
-            'active'  => Subscription::where('status', 'active')->count(),
-            'expired' => Subscription::where('status', 'expired')->count(),
-            'pending' => Subscription::where('status', 'pending')->count(),
-        ];
-
-        return view('owner.finances', compact('monthly', 'byPlan', 'byMethod', 'totals'));
+        return view('owner.dashboard', compact('stats', 'recent_logs', 'pending_reports', 'latest_posts'));
     }
 
     // ── Staff (gestion du staff) ────────────────────────────────
@@ -91,7 +36,7 @@ class OwnerController extends Controller
     {
         $admins = User::where('role', 'admin')->latest()->get();
         $cms    = User::where('role', 'cm')->latest()->get();
-        $users  = User::whereIn('role', ['user', 'creator'])
+        $users  = User::where('role', 'user')
                       ->orderBy('name')
                       ->limit(100)
                       ->get();

@@ -2,15 +2,12 @@
 
 use App\Http\Controllers\Api\AboutController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CreatorController;
 use App\Http\Controllers\Api\ExploreController;
 use App\Http\Controllers\Api\FeedController;
 use App\Http\Controllers\Api\FollowController;
 use App\Http\Controllers\Api\HomeController;
-use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\StoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +27,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/home',                    [HomeController::class,  'index']);
 Route::get('/about',                   [AboutController::class, 'index']);
 Route::get('/explore',                 [ExploreController::class, 'index']);
-Route::get('/creators',                [CreatorController::class, 'index']);
 Route::get('/users/{username}',        [ProfileController::class, 'show']);
 Route::get('/users/{username}/posts',  [ProfileController::class, 'posts']);
 Route::get('/posts/{post}',            [PostController::class,   'show']);
@@ -40,9 +36,6 @@ Route::get('/posts/{post}',            [PostController::class,   'show']);
 // ══════════════════════════════════════════════════════════════
 
 Route::prefix('auth')->group(function () {
-    // Rate limiting strict sur les routes sensibles :
-    // register : 5 tentatives / 10 minutes par IP
-    // login    : 10 tentatives / 5 minutes par IP (anti brute-force)
     Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,10');
     Route::post('/login',    [AuthController::class, 'login'])->middleware('throttle:10,5');
 
@@ -73,12 +66,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Follow / Unfollow
     Route::post('/users/{user}/follow', [FollowController::class, 'toggle'])->middleware('throttle:30,1');
-
-    // Demande créateur (max 3 essais par heure)
-    Route::post('/creator-request', [CreatorController::class, 'request'])->middleware('throttle:3,60');
 });
 
-// ── Routes commentaires (ajoutées séparément) ─────────────────
+// ── Commentaires ──────────────────────────────────────────────
 Route::get('/posts/{post}/comments',  [\App\Http\Controllers\Api\CommentController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/posts/{post}/comments',          [\App\Http\Controllers\Api\CommentController::class, 'store'])->middleware('throttle:20,1');
@@ -108,26 +98,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/stories',              [StoryController::class, 'index']);
     Route::post('/stories',             [StoryController::class, 'store']);
     Route::delete('/stories/{story}',   [StoryController::class, 'destroy']);
-});
-
-// ── Marketplace — Services ─────────────────────────────────────
-Route::get('/services',               [ServiceController::class, 'index']);
-Route::get('/services/{service}',     [ServiceController::class, 'show']);
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/services',           [ServiceController::class, 'store']);
-    Route::put('/services/{service}',  [ServiceController::class, 'update']);
-    Route::delete('/services/{service}', [ServiceController::class, 'destroy']);
-});
-
-// ── Marketplace — Orders ───────────────────────────────────────
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/orders',                          [OrderController::class, 'index']);
-    Route::post('/orders',                         [OrderController::class, 'store']);
-    Route::get('/orders/{order}',                  [OrderController::class, 'show']);
-    Route::patch('/orders/{order}/accept',         [OrderController::class, 'accept']);
-    Route::patch('/orders/{order}/start-work',     [OrderController::class, 'startWork']);
-    Route::patch('/orders/{order}/deliver',        [OrderController::class, 'deliver']);
-    Route::patch('/orders/{order}/complete',       [OrderController::class, 'complete']);
-    Route::patch('/orders/{order}/cancel',         [OrderController::class, 'cancel']);
-    Route::post('/orders/{order}/review',          [OrderController::class, 'review']);
 });

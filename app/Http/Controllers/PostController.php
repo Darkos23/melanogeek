@@ -30,7 +30,6 @@ class PostController extends Controller
             'thumbnail'    => ['nullable', 'file', 'image', 'mimetypes:image/jpeg,image/png,image/webp', 'max:5120'],
             'audio'        => ['nullable', 'file', 'mimetypes:audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/x-m4a', 'max:20480'],
             'is_published'  => ['nullable', 'boolean'],
-            'is_exclusive'  => ['nullable', 'boolean'],
         ], [
             'images.max'      => 'Tu peux ajouter au maximum 10 images.',
             'images.*.image'  => 'Seuls les formats JPG, PNG, GIF et WEBP sont acceptés.',
@@ -83,7 +82,6 @@ class PostController extends Controller
             'audio_url'    => $audioUrl,
             'audio_name'   => $audioName,
             'is_published'  => $request->boolean('is_published', true),
-            'is_exclusive'  => $request->boolean('is_exclusive', false),
         ]);
 
         // Images multiples → post_media
@@ -116,50 +114,13 @@ class PostController extends Controller
     {
         $post->load(['user', 'mediaFiles']);
 
-        // Vérifier l'accès au contenu exclusif
-        $viewer   = auth()->user();
-        $canSee   = !$post->is_exclusive
-            || ($viewer && (
-                $viewer->id === $post->user_id
-                || $viewer->hasActiveSubscription()
-            ));
-
-        $liked = $viewer
+        $viewer = auth()->user();
+        $liked  = $viewer
             ? Like::where('user_id', $viewer->id)->where('post_id', $post->id)->exists()
             : false;
 
-        // Si contenu exclusif verrouillé : renvoyer des données minimales
-        if (!$canSee) {
-            return response()->json([
-                'id'             => $post->id,
-                'is_exclusive'   => true,
-                'locked'         => true,
-                'title'          => null,
-                'body'           => null,
-                'media_url'      => null,
-                'media_type'     => 'text',
-                'audio_url'      => null,
-                'audio_name'     => null,
-                'likes_count'    => $post->likes_count,
-                'comments_count' => $post->comments_count,
-                'liked'          => $liked,
-                'created_at'     => $post->created_at->diffForHumans(),
-                'media_files'    => [],
-                'post_url'       => route('subscription.pricing'),
-                'user'           => [
-                    'name'        => $post->user->name,
-                    'username'    => $post->user->username,
-                    'avatar'      => $post->user->avatar ? Storage::url($post->user->avatar) : null,
-                    'profile_url' => route('profile.show', $post->user->username),
-                    'is_verified' => (bool) ($post->user->is_verified ?? false),
-                ],
-            ]);
-        }
-
         return response()->json([
             'id'             => $post->id,
-            'is_exclusive'   => (bool) $post->is_exclusive,
-            'locked'         => false,
             'title'          => $post->title,
             'body'           => $post->body,
             'media_url'      => $post->media_url ? Storage::url($post->media_url) : null,

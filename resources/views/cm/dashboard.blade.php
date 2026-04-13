@@ -168,9 +168,6 @@
                     <div class="post-title">{{ $post->title ?: '(sans titre)' }}</div>
                     <div class="post-meta">{{ $post->user?->username ?? '?' }} · {{ $post->created_at->diffForHumans() }}</div>
                 </div>
-                @if($post->is_exclusive)
-                    <span class="badge badge-gold" style="font-size:.65rem;">✦</span>
-                @endif
             </div>
         @empty
             <div style="padding:32px;text-align:center;color:var(--text-muted);font-size:.84rem;">

@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
-use App\Models\CreatorRequest;
 use App\Models\Post;
 use App\Models\Report;
 use App\Models\Setting;
-use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -23,10 +21,6 @@ class AdminController extends Controller
             'users_new'       => User::whereDate('created_at', '>=', now()->subDays(7))->count(),
             'posts_total'     => Post::count(),
             'posts_published' => Post::where('is_published', true)->count(),
-            'subs_active'     => Subscription::where('status', 'active')->count(),
-            'revenue_xof'     => Subscription::where('status', 'active')
-                                    ->where('currency', 'XOF')->sum('amount'),
-            'creator_requests_pending' => CreatorRequest::where('status', 'pending')->count(),
         ];
 
         $recent_users = User::latest()->limit(8)->get();
@@ -59,7 +53,6 @@ class AdminController extends Controller
 
     public function userEdit(User $user)
     {
-        // Un admin ne peut pas éditer un autre admin ou un owner
         if (! auth()->user()->isOwner() && $user->isStaff()) {
             abort(403, 'Vous ne pouvez pas modifier un membre du staff.');
         }
@@ -71,28 +64,24 @@ class AdminController extends Controller
     {
         $currentUser = auth()->user();
 
-        // Un admin ne peut pas modifier un autre admin/owner
         if (! $currentUser->isOwner() && $user->isStaff()) {
             abort(403, 'Action réservée au propriétaire.');
         }
 
-        // Les rôles disponibles selon le niveau de l'utilisateur courant
         $allowedRoles = $currentUser->isOwner()
-            ? ['user', 'creator', 'admin', 'owner']
-            : ['user', 'creator'];
+            ? ['user', 'admin', 'owner']
+            : ['user'];
 
         $data = $request->validate([
             'name'         => ['required', 'string', 'max:255'],
             'email'        => ['required', 'email', 'unique:users,email,' . $user->id],
             'role'         => ['required', 'in:' . implode(',', $allowedRoles)],
-            'plan'         => ['nullable', 'string'],
             'is_verified'  => ['boolean'],
             'is_active'    => ['boolean'],
             'country_type' => ['nullable', 'string'],
         ]);
 
-        // ── Unicité du rôle owner ─────────────────────────────────
-        // Empêche qu'un 2ème owner soit créé (sauf si on modifie le owner actuel lui-même)
+        // Unicité du rôle owner
         if ($data['role'] === 'owner' && $user->role !== 'owner') {
             $existingOwner = \App\Models\User::where('role', 'owner')->exists();
             if ($existingOwner) {
@@ -104,7 +93,6 @@ class AdminController extends Controller
 
         $data['is_verified'] = $request->boolean('is_verified');
         $data['is_active']   = $request->boolean('is_active');
-        $data['plan']        = $data['plan'] ?: 'free';
 
         $user->update($data);
 
@@ -115,7 +103,6 @@ class AdminController extends Controller
 
     public function userToggle(User $user)
     {
-        // Un admin ne peut pas désactiver un autre admin/owner
         if (! auth()->user()->isOwner() && $user->isStaff()) {
             abort(403, 'Action réservée au propriétaire.');
         }
@@ -136,7 +123,6 @@ class AdminController extends Controller
 
     public function userDelete(User $user)
     {
-        // Un admin ne peut pas supprimer un autre admin/owner
         if (! auth()->user()->isOwner() && $user->isStaff()) {
             abort(403, 'Action réservée au propriétaire.');
         }
@@ -190,71 +176,6 @@ class AdminController extends Controller
         return back()->with('success', 'Publication supprimée.');
     }
 
-    // ── Abonnements ────────────────────────────
-    public function subscriptions(Request $request)
-    {
-        $query = Subscription::with('user');
-
-        if ($status = $request->status) {
-            $query->where('status', $status);
-        }
-
-        $subscriptions = $query->latest()->paginate(25)->withQueryString();
-
-        $revenue = [
-            'xof'     => Subscription::where('status', 'active')->where('currency', 'XOF')->sum('amount'),
-            'eur'     => Subscription::where('status', 'active')->where('currency', 'EUR')->sum('amount'),
-            'total'   => Subscription::where('status', 'active')->count(),
-            'pending' => Subscription::where('status', 'pending')->count(),
-        ];
-
-        return view('admin.subscriptions.index', compact('subscriptions', 'revenue'));
-    }
-
-    // ── Demandes creator ───────────────────────
-    public function creatorRequests(Request $request)
-    {
-        $query = CreatorRequest::with(['user', 'reviewer']);
-
-        if ($status = $request->status) {
-            $query->where('status', $status);
-        } else {
-            $query->where('status', 'pending');
-        }
-
-        $requests = $query->latest()->paginate(20)->withQueryString();
-
-        return view('admin.creator-requests.index', compact('requests'));
-    }
-
-    public function creatorRequestApprove(CreatorRequest $creatorRequest)
-    {
-        $creatorRequest->update([
-            'status'      => 'approved',
-            'reviewed_by' => auth()->id(),
-            'reviewed_at' => now(),
-        ]);
-
-        $creatorRequest->user->update(['role' => 'creator', 'is_active' => true]);
-
-        ActivityLog::record('creator.approve', "Demande creator approuvée pour @{$creatorRequest->user->username}", 'User', $creatorRequest->user_id);
-
-        return back()->with('success', "{$creatorRequest->user->name} est maintenant créateur.");
-    }
-
-    public function creatorRequestReject(CreatorRequest $creatorRequest)
-    {
-        $creatorRequest->update([
-            'status'      => 'rejected',
-            'reviewed_by' => auth()->id(),
-            'reviewed_at' => now(),
-        ]);
-
-        ActivityLog::record('creator.reject', "Demande creator refusée pour @{$creatorRequest->user->username}", 'User', $creatorRequest->user_id);
-
-        return back()->with('success', "Demande de {$creatorRequest->user->name} refusée.");
-    }
-
     // ── Page À propos ──────────────────────────
     public function about()
     {
@@ -300,81 +221,6 @@ class AdminController extends Controller
         $pendingCount = Report::pending()->count();
 
         return view('admin.reports.index', compact('reports', 'pendingCount'));
-    }
-
-    public function subscriptionApprove(Subscription $subscription)
-    {
-        $subscription->update([
-            'status'     => 'active',
-            'expires_at' => now()->addDays(30),
-        ]);
-
-        $subscription->user->update([
-            'plan'            => $subscription->plan,
-            'plan_expires_at' => now()->addDays(30),
-        ]);
-
-        ActivityLog::record('subscription.approve', "Abonnement #{$subscription->id} approuvé (plan {$subscription->plan})", 'Subscription', $subscription->id);
-        return back()->with('success', 'Abonnement activé — plan utilisateur mis à jour.');
-    }
-
-    public function subscriptionCancel(Subscription $subscription)
-    {
-        $subscription->update(['status' => 'cancelled']);
-        ActivityLog::record('subscription.cancel', "Abonnement #{$subscription->id} annulé", 'Subscription', $subscription->id);
-        return back()->with('success', 'Abonnement annulé.');
-    }
-
-    // ── Candidatures créateurs ──────────────────
-    public function applications(Request $request)
-    {
-        $currentStatus = $request->get('status', 'pending');
-
-        // Scope : uniquement les candidatures créateur
-        // role=null  → créateur en attente / refusé
-        // role=creator → créateur approuvé
-        // NULL NOT IN (...) = NULL en SQL, donc on cible explicitement les bons rôles
-        $creatorsOnly = fn($q) => $q->where(function ($q) {
-            $q->whereNull('role')->orWhere('role', 'creator');
-        });
-
-        $pending = User::where('status', $currentStatus)
-            ->tap($creatorsOnly)
-            ->latest()
-            ->paginate(20);
-
-        return view('admin.applications.index', [
-            'pending'       => $pending,
-            'currentStatus' => $currentStatus,
-            'approved'      => User::where('status', 'approved')->tap($creatorsOnly)->count(),
-            'rejected'      => User::where('status', 'rejected')->tap($creatorsOnly)->count(),
-        ]);
-    }
-
-    public function applicationApprove(User $user)
-    {
-        $user->update([
-            'status'      => 'approved',
-            'role'        => 'creator',
-            'is_active'   => true,
-            'approved_at' => now(),
-        ]);
-
-        ActivityLog::record('application.approve', "Candidature de @{$user->username} approuvée", 'User', $user->id);
-
-        return back()->with('success', "Candidature de {$user->name} approuvée ✅");
-    }
-
-    public function applicationReject(Request $request, User $user)
-    {
-        $user->update([
-            'status'           => 'rejected',
-            'rejection_reason' => $request->rejection_reason,
-        ]);
-
-        ActivityLog::record('application.reject', "Candidature de @{$user->username} refusée", 'User', $user->id);
-
-        return back()->with('success', "Candidature de {$user->name} refusée.");
     }
 
     public function reportDismiss(Report $report)

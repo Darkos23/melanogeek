@@ -1,391 +1,465 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Owner') — MelanoGeek Owner</title>
+    <title>@yield('title', 'owner') — melanogeek</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <script>(function(){ document.documentElement.setAttribute('data-theme', localStorage.getItem('mg-theme') || 'dark'); })();</script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        [data-theme="dark"]  { --bg:#06040A;--bg-card:#0E0B16;--bg-card2:#15112000;--bg-hover:#1C1730;--text:#EFE8FF;--text-muted:rgba(239,232,255,.52);--text-faint:rgba(239,232,255,.22);--border:rgba(180,148,255,.09);--border-hover:rgba(180,148,255,.18);--nav-bg:rgba(6,4,10,.92);--shadow-md:0 8px 32px rgba(0,0,0,.6); }
-        [data-theme="light"] { --bg:#F4F0FF;--bg-card:#FFF;--bg-card2:#EBE6F8;--bg-hover:#E4DDF5;--text:#1A0F2E;--text-muted:rgba(26,15,46,.52);--text-faint:rgba(26,15,46,.22);--border:rgba(26,15,46,.09);--border-hover:rgba(26,15,46,.18);--nav-bg:rgba(244,240,255,.95);--shadow-md:0 8px 32px rgba(0,0,0,.08); }
-        :root { --owner:#7B3FD4;--owner-soft:rgba(123,63,212,.13);--owner-glow:rgba(123,63,212,.35);--gold:#D4A843;--gold-soft:rgba(212,168,67,.12);--terra:#C8522A;--font-head:'Plus Jakarta Sans',sans-serif;--font-body:'Outfit',sans-serif; }
-        *,*::before,*::after { margin:0;padding:0;box-sizing:border-box; }
-        body { background:var(--bg);color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased;display:flex;min-height:100vh; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ── SIDEBAR ── */
-        .owner-sidebar {
-            width:248px;flex-shrink:0;
-            background:var(--bg-card);
-            border-right:1px solid var(--border);
-            display:flex;flex-direction:column;
-            position:fixed;top:0;left:0;bottom:0;
-            z-index:50;
+        :root {
+            --bg:          #1a1a1a;
+            --sidebar-bg:  #141414;
+            --border:      rgba(255,255,255,.08);
+            --text:        rgba(255,255,255,.85);
+            --text-muted:  rgba(255,255,255,.38);
+            --text-faint:  rgba(255,255,255,.18);
+            --accent:      #a78bfa;
+            --green:       #6ee7b7;
+            --red:         #f87171;
+            --yellow:      #fcd34d;
+            --mono:        'JetBrains Mono', monospace;
         }
-        .sidebar-brand {
-            padding:20px 20px 16px;
-            border-bottom:1px solid var(--border);
-            display:flex;align-items:center;gap:10px;
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--mono);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            min-height: 100vh;
+            font-size: 13px;
         }
-        .sidebar-brand-name { font-family:var(--font-head);font-size:1rem;font-weight:800; }
-        .sidebar-brand-name span { color:var(--gold); }
-        .owner-badge {
-            font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-            background:linear-gradient(135deg,#7B3FD4,#A855F7);
-            color:white;padding:2px 8px;border-radius:100px;
-            box-shadow:0 2px 8px var(--owner-glow);
+
+        /* ════════════════════════════
+           SIDEBAR
+        ════════════════════════════ */
+        .ow-sidebar {
+            width: 200px;
+            flex-shrink: 0;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 50;
         }
-        .sidebar-nav { flex:1;padding:12px 10px;overflow-y:auto; }
-        .sidebar-section { font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);padding:14px 10px 6px; }
-        .sidebar-link {
-            display:flex;align-items:center;gap:10px;
-            padding:9px 10px;border-radius:10px;
-            color:var(--text-muted);text-decoration:none;
-            font-size:.84rem;font-weight:500;
-            transition:all .2s;margin-bottom:2px;
+
+        .ow-sidebar-brand {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid var(--border);
         }
-        .sidebar-link:hover { background:var(--bg-hover);color:var(--text); }
-        .sidebar-link.active { background:var(--owner-soft);color:var(--owner);font-weight:600; }
-        .sidebar-link.active .icon { filter:none; }
-        .sidebar-link .icon { width:20px;text-align:center;font-size:.9rem;flex-shrink:0; }
-        .sidebar-divider { height:1px;background:var(--border);margin:8px 10px; }
-        .sidebar-footer {
-            padding:14px 16px;
-            border-top:1px solid var(--border);
-            display:flex;align-items:center;gap:10px;
+        .ow-sidebar-logo {
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -.01em;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 4px;
         }
-        .sidebar-user-name { font-size:.82rem;font-weight:600; }
-        .sidebar-user-role { font-size:.7rem;color:#A855F7;font-weight:700; }
-
-        /* ── MAIN ── */
-        .owner-main { flex:1;margin-left:248px;min-height:100vh;display:flex;flex-direction:column; }
-        .owner-topbar {
-            background:var(--bg-card);border-bottom:1px solid var(--border);
-            padding:14px 28px;
-            display:flex;align-items:center;justify-content:space-between;
-            position:sticky;top:0;z-index:40;backdrop-filter:blur(12px);
+        .ow-sidebar-role {
+            font-size: .62rem;
+            color: var(--accent);
+            letter-spacing: .04em;
         }
-        .owner-page-title { font-family:var(--font-head);font-size:1rem;font-weight:700; }
-        .owner-topbar-right { display:flex;gap:10px;align-items:center; }
-        .topbar-btn { background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:6px 14px;border-radius:100px;font-family:var(--font-body);font-size:.78rem;font-weight:500;text-decoration:none;transition:all .2s; }
-        .topbar-btn:hover { border-color:var(--border-hover);color:var(--text); }
-        .topbar-btn.danger { border-color:rgba(200,82,42,.3);color:var(--terra); }
-        .owner-content { padding:28px;flex:1; }
 
-        /* ── FLASH ── */
-        .owner-flash { padding:12px 16px;border-radius:12px;margin-bottom:20px;font-size:.84rem;font-weight:500;display:flex;align-items:center;gap:8px; }
-        .owner-flash.success { background:rgba(45,90,61,.12);border:1px solid rgba(45,90,61,.25);color:#3D8A58; }
-        .owner-flash.error   { background:rgba(200,82,42,.1);border:1px solid rgba(200,82,42,.25);color:var(--terra); }
-        [data-theme="dark"] .owner-flash.success { color:#6DC48A; }
+        .ow-sidebar-nav {
+            flex: 1;
+            padding: 20px 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-        /* ── STAT CARDS ── */
-        .stat-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px; }
-        .stat-card { background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px; }
-        .stat-card-label { font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px; }
-        .stat-card-value { font-family:var(--font-head);font-size:2rem;font-weight:800;letter-spacing:-.03em; }
-        .stat-card-sub { font-size:.74rem;color:var(--text-faint);margin-top:4px; }
-        .stat-card.owner-accent { border-color:rgba(123,63,212,.3);background:var(--owner-soft); }
-        .stat-card.owner-accent .stat-card-value { color:var(--owner); }
-        .stat-card.gold { border-color:rgba(212,168,67,.25);background:var(--gold-soft); }
-        .stat-card.gold .stat-card-value { color:var(--gold); }
+        .ow-nav-group { display: flex; flex-direction: column; gap: 2px; }
+        .ow-nav-label {
+            font-size: .62rem;
+            color: var(--text-faint);
+            letter-spacing: .08em;
+            margin-bottom: 6px;
+        }
+        .ow-nav-link {
+            font-size: .78rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 4px 0;
+            transition: color .12s;
+            display: block;
+        }
+        .ow-nav-link:hover { color: var(--text); }
+        .ow-nav-link.active { color: var(--accent); }
 
-        /* ── TABLE ── */
-        .owner-table-wrap { background:var(--bg-card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:24px; }
-        .owner-table-header { padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap; }
-        .owner-table-title { font-family:var(--font-head);font-size:.92rem;font-weight:700; }
-        table { width:100%;border-collapse:collapse; }
-        th { padding:11px 16px;text-align:left;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border); }
-        td { padding:12px 16px;font-size:.84rem;border-bottom:1px solid var(--border);vertical-align:middle; }
-        tr:last-child td { border-bottom:none; }
-        tr:hover td { background:var(--bg-hover); }
+        .ow-sidebar-sep {
+            height: 1px;
+            background: var(--border);
+            margin: 0 -20px;
+        }
 
-        /* ── BADGES ── */
-        .badge { display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:.7rem;font-weight:700; }
-        .badge-owner  { background:var(--owner-soft);color:var(--owner);border:1px solid rgba(123,63,212,.25); }
-        .badge-admin  { background:var(--gold-soft);color:var(--gold);border:1px solid rgba(212,168,67,.25); }
-        .badge-green  { background:rgba(45,90,61,.12);color:#3D8A58;border:1px solid rgba(45,90,61,.2); }
-        .badge-red    { background:rgba(224,85,85,.1);color:#E05555;border:1px solid rgba(224,85,85,.2); }
-        .badge-gray   { background:var(--bg-card2);color:var(--text-muted);border:1px solid var(--border); }
-        [data-theme="dark"] .badge-green { color:#6DC48A; }
+        .ow-sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .ow-footer-user { flex: 1; min-width: 0; }
+        .ow-footer-name {
+            font-size: .75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .ow-footer-role {
+            font-size: .6rem;
+            color: var(--accent);
+            margin-top: 1px;
+        }
+        .ow-logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-faint);
+            font-size: .8rem;
+            cursor: pointer;
+            font-family: var(--mono);
+            padding: 2px 4px;
+            transition: color .12s;
+        }
+        .ow-logout-btn:hover { color: var(--red); }
 
-        /* ── ACTIONS ── */
-        .action-row { display:flex;gap:6px;align-items:center; }
-        .btn-action { padding:5px 12px;border-radius:8px;font-size:.75rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text-muted);transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:4px; }
-        .btn-action:hover { border-color:var(--border-hover);color:var(--text); }
-        .btn-action.danger { border-color:rgba(224,85,85,.3);color:#E05555; }
-        .btn-action.danger:hover { background:rgba(224,85,85,.08); }
-        .btn-action.owner { border-color:rgba(123,63,212,.3);color:var(--owner); }
-        .btn-action.owner:hover { background:var(--owner-soft); }
+        /* ════════════════════════════
+           MAIN
+        ════════════════════════════ */
+        .ow-main {
+            flex: 1;
+            margin-left: 200px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* ── FORM ── */
-        .field { margin-bottom:16px; }
-        .field label { display:block;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px; }
-        .field input,.field select,.field textarea { width:100%;background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font-body);font-size:.88rem;outline:none;transition:border-color .2s; }
-        .field input:focus,.field select:focus,.field textarea:focus { border-color:var(--owner); }
-        .field textarea { resize:vertical;min-height:80px; }
-        .btn-owner { background:linear-gradient(135deg,#7B3FD4,#A855F7);border:none;color:white;padding:11px 24px;border-radius:100px;font-family:var(--font-head);font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s; }
-        .btn-owner:hover { box-shadow:0 8px 24px var(--owner-glow);transform:translateY(-1px); }
+        /* TOPBAR */
+        .ow-topbar {
+            height: 48px;
+            border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: var(--sidebar-bg);
+        }
+        .ow-breadcrumb {
+            font-size: .72rem;
+            color: var(--text-faint);
+        }
+        .ow-breadcrumb span { color: var(--text-muted); }
+        .ow-topbar-actions { display: flex; gap: 16px; align-items: center; }
+        .ow-topbar-link {
+            font-size: .7rem;
+            color: var(--text-faint);
+            text-decoration: none;
+            transition: color .12s;
+        }
+        .ow-topbar-link:hover { color: var(--text-muted); }
 
-        /* Toggle switch */
-        .toggle-row { display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border); }
-        .toggle-row:last-child { border-bottom:none; }
-        .toggle-label { font-size:.84rem; }
-        .toggle-label small { display:block;font-size:.72rem;color:var(--text-muted); }
-        .toggle-switch { position:relative;display:inline-block;width:42px;height:24px; }
-        .toggle-switch input { opacity:0;width:0;height:0; }
-        .toggle-slider { position:absolute;cursor:pointer;inset:0;background:var(--bg-hover);border:1px solid var(--border);border-radius:100px;transition:background .2s; }
-        .toggle-slider::before { content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:var(--text-faint);left:3px;top:50%;transform:translateY(-50%);transition:transform .2s,background .2s; }
-        .toggle-switch input:checked + .toggle-slider { background:var(--owner-soft);border-color:rgba(123,63,212,.4); }
-        .toggle-switch input:checked + .toggle-slider::before { transform:translate(18px,-50%);background:var(--owner); }
+        /* CONTENT */
+        .ow-content {
+            padding: 32px 28px;
+            flex: 1;
+        }
 
-        /* Pagination */
-        .pagination-wrap { padding:16px 20px;border-top:1px solid var(--border);display:flex;justify-content:center; }
-        .pagination-wrap .pagination { display:flex;gap:6px;list-style:none; }
+        /* FLASH */
+        .ow-flash {
+            font-size: .72rem;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ow-flash.success { background: rgba(110,231,183,.06); border: 1px solid rgba(110,231,183,.15); color: var(--green); }
+        .ow-flash.error   { background: rgba(248,113,113,.06); border: 1px solid rgba(248,113,113,.15); color: var(--red); }
+
+        /* ════════════════════════════
+           SHARED COMPONENTS
+           (tables, badges, etc.)
+        ════════════════════════════ */
+        .ow-table-wrap {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .ow-table-head {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .ow-table-title { font-size: .72rem; font-weight: 600; color: var(--text); }
+        .ow-table-action { font-size: .65rem; color: var(--accent); text-decoration: none; }
+        .ow-table-action:hover { text-decoration: underline; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            padding: 10px 18px;
+            text-align: left;
+            font-size: .6rem;
+            font-weight: 500;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--text-faint);
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 11px 18px;
+            font-size: .72rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            vertical-align: middle;
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { color: var(--text); }
+
+        .badge {
+            display: inline-flex; align-items: center;
+            padding: 2px 8px; border-radius: 4px;
+            font-size: .6rem; font-weight: 500; letter-spacing: .04em;
+        }
+        .badge-owner  { background: rgba(167,139,250,.10); color: var(--accent); border: 1px solid rgba(167,139,250,.20); }
+        .badge-admin  { background: rgba(212,168,67,.08);  color: #D4A843;       border: 1px solid rgba(212,168,67,.18); }
+        .badge-green  { background: rgba(110,231,183,.08); color: var(--green);  border: 1px solid rgba(110,231,183,.18); }
+        .badge-red    { background: rgba(248,113,113,.08); color: var(--red);    border: 1px solid rgba(248,113,113,.18); }
+        .badge-gray   { background: rgba(255,255,255,.04); color: var(--text-faint); border: 1px solid var(--border); }
+
+        .action-row { display: flex; gap: 8px; align-items: center; }
+        .btn-action {
+            padding: 4px 10px; border-radius: 5px;
+            font-size: .65rem; font-weight: 500;
+            border: 1px solid var(--border);
+            background: transparent; color: var(--text-faint);
+            font-family: var(--mono);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 4px;
+            transition: border-color .12s, color .12s;
+        }
+        .btn-action:hover { border-color: rgba(255,255,255,.18); color: var(--text); }
+        .btn-action.danger { border-color: rgba(248,113,113,.20); color: var(--red); }
+        .btn-action.danger:hover { background: rgba(248,113,113,.06); }
+        .btn-action.accent { border-color: rgba(167,139,250,.25); color: var(--accent); }
+        .btn-action.accent:hover { background: rgba(167,139,250,.06); }
+
+        /* FORM */
+        .field { margin-bottom: 16px; }
+        .field label {
+            display: block; font-size: .62rem; font-weight: 500;
+            letter-spacing: .07em; text-transform: uppercase;
+            color: var(--text-faint); margin-bottom: 7px;
+        }
+        .field input, .field select, .field textarea {
+            width: 100%; background: var(--sidebar-bg);
+            border: 1px solid var(--border); border-radius: 6px;
+            padding: 9px 12px; color: var(--text);
+            font-family: var(--mono); font-size: .75rem;
+            outline: none; transition: border-color .15s;
+        }
+        .field input:focus, .field select:focus, .field textarea:focus {
+            border-color: rgba(167,139,250,.40);
+        }
+        .field textarea { resize: vertical; min-height: 80px; }
+        .btn-save {
+            background: rgba(167,139,250,.12);
+            border: 1px solid rgba(167,139,250,.25);
+            color: var(--accent);
+            padding: 8px 20px; border-radius: 6px;
+            font-family: var(--mono); font-size: .72rem; font-weight: 500;
+            cursor: pointer; transition: background .15s;
+        }
+        .btn-save:hover { background: rgba(167,139,250,.20); }
+
+        /* TOGGLE */
+        .toggle-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 0; border-bottom: 1px solid var(--border);
+        }
+        .toggle-row:last-child { border-bottom: none; }
+        .toggle-label { font-size: .75rem; color: var(--text-muted); }
+        .toggle-label small { display: block; font-size: .65rem; color: var(--text-faint); margin-top: 2px; }
+        .toggle-switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute; cursor: pointer; inset: 0;
+            background: rgba(255,255,255,.08); border: 1px solid var(--border);
+            border-radius: 100px; transition: background .2s;
+        }
+        .toggle-slider::before {
+            content: ''; position: absolute;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--text-faint); left: 3px; top: 50%;
+            transform: translateY(-50%); transition: transform .2s, background .2s;
+        }
+        .toggle-switch input:checked + .toggle-slider { background: rgba(167,139,250,.20); border-color: rgba(167,139,250,.35); }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translate(16px, -50%); background: var(--accent); }
+
+        /* PAGINATION */
+        .pagination-wrap { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+        .pagination-wrap .pagination { display: flex; gap: 4px; list-style: none; }
         .pagination-wrap .pagination li a,
-        .pagination-wrap .pagination li span { display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 8px;border-radius:8px;font-size:.8rem;background:var(--bg-card2);border:1px solid var(--border);color:var(--text-muted);text-decoration:none;transition:all .2s; }
-        .pagination-wrap .pagination li.active span { background:var(--owner);border-color:var(--owner);color:white; }
-        .pagination-wrap .pagination li a:hover { border-color:var(--owner);color:var(--owner); }
-
-        /* Avatar mini */
-        .user-avatar-mini { width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--owner),var(--gold));padding:1.5px;flex-shrink:0;overflow:hidden; }
-        .user-avatar-mini-inner { width:100%;height:100%;border-radius:50%;background:var(--bg-card2);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;overflow:hidden; }
-        .user-avatar-mini-inner img { width:100%;height:100%;object-fit:cover;border-radius:50%; }
-
-        /* ── MOBILE HAMBURGER ── */
-        .owner-mob-toggle {
-            display:none;
-            align-items:center;justify-content:center;
-            width:36px;height:36px;
-            background:var(--bg-card2);
-            border:1px solid var(--border);
-            border-radius:8px;
-            cursor:pointer;
-            color:var(--text-muted);
-            font-size:1.1rem;
-            flex-shrink:0;
+        .pagination-wrap .pagination li span {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 28px; height: 28px; padding: 0 6px;
+            border-radius: 5px; font-size: .65rem;
+            border: 1px solid var(--border);
+            color: var(--text-faint); text-decoration: none;
+            transition: border-color .12s, color .12s;
         }
+        .pagination-wrap .pagination li.active span { border-color: rgba(167,139,250,.30); color: var(--accent); }
+        .pagination-wrap .pagination li a:hover { border-color: rgba(255,255,255,.15); color: var(--text); }
 
-        /* ── OVERLAY SIDEBAR MOBILE ── */
-        .owner-sidebar-overlay {
-            display:none;
-            position:fixed;inset:0;
-            background:rgba(0,0,0,.55);
-            z-index:49;
-            backdrop-filter:blur(2px);
+        /* AVATAR MINI */
+        .user-avi {
+            width: 26px; height: 26px; border-radius: 5px;
+            background: rgba(167,139,250,.12); border: 1px solid rgba(167,139,250,.20);
+            display: flex; align-items: center; justify-content: center;
+            font-size: .65rem; font-weight: 600; color: var(--accent);
+            flex-shrink: 0; overflow: hidden;
         }
-        .owner-sidebar-overlay.open { display:block; }
+        .user-avi img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* ── RESPONSIVE ── */
+        /* SEARCH */
+        .admin-search {
+            background: var(--sidebar-bg); border: 1px solid var(--border);
+            border-radius: 6px; padding: 7px 11px;
+            color: var(--text); font-family: var(--mono); font-size: .72rem;
+            outline: none; transition: border-color .15s;
+        }
+        .admin-search:focus { border-color: rgba(167,139,250,.35); }
+
+        /* MOBILE */
+        .ow-mob-toggle {
+            display: none; align-items: center; justify-content: center;
+            width: 32px; height: 32px; background: transparent;
+            border: 1px solid var(--border); border-radius: 5px;
+            cursor: pointer; color: var(--text-muted); font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .ow-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,.6); z-index: 49;
+        }
+        .ow-overlay.open { display: block; }
+
         @media (max-width: 768px) {
-            body { display:block; }
-
-            /* Sidebar : hors écran par défaut */
-            .owner-sidebar {
-                transform:translateX(-100%);
-                transition:transform .25s ease;
-                z-index:50;
-                width:260px;
-            }
-            .owner-sidebar.open { transform:translateX(0); }
-
-            /* Main : pleine largeur */
-            .owner-main { margin-left:0; }
-
-            /* Topbar : ajouter le bouton hamburger */
-            .owner-topbar { padding:12px 16px; gap:8px; }
-            .owner-page-title { font-size:.88rem; }
-
-            /* Boutons topbar : texte court sur mobile */
-            .owner-topbar-right { gap:6px; }
-            .topbar-btn { padding:5px 10px; font-size:.72rem; }
-
-            /* Contenu : moins de padding */
-            .owner-content { padding:16px; }
-
-            /* Stat grid : 2 colonnes max sur mobile */
-            .stat-grid { grid-template-columns:repeat(2,1fr);gap:10px; }
-
-            /* Tables : scroll horizontal */
-            .owner-table-wrap { overflow-x:auto; }
-
-            /* Afficher le bouton hamburger */
-            .owner-mob-toggle { display:flex; }
-        }
-
-        @media (max-width: 480px) {
-            .stat-grid { grid-template-columns:1fr 1fr; }
-            .stat-card { padding:14px; }
-            .stat-card-value { font-size:1.5rem; }
-            .owner-topbar-right .topbar-btn:not(:last-child) { display:none; }
+            .ow-sidebar { transform: translateX(-100%); transition: transform .22s ease; }
+            .ow-sidebar.open { transform: translateX(0); }
+            .ow-main { margin-left: 0; }
+            .ow-mob-toggle { display: flex; }
+            .ow-content { padding: 20px 16px; }
         }
     </style>
     @stack('styles')
 </head>
 <body>
 
-    <!-- ── OVERLAY SIDEBAR MOBILE ── -->
-    <div class="owner-sidebar-overlay" id="ownerOverlay"></div>
+<div class="ow-overlay" id="owOverlay"></div>
 
-    <!-- ── SIDEBAR ── -->
-    <aside class="owner-sidebar">
-        <div class="sidebar-brand">
-            <svg width="28" height="28" viewBox="0 0 42 42" fill="none">
-                <path d="M21 2L38.3 12V32L21 42L3.7 32V12L21 2Z" fill="var(--bg-card2)" stroke="#A855F7" stroke-width="0.8"/>
-                <path d="M10 28V14L16.5 22L21 16L25.5 22L32 14V28" stroke="#7B3FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                <circle cx="21" cy="9" r="2.5" fill="#D4A843"/>
-            </svg>
-            <div>
-                <div class="sidebar-brand-name">Melano<span>Geek</span></div>
-                <span class="owner-badge">✦ Owner</span>
-            </div>
+<!-- ══ SIDEBAR ══ -->
+<aside class="ow-sidebar">
+    <div class="ow-sidebar-brand">
+        <a href="{{ route('owner.dashboard') }}" class="ow-sidebar-logo">melanogeek</a>
+        <span class="ow-sidebar-role">// owner</span>
+    </div>
+
+    <nav class="ow-sidebar-nav">
+        <div class="ow-nav-group">
+            <div class="ow-nav-label">// owner</div>
+            <a href="{{ route('owner.dashboard') }}" class="ow-nav-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">overview</a>
+            <a href="{{ route('owner.staff') }}"     class="ow-nav-link {{ request()->routeIs('owner.staff') ? 'active' : '' }}">staff</a>
+            <a href="{{ route('owner.settings') }}"  class="ow-nav-link {{ request()->routeIs('owner.settings') ? 'active' : '' }}">settings</a>
+            <a href="{{ route('owner.logs') }}"      class="ow-nav-link {{ request()->routeIs('owner.logs') ? 'active' : '' }}">logs</a>
         </div>
 
-        <nav class="sidebar-nav">
-            {{-- Zone Owner --}}
-            <div class="sidebar-section">Espace Owner</div>
-            <a href="{{ route('owner.dashboard') }}" class="sidebar-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">
-                <span class="icon">👑</span> Vue d'ensemble
-            </a>
-            <a href="{{ route('owner.finances') }}" class="sidebar-link {{ request()->routeIs('owner.finances') ? 'active' : '' }}">
-                <span class="icon">💰</span> Finances
-            </a>
-            <a href="{{ route('owner.staff') }}" class="sidebar-link {{ request()->routeIs('owner.staff') ? 'active' : '' }}">
-                <span class="icon">🛡️</span> Gestion du staff
-            </a>
-            <a href="{{ route('owner.settings') }}" class="sidebar-link {{ request()->routeIs('owner.settings') ? 'active' : '' }}">
-                <span class="icon">⚙️</span> Paramètres
-            </a>
-            <a href="{{ route('owner.logs') }}" class="sidebar-link {{ request()->routeIs('owner.logs') ? 'active' : '' }}">
-                <span class="icon">📋</span> Logs d'activité
-            </a>
+        <div class="ow-sidebar-sep"></div>
 
-            <div class="sidebar-divider"></div>
-
-            {{-- Zone Gestion (partagée avec admins) --}}
-            <div class="sidebar-section">Modération</div>
-            <a href="{{ route('admin.users') }}" class="sidebar-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
-                <span class="icon">👥</span> Utilisateurs
-            </a>
-            <a href="{{ route('admin.posts') }}" class="sidebar-link {{ request()->routeIs('admin.posts*') ? 'active' : '' }}">
-                <span class="icon">📝</span> Publications
-            </a>
-            <a href="{{ route('admin.subscriptions') }}" class="sidebar-link {{ request()->routeIs('admin.subscriptions*') ? 'active' : '' }}">
-                <span class="icon">💳</span> Abonnements
-            </a>
-            <a href="{{ route('admin.applications') }}" class="sidebar-link {{ request()->routeIs('admin.applications*') ? 'active' : '' }}" style="position:relative;">
-                <span class="icon">⭐</span> Candidatures
-                @php $pendingCount = \App\Models\User::where('status','pending')->where(fn($q) => $q->whereNull('role')->orWhere('role','creator'))->count(); @endphp
-                @if($pendingCount > 0)
-                    <span style="margin-left:auto;background:var(--owner);color:white;font-size:.65rem;font-weight:700;padding:1px 6px;border-radius:100px;">{{ $pendingCount }}</span>
-                @endif
-            </a>
-
-            <div class="sidebar-section">Site</div>
-            <a href="{{ route('home') }}" class="sidebar-link" target="_blank">
-                <span class="icon">🌐</span> Voir le site
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="user-avatar-mini">
-                <div class="user-avatar-mini-inner">
-                    @if(auth()->user()->avatar)
-                        <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="">
-                    @else
-                        {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
-                    @endif
-                </div>
-            </div>
-            <div style="flex:1;min-width:0;">
-                <div class="sidebar-user-name">{{ auth()->user()->name }}</div>
-                <div class="sidebar-user-role">✦ Propriétaire</div>
-            </div>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" style="background:none;border:none;color:var(--text-faint);font-size:.85rem;cursor:pointer;" title="Déconnexion">⏻</button>
-            </form>
-        </div>
-    </aside>
-
-    <!-- ── MAIN ── -->
-    <div class="owner-main">
-        <div class="owner-topbar">
-            <button class="owner-mob-toggle" id="ownerMobToggle" aria-label="Ouvrir le menu">☰</button>
-            <div class="owner-page-title">@yield('page-title', 'Dashboard Owner')</div>
-            <div class="owner-topbar-right">
-                <button id="ownerThemeBtn" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;" title="Changer le thème">🌙</button>
-                <a href="{{ route('admin.users') }}" class="topbar-btn">🛡 Admin</a>
-                <a href="{{ route('home') }}" class="topbar-btn">← Site</a>
-            </div>
+        <div class="ow-nav-group">
+            <div class="ow-nav-label">// moderation</div>
+            <a href="{{ route('admin.users') }}" class="ow-nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">users</a>
+            <a href="{{ route('admin.posts') }}" class="ow-nav-link {{ request()->routeIs('admin.posts*') ? 'active' : '' }}">posts</a>
+            <a href="{{ route('admin.dashboard') }}" class="ow-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">admin panel</a>
         </div>
 
-        <div class="owner-content">
-            @if(session('success'))
-                <div class="owner-flash success">✓ {{ session('success') }}</div>
-            @endif
-            @if(session('error'))
-                <div class="owner-flash error">✗ {{ session('error') }}</div>
-            @endif
+        <div class="ow-sidebar-sep"></div>
 
-            @yield('content')
+        <div class="ow-nav-group">
+            <a href="{{ route('home') }}" class="ow-nav-link" target="_blank">↗ view site</a>
+        </div>
+    </nav>
+
+    <div class="ow-sidebar-footer">
+        <div class="ow-footer-user">
+            <div class="ow-footer-name">{{ auth()->user()->username ?? auth()->user()->name }}</div>
+            <div class="ow-footer-role">owner</div>
+        </div>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="ow-logout-btn" title="Logout">⏻</button>
+        </form>
+    </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<div class="ow-main">
+    <div class="ow-topbar">
+        <button class="ow-mob-toggle" id="owMobToggle">☰</button>
+        <div class="ow-breadcrumb">melanogeek / owner / <span>@yield('page-title', 'overview')</span></div>
+        <div class="ow-topbar-actions">
+            <a href="{{ route('home') }}" class="ow-topbar-link" target="_blank">↗ site</a>
         </div>
     </div>
 
-    <script>
-        const saved = localStorage.getItem('mg-theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', saved);
+    <div class="ow-content">
+        @if(session('success'))
+            <div class="ow-flash success">✓ {{ session('success') }}</div>
+        @endif
+        @if(session('error'))
+            <div class="ow-flash error">✗ {{ session('error') }}</div>
+        @endif
 
-        /* ── Theme toggle ── */
-        (function () {
-            const btn = document.getElementById('ownerThemeBtn');
-            if (!btn) return;
-            btn.textContent = saved === 'dark' ? '☀️' : '🌙';
-            btn.addEventListener('click', function () {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('mg-theme', next);
-                btn.textContent = next === 'dark' ? '☀️' : '🌙';
-            });
-        })();
+        @yield('content')
+    </div>
+</div>
 
-        /* ── Sidebar mobile ── */
-        (function () {
-            const toggle   = document.getElementById('ownerMobToggle');
-            const sidebar  = document.querySelector('.owner-sidebar');
-            const overlay  = document.getElementById('ownerOverlay');
-            if (!toggle || !sidebar || !overlay) return;
-
-            function openSidebar() {
-                sidebar.classList.add('open');
-                overlay.classList.add('open');
-                document.body.style.overflow = 'hidden';
-            }
-            function closeSidebar() {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('open');
-                document.body.style.overflow = '';
-            }
-
-            toggle.addEventListener('click', openSidebar);
-            overlay.addEventListener('click', closeSidebar);
-
-            /* Fermer en cliquant un lien de la sidebar sur mobile */
-            sidebar.querySelectorAll('.sidebar-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (window.innerWidth <= 768) closeSidebar();
-                });
-            });
-
-            /* Fermer si on passe en desktop */
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 768) closeSidebar();
-            });
-        })();
-    </script>
-    @stack('scripts')
+<script>
+(function () {
+    const toggle  = document.getElementById('owMobToggle');
+    const sidebar = document.querySelector('.ow-sidebar');
+    const overlay = document.getElementById('owOverlay');
+    if (!toggle) return;
+    function open()  { sidebar.classList.add('open');  overlay.classList.add('open');  document.body.style.overflow = 'hidden'; }
+    function close() { sidebar.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; }
+    toggle.addEventListener('click', open);
+    overlay.addEventListener('click', close);
+    sidebar.querySelectorAll('.ow-nav-link').forEach(l => l.addEventListener('click', () => { if (window.innerWidth <= 768) close(); }));
+    window.addEventListener('resize', () => { if (window.innerWidth > 768) close(); });
+})();
+</script>
+@stack('scripts')
 </body>
 </html>
