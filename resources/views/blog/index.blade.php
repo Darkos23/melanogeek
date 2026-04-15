@@ -30,14 +30,14 @@
 <div style="display:flex;align-items:center;gap:0;margin-bottom:36px;border-bottom:1px solid var(--border)">
     @php
     $cats = [
-        ''               => 'Tout',
+        ''               => 'Tous les articles',
         'manga-anime'    => 'Manga',
         'gaming'         => 'Gaming',
         'tech'           => 'Tech & IA',
-        'dev'            => 'Développement',
-        'cinema-series'  => 'Cinéma',
+        'dev'            => 'Dev',
+        'cinema-series'  => 'Cinema',
         'culture'        => 'Culture',
-        'debat'          => 'Débat',
+        'debat'          => 'Debat',
     ];
     @endphp
 
