@@ -148,7 +148,7 @@
     /* Liens — JetBrains Mono comme ngrok */
     .mg-links { display:flex;gap:28px;list-style:none; }
     .mg-links a { font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:500;color:rgba(255,255,255,.50);text-decoration:none;letter-spacing:.05em;text-transform:uppercase;transition:color .2s;cursor:pointer; }
-    .mg-links a:hover, .mg-links a.mg-link-active { color:rgba(255,255,255,.92); }
+    .mg-links a:hover { color:rgba(255,255,255,.92); }
 
     /* Droite — boutons style ngrok */
     .mg-right { display:flex;gap:8px;align-items:center; }
@@ -199,10 +199,7 @@
         text-decoration: none;
         transition: color .18s;
     }
-    .mg-editorial-links a:hover,
-    .mg-editorial-links a.mg-editorial-active {
-        color: var(--gold);
-    }
+    .mg-editorial-links a:hover { color: var(--gold); }
 
     /* ═══════════════════════════════════════════════
        HAMBURGER
@@ -353,10 +350,10 @@
     </a>
 
     <ul class="mg-links">
-        <li><a href="{{ route('blog.index') }}" class="{{ request()->routeIs('blog.*') ? 'mg-link-active' : '' }}">Blog</a></li>
-        <li><a href="{{ route('forum.index') }}" class="{{ request()->routeIs('forum.*') ? 'mg-link-active' : '' }}">Forum</a></li>
-        <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'mg-link-active' : '' }}">Communauté</a></li>
-        <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'mg-link-active' : '' }}">À propos</a></li>
+        <li><a href="{{ route('blog.index') }}">Blog</a></li>
+        <li><a href="{{ route('forum.index') }}">Forum</a></li>
+        <li><a href="{{ route('home') }}">Communauté</a></li>
+        <li><a href="{{ route('about') }}">À propos</a></li>
     </ul>
 
     <div class="mg-right">
@@ -439,12 +436,12 @@
         <strong>MelanoGeek</strong> · Vol. I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
     </div>
     <ul class="mg-editorial-links">
-        <li><a href="{{ route('blog.index') }}?category=manga-anime" class="{{ request('category') === 'manga-anime' ? 'mg-editorial-active' : '' }}">Manga</a></li>
-        <li><a href="{{ route('blog.index') }}?category=gaming" class="{{ request('category') === 'gaming' ? 'mg-editorial-active' : '' }}">Gaming</a></li>
-        <li><a href="{{ route('blog.index') }}?category=dev" class="{{ request('category') === 'dev' ? 'mg-editorial-active' : '' }}">Développement</a></li>
-        <li><a href="{{ route('blog.index') }}?category=tech" class="{{ request('category') === 'tech' ? 'mg-editorial-active' : '' }}">Tech &amp; IA</a></li>
-        <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'mg-editorial-active' : '' }}">Cinéma</a></li>
-        <li><a href="{{ route('forum.index') }}" class="{{ request()->routeIs('forum.*') ? 'mg-editorial-active' : '' }}">Forum</a></li>
+        <li><a href="{{ route('blog.index') }}?category=manga-anime">Manga</a></li>
+        <li><a href="{{ route('blog.index') }}?category=gaming">Gaming</a></li>
+        <li><a href="{{ route('blog.index') }}?category=dev">Développement</a></li>
+        <li><a href="{{ route('blog.index') }}?category=tech">Tech &amp; IA</a></li>
+        <li><a href="{{ route('blog.index') }}?category=cinema-series">Cinéma</a></li>
+        <li><a href="{{ route('forum.index') }}">Forum</a></li>
     </ul>
 </div>
 

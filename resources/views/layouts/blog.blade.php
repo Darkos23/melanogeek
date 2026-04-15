@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'MelanoGeek') — Blog Geek Africain</title>
+    <title>@yield('title', 'MelanoGeek') â€” Blog Geek Africain</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="theme-color" content="#C8522A">
     @stack('meta')
@@ -22,7 +22,7 @@
     </script>
 
     <style>
-    /* ═══ VARIABLES (reprise de app.blade.php) ═══ */
+    /* â•â•â• VARIABLES (reprise de app.blade.php) â•â•â• */
     :root {
         --bg: #1a1a1a; --bg-card: #1f1f1f; --bg-card2: #242424; --bg-hover: #2a2a2a;
         --text: #F0E8D8; --text-muted: rgba(240,232,216,0.55); --text-faint: rgba(240,232,216,0.18);
@@ -40,80 +40,99 @@
     body { background: var(--bg); color: var(--text); font-family: var(--font-body); }
     a { cursor: pointer; } button { cursor: pointer; }
 
-    /* ─── NAVIGATION ─── */
+    /* â”€â”€â”€ NAVIGATION â”€â”€â”€ */
     .blog-nav {
-        position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-        height: 56px;
-        padding: 0 52px;
+        position: relative;
+        padding: 40px 48px 0;
         display: flex; align-items: center; justify-content: space-between; gap: 24px;
-        background: rgba(26,26,26,.92);
-        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        border-bottom: 1px solid var(--border);
+        background: transparent;
+        border: none;
+        max-width: 1280px;
+        margin: 0 auto;
     }
 
-    .blog-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .blog-nav-logo svg { width: 26px; height: 26px; flex-shrink: 0; }
+    .blog-nav-logo { display: flex; align-items: center; text-decoration: none; }
     .blog-nav-logo-name {
         font-family: 'Bricolage Grotesque', sans-serif;
-        font-weight: 800; font-size: 1rem; letter-spacing: -.04em;
+        font-weight: 800; font-size: 1.4rem; letter-spacing: -.04em;
         color: rgba(255,255,255,.92);
     }
-    .blog-nav-logo-name span { color: var(--gold); }
+    .blog-nav-logo-name:hover { color: #fff; }
 
-    .blog-nav-links { display: flex; gap: 24px; list-style: none; }
+    .blog-nav-links { display: flex; gap: 28px; list-style: none; }
     .blog-nav-links a {
         font-family: 'JetBrains Mono', monospace;
-        font-size: .7rem; font-weight: 500;
-        color: rgba(255,255,255,.45);
+        font-size: .75rem; font-weight: 500;
+        color: rgba(255,255,255,.50);
         text-decoration: none;
         letter-spacing: .05em; text-transform: uppercase;
-        transition: color .18s;
+        transition: color .2s;
     }
-    .blog-nav-links a:hover,
-    .blog-nav-links a.active { color: rgba(255,255,255,.90); }
+    .blog-nav-links a:hover { color: rgba(255,255,255,.90); }
 
     .blog-nav-right { display: flex; align-items: center; gap: 8px; }
     .blog-nav-search {
         display: flex; align-items: center; gap: 8px;
-        background: rgba(255,255,255,.04);
-        border: 1px solid var(--border);
-        border-radius: 7px;
-        padding: 6px 12px;
-        transition: border-color .2s;
+        height: 36px;
+        padding: 0 14px;
+        background: rgba(0,0,0,.15);
+        border: 1px solid transparent;
+        border-radius: 999px;
+        transition: background .2s, border-color .2s;
     }
-    .blog-nav-search:focus-within { border-color: rgba(255,255,255,.20); }
+    .blog-nav-search:hover,
+    .blog-nav-search:focus-within {
+        background: rgba(0,0,0,.25);
+        border-color: rgba(255,255,255,.14);
+    }
     .blog-nav-search input {
         background: none; border: none; outline: none;
         color: var(--text); font-family: 'JetBrains Mono', monospace;
-        font-size: .68rem; width: 140px; letter-spacing: .02em;
+        font-size: .75rem; width: 140px; letter-spacing: .04em;
     }
     .blog-nav-search input::placeholder { color: var(--text-faint); }
     .blog-nav-search svg { color: var(--text-faint); flex-shrink: 0; }
+    .blog-nav-ghost {
+        background: rgba(0,0,0,.15);
+        border: 1px solid transparent;
+        color: rgba(255,255,255,.92);
+        padding: 0 14px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .8125rem;
+        font-weight: 500;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: background .2s;
+    }
+    .blog-nav-ghost:hover { background: rgba(0,0,0,.25); }
     .blog-nav-btn {
         background: rgba(255,255,255,.90); color: rgba(0,0,0,.90); border: none;
-        padding: 0 16px; height: 32px; border-radius: 999px;
-        font-family: 'JetBrains Mono', monospace; font-size: .68rem; font-weight: 500;
+        padding: 0 14px; height: 36px; border-radius: 999px;
+        font-family: 'JetBrains Mono', monospace; font-size: .8125rem; font-weight: 500;
         letter-spacing: .05em; text-transform: uppercase;
         text-decoration: none; display: inline-flex; align-items: center;
-        transition: background .15s;
+        transition: background .2s;
     }
     .blog-nav-btn:hover { background: #fff; }
 
     .blog-editorial-bar {
-        position: fixed;
-        top: 56px;
-        left: 0;
-        right: 0;
-        z-index: 190;
         border-bottom: 1px solid var(--border);
+        border-top: 1px solid var(--border);
+        margin-top: 14px;
         background: rgba(31,31,31,.94);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
+        max-width: 1280px;
+        margin-left: auto;
+        margin-right: auto;
     }
     .blog-editorial-inner {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 9px 52px;
+        padding: 9px 48px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -148,8 +167,7 @@
         text-decoration: none;
         transition: color .18s;
     }
-    .blog-editorial-links a:hover,
-    .blog-editorial-links a.active { color: var(--gold); }
+    .blog-editorial-links a:hover { color: var(--gold); }
 
     /* Hamburger */
     .blog-hamburger {
@@ -163,11 +181,11 @@
     .blog-hamburger.open span:nth-child(2) { opacity: 0; }
     .blog-hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
 
-    /* ─── LAYOUT PRINCIPAL ─── */
+    /* â”€â”€â”€ LAYOUT PRINCIPAL â”€â”€â”€ */
     .blog-wrap {
-        max-width: 1200px;
+        max-width: 1280px;
         margin: 0 auto;
-        padding: 118px 52px 64px;
+        padding: 48px 52px 64px;
         display: grid;
         grid-template-columns: 1fr 260px;
         gap: 48px;
@@ -175,7 +193,7 @@
     }
     .blog-main { min-width: 0; }
 
-    /* ─── SIDEBAR ─── */
+    /* â”€â”€â”€ SIDEBAR â”€â”€â”€ */
     .blog-sidebar { position: sticky; top: 72px; display: flex; flex-direction: column; gap: 28px; }
 
     .sidebar-block {
@@ -246,7 +264,7 @@
     }
     .sb-newsletter button:hover { background: #fff; }
 
-    /* ─── BREADCRUMB ─── */
+    /* â”€â”€â”€ BREADCRUMB â”€â”€â”€ */
     .blog-breadcrumb {
         display: flex; align-items: center; gap: 6px;
         font-size: .63rem; color: var(--text-faint);
@@ -257,7 +275,7 @@
     .blog-breadcrumb a:hover { color: var(--text); }
     .blog-breadcrumb-sep { color: var(--text-faint); }
 
-    /* ─── FOOTER ─── */
+    /* â”€â”€â”€ FOOTER â”€â”€â”€ */
     .blog-footer {
         border-top: 1px solid var(--border);
         padding: 28px 52px;
@@ -269,13 +287,13 @@
     .blog-footer-links a { color: var(--text-muted); text-decoration: none; transition: color .16s; }
     .blog-footer-links a:hover { color: var(--text); }
 
-    /* ─── RESPONSIVE ─── */
+    /* â”€â”€â”€ RESPONSIVE â”€â”€â”€ */
     @media (max-width: 1024px) {
         .blog-wrap { grid-template-columns: 1fr; }
         .blog-sidebar { position: static; }
     }
     @media (max-width: 768px) {
-        .blog-nav { padding: 0 16px; }
+        .blog-nav { padding: 0 16px; height: 64px; }
         .blog-editorial-bar { display: none; }
         .blog-nav-links, .blog-nav-search { display: none; }
         .blog-hamburger { display: flex; }
@@ -290,32 +308,28 @@
 </head>
 <body>
 
-{{-- ══ NAVIGATION ══ --}}
+{{-- â•â• NAVIGATION â•â• --}}
 <nav class="blog-nav">
     <a href="{{ route('home') }}" class="blog-nav-logo">
-        <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 2L38.3 12V32L21 42L3.7 32V12L21 2Z" fill="var(--bg-card2)" stroke="#D4A843" stroke-width="0.8"/>
-            <path d="M10 28V14L16.5 22L21 16L25.5 22L32 14V28" stroke="#C8522A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
-        <div class="blog-nav-logo-name">Melano<span>Geek</span></div>
+        <div class="blog-nav-logo-name">melanogeek</div>
     </a>
 
     <ul class="blog-nav-links">
         <li><a href="{{ route('home') }}">Accueil</a></li>
-        <li><a href="{{ route('blog.index') }}" class="{{ request()->routeIs('blog.*') ? 'active' : '' }}">Blog</a></li>
-        <li><a href="{{ route('forum.index') }}" class="{{ request()->routeIs('forum.*') ? 'active' : '' }}">Forum</a></li>
+        <li><a href="{{ route('blog.index') }}" >Blog</a></li>
+        <li><a href="{{ route('forum.index') }}" >Forum</a></li>
         <li><a href="{{ route('home') }}">Communauté</a></li>
-        <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">À propos</a></li>
+        <li><a href="{{ route('about') }}">À propos</a></li>
     </ul>
 
     <div class="blog-nav-right">
         <div class="blog-nav-search">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" placeholder="Rechercher…" id="blogSearchInput">
+            <input type="text" placeholder="Rechercherâ€¦" id="blogSearchInput">
         </div>
 
         @guest
-            <a href="{{ route('login') }}" style="font-size:.72rem;color:var(--text-muted);text-decoration:none;padding:7px 12px;border:1px solid var(--border);border-radius:7px;transition:all .18s;" onmouseover="this.style.borderColor='rgba(255,255,255,.3)';this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Connexion</a>
+            <a href="{{ route('login') }}" class="blog-nav-ghost">Connexion</a>
             <a href="{{ route('register') }}" class="blog-nav-btn">Rejoindre</a>
         @else
             <div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--terra),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:white;text-decoration:none;cursor:pointer;">
@@ -332,27 +346,27 @@
 <div class="blog-editorial-bar">
     <div class="blog-editorial-inner">
         <div class="blog-editorial-id">
-            <strong>MelanoGeek</strong> · Vol. I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
+            <strong>MelanoGeek</strong> Â· Vol. I Â· Ã‰d. Printemps {{ date('Y') }} Â· La culture geek, vue d'Afrique
         </div>
         <ul class="blog-editorial-links">
             <li><a href="{{ route('blog.index') }}?category=manga-anime" class="{{ request('category') === 'manga-anime' ? 'active' : '' }}">Manga</a></li>
             <li><a href="{{ route('blog.index') }}?category=gaming" class="{{ request('category') === 'gaming' ? 'active' : '' }}">Gaming</a></li>
-            <li><a href="{{ route('blog.index') }}?category=dev" class="{{ request('category') === 'dev' ? 'active' : '' }}">Développement</a></li>
+            <li><a href="{{ route('blog.index') }}?category=dev" class="{{ request('category') === 'dev' ? 'active' : '' }}">DÃ©veloppement</a></li>
             <li><a href="{{ route('blog.index') }}?category=tech" class="{{ request('category') === 'tech' ? 'active' : '' }}">Tech &amp; IA</a></li>
-            <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">Cinéma</a></li>
-            <li><a href="{{ route('forum.index') }}" class="{{ request()->routeIs('forum.*') ? 'active' : '' }}">Forum</a></li>
+            <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">CinÃ©ma</a></li>
+            <li><a href="{{ route('forum.index') }}" >Forum</a></li>
         </ul>
     </div>
 </div>
 
-{{-- ══ CONTENU ══ --}}
+{{-- â•â• CONTENU â•â• --}}
 <div class="blog-wrap">
     <main class="blog-main">
         @if(isset($breadcrumbs))
         <div class="blog-breadcrumb">
             <a href="{{ route('home') }}">Accueil</a>
             @foreach($breadcrumbs as $label => $url)
-                <span class="blog-breadcrumb-sep">›</span>
+                <span class="blog-breadcrumb-sep">â€º</span>
                 @if($loop->last)
                     <span>{{ $label }}</span>
                 @else
@@ -369,23 +383,23 @@
         @hasSection('sidebar')
             @yield('sidebar')
         @else
-            {{-- Sidebar par défaut --}}
+            {{-- Sidebar par dÃ©faut --}}
             <div class="sidebar-block">
-                <div class="sidebar-block-head">Catégories</div>
+                <div class="sidebar-block-head">CatÃ©gories</div>
                 <div class="sidebar-block-body">
                     @php $activeCategory = request('category'); @endphp
                     <a href="{{ route('blog.index') }}" class="sb-item {{ !$activeCategory ? 'active' : '' }}">
-                        <span class="sb-item-icon">✦</span>
+                        <span class="sb-item-icon">âœ¦</span>
                         <span class="sb-item-name">Tout</span>
                     </a>
                     @foreach([
-                        ['manga-anime',   '🎌', 'Manga & Animé'],
-                        ['gaming',        '🎮', 'Gaming'],
-                        ['tech',          '💻', 'Tech & IA'],
-                        ['dev',           '🛠️', 'Développement'],
-                        ['cinema-series', '🎬', 'Cinéma & Séries'],
-                        ['culture',       '🌍', 'Culture & Société'],
-                        ['debat',         '💬', 'Débat'],
+                        ['manga-anime',   'ðŸŽŒ', 'Manga & AnimÃ©'],
+                        ['gaming',        'ðŸŽ®', 'Gaming'],
+                        ['tech',          'ðŸ’»', 'Tech & IA'],
+                        ['dev',           'ðŸ› ï¸', 'DÃ©veloppement'],
+                        ['cinema-series', 'ðŸŽ¬', 'CinÃ©ma & SÃ©ries'],
+                        ['culture',       'ðŸŒ', 'Culture & SociÃ©tÃ©'],
+                        ['debat',         'ðŸ’¬', 'DÃ©bat'],
                     ] as [$slug, $icon, $name])
                     <a href="{{ route('blog.index') }}?category={{ $slug }}"
                        class="sb-item {{ $activeCategory === $slug ? 'active' : '' }}">
@@ -417,7 +431,7 @@
             <div class="sidebar-block">
                 <div class="sidebar-block-head">Newsletter</div>
                 <div class="sb-newsletter">
-                    <p>Reçois les meilleurs articles de la semaine directement dans ta boîte mail.</p>
+                    <p>ReÃ§ois les meilleurs articles de la semaine directement dans ta boÃ®te mail.</p>
                     <input type="email" placeholder="ton@email.com">
                     <button type="button">S'abonner</button>
                 </div>
@@ -426,9 +440,9 @@
     </aside>
 </div>
 
-{{-- ══ FOOTER ══ --}}
+{{-- â•â• FOOTER â•â• --}}
 <footer class="blog-footer">
-    <span>© {{ date('Y') }} MelanoGeek — La culture geek, vue d'Afrique.</span>
+    <span>Â© {{ date('Y') }} MelanoGeek â€” La culture geek, vue d'Afrique.</span>
     <ul class="blog-footer-links">
         <li><a href="{{ route('home') }}">Accueil</a></li>
         <li><a href="{{ route('blog.index') }}">Blog</a></li>
@@ -442,3 +456,4 @@
 @stack('scripts')
 </body>
 </html>
+
