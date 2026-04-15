@@ -350,10 +350,7 @@
     </a>
 
     <ul class="mg-links">
-        <li><a href="{{ route('blog.index') }}">Blog</a></li>
-        <li><a href="{{ route('forum.index') }}">Forum</a></li>
-        <li><a href="{{ route('home') }}">Communauté</a></li>
-        <li><a href="{{ route('about') }}">À propos</a></li>
+        @include('partials.site-nav-links')
     </ul>
 
     <div class="mg-right">
@@ -675,10 +672,7 @@
 <!-- ══ MENU MOBILE ══ -->
 <div class="mg-mobile-menu" id="mgMobileMenu" aria-hidden="true" role="dialog" aria-label="Menu de navigation">
     <ul class="mg-mob-links">
-        <li><a href="{{ route('blog.index') }}">✍️ Blog</a></li>
-        <li><a href="{{ route('forum.index') }}">💬 Forum</a></li>
-        <li><a href="{{ route('home') }}">👥 Communauté</a></li>
-        <li><a href="{{ route('about') }}">📖 À propos</a></li>
+        @include('partials.site-nav-links')
         @auth
         <li><a href="{{ route('profile.edit') }}">⚙️ Paramètres</a></li>
         @endauth

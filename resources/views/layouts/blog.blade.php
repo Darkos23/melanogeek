@@ -315,11 +315,7 @@
     </a>
 
     <ul class="blog-nav-links">
-        <li><a href="{{ route('home') }}">Accueil</a></li>
-        <li><a href="{{ route('blog.index') }}" >Blog</a></li>
-        <li><a href="{{ route('forum.index') }}" >Forum</a></li>
-        <li><a href="{{ route('home') }}">Communauté</a></li>
-        <li><a href="{{ route('about') }}">À propos</a></li>
+        @include('partials.site-nav-links')
     </ul>
 
     <div class="blog-nav-right">
@@ -447,7 +443,7 @@
         <li><a href="{{ route('home') }}">Accueil</a></li>
         <li><a href="{{ route('blog.index') }}">Blog</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
-        <li><a href="{{ route('home') }}">Communauté</a></li>
+        <li><a href="{{ route('community') }}">Communauté</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
     </ul>
 </footer>
