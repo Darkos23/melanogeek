@@ -119,18 +119,7 @@
         margin-bottom: 8px;
         transition: color .4s;
     }
-    .profile-niche {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: .8rem;
-        font-weight: 600;
-        color: var(--terra);
-        background: var(--terra-soft);
-        padding: 3px 12px;
-        border-radius: 100px;
-        margin-bottom: 10px;
-    }
+    
 
     .profile-bio {
         font-size: .9rem;
