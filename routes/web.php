@@ -37,6 +37,7 @@ Route::get('/@{user:username}', [ProfileController::class, 'show'])->name('profi
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 
 // Public post pages
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/posts/{post}/data', [PostController::class, 'data'])->name('posts.data');
 
@@ -64,7 +65,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/push/unsubscribe', [PushSubscriptionController::class, 'destroy'])->name('push.unsubscribe');
 
     // Posts
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
 });
