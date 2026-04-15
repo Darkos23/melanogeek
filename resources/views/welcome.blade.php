@@ -16,43 +16,6 @@
 /* ── Variable serif ── */
 .lp { --serif: 'DM Serif Display', 'Georgia', serif; }
 
-/* ══ MASTHEAD — barre fine de magazine ══ */
-.lp-masthead {
-    border-bottom: 1px solid var(--border);
-    padding: 9px 52px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-.lp-masthead-id {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .6rem;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-}
-.lp-masthead-id strong {
-    color: var(--gold);
-    font-weight: 600;
-}
-.lp-masthead-topics {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-}
-.lp-masthead-topics li a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    text-decoration: none;
-    transition: color .18s;
-}
-.lp-masthead-topics li a:hover { color: var(--text-muted); }
-@media (max-width: 768px) { .lp-masthead { display: none; } }
-
 /* ══ HERO — EDITORIAL ASYMÉTRIQUE ══ */
 .lp-hero {
     display: grid;
@@ -60,15 +23,15 @@
     gap: 0;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 72px 52px 80px;
+    padding: 56px 52px 80px;
     position: relative;
     align-items: center;
 }
 @media (max-width: 1100px) {
-    .lp-hero { grid-template-columns: 1fr; padding: 52px 28px 60px; }
+    .lp-hero { grid-template-columns: 1fr; padding: 44px 28px 60px; }
     .lp-hero-right { display: none; }
 }
-@media (max-width: 600px) { .lp-hero { padding: 40px 20px 52px; } }
+@media (max-width: 600px) { .lp-hero { padding: 34px 20px 52px; } }
 
 .lp-hero-left {
     display: flex;
@@ -727,21 +690,6 @@
         </filter>
     </defs>
 </svg>
-
-{{-- ══ MASTHEAD ══ --}}
-<div class="lp-masthead">
-    <div class="lp-masthead-id">
-        <strong>MelanoGeek</strong> · Vol.&nbsp;I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
-    </div>
-    <ul class="lp-masthead-topics">
-        <li><a href="{{ route('blog.index') }}?category=manga-anime">Manga</a></li>
-        <li><a href="{{ route('blog.index') }}?category=gaming">Gaming</a></li>
-        <li><a href="{{ route('blog.index') }}?category=dev">Développement</a></li>
-        <li><a href="{{ route('blog.index') }}?category=tech">Tech &amp; IA</a></li>
-        <li><a href="{{ route('blog.index') }}?category=cinema-series">Cinéma</a></li>
-        <li><a href="{{ route('forum.index') }}">Forum</a></li>
-    </ul>
-</div>
 
 {{-- ══ HERO ══ --}}
 <section class="lp-hero">

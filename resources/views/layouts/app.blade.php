@@ -157,6 +157,53 @@
     .mg-btn-solid { background:rgba(255,255,255,.90);color:rgba(0,0,0,.90);border:1px solid transparent;padding:0 14px;height:36px;display:inline-flex;align-items:center;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.8125rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .2s;text-decoration:none; }
     .mg-btn-solid:hover { background:#fff; }
 
+    .mg-editorial-bar {
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        margin-top: 14px;
+        padding: 9px 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        max-width: 1280px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .mg-editorial-id {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .6rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--text-faint);
+        white-space: nowrap;
+    }
+    .mg-editorial-id strong {
+        color: var(--gold);
+        font-weight: 600;
+    }
+    .mg-editorial-links {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        list-style: none;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+    .mg-editorial-links a {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .58rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--text-faint);
+        text-decoration: none;
+        transition: color .18s;
+    }
+    .mg-editorial-links a:hover,
+    .mg-editorial-links a.mg-editorial-active {
+        color: var(--gold);
+    }
+
     /* ═══════════════════════════════════════════════
        HAMBURGER
     ═══════════════════════════════════════════════ */
@@ -244,6 +291,7 @@
     @media (max-width: 768px) {
         .mg-nav { padding: env(safe-area-inset-top) 16px 0; height: calc(64px + env(safe-area-inset-top)); }
         .mg-links { display: none; }
+        .mg-editorial-bar { display: none; }
         .mg-hamburger { display: flex; }
         /* Boutons Connexion / Rejoindre / Mon fil → dans le burger */
         .mg-btn-ghost, .mg-btn-solid { display: none; }
@@ -385,6 +433,20 @@
         </button>
     </div>
 </nav>
+
+<div class="mg-editorial-bar">
+    <div class="mg-editorial-id">
+        <strong>MelanoGeek</strong> · Vol. I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
+    </div>
+    <ul class="mg-editorial-links">
+        <li><a href="{{ route('blog.index') }}?category=manga-anime" class="{{ request('category') === 'manga-anime' ? 'mg-editorial-active' : '' }}">Manga</a></li>
+        <li><a href="{{ route('blog.index') }}?category=gaming" class="{{ request('category') === 'gaming' ? 'mg-editorial-active' : '' }}">Gaming</a></li>
+        <li><a href="{{ route('blog.index') }}?category=dev" class="{{ request('category') === 'dev' ? 'mg-editorial-active' : '' }}">Développement</a></li>
+        <li><a href="{{ route('blog.index') }}?category=tech" class="{{ request('category') === 'tech' ? 'mg-editorial-active' : '' }}">Tech &amp; IA</a></li>
+        <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'mg-editorial-active' : '' }}">Cinéma</a></li>
+        <li><a href="{{ route('forum.index') }}" class="{{ request()->routeIs('forum.*') ? 'mg-editorial-active' : '' }}">Forum</a></li>
+    </ul>
+</div>
 
 <style>
 /* ── Cloche notifications ── */
