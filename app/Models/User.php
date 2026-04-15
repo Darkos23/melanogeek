@@ -31,8 +31,6 @@ class User extends Authenticatable
         'cover_photo',
         'bio',
         'bio_wolof',
-        'niche',
-        'niche_wolof',
         'specialty',
         'location',
         'website',
