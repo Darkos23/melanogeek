@@ -16,6 +16,14 @@
     <p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.65;max-width:460px;font-family:'Inter',sans-serif">
         Articles, reviews, analyses et coups de cœur autour du manga, du gaming, du développement, de la tech et de la culture nerd africaine.
     </p>
+
+    @auth
+    <div style="margin-top:18px">
+        <a href="{{ route('posts.create') }}" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);text-decoration:none;font-size:.85rem;font-weight:700;transition:background .2s;background:rgba(255,255,255,.04);">
+            ✍️ Écrire un article
+        </a>
+    </div>
+    @endauth
 </div>
 
 {{-- ── FILTRES CATÉGORIES ── --}}

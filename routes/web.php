@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PostAdminController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\NotificationsController;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/communaute', [ExploreController::class, 'index'])->name('community');
 Route::get('/offline', fn() => view('pages.offline'))->name('offline');
 
 Route::get('/a-propos', function () {

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'MelanoGeek') â€” Blog Geek Africain</title>
+    <title>@yield('title', 'MelanoGeek') — Blog Geek Africain</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="theme-color" content="#C8522A">
     @stack('meta')
@@ -342,14 +342,14 @@
 <div class="blog-editorial-bar">
     <div class="blog-editorial-inner">
         <div class="blog-editorial-id">
-            <strong>MelanoGeek</strong> Â· Vol. I Â· Ã‰d. Printemps {{ date('Y') }} Â· La culture geek, vue d'Afrique
+            <strong>MelanoGeek</strong> · Vol. I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
         </div>
         <ul class="blog-editorial-links">
             <li><a href="{{ route('blog.index') }}?category=manga-anime" class="{{ request('category') === 'manga-anime' ? 'active' : '' }}">Manga</a></li>
             <li><a href="{{ route('blog.index') }}?category=gaming" class="{{ request('category') === 'gaming' ? 'active' : '' }}">Gaming</a></li>
-            <li><a href="{{ route('blog.index') }}?category=dev" class="{{ request('category') === 'dev' ? 'active' : '' }}">DÃ©veloppement</a></li>
+            <li><a href="{{ route('blog.index') }}?category=dev" class="{{ request('category') === 'dev' ? 'active' : '' }}">Développement</a></li>
             <li><a href="{{ route('blog.index') }}?category=tech" class="{{ request('category') === 'tech' ? 'active' : '' }}">Tech &amp; IA</a></li>
-            <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">CinÃ©ma</a></li>
+            <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">Cinéma</a></li>
             <li><a href="{{ route('forum.index') }}" >Forum</a></li>
         </ul>
     </div>
@@ -427,7 +427,7 @@
             <div class="sidebar-block">
                 <div class="sidebar-block-head">Newsletter</div>
                 <div class="sb-newsletter">
-                    <p>ReÃ§ois les meilleurs articles de la semaine directement dans ta boÃ®te mail.</p>
+                    <p>Reçois les meilleurs articles de la semaine directement dans ta boîte mail.</p>
                     <input type="email" placeholder="ton@email.com">
                     <button type="button">S'abonner</button>
                 </div>
