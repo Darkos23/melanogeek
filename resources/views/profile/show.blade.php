@@ -65,10 +65,6 @@
                     <div class="profile-username">{{ $user->name }}</div>
                 @endif
 
-                @if($user->niche)
-                    <div class="profile-niche">🎨 {{ $user->niche }}</div>
-                @endif
-
                 @if($user->bio || $user->bio_wolof)
                     <div class="profile-bio-block">
                         @if($user->bio)
@@ -307,13 +303,6 @@
             <div class="about-grid">
                 <div class="about-card">
                     <div class="about-card-title">Informations</div>
-                    @if($user->niche)
-                    <div class="about-item">
-                        <span class="about-item-icon">🎨</span>
-                        <span>Niche</span>
-                        <span class="about-item-value" style="margin-left:auto;">{{ $user->niche }}</span>
-                    </div>
-                    @endif
                     @if($user->location)
                     <div class="about-item">
                         <span class="about-item-icon">📍</span>
