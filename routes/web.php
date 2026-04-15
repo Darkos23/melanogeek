@@ -37,8 +37,8 @@ Route::get('/@{user:username}', [ProfileController::class, 'show'])->name('profi
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 
 // Public post pages
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-Route::get('/posts/{post}/data', [PostController::class, 'data'])->name('posts.data');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')->whereNumber('post');
+Route::get('/posts/{post}/data', [PostController::class, 'data'])->name('posts.data')->whereNumber('post');
 
 // Forum
 Route::get('/forum', fn() => view('forum.index'))->name('forum.index');
