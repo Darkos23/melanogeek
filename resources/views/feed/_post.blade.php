@@ -18,9 +18,6 @@
                     @if($post->user->is_verified)
                         <span class="verified-badge">✓</span>
                     @endif
-                    @if($post->user->niche)
-                        <span class="feed-niche-pill">{{ $post->user->niche }}</span>
-                    @endif
                 </div>
                 <div class="feed-author-meta" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                     {{ $post->created_at?->diffForHumans() ?? "-" }}
