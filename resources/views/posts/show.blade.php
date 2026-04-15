@@ -53,12 +53,7 @@
     }
     .post-author-name:hover { color: var(--terra); }
     .post-author-meta { font-size: .76rem; color: var(--text-muted); margin-top: 2px; }
-    .post-author-niche {
-        display: inline-flex; align-items: center; gap: 5px;
-        background: var(--terra-soft); border: 1px solid rgba(200,82,42,.2);
-        color: var(--terra); font-size: .7rem; font-weight: 600;
-        padding: 3px 10px; border-radius: 100px;
-    }
+    
 
     /* ── CONTENU ── */
     .post-title {
@@ -433,9 +428,6 @@
                         {{ $post->user->username }}
                     </a>
                     <div class="post-author-meta">
-                        @if($post->user->niche)
-                            <span class="post-author-niche">{{ $post->user->niche }}</span> ·
-                        @endif
                         {{ $post->created_at?->diffForHumans() ?? "-" }}
                     </div>
                 </div>
