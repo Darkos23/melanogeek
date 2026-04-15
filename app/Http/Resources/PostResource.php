@@ -13,6 +13,8 @@ class PostResource extends JsonResource
             'id'             => $this->id,
             'title'          => $this->title,
             'body'           => $this->body,
+            'category'       => $this->category,
+            'category_label' => $this->category_label,
             'media_url'      => $this->media_url ? asset('storage/' . $this->media_url) : null,
             'media_type'     => $this->media_type,
             'is_published'   => $this->is_published,

@@ -9,6 +9,7 @@ use App\Notifications\LikeNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -24,6 +25,7 @@ class PostController extends Controller
         $data = $request->validate([
             'title'        => ['nullable', 'string', 'max:150'],
             'body'         => ['nullable', 'string', 'max:5000'],
+            'category'     => ['nullable', 'string', Rule::in(array_keys(Post::CATEGORIES))],
             'images'       => ['nullable', 'array', 'max:10'],
             'images.*'     => ['file', 'image', 'mimetypes:image/jpeg,image/png,image/gif,image/webp', 'max:20480'],
             'media'        => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,video/webm', 'max:51200'],
@@ -76,6 +78,7 @@ class PostController extends Controller
         $post = $request->user()->posts()->create([
             'title'        => $data['title'] ?? null,
             'body'         => $data['body'] ?? null,
+            'category'     => $data['category'] ?? null,
             'media_url'    => $mediaUrl,
             'media_type'   => $mediaType,
             'thumbnail'    => $thumbnailUrl,
@@ -123,6 +126,8 @@ class PostController extends Controller
             'id'             => $post->id,
             'title'          => $post->title,
             'body'           => $post->body,
+            'category'       => $post->category,
+            'category_label' => $post->category_label,
             'media_url'      => $post->media_url ? Storage::url($post->media_url) : null,
             'media_type'     => $post->media_type,
             'audio_url'      => $post->audio_url ? Storage::url($post->audio_url) : null,

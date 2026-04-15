@@ -247,12 +247,11 @@
         display: flex; align-items: center; gap: 10px;
         background: rgba(45,90,61,.12);
         border: 1px solid rgba(45,90,61,.25);
-        color: #3D8A58;
+        color: #6DC48A;
         padding: 14px 18px; border-radius: 14px;
         font-size: .88rem; font-weight: 500;
         margin-bottom: 20px;
     }
-    [data-theme="dark"] .post-success { color: #6DC48A; }
 
     /* ── COMMENTS ── */
     .post-comments {

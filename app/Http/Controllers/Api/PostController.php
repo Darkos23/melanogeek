@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -17,6 +18,7 @@ class PostController extends Controller
         $request->validate([
             'title'      => ['nullable', 'string', 'max:255'],
             'body'       => ['required_without:media', 'nullable', 'string', 'max:5000'],
+            'category'   => ['nullable', 'string', Rule::in(array_keys(Post::CATEGORIES))],
             'media'      => ['nullable', 'file', 'mimes:jpg,jpeg,png,gif,webp,mp4,mov,webm', 'max:51200'],
             'media_type' => ['nullable', 'in:image,video,text'],
         ]);
@@ -32,6 +34,7 @@ class PostController extends Controller
         $post = $request->user()->posts()->create([
             'title'      => $request->title,
             'body'       => $request->body,
+            'category'   => $request->category,
             'media_url'  => $mediaPath,
             'media_type' => $mediaType,
             'is_published' => true,

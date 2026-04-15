@@ -7,13 +7,11 @@
 /* ═══════════════════════════════════════════════════
    LANDING PAGE — DARK EDITORIAL
    Inspiré Pitchfork dark · Vercel · The Ringer
-   Police titre : DM Serif Display
+   Police titre : var(--font-head)
    Accent primaire : or (#D4A843)
 ═══════════════════════════════════════════════════ */
 
 /* ── Fond neutre, pas de motifs hérités ── */
-html[data-theme] body::before,
-html[data-theme] body::after { content: none !important; background: none !important; display: none !important; }
 
 /* ── Variable serif ── */
 .lp { --serif: 'DM Serif Display', 'Georgia', serif; }
@@ -102,11 +100,11 @@ html[data-theme] body::after { content: none !important; background: none !impor
 
 /* Titre principal */
 .lp-h1 {
-    font-family: var(--serif);
+    font-family: var(--font-head);
     font-size: clamp(3rem, 6.5vw, 5.4rem);
-    font-weight: 400;
+    font-weight: 800;
     line-height: 1.05;
-    letter-spacing: -.01em;
+    letter-spacing: -.04em;
     color: rgba(255,255,255,.94);
     margin: 0;
 }
@@ -736,10 +734,11 @@ html[data-theme] body::after { content: none !important; background: none !impor
         <strong>MelanoGeek</strong> · Vol.&nbsp;I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
     </div>
     <ul class="lp-masthead-topics">
-        <li><a href="{{ route('blog.index') }}?cat=manga">Manga</a></li>
-        <li><a href="{{ route('blog.index') }}?cat=gaming">Gaming</a></li>
-        <li><a href="{{ route('blog.index') }}?cat=tech">Tech &amp; IA</a></li>
-        <li><a href="{{ route('blog.index') }}?cat=cinema">Cinéma</a></li>
+        <li><a href="{{ route('blog.index') }}?category=manga-anime">Manga</a></li>
+        <li><a href="{{ route('blog.index') }}?category=gaming">Gaming</a></li>
+        <li><a href="{{ route('blog.index') }}?category=dev">Développement</a></li>
+        <li><a href="{{ route('blog.index') }}?category=tech">Tech &amp; IA</a></li>
+        <li><a href="{{ route('blog.index') }}?category=cinema-series">Cinéma</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
     </ul>
 </div>
@@ -758,7 +757,7 @@ html[data-theme] body::after { content: none !important; background: none !impor
 
         <p class="lp-sub">
             Articles, débats, reviews et conversations
-            autour du manga, du gaming, de la tech et de
+            autour du manga, du gaming, du développement, de la tech et de
             la culture nerd — par et pour la communauté africaine.
         </p>
 
@@ -801,16 +800,13 @@ html[data-theme] body::after { content: none !important; background: none !impor
 {{-- ══ TICKER ══ --}}
 <div class="lp-ticker">
     <div class="lp-ticker-t">
+        @php
+            $tickerCategories = \App\Models\Post::CATEGORIES;
+        @endphp
         @foreach(array_fill(0, 2, null) as $_)
-        <span class="lp-tt"><span class="lp-tt-dot"></span> <strong>Manga africain</strong></span>
-        <span class="lp-tt"><span class="lp-tt-dot"></span> Gaming</span>
-        <span class="lp-tt"><span class="lp-tt-dot"></span> Animé</span>
-        <span class="lp-tt"><span class="lp-tt-dot"></span> <strong>Science-fiction</strong></span>
-        <span class="lp-tt"><span class="lp-tt-dot"></span> Tech &amp; IA</span>
-        <span class="lp-tt"><span class="lp-tt-dot"></span> BD &amp; Comics</span>
-        <span class="lp-tt"><span class="lp-tt-dot"></span> <strong>Afrofuturisme</strong></span>
-        <span class="lp-tt"><span class="lp-tt-dot"></span> Cosplay</span>
-        <span class="lp-tt"><span class="lp-tt-dot"></span> Nollywood SF</span>
+        @foreach($tickerCategories as $label)
+        <span class="lp-tt"><span class="lp-tt-dot"></span> <strong>{{ $label }}</strong></span>
+        @endforeach
         @endforeach
     </div>
 </div>
@@ -916,6 +912,7 @@ html[data-theme] body::after { content: none !important; background: none !impor
             'manga-anime'   => ['🎌', 'Manga & Animé'],
             'gaming'        => ['🎮', 'Gaming'],
             'tech'          => ['💻', 'Tech & IA'],
+            'dev'           => ['🛠️', 'Développement'],
             'cinema-series' => ['🎬', 'Cinéma & Séries'],
             'culture'       => ['🌍', 'Culture & Société'],
             'debat'         => ['💬', 'Débat'],

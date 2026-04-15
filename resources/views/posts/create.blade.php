@@ -85,6 +85,41 @@
     }
     .post-body-input::placeholder { color: var(--text-faint); }
 
+    .post-meta-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 24px 16px;
+    }
+    .post-meta-label {
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--text-faint);
+        flex-shrink: 0;
+    }
+    .post-category-select {
+        width: 100%;
+        background: var(--bg-card2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        font-family: var(--font-body);
+        font-size: .9rem;
+        padding: 12px 14px;
+        outline: none;
+        transition: border-color .2s, background .2s;
+    }
+    .post-category-select:focus {
+        border-color: var(--terra);
+        background: rgba(255,255,255,.03);
+    }
+    .post-category-select option {
+        background: var(--bg-card);
+        color: var(--text);
+    }
+
     /* ── MEDIA PREVIEW ── */
     .media-preview-wrap {
         margin: 0 24px 16px;
@@ -328,6 +363,7 @@
 
         .post-title-input { padding: 14px 16px 0; font-size: 1.1rem; }
         .post-body-input  { padding: 12px 16px; font-size: .95rem; min-height: 120px; }
+        .post-meta-row { padding: 0 16px 12px; flex-direction: column; align-items: stretch; gap: 8px; }
 
         .media-preview-wrap { margin: 0 12px 12px; }
         .img-grid-wrap      { margin: 0 12px 12px; }
@@ -367,6 +403,9 @@
 
     <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data" id="postForm">
         @csrf
+        @php
+            $postCategories = \App\Models\Post::CATEGORIES;
+        @endphp
 
         <div class="create-card">
 
@@ -405,6 +444,16 @@
                 placeholder="Quoi de neuf ? Partage ton contenu avec la communauté..."
                 oninput="autoResize(this); updateCounter(this)"
             >{{ old('body') }}</textarea>
+
+            <div class="post-meta-row">
+                <label for="postCategory" class="post-meta-label">Catégorie</label>
+                <select name="category" id="postCategory" class="post-category-select">
+                    <option value="">Choisir une catégorie</option>
+                    @foreach($postCategories as $slug => $label)
+                        <option value="{{ $slug }}" @selected(old('category') === $slug)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
 
             <!-- Multi-image grid -->
             <div class="img-grid-wrap" id="imgGridWrap">

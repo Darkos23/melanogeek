@@ -28,6 +28,7 @@ class Post extends Model
         'manga-anime'    => 'Manga & Animé',
         'gaming'         => 'Gaming',
         'tech'           => 'Tech & IA',
+        'dev'            => 'Développement',
         'cinema-series'  => 'Cinéma & Séries',
         'culture'        => 'Culture & Société',
         'debat'          => 'Débat',

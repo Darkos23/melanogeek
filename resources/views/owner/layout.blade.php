@@ -7,104 +7,133 @@
     <title>@yield('title', 'owner') — melanogeek</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --bg:          #1a1a1a;
-            --sidebar-bg:  #141414;
+            --sidebar-bg:  #1f1f1f;
+            --panel-bg:    rgba(255,255,255,.025);
             --border:      rgba(255,255,255,.08);
-            --text:        rgba(255,255,255,.85);
-            --text-muted:  rgba(255,255,255,.38);
-            --text-faint:  rgba(255,255,255,.18);
-            --accent:      #a78bfa;
+            --text:        rgba(245,239,227,.9);
+            --text-muted:  rgba(245,239,227,.56);
+            --text-faint:  rgba(245,239,227,.26);
+            --accent:      #D4A843;
+            --terra:       #C8522A;
             --green:       #6ee7b7;
             --red:         #f87171;
             --yellow:      #fcd34d;
-            --mono:        'JetBrains Mono', monospace;
+            --font-head:   'Bricolage Grotesque', sans-serif;
+            --font-body:   'Outfit', sans-serif;
         }
 
         body {
-            background: var(--bg);
+            background:
+                radial-gradient(circle at top left, rgba(212,168,67,.06), transparent 26%),
+                radial-gradient(circle at 82% 14%, rgba(255,255,255,.025), transparent 22%),
+                var(--bg);
             color: var(--text);
-            font-family: var(--mono);
+            font-family: var(--font-body);
             -webkit-font-smoothing: antialiased;
             display: flex;
             min-height: 100vh;
-            font-size: 13px;
+            font-size: 14px;
         }
 
         /* ════════════════════════════
            SIDEBAR
         ════════════════════════════ */
         .ow-sidebar {
-            width: 200px;
+            width: 240px;
             flex-shrink: 0;
-            background: var(--sidebar-bg);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,.04), transparent 20%),
+                linear-gradient(180deg, #1f1f1f, #1a1a1a);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             position: fixed;
             top: 0; left: 0; bottom: 0;
+            overflow: hidden;
             z-index: 50;
         }
 
         .ow-sidebar-brand {
-            padding: 20px 20px 16px;
+            padding: 24px 22px 18px;
             border-bottom: 1px solid var(--border);
         }
         .ow-sidebar-logo {
-            font-size: .82rem;
-            font-weight: 700;
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            font-weight: 800;
             color: var(--text);
-            letter-spacing: -.01em;
+            letter-spacing: -.04em;
             text-decoration: none;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         .ow-sidebar-role {
-            font-size: .62rem;
+            font-size: .7rem;
             color: var(--accent);
-            letter-spacing: .04em;
+            letter-spacing: .12em;
+            text-transform: uppercase;
         }
 
         .ow-sidebar-nav {
             flex: 1;
-            padding: 20px 20px;
-            overflow-y: auto;
+            padding: 22px;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 22px;
         }
 
-        .ow-nav-group { display: flex; flex-direction: column; gap: 2px; }
+        .ow-nav-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
         .ow-nav-label {
-            font-size: .62rem;
+            font-size: .68rem;
             color: var(--text-faint);
-            letter-spacing: .08em;
-            margin-bottom: 6px;
+            letter-spacing: .12em;
+            margin-bottom: 8px;
+            text-transform: uppercase;
         }
         .ow-nav-link {
-            font-size: .78rem;
+            font-size: .9rem;
             color: var(--text-muted);
             text-decoration: none;
-            padding: 4px 0;
-            transition: color .12s;
+            padding: 12px 14px;
+            transition: color .12s, background .12s, border-color .12s, transform .12s;
             display: block;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            background: transparent;
         }
-        .ow-nav-link:hover { color: var(--text); }
-        .ow-nav-link.active { color: var(--accent); }
+        .ow-nav-link:hover {
+            color: var(--text);
+            background: rgba(255,255,255,.035);
+            border-color: rgba(255,255,255,.06);
+            transform: translateX(2px);
+        }
+        .ow-nav-link.active {
+            color: #f7efdf;
+            background: linear-gradient(135deg, rgba(212,168,67,.14), rgba(200,82,42,.08));
+            border-color: rgba(212,168,67,.22);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+        }
 
         .ow-sidebar-sep {
             height: 1px;
             background: var(--border);
-            margin: 0 -20px;
+            margin: 2px 0;
         }
 
         .ow-sidebar-footer {
-            padding: 16px 20px;
+            padding: 18px 22px;
             border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -113,36 +142,44 @@
         }
         .ow-footer-user { flex: 1; min-width: 0; }
         .ow-footer-name {
-            font-size: .75rem;
-            font-weight: 500;
-            color: var(--text-muted);
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--text);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .ow-footer-role {
-            font-size: .6rem;
-            color: var(--accent);
-            margin-top: 1px;
+            font-size: .68rem;
+            color: var(--text-faint);
+            margin-top: 3px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
         }
         .ow-logout-btn {
-            background: none;
-            border: none;
-            color: var(--text-faint);
-            font-size: .8rem;
+            background: rgba(255,255,255,.03);
+            border: 1px solid rgba(255,255,255,.06);
+            color: var(--text-muted);
+            font-size: .9rem;
             cursor: pointer;
-            font-family: var(--mono);
-            padding: 2px 4px;
-            transition: color .12s;
+            font-family: var(--font-body);
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            transition: color .12s, border-color .12s, background .12s;
         }
-        .ow-logout-btn:hover { color: var(--red); }
+        .ow-logout-btn:hover {
+            color: var(--red);
+            border-color: rgba(248,113,113,.16);
+            background: rgba(248,113,113,.06);
+        }
 
         /* ════════════════════════════
            MAIN
         ════════════════════════════ */
         .ow-main {
             flex: 1;
-            margin-left: 200px;
+            margin-left: 240px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -159,21 +196,25 @@
             position: sticky;
             top: 0;
             z-index: 40;
-            background: var(--sidebar-bg);
+            background: rgba(26,26,26,.92);
+            backdrop-filter: blur(14px);
         }
         .ow-breadcrumb {
-            font-size: .72rem;
+            font-size: .8rem;
             color: var(--text-faint);
         }
-        .ow-breadcrumb span { color: var(--text-muted); }
+        .ow-breadcrumb span {
+            color: var(--text);
+            font-weight: 600;
+        }
         .ow-topbar-actions { display: flex; gap: 16px; align-items: center; }
         .ow-topbar-link {
-            font-size: .7rem;
-            color: var(--text-faint);
+            font-size: .76rem;
+            color: var(--text-muted);
             text-decoration: none;
             transition: color .12s;
         }
-        .ow-topbar-link:hover { color: var(--text-muted); }
+        .ow-topbar-link:hover { color: var(--text); }
 
         /* CONTENT */
         .ow-content {
@@ -254,7 +295,7 @@
             font-size: .65rem; font-weight: 500;
             border: 1px solid var(--border);
             background: transparent; color: var(--text-faint);
-            font-family: var(--mono);
+            font-family: var(--font-body);
             cursor: pointer;
             text-decoration: none;
             display: inline-flex; align-items: center; gap: 4px;
@@ -277,7 +318,7 @@
             width: 100%; background: var(--sidebar-bg);
             border: 1px solid var(--border); border-radius: 6px;
             padding: 9px 12px; color: var(--text);
-            font-family: var(--mono); font-size: .75rem;
+            font-family: var(--font-body); font-size: .85rem;
             outline: none; transition: border-color .15s;
         }
         .field input:focus, .field select:focus, .field textarea:focus {
@@ -285,14 +326,14 @@
         }
         .field textarea { resize: vertical; min-height: 80px; }
         .btn-save {
-            background: rgba(167,139,250,.12);
-            border: 1px solid rgba(167,139,250,.25);
+            background: rgba(212,168,67,.12);
+            border: 1px solid rgba(212,168,67,.25);
             color: var(--accent);
             padding: 8px 20px; border-radius: 6px;
-            font-family: var(--mono); font-size: .72rem; font-weight: 500;
+            font-family: var(--font-body); font-size: .78rem; font-weight: 600;
             cursor: pointer; transition: background .15s;
         }
-        .btn-save:hover { background: rgba(167,139,250,.20); }
+        .btn-save:hover { background: rgba(212,168,67,.20); }
 
         /* TOGGLE */
         .toggle-row {
@@ -315,7 +356,7 @@
             background: var(--text-faint); left: 3px; top: 50%;
             transform: translateY(-50%); transition: transform .2s, background .2s;
         }
-        .toggle-switch input:checked + .toggle-slider { background: rgba(167,139,250,.20); border-color: rgba(167,139,250,.35); }
+        .toggle-switch input:checked + .toggle-slider { background: rgba(212,168,67,.20); border-color: rgba(212,168,67,.35); }
         .toggle-switch input:checked + .toggle-slider::before { transform: translate(16px, -50%); background: var(--accent); }
 
         /* PAGINATION */
@@ -330,13 +371,13 @@
             color: var(--text-faint); text-decoration: none;
             transition: border-color .12s, color .12s;
         }
-        .pagination-wrap .pagination li.active span { border-color: rgba(167,139,250,.30); color: var(--accent); }
+        .pagination-wrap .pagination li.active span { border-color: rgba(212,168,67,.30); color: var(--accent); }
         .pagination-wrap .pagination li a:hover { border-color: rgba(255,255,255,.15); color: var(--text); }
 
         /* AVATAR MINI */
         .user-avi {
             width: 26px; height: 26px; border-radius: 5px;
-            background: rgba(167,139,250,.12); border: 1px solid rgba(167,139,250,.20);
+            background: rgba(212,168,67,.12); border: 1px solid rgba(212,168,67,.20);
             display: flex; align-items: center; justify-content: center;
             font-size: .65rem; font-weight: 600; color: var(--accent);
             flex-shrink: 0; overflow: hidden;
@@ -347,10 +388,10 @@
         .admin-search {
             background: var(--sidebar-bg); border: 1px solid var(--border);
             border-radius: 6px; padding: 7px 11px;
-            color: var(--text); font-family: var(--mono); font-size: .72rem;
+            color: var(--text); font-family: var(--font-body); font-size: .8rem;
             outline: none; transition: border-color .15s;
         }
-        .admin-search:focus { border-color: rgba(167,139,250,.35); }
+        .admin-search:focus { border-color: rgba(212,168,67,.35); }
 
         /* MOBILE */
         .ow-mob-toggle {
@@ -384,42 +425,43 @@
 <aside class="ow-sidebar">
     <div class="ow-sidebar-brand">
         <a href="{{ route('owner.dashboard') }}" class="ow-sidebar-logo">melanogeek</a>
-        <span class="ow-sidebar-role">// owner</span>
+        <span class="ow-sidebar-role">Direction</span>
     </div>
 
     <nav class="ow-sidebar-nav">
         <div class="ow-nav-group">
-            <div class="ow-nav-label">// owner</div>
-            <a href="{{ route('owner.dashboard') }}" class="ow-nav-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">overview</a>
-            <a href="{{ route('owner.staff') }}"     class="ow-nav-link {{ request()->routeIs('owner.staff') ? 'active' : '' }}">staff</a>
-            <a href="{{ route('owner.settings') }}"  class="ow-nav-link {{ request()->routeIs('owner.settings') ? 'active' : '' }}">settings</a>
-            <a href="{{ route('owner.logs') }}"      class="ow-nav-link {{ request()->routeIs('owner.logs') ? 'active' : '' }}">logs</a>
+            <div class="ow-nav-label">Pilotage</div>
+            <a href="{{ route('owner.dashboard') }}" class="ow-nav-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}">Vue d’ensemble</a>
+            <a href="{{ route('owner.staff') }}"     class="ow-nav-link {{ request()->routeIs('owner.staff') ? 'active' : '' }}">Équipe</a>
+            <a href="{{ route('owner.settings') }}"  class="ow-nav-link {{ request()->routeIs('owner.settings') ? 'active' : '' }}">Réglages</a>
+            <a href="{{ route('owner.logs') }}"      class="ow-nav-link {{ request()->routeIs('owner.logs') ? 'active' : '' }}">Journal</a>
         </div>
 
         <div class="ow-sidebar-sep"></div>
 
         <div class="ow-nav-group">
-            <div class="ow-nav-label">// moderation</div>
-            <a href="{{ route('admin.users') }}" class="ow-nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">users</a>
-            <a href="{{ route('admin.posts') }}" class="ow-nav-link {{ request()->routeIs('admin.posts*') ? 'active' : '' }}">posts</a>
-            <a href="{{ route('admin.dashboard') }}" class="ow-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">admin panel</a>
+            <div class="ow-nav-label">Administration</div>
+            <a href="{{ route('admin.users') }}" class="ow-nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">Utilisateurs</a>
+            <a href="{{ route('admin.posts') }}" class="ow-nav-link {{ request()->routeIs('admin.posts*') ? 'active' : '' }}">Publications</a>
+            <a href="{{ route('admin.dashboard') }}" class="ow-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard admin</a>
         </div>
 
         <div class="ow-sidebar-sep"></div>
 
         <div class="ow-nav-group">
-            <a href="{{ route('home') }}" class="ow-nav-link" target="_blank">↗ view site</a>
+            <div class="ow-nav-label">Accès rapide</div>
+            <a href="{{ route('home') }}" class="ow-nav-link" target="_blank">↗ Voir le site</a>
         </div>
     </nav>
 
     <div class="ow-sidebar-footer">
         <div class="ow-footer-user">
             <div class="ow-footer-name">{{ auth()->user()->username ?? auth()->user()->name }}</div>
-            <div class="ow-footer-role">owner</div>
+            <div class="ow-footer-role">Propriétaire</div>
         </div>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="ow-logout-btn" title="Logout">⏻</button>
+            <button type="submit" class="ow-logout-btn" title="Déconnexion">⏻</button>
         </form>
     </div>
 </aside>
@@ -428,9 +470,9 @@
 <div class="ow-main">
     <div class="ow-topbar">
         <button class="ow-mob-toggle" id="owMobToggle">☰</button>
-        <div class="ow-breadcrumb">melanogeek / owner / <span>@yield('page-title', 'overview')</span></div>
+        <div class="ow-breadcrumb">MelanoGeek / Direction / <span>@yield('page-title', 'Vue d’ensemble')</span></div>
         <div class="ow-topbar-actions">
-            <a href="{{ route('home') }}" class="ow-topbar-link" target="_blank">↗ site</a>
+            <a href="{{ route('home') }}" class="ow-topbar-link" target="_blank">↗ Ouvrir le site</a>
         </div>
     </div>
 

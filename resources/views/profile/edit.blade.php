@@ -288,13 +288,12 @@
         display: flex; align-items: center; gap: 8px;
         background: rgba(45,90,61,.12);
         border: 1px solid rgba(45,90,61,.25);
-        color: #3D8A58;
+        color: #6DC48A;
         padding: 10px 16px;
         border-radius: 12px;
         font-size: .84rem;
         font-weight: 500;
     }
-    [data-theme="dark"] .status-saved { color: #6DC48A; }
 
     /* Danger zone */
     .danger-zone {
@@ -434,7 +433,7 @@
                             value="{{ old('email', auth()->user()->email) }}" required>
                         @error('email')<div class="form-error">⚠ {{ $message }}</div>@enderror
                         @if(auth()->user()->email_verified_at)
-                            <div class="form-hint" style="color:#3D8A58;">✓ Email vérifié</div>
+                            <div class="form-hint" style="color:#6DC48A;">✓ Email vérifié</div>
                         @else
                             <div class="form-hint" style="color:#E09020;">⚠ Email non vérifié</div>
                         @endif

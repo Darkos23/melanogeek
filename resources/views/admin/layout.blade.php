@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin') — MelanoGeek {{ auth()->user()?->isOwner() ? 'Owner' : 'Admin' }}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <script>(function(){ document.documentElement.setAttribute('data-theme', localStorage.getItem('mg-theme') || 'dark'); })();</script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Variables */
-        [data-theme="dark"]  { --bg:#0A0705;--bg-card:#111009;--bg-card2:#181210;--bg-hover:#1E1810;--text:#F0E8DE;--text-muted:rgba(240,232,222,.55);--text-faint:rgba(240,232,222,.25);--border:rgba(255,255,255,.07);--border-hover:rgba(255,255,255,.14);--nav-bg:rgba(10,7,5,.9);--shadow-md:0 8px 32px rgba(0,0,0,.5); }
-        [data-theme="light"] { --bg:#F7F3EE;--bg-card:#FFF;--bg-card2:#EDE8E0;--bg-hover:#F0EAE2;--text:#1C1208;--text-muted:rgba(28,18,8,.52);--text-faint:rgba(28,18,8,.22);--border:rgba(28,18,8,.09);--border-hover:rgba(28,18,8,.18);--nav-bg:rgba(247,243,238,.95);--shadow-md:0 8px 32px rgba(0,0,0,.08); }
-        :root { --terra:#C8522A;--terra-soft:rgba(200,82,42,.12);--gold:#D4A843;--gold-soft:rgba(212,168,67,.12);--accent:#E8732A;--font-head:'Plus Jakarta Sans',sans-serif;--font-body:'Outfit',sans-serif; }
+        :root { --bg:#1a1a1a;--bg-card:#1f1f1f;--bg-card2:#242424;--bg-hover:#2a2a2a;--text:#F0E8DE;--text-muted:rgba(240,232,222,.55);--text-faint:rgba(240,232,222,.25);--border:rgba(255,255,255,.07);--border-hover:rgba(255,255,255,.14);--nav-bg:rgba(26,26,26,.9);--shadow-md:0 8px 32px rgba(0,0,0,.5); }
+        :root { --terra:#C8522A;--terra-soft:rgba(200,82,42,.12);--gold:#D4A843;--gold-soft:rgba(212,168,67,.12);--accent:#D4A843;--font-head:'Plus Jakarta Sans',sans-serif;--font-body:'Outfit',sans-serif; }
         *,*::before,*::after { margin:0;padding:0;box-sizing:border-box; }
         body { background:var(--bg);color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased;display:flex;min-height:100vh; }
 
@@ -24,6 +22,7 @@
             border-right: 1px solid var(--border);
             display: flex; flex-direction: column;
             position: fixed; top:0; left:0; bottom:0;
+            overflow: hidden;
             z-index: 50;
             transition: background .4s, border-color .4s;
         }
@@ -42,7 +41,12 @@
             background: var(--terra); color: white;
             padding: 2px 7px; border-radius: 100px;
         }
-        .sidebar-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
+        .sidebar-nav {
+            flex: 1;
+            min-height: 0;
+            padding: 12px 10px;
+            overflow: hidden;
+        }
         .sidebar-section { font-size: .65rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); padding: 12px 10px 6px; }
         .sidebar-link {
             display: flex; align-items: center; gap: 10px;
@@ -98,9 +102,8 @@
             font-size: .84rem; font-weight: 500;
             display: flex; align-items: center; gap: 8px;
         }
-        .admin-flash.success { background:rgba(45,90,61,.12);border:1px solid rgba(45,90,61,.25);color:#3D8A58; }
+        .admin-flash.success { background:rgba(45,90,61,.12);border:1px solid rgba(45,90,61,.25);color:#6DC48A; }
         .admin-flash.error   { background:rgba(200,82,42,.1);border:1px solid rgba(200,82,42,.25);color:var(--terra); }
-        [data-theme="dark"] .admin-flash.success { color:#6DC48A; }
 
         /* ── CARDS STAT ── */
         .stat-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px; }
@@ -123,26 +126,60 @@
 
         /* ── BADGES ── */
         .badge { display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:.7rem;font-weight:700;letter-spacing:.03em; }
-        .badge-green  { background:rgba(45,90,61,.12);color:#3D8A58;border:1px solid rgba(45,90,61,.2); }
+        .badge-green  { background:rgba(45,90,61,.12);color:#6DC48A;border:1px solid rgba(45,90,61,.2); }
         .badge-red    { background:rgba(224,85,85,.1);color:#E05555;border:1px solid rgba(224,85,85,.2); }
         .badge-gold   { background:var(--gold-soft);color:var(--gold);border:1px solid rgba(212,168,67,.25); }
         .badge-terra  { background:var(--terra-soft);color:var(--terra);border:1px solid rgba(200,82,42,.2); }
         .badge-gray   { background:var(--bg-card2);color:var(--text-muted);border:1px solid var(--border); }
-        [data-theme="dark"] .badge-green { color:#6DC48A; }
 
         /* ── ACTIONS ── */
-        .action-row { display:flex;gap:6px;align-items:center; }
+        .action-row { display:flex;gap:8px;align-items:center;flex-wrap:nowrap; }
         .btn-action {
-            padding:5px 12px;border-radius:8px;font-size:.75rem;font-weight:600;
-            border:1px solid var(--border);background:transparent;color:var(--text-muted);
-            transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:4px;
+            min-height: 44px;
+            padding: 0 16px;
+            border-radius: 12px;
+            font-size: .82rem;
+            font-weight: 700;
+            border: 1px solid rgba(240,232,222,.1);
+            background: rgba(255,255,255,.02);
+            color: rgba(240,232,222,.76);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+            transition: all .2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: var(--font-body);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
-        .btn-action:hover { border-color:var(--border-hover);color:var(--text); }
-        .btn-action.danger { border-color:rgba(224,85,85,.3);color:#E05555; }
-        .btn-action.danger:hover { background:rgba(224,85,85,.08);border-color:#E05555; }
-        .btn-action.success { border-color:rgba(45,90,61,.3);color:#3D8A58; }
-        .btn-action.success:hover { background:rgba(45,90,61,.08); }
-        [data-theme="dark"] .btn-action.success { color:#6DC48A; }
+        .btn-action:hover {
+            border-color: rgba(240,232,222,.2);
+            background: rgba(255,255,255,.035);
+            color: var(--text);
+            transform: translateY(-1px);
+        }
+        .btn-action.danger {
+            border-color: rgba(224,85,85,.4);
+            background: rgba(224,85,85,.03);
+            color: #ff5f5f;
+        }
+        .btn-action.danger:hover {
+            background: rgba(224,85,85,.08);
+            border-color: rgba(255,95,95,.65);
+            color: #ff6a6a;
+        }
+        .btn-action.success {
+            border-color: rgba(212,168,67,.26);
+            background: rgba(212,168,67,.05);
+            color: #e7c36b;
+        }
+        .btn-action.success:hover {
+            background: rgba(212,168,67,.1);
+            border-color: rgba(212,168,67,.45);
+            color: #f1d38c;
+        }
 
         /* ── SEARCH ── */
         .admin-search { background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--text);font-family:var(--font-body);font-size:.84rem;outline:none;transition:border-color .2s; }
@@ -335,7 +372,6 @@
             <button class="admin-mob-toggle" id="adminMobToggle" aria-label="Ouvrir le menu">☰</button>
             <div class="admin-page-title">@yield('page-title', 'Dashboard')</div>
             <div class="admin-topbar-right">
-                <button id="adminThemeBtn" style="background:transparent;border:1px solid var(--border);color:var(--text-muted);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;" title="Changer le thème">🌙</button>
                 <a href="{{ route('home') }}" class="topbar-btn">← Site</a>
             </div>
         </div>
@@ -353,25 +389,6 @@
     </div>
 
     <script>
-        // Theme (sync avec le site principal)
-        const html = document.documentElement;
-        const saved = localStorage.getItem('mg-theme') || 'dark';
-        html.setAttribute('data-theme', saved);
-
-        /* ── Theme toggle ── */
-        (function () {
-            const btn = document.getElementById('adminThemeBtn');
-            if (!btn) return;
-            btn.textContent = saved === 'dark' ? '☀️' : '🌙';
-            btn.addEventListener('click', function () {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('mg-theme', next);
-                btn.textContent = next === 'dark' ? '☀️' : '🌙';
-            });
-        })();
-
         /* ── Sidebar mobile ── */
         (function () {
             const toggle  = document.getElementById('adminMobToggle');

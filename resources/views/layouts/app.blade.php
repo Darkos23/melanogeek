@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -17,17 +17,12 @@
     <!-- Fonts : chargement dynamique selon le thème actif -->
     <script>
     (function(){
-        var t = 'dark';
-        try { localStorage.setItem('mg-theme', 'dark'); } catch(e) {}
         var f = 'family=DM+Serif+Display&family=Unbounded:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600';
-        if (t === 'light')    f += '&family=Sora:wght@300;400;500;600';
-        if (t === 'hogwarts') f += '&family=Cinzel:wght@400;600;700;800';
         var pc1 = document.createElement('link'); pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
         var pc2 = document.createElement('link'); pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com'; pc2.crossOrigin = 'anonymous';
         var lk  = document.createElement('link'); lk.rel = 'stylesheet';
         lk.href = 'https://fonts.googleapis.com/css2?' + f + '&display=swap';
         document.head.append(pc1, pc2, lk);
-        window._mgFontLoaded = t;
     })();
     </script>
 
@@ -37,7 +32,7 @@
     ═══════════════════════════════════════════════ */
 
     /* ── Sombre (défaut) ── */
-    :root, [data-theme="dark"] {
+    :root {
         --bg:           #1a1a1a;
         --bg-card:      #1f1f1f;
         --bg-card2:     #242424;
@@ -64,68 +59,6 @@
         --shadow-sm:    0 4px 12px rgba(0,0,0,0.40);
         --shadow-md:    0 8px 24px rgba(0,0,0,0.50);
         --shadow-lg:    0 16px 48px rgba(0,0,0,0.65);
-        --grain:        1;
-    }
-
-    /* ── Clair / v4 Terracotta Africain ── */
-    [data-theme="light"] {
-        --bg:           #F5EDD6;
-        --bg-card:      #FBF5E6;
-        --bg-card2:     #EDE0C0;
-        --bg-hover:     #E8D9B0;
-        --text:         #1E0E04;
-        --cream:        #1E0E04;
-        --text-muted:   rgba(30,14,4,0.55);
-        --cream-muted:  rgba(30,14,4,0.55);
-        --text-faint:   rgba(30,14,4,0.18);
-        --muted:        rgba(30,14,4,0.35);
-        --border:       rgba(30,14,4,0.12);
-        --border-hover: rgba(30,14,4,0.25);
-        --nav-bg:       rgba(245,237,214,0.90);
-        --toggle-bg:    #EDE0C0;
-        --terra:        #C84818;
-        --terracotta:   #C84818;
-        --terra-soft:   rgba(200,72,24,0.10);
-        --gold:         #B87820;
-        --gold-soft:    rgba(184,120,32,0.10);
-        --accent:       #E85A1A;
-        --green:        #1A5A30;
-        --font-head:    'Bricolage Grotesque', sans-serif;
-        --font-body:    'Sora', sans-serif;
-        --shadow-sm:    0 4px 12px rgba(30,14,4,0.08);
-        --shadow-md:    0 8px 24px rgba(30,14,4,0.12);
-        --shadow-lg:    0 16px 48px rgba(30,14,4,0.20);
-        --grain:        0;
-    }
-
-    /* ── Hogwarts ── */
-    [data-theme="hogwarts"] {
-        --bg:           #05040F;
-        --bg-card:      #0D0B1E;
-        --bg-card2:     #130F2A;
-        --bg-hover:     #1C1640;
-        --text:         #EFE5C8;
-        --cream:        #EFE5C8;
-        --text-muted:   rgba(239,229,200,0.55);
-        --cream-muted:  rgba(239,229,200,0.55);
-        --text-faint:   rgba(239,229,200,0.18);
-        --muted:        rgba(239,229,200,0.35);
-        --border:       rgba(180,148,60,0.14);
-        --border-hover: rgba(180,148,60,0.30);
-        --nav-bg:       rgba(5,4,15,0.92);
-        --toggle-bg:    rgba(180,148,60,0.10);
-        --terra:        #9B5FD1;
-        --terracotta:   #9B5FD1;
-        --terra-soft:   rgba(123,63,190,0.15);
-        --gold:         #D4AF37;
-        --gold-soft:    rgba(212,175,55,0.12);
-        --accent:       #B87AE8;
-        --green:        #2A7A48;
-        --font-head:    'Bricolage Grotesque', sans-serif;
-        --font-body:    'Outfit', sans-serif;
-        --shadow-sm:    0 4px 12px rgba(0,0,0,0.55);
-        --shadow-md:    0 8px 24px rgba(0,0,0,0.70);
-        --shadow-lg:    0 16px 48px rgba(0,0,0,0.85);
         --grain:        1;
     }
 
@@ -224,77 +157,6 @@
     .mg-btn-solid { background:rgba(255,255,255,.90);color:rgba(0,0,0,.90);border:1px solid transparent;padding:0 14px;height:36px;display:inline-flex;align-items:center;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:.8125rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:background .2s;text-decoration:none; }
     .mg-btn-solid:hover { background:#fff; }
 
-    /* Bouton thème */
-    .theme-toggle {
-        width:36px;height:36px;border-radius:50%;
-        background: var(--toggle-bg);
-        border: 1px solid var(--border);
-        color: var(--text-muted);
-        font-size:.95rem;
-        display:flex;align-items:center;justify-content:center;
-        cursor:pointer;transition:all .2s;flex-shrink:0;
-    }
-    .theme-toggle:hover { border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.9);background:rgba(255,255,255,.06); }
-
-    /* Hogwarts — logo reste terracotta, nav gold hover */
-    [data-theme="hogwarts"] .mg-logo-hex        { background: #C8522A !important; }
-    [data-theme="hogwarts"] .mg-logo-name span  { color: #C8522A !important; }
-    [data-theme="hogwarts"] .mg-links a:hover   { color: var(--gold); }
-    [data-theme="hogwarts"] .mg-btn-ghost:hover { border-color:var(--gold);color:var(--gold); }
-
-    /* Hogwarts — fond magique : étoiles ✦ éclairs ⚡ lunes 🌙 hiboux 🦉 baguettes */
-    [data-theme="hogwarts"] body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='18' cy='22' r='1.2' fill='%23D4AF37' opacity='0.55'/%3E%3Ccircle cx='73' cy='58' r='0.8' fill='%23EFE5C8' opacity='0.4'/%3E%3Ccircle cx='142' cy='18' r='1' fill='%23EFE5C8' opacity='0.5'/%3E%3Ccircle cx='195' cy='77' r='1.3' fill='%23D4AF37' opacity='0.4'/%3E%3Ccircle cx='230' cy='30' r='0.9' fill='%23EFE5C8' opacity='0.35'/%3E%3Ccircle cx='310' cy='52' r='1.1' fill='%23D4AF37' opacity='0.45'/%3E%3Ccircle cx='360' cy='20' r='0.8' fill='%23EFE5C8' opacity='0.4'/%3E%3Ccircle cx='45' cy='160' r='0.9' fill='%23D4AF37' opacity='0.3'/%3E%3Ccircle cx='115' cy='195' r='1.2' fill='%23EFE5C8' opacity='0.4'/%3E%3Ccircle cx='270' cy='140' r='1' fill='%23D4AF37' opacity='0.35'/%3E%3Ccircle cx='380' cy='175' r='0.8' fill='%23EFE5C8' opacity='0.4'/%3E%3Ccircle cx='60' cy='290' r='1.1' fill='%23D4AF37' opacity='0.45'/%3E%3Ccircle cx='175' cy='310' r='0.9' fill='%23EFE5C8' opacity='0.35'/%3E%3Ccircle cx='320' cy='260' r='1.2' fill='%23D4AF37' opacity='0.4'/%3E%3Ccircle cx='390' cy='320' r='0.8' fill='%23EFE5C8' opacity='0.3'/%3E%3Ccircle cx='130' cy='370' r='1' fill='%23D4AF37' opacity='0.4'/%3E%3Ccircle cx='250' cy='385' r='0.9' fill='%23EFE5C8' opacity='0.35'/%3E%3Cpath d='M55,87 L56.8,92.2 L62,94 L56.8,95.8 L55,101 L53.2,95.8 L48,94 L53.2,92.2Z' fill='%23D4AF37' opacity='0.25'/%3E%3Cpath d='M180,37 L181.8,42.2 L187,44 L181.8,45.8 L180,51 L178.2,45.8 L173,44 L178.2,42.2Z' fill='%23EFE5C8' opacity='0.2'/%3E%3Cpath d='M295,107 L297.2,113.2 L303,115 L297.2,116.8 L295,123 L292.8,116.8 L287,115 L292.8,113.2Z' fill='%23D4AF37' opacity='0.22'/%3E%3Cpath d='M88,242 L89.8,247.2 L95,249 L89.8,250.8 L88,256 L86.2,250.8 L81,249 L86.2,247.2Z' fill='%23EFE5C8' opacity='0.2'/%3E%3Cpath d='M350,192 L352,198 L358,200 L352,202 L350,208 L348,202 L342,200 L348,198Z' fill='%23D4AF37' opacity='0.22'/%3E%3Cpath d='M220,322 L222,328 L228,330 L222,332 L220,338 L218,332 L212,330 L218,328Z' fill='%23EFE5C8' opacity='0.18'/%3E%3Cpath d='M345,58 L339,72 L343,72 L337,86 L353,68 L348,68Z' fill='%239B5FD1' opacity='0.18'/%3E%3Cpath d='M123,130 L118,141 L121.5,141 L116,152 L129,137 L125,137Z' fill='%23B87AE8' opacity='0.15'/%3E%3Cpath d='M273,310 L268,321 L271.5,321 L266,332 L279,317 L275,317Z' fill='%239B5FD1' opacity='0.15'/%3E%3Cpath d='M168,157 Q180,167 168,177 Q188,175 188,167 Q188,159 168,157Z' fill='%23D4AF37' opacity='0.17'/%3E%3Cpath d='M368,298 Q378,307 368,316 Q386,314 386,307 Q386,300 368,298Z' fill='%23EFE5C8' opacity='0.14'/%3E%3Cellipse cx='30' cy='342' rx='9' ry='12' fill='%23EFE5C8' opacity='0.1'/%3E%3Cpath d='M24,330 L21,324 M36,330 L39,324' stroke='%23EFE5C8' stroke-width='1.8' stroke-linecap='round' opacity='0.12'/%3E%3Ccircle cx='27' cy='338' r='2.5' fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.18'/%3E%3Ccircle cx='33' cy='338' r='2.5' fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.18'/%3E%3Cellipse cx='335' cy='167' rx='9' ry='12' fill='%23EFE5C8' opacity='0.08'/%3E%3Cpath d='M329,155 L326,149 M341,155 L344,149' stroke='%23EFE5C8' stroke-width='1.8' stroke-linecap='round' opacity='0.1'/%3E%3Ccircle cx='332' cy='163' r='2.5' fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.15'/%3E%3Ccircle cx='338' cy='163' r='2.5' fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.15'/%3E%3Cline x1='192' y1='228' x2='208' y2='212' stroke='%23EFE5C8' stroke-width='1.5' stroke-linecap='round' opacity='0.15'/%3E%3Ccircle cx='208' cy='212' r='2' fill='%23D4AF37' opacity='0.25'/%3E%3Ccircle cx='208' cy='212' r='4' fill='none' stroke='%23D4AF37' stroke-width='0.5' opacity='0.18'/%3E%3Cline x1='62' y1='73' x2='78' y2='57' stroke='%23EFE5C8' stroke-width='1.5' stroke-linecap='round' opacity='0.12'/%3E%3Ccircle cx='78' cy='57' r='2' fill='%23D4AF37' opacity='0.2'/%3E%3Cline x1='373' y1='387' x2='387' y2='373' stroke='%23EFE5C8' stroke-width='1.5' stroke-linecap='round' opacity='0.13'/%3E%3Ccircle cx='387' cy='373' r='2' fill='%23D4AF37' opacity='0.22'/%3E%3Cline x1='18' y1='22' x2='55' y2='95' stroke='%23D4AF37' stroke-width='0.4' opacity='0.08'/%3E%3Cline x1='55' y1='95' x2='73' y2='58' stroke='%23D4AF37' stroke-width='0.4' opacity='0.08'/%3E%3Cline x1='295' y1='115' x2='310' y2='52' stroke='%23EFE5C8' stroke-width='0.4' opacity='0.07'/%3E%3Cline x1='310' y1='52' x2='360' y2='20' stroke='%23EFE5C8' stroke-width='0.4' opacity='0.07'/%3E%3Cline x1='88' y1='250' x2='60' y2='290' stroke='%23D4AF37' stroke-width='0.4' opacity='0.07'/%3E%3C/svg%3E");
-        background-size: 400px 400px;
-        animation: hog-twinkle 10s ease-in-out infinite alternate;
-    }
-
-    /* Hogwarts — lueurs nébuleuses violettes et dorées */
-    [data-theme="hogwarts"] body::after {
-        content: '';
-        position: fixed;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background:
-            radial-gradient(ellipse at 15% 25%, rgba(123,63,190,0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 85% 75%, rgba(212,175,55,0.06) 0%, transparent 50%),
-            radial-gradient(ellipse at 62% 10%, rgba(184,122,232,0.05) 0%, transparent 38%),
-            radial-gradient(ellipse at 30% 80%, rgba(155,95,209,0.05) 0%, transparent 40%);
-        animation: hog-nebula 18s ease-in-out infinite alternate;
-    }
-
-    @keyframes hog-twinkle {
-        0%   { opacity: 0.55; }
-        55%  { opacity: 1; }
-        100% { opacity: 0.65; }
-    }
-
-    @keyframes hog-nebula {
-        0%   { opacity: 0.45; }
-        100% { opacity: 1; }
-    }
-
-    /* Fond kente — mode light uniquement, sur tout le site */
-    [data-theme="light"] body::before {
-        content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C84818' stroke-width='0.6' opacity='0.08'%3E%3Crect x='10' y='10' width='20' height='20'/%3E%3Crect x='50' y='10' width='20' height='20'/%3E%3Crect x='10' y='50' width='20' height='20'/%3E%3Crect x='50' y='50' width='20' height='20'/%3E%3Cline x1='0' y1='40' x2='80' y2='40'/%3E%3Cline x1='40' y1='0' x2='40' y2='80'/%3E%3Cpath d='M10 10 L30 30 M50 10 L70 30 M10 50 L30 70 M50 50 L70 70'/%3E%3C/g%3E%3C/svg%3E");
-        background-size: 80px 80px;
-    }
-
-    /* Supprimer le kente terracotta sur la page d'accueil en mode Hogwarts */
-    [data-theme="hogwarts"] .home-page::before { display: none; }
-
-    @media (prefers-reduced-motion: reduce) {
-        [data-theme="hogwarts"] body::before,
-        [data-theme="hogwarts"] body::after { animation: none !important; }
-    }
-
     /* ═══════════════════════════════════════════════
        HAMBURGER
     ═══════════════════════════════════════════════ */
@@ -391,7 +253,6 @@
         /* Logo : réduire légèrement le nom */
         .mg-logo-name { font-size: .8rem; }
         /* Theme toggle : visible sur mobile (la place libérée par le bouton message) */
-        .theme-toggle { display: flex !important; min-height: unset; width: 36px; height: 36px; }
         /* Réduire le gap entre icônes */
         .mg-right { gap: 4px; }
         /* Corriger les boutons ronds : annuler le min-height: 44px global */
@@ -833,38 +694,6 @@
         });
     })();
 
-    /* ── Thème ── */
-    const THEMES = ['light', 'hogwarts'];
-    const ICONS  = { light: '☀️', hogwarts: '🌙' };
-
-    function applyTheme(t) {
-        document.documentElement.setAttribute('data-theme', t);
-        localStorage.setItem('mg-theme', t);
-        const btn = document.getElementById('themeToggle');
-        if (btn) btn.textContent = ICONS[t] || '☀️';
-        /* Charger les fonts si ce thème ne l'a pas encore fait */
-        if (window._mgFontLoaded !== t) {
-            window._mgFontLoaded = t;
-            var f = 'family=Inter:wght@300;400;500;600;700&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600';
-            if (t === 'hogwarts') f += '&family=Cinzel:wght@400;600;700;800';
-            var lk = document.createElement('link'); lk.rel = 'stylesheet';
-            lk.href = 'https://fonts.googleapis.com/css2?' + f + '&display=swap';
-            document.head.appendChild(lk);
-        }
-    }
-
-    /* Initialisation — thème dark forcé partout */
-    applyTheme('dark');
-
-    /* Cycle au clic : clair ↔ hogwarts */
-    const toggleBtn = document.getElementById('themeToggle');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            const cur  = document.documentElement.getAttribute('data-theme') || 'light';
-            const next = THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length];
-            applyTheme(next);
-        });
-    }
 
     /* ── Dropdown Notifications ── */
     @auth

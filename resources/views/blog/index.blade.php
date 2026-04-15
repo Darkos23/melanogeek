@@ -14,7 +14,7 @@
         Culture geek,<br><span style="color:var(--gold)">vue d'Afrique.</span>
     </h1>
     <p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.65;max-width:460px;font-family:'Inter',sans-serif">
-        Articles, reviews, analyses et coups de cœur autour du manga, gaming, tech et de la culture nerd africaine.
+        Articles, reviews, analyses et coups de cœur autour du manga, du gaming, du développement, de la tech et de la culture nerd africaine.
     </p>
 </div>
 
@@ -26,6 +26,7 @@
         'manga-anime'    => 'Manga',
         'gaming'         => 'Gaming',
         'tech'           => 'Tech & IA',
+        'dev'            => 'Développement',
         'cinema-series'  => 'Cinéma',
         'culture'        => 'Culture',
         'debat'          => 'Débat',

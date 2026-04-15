@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Studio') — MelanoGeek</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <script>(function(){ document.documentElement.setAttribute('data-theme', localStorage.getItem('mg-theme') || 'dark'); })();</script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* ══ VARIABLES THÈME ELFIQUE ══ */
-        [data-theme="dark"] {
+        :root {
             --bg:#070C09;
             --bg-card:#0D1610;
             --bg-card2:#142015;
@@ -22,18 +21,6 @@
             --border:rgba(255,255,255,.06);
             --border-hover:rgba(255,255,255,.14);
             --shadow-md:0 8px 32px rgba(0,0,0,.60);
-        }
-        [data-theme="light"] {
-            --bg:#F7F4EB;
-            --bg-card:#FFFDF5;
-            --bg-card2:#F0E9D6;
-            --bg-hover:#E4DAC2;
-            --text:#1C1A0D;
-            --text-muted:rgba(28,26,13,.52);
-            --text-faint:rgba(28,26,13,.22);
-            --border:rgba(28,26,13,.09);
-            --border-hover:rgba(28,26,13,.18);
-            --shadow-md:0 8px 32px rgba(0,0,0,.08);
         }
         :root {
             --cm:#C4A254;
@@ -56,17 +43,12 @@
         /* ══ FOND ELFIQUE — losange imbriqué SVG ══ */
         body {
             background-color:var(--bg);
+            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 0L48 24L24 48L0 24Z' fill='none' stroke='%23C4A254' stroke-width='1' stroke-opacity='.13'/%3E%3Cpath d='M24 10L38 24L24 38L10 24Z' fill='none' stroke='%23C4A254' stroke-width='.6' stroke-opacity='.07'/%3E%3Ccircle cx='24' cy='24' r='2' fill='%23C4A254' fill-opacity='.10'/%3E%3C/svg%3E");
             background-size:48px 48px;
             color:var(--text);
             font-family:var(--font-body);
             -webkit-font-smoothing:antialiased;
             display:flex;min-height:100vh;
-        }
-        html[data-theme="dark"] body {
-            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 0L48 24L24 48L0 24Z' fill='none' stroke='%23C4A254' stroke-width='1' stroke-opacity='.13'/%3E%3Cpath d='M24 10L38 24L24 38L10 24Z' fill='none' stroke='%23C4A254' stroke-width='.6' stroke-opacity='.07'/%3E%3Ccircle cx='24' cy='24' r='2' fill='%23C4A254' fill-opacity='.10'/%3E%3C/svg%3E");
-        }
-        html[data-theme="light"] body {
-            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 0L48 24L24 48L0 24Z' fill='none' stroke='%23C4A254' stroke-width='1' stroke-opacity='.22'/%3E%3Cpath d='M24 10L38 24L24 38L10 24Z' fill='none' stroke='%23C4A254' stroke-width='.6' stroke-opacity='.13'/%3E%3Ccircle cx='24' cy='24' r='2' fill='%23C4A254' fill-opacity='.18'/%3E%3C/svg%3E");
         }
 
         /* ══ SIDEBAR ══ */
@@ -195,7 +177,6 @@
             backdrop-filter:blur(16px);
             -webkit-backdrop-filter:blur(16px);
         }
-        [data-theme="light"] .cm-topbar { background:rgba(255,253,245,.85); }
 
         .cm-page-title{font-family:var(--font-elvish);font-size:.95rem;font-weight:600;letter-spacing:.03em;}
         .cm-topbar-right{display:flex;gap:10px;align-items:center;}
@@ -414,9 +395,6 @@
             <button class="cm-mob-toggle" id="cmMobToggle" aria-label="Menu">☰</button>
             <div class="cm-page-title">@yield('page-title', 'Tableau de bord')</div>
             <div class="cm-topbar-right">
-                <button id="cmThemeBtn"
-                    style="background:transparent;border:1px solid var(--border);color:var(--text-muted);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;"
-                    title="Thème">🌙</button>
                 <a href="{{ route('home') }}" class="topbar-btn">← Site</a>
             </div>
         </div>
@@ -436,22 +414,6 @@
     </div>
 
     <script>
-        const html  = document.documentElement;
-        const saved = localStorage.getItem('mg-theme') || 'dark';
-        html.setAttribute('data-theme', saved);
-
-        (function () {
-            const btn = document.getElementById('cmThemeBtn');
-            if (!btn) return;
-            btn.textContent = saved === 'dark' ? '☀️' : '🌙';
-            btn.addEventListener('click', function () {
-                const current = document.documentElement.getAttribute('data-theme');
-                const next    = current === 'dark' ? 'light' : 'dark';
-                document.documentElement.setAttribute('data-theme', next);
-                localStorage.setItem('mg-theme', next);
-                btn.textContent = next === 'dark' ? '☀️' : '🌙';
-            });
-        })();
 
         (function () {
             const toggle  = document.getElementById('cmMobToggle');

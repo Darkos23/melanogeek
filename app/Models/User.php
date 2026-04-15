@@ -46,6 +46,13 @@ class User extends Authenticatable
         'is_private',
         'role',
         'status',
+        'creator_category',
+        'creator_bio',
+        'creator_socials',
+        'rejection_reason',
+        'approved_at',
+        'plan',
+        'plan_expires_at',
     ];
 
     // ── Colonnes cachées ──
@@ -63,6 +70,9 @@ class User extends Authenticatable
             'is_verified'       => 'boolean',
             'is_active'         => 'boolean',
             'is_private'        => 'boolean',
+            'creator_socials'   => 'array',
+            'approved_at'       => 'datetime',
+            'plan_expires_at'   => 'datetime',
         ];
     }
 
@@ -93,6 +103,11 @@ class User extends Authenticatable
     public function pushSubscriptions()
     {
         return $this->hasMany(PushSubscription::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
     }
 
     // Abonnés (ceux qui me suivent)

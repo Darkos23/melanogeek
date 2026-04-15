@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -12,21 +12,18 @@
     {{-- Fonts --}}
     <script>
     (function(){
-        var t = localStorage.getItem('mg-theme') || 'dark';
         var f = 'family=DM+Serif+Display&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600';
-        if (t === 'light') f += '&family=Sora:wght@300;400;500;600';
         var pc1 = document.createElement('link'); pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
         var pc2 = document.createElement('link'); pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com'; pc2.crossOrigin = 'anonymous';
         var lk  = document.createElement('link'); lk.rel = 'stylesheet';
         lk.href = 'https://fonts.googleapis.com/css2?' + f + '&display=swap';
         document.head.append(pc1, pc2, lk);
-        document.documentElement.setAttribute('data-theme', t);
     })();
     </script>
 
     <style>
     /* ═══ VARIABLES (reprise de app.blade.php) ═══ */
-    :root, [data-theme="dark"] {
+    :root {
         --bg: #1a1a1a; --bg-card: #1f1f1f; --bg-card2: #242424; --bg-hover: #2a2a2a;
         --text: #F0E8D8; --text-muted: rgba(240,232,216,0.55); --text-faint: rgba(240,232,216,0.18);
         --border: rgba(240,232,216,0.10); --border-hover: rgba(240,232,216,0.22);
@@ -36,17 +33,6 @@
         --accent: #E06030; --green: #2A7A48;
         --font-head: 'Bricolage Grotesque', sans-serif; --font-body: 'Outfit', sans-serif;
         --shadow-sm: 0 4px 12px rgba(0,0,0,0.40); --shadow-md: 0 8px 24px rgba(0,0,0,0.50);
-    }
-    [data-theme="light"] {
-        --bg: #F5EDD6; --bg-card: #FBF5E6; --bg-card2: #EDE0C0; --bg-hover: #E8D9B0;
-        --text: #1E0E04; --text-muted: rgba(30,14,4,0.55); --text-faint: rgba(30,14,4,0.18);
-        --border: rgba(30,14,4,0.12); --border-hover: rgba(30,14,4,0.25);
-        --nav-bg: rgba(245,237,214,0.90); --toggle-bg: #EDE0C0;
-        --terra: #C84818; --terra-soft: rgba(200,72,24,0.10);
-        --gold: #B87820; --gold-soft: rgba(184,120,32,0.10);
-        --accent: #E85A1A; --green: #1A5A30;
-        --font-head: 'Bricolage Grotesque', sans-serif; --font-body: 'Sora', sans-serif;
-        --shadow-sm: 0 4px 12px rgba(30,14,4,0.08); --shadow-md: 0 8px 24px rgba(30,14,4,0.12);
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -112,16 +98,6 @@
         transition: background .15s;
     }
     .blog-nav-btn:hover { background: #fff; }
-
-    /* Theme toggle */
-    .blog-theme-toggle {
-        width: 32px; height: 32px; border-radius: 50%;
-        background: var(--toggle-bg); border: 1px solid var(--border);
-        color: var(--text-muted); font-size: .88rem;
-        display: flex; align-items: center; justify-content: center;
-        cursor: pointer; transition: all .2s;
-    }
-    .blog-theme-toggle:hover { border-color: rgba(255,255,255,.3); color: rgba(255,255,255,.9); background: rgba(255,255,255,.06); }
 
     /* Hamburger */
     .blog-hamburger {
@@ -285,10 +261,6 @@
             <input type="text" placeholder="Rechercher…" id="blogSearchInput">
         </div>
 
-        <button class="blog-theme-toggle" id="blogThemeToggle" title="Changer le thème">
-            <span id="blogThemeIcon">☀️</span>
-        </button>
-
         @guest
             <a href="{{ route('login') }}" style="font-size:.72rem;color:var(--text-muted);text-decoration:none;padding:7px 12px;border:1px solid var(--border);border-radius:7px;transition:all .18s;" onmouseover="this.style.borderColor='rgba(255,255,255,.3)';this.style.color='rgba(255,255,255,.9)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">Connexion</a>
             <a href="{{ route('register') }}" class="blog-nav-btn">Rejoindre</a>
@@ -341,6 +313,7 @@
                         ['manga-anime',   '🎌', 'Manga & Animé'],
                         ['gaming',        '🎮', 'Gaming'],
                         ['tech',          '💻', 'Tech & IA'],
+                        ['dev',           '🛠️', 'Développement'],
                         ['cinema-series', '🎬', 'Cinéma & Séries'],
                         ['culture',       '🌍', 'Culture & Société'],
                         ['debat',         '💬', 'Débat'],
@@ -396,23 +369,6 @@
     </ul>
 </footer>
 
-<script>
-// Theme toggle
-(function(){
-    var btn = document.getElementById('blogThemeToggle');
-    var icon = document.getElementById('blogThemeIcon');
-    var html = document.documentElement;
-    function apply(t){
-        html.setAttribute('data-theme', t);
-        localStorage.setItem('mg-theme', t);
-        icon.textContent = t === 'light' ? '🌙' : '☀️';
-    }
-    apply(localStorage.getItem('mg-theme') || 'dark');
-    btn && btn.addEventListener('click', function(){
-        apply(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
-    });
-})();
-</script>
 
 @stack('scripts')
 </body>

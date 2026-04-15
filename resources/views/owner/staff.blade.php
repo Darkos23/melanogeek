@@ -4,6 +4,42 @@
 @section('page-title', 'Gestion du staff')
 
 @section('content')
+<style>
+.owner-staff-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    padding: 1.5px;
+    background: linear-gradient(135deg, var(--terra), var(--accent));
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.owner-staff-avatar.owner-staff-avatar-cm {
+    background: linear-gradient(135deg, #2DB8A0, var(--accent));
+}
+
+.owner-staff-avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--sidebar-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.owner-staff-avatar-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+</style>
 
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:24px;">
 
@@ -27,8 +63,8 @@
                         <tr>
                             <td>
                                 <div style="display:flex;align-items:center;gap:10px;">
-                                    <div class="user-avatar-mini">
-                                        <div class="user-avatar-mini-inner">
+                                    <div class="owner-staff-avatar">
+                                        <div class="owner-staff-avatar-inner">
                                             @if($admin->avatar)<img src="{{ Storage::url($admin->avatar) }}" alt="">@else{{ mb_strtoupper(mb_substr($admin->name,0,1)) }}@endif
                                         </div>
                                     </div>
@@ -71,8 +107,8 @@
                         <tr>
                             <td>
                                 <div style="display:flex;align-items:center;gap:10px;">
-                                    <div class="user-avatar-mini" style="background:linear-gradient(135deg,#2DB8A0,var(--gold));">
-                                        <div class="user-avatar-mini-inner">
+                                    <div class="owner-staff-avatar owner-staff-avatar-cm">
+                                        <div class="owner-staff-avatar-inner">
                                             @if($cm->avatar)<img src="{{ Storage::url($cm->avatar) }}" alt="">@else{{ mb_strtoupper(mb_substr($cm->name,0,1)) }}@endif
                                         </div>
                                     </div>
