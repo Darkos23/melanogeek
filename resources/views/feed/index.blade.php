@@ -363,17 +363,7 @@
         color: var(--text-muted);
         margin-top: 1px;
     }
-    .feed-niche-pill {
-        display: inline-flex;
-        background: var(--terra-soft);
-        border: 1px solid rgba(200,82,42,.18);
-        color: var(--terra);
-        font-size: .64rem; font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 100px;
-        margin-left: 4px;
-        vertical-align: middle;
-    }
+    
 
     /* Bouton "Suivre" dans le card */
     .feed-follow-btn {
@@ -928,12 +918,10 @@
                     <a href="{{ route('profile.show', $user->username) }}" class="suggestion-name">{{ $user->username }}</a>
                     <div class="suggestion-meta">
                         {{ number_format($user->followers_count) }} abonné{{ $user->followers_count > 1 ? 's' : '' }}
-                        @if($user->niche) · {{ $user->niche }} @endif
                     </div>
                 </div>
                 <button class="suggestion-follow-btn"
                     onclick="toggleFollow('{{ $user->username }}', this)"
-                    data-niche="{{ $user->niche ?? '' }}">
                     + Suivre
                 </button>
             </div>
@@ -1057,8 +1045,6 @@
                     if (meta) {
                         const count  = Number(data.count);
                         const label  = count > 1 ? 'abonnés' : 'abonné';
-                        const niche  = btn.dataset.niche ? ' · ' + btn.dataset.niche : '';
-                        meta.textContent = count.toLocaleString('fr-FR') + ' ' + label + niche;
                     }
                 }
             }
