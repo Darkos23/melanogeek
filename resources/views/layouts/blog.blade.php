@@ -1,10 +1,10 @@
-�<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'MelanoGeek')  Blog Geek Africain</title>
+    <title>@yield('title', 'MelanoGeek') — Blog Geek Africain</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="theme-color" content="#C8522A">
     @stack('meta')
@@ -22,7 +22,7 @@
     </script>
 
     <style>
-    /* �"��"��"� VARIABLES (reprise de app.blade.php) �"��"��"� */
+    /* â•â•â• VARIABLES (reprise de app.blade.php) â•â•â• */
     :root {
         --bg: #1a1a1a; --bg-card: #1f1f1f; --bg-card2: #242424; --bg-hover: #2a2a2a;
         --text: #F0E8D8; --text-muted: rgba(240,232,216,0.55); --text-faint: rgba(240,232,216,0.18);
@@ -40,7 +40,7 @@
     body { background: var(--bg); color: var(--text); font-family: var(--font-body); }
     a { cursor: pointer; } button { cursor: pointer; }
 
-    /* ������ NAVIGATION ������ */
+    /* â”€â”€â”€ NAVIGATION â”€â”€â”€ */
     .blog-nav {
         position: relative;
         padding: 40px 48px 0;
@@ -181,7 +181,7 @@
     .blog-hamburger.open span:nth-child(2) { opacity: 0; }
     .blog-hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
 
-    /* ������ LAYOUT PRINCIPAL ������ */
+    /* â”€â”€â”€ LAYOUT PRINCIPAL â”€â”€â”€ */
     .blog-wrap {
         max-width: 1280px;
         margin: 0 auto;
@@ -193,7 +193,7 @@
     }
     .blog-main { min-width: 0; }
 
-    /* ������ SIDEBAR ������ */
+    /* â”€â”€â”€ SIDEBAR â”€â”€â”€ */
     .blog-sidebar { position: sticky; top: 72px; display: flex; flex-direction: column; gap: 28px; }
 
     .sidebar-block {
@@ -264,7 +264,7 @@
     }
     .sb-newsletter button:hover { background: #fff; }
 
-    /* ������ BREADCRUMB ������ */
+    /* â”€â”€â”€ BREADCRUMB â”€â”€â”€ */
     .blog-breadcrumb {
         display: flex; align-items: center; gap: 6px;
         font-size: .63rem; color: var(--text-faint);
@@ -275,7 +275,7 @@
     .blog-breadcrumb a:hover { color: var(--text); }
     .blog-breadcrumb-sep { color: var(--text-faint); }
 
-    /* ������ FOOTER ������ */
+    /* â”€â”€â”€ FOOTER â”€â”€â”€ */
     .blog-footer {
         border-top: 1px solid var(--border);
         padding: 28px 52px;
@@ -287,7 +287,7 @@
     .blog-footer-links a { color: var(--text-muted); text-decoration: none; transition: color .16s; }
     .blog-footer-links a:hover { color: var(--text); }
 
-    /* ������ RESPONSIVE ������ */
+    /* â”€â”€â”€ RESPONSIVE â”€â”€â”€ */
     @media (max-width: 1024px) {
         .blog-wrap { grid-template-columns: 1fr; }
         .blog-sidebar { position: static; }
@@ -308,7 +308,7 @@
 </head>
 <body>
 
-{{-- �"��"� NAVIGATION �"��"� --}}
+{{-- â•â• NAVIGATION â•â• --}}
 <nav class="blog-nav">
     <a href="{{ route('home') }}" class="blog-nav-logo">
         <div class="blog-nav-logo-name">melanogeek</div>
@@ -321,7 +321,7 @@
     <div class="blog-nav-right">
         <div class="blog-nav-search">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <input type="text" placeholder="Rechercher⬦" id="blogSearchInput">
+            <input type="text" placeholder="Rechercherâ€¦" id="blogSearchInput">
         </div>
 
         @guest
@@ -342,27 +342,27 @@
 <div class="blog-editorial-bar">
     <div class="blog-editorial-inner">
         <div class="blog-editorial-id">
-            <strong>MelanoGeek</strong> � Vol. I � �d. Printemps {{ date('Y') }} � La culture geek, vue d'Afrique
+            <strong>MelanoGeek</strong> · Vol. I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
         </div>
         <ul class="blog-editorial-links">
             <li><a href="{{ route('blog.index') }}?category=manga-anime" class="{{ request('category') === 'manga-anime' ? 'active' : '' }}">Manga</a></li>
             <li><a href="{{ route('blog.index') }}?category=gaming" class="{{ request('category') === 'gaming' ? 'active' : '' }}">Gaming</a></li>
-            <li><a href="{{ route('blog.index') }}?category=dev" class="{{ request('category') === 'dev' ? 'active' : '' }}">D�veloppement</a></li>
+            <li><a href="{{ route('blog.index') }}?category=dev" class="{{ request('category') === 'dev' ? 'active' : '' }}">Développement</a></li>
             <li><a href="{{ route('blog.index') }}?category=tech" class="{{ request('category') === 'tech' ? 'active' : '' }}">Tech &amp; IA</a></li>
-            <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">Cin�ma</a></li>
+            <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">Cinéma</a></li>
             <li><a href="{{ route('forum.index') }}" >Forum</a></li>
         </ul>
     </div>
 </div>
 
-{{-- �"��"� CONTENU �"��"� --}}
+{{-- â•â• CONTENU â•â• --}}
 <div class="blog-wrap">
     <main class="blog-main">
         @if(isset($breadcrumbs))
         <div class="blog-breadcrumb">
             <a href="{{ route('home') }}">Accueil</a>
             @foreach($breadcrumbs as $label => $url)
-                <span class="blog-breadcrumb-sep">⬺</span>
+                <span class="blog-breadcrumb-sep">â€º</span>
                 @if($loop->last)
                     <span>{{ $label }}</span>
                 @else
@@ -379,23 +379,23 @@
         @hasSection('sidebar')
             @yield('sidebar')
         @else
-            {{-- Sidebar par défaut --}}
+            {{-- Sidebar par dÃ©faut --}}
             <div class="sidebar-block">
-                <div class="sidebar-block-head">Catégories</div>
+                <div class="sidebar-block-head">CatÃ©gories</div>
                 <div class="sidebar-block-body">
                     @php $activeCategory = request('category'); @endphp
                     <a href="{{ route('blog.index') }}" class="sb-item {{ !$activeCategory ? 'active' : '' }}">
-                        <span class="sb-item-icon">�S�</span>
+                        <span class="sb-item-icon">âœ¦</span>
                         <span class="sb-item-name">Tout</span>
                     </a>
                     @foreach([
-                        ['manga-anime',   '�x}R', 'Manga & Animé'],
-                        ['gaming',        '�x}�', 'Gaming'],
-                        ['tech',          '�x�', 'Tech & IA'],
-                        ['dev',           '�x:�️', 'Développement'],
-                        ['cinema-series', '�x}�', 'Cinéma & Séries'],
-                        ['culture',       '�xR�', 'Culture & Société'],
-                        ['debat',         '�x�', 'Débat'],
+                        ['manga-anime',   'ðŸŽŒ', 'Manga & AnimÃ©'],
+                        ['gaming',        'ðŸŽ®', 'Gaming'],
+                        ['tech',          'ðŸ’»', 'Tech & IA'],
+                        ['dev',           'ðŸ› ï¸', 'DÃ©veloppement'],
+                        ['cinema-series', 'ðŸŽ¬', 'CinÃ©ma & SÃ©ries'],
+                        ['culture',       'ðŸŒ', 'Culture & SociÃ©tÃ©'],
+                        ['debat',         'ðŸ’¬', 'DÃ©bat'],
                     ] as [$slug, $icon, $name])
                     <a href="{{ route('blog.index') }}?category={{ $slug }}"
                        class="sb-item {{ $activeCategory === $slug ? 'active' : '' }}">
@@ -427,7 +427,7 @@
             <div class="sidebar-block">
                 <div class="sidebar-block-head">Newsletter</div>
                 <div class="sb-newsletter">
-                    <p>Re�ois les meilleurs articles de la semaine directement dans ta bo�te mail.</p>
+                    <p>Reçois les meilleurs articles de la semaine directement dans ta boîte mail.</p>
                     <input type="email" placeholder="ton@email.com">
                     <button type="button">S'abonner</button>
                 </div>
@@ -436,15 +436,15 @@
     </aside>
 </div>
 
-{{-- �"��"� FOOTER �"��"� --}}
+{{-- â•â• FOOTER â•â• --}}
 <footer class="blog-footer">
-    <span>© {{ date('Y') }} MelanoGeek � La culture geek, vue d'Afrique.</span>
+    <span>Â© {{ date('Y') }} MelanoGeek â€” La culture geek, vue d'Afrique.</span>
     <ul class="blog-footer-links">
         <li><a href="{{ route('home') }}">Accueil</a></li>
         <li><a href="{{ route('blog.index') }}">Blog</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
-        <li><a href="{{ route('community') }}">Communaut�</a></li>
-        <li><a href="{{ route('about') }}">� propos</a></li>
+        <li><a href="{{ route('community') }}">Communauté</a></li>
+        <li><a href="{{ route('about') }}">À propos</a></li>
     </ul>
 </footer>
 
