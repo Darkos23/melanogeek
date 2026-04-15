@@ -211,37 +211,6 @@
     }
     .social-input-group .form-input { padding-left: 36px; }
 
-    /* ── NICHE SELECT ── */
-    .niche-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
-        margin-top: 4px;
-    }
-    @media (min-width: 600px) {
-        .niche-grid { grid-template-columns: repeat(5, 1fr); }
-    }
-    .niche-option { position: relative; }
-    .niche-option input[type="radio"] { position:absolute;opacity:0;width:0;height:0; }
-    .niche-option label {
-        display: flex; flex-direction: column; align-items: center; gap: 4px;
-        padding: 12px 8px;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: var(--bg-card2);
-        cursor: pointer;
-        transition: all .2s;
-        text-align: center;
-    }
-    .niche-option label:hover { border-color: rgba(212,168,67,.4); }
-    .niche-option input:checked + label {
-        border-color: var(--terra);
-        background: var(--terra-soft);
-        box-shadow: 0 0 0 2px rgba(200,82,42,.12);
-    }
-    .niche-emoji { font-size: 1.3rem; }
-    .niche-label { font-size: .68rem; font-weight: 600; color: var(--text-muted); }
-
     /* ── SAVE BUTTON ── */
     .edit-footer {
         display: flex;
@@ -318,7 +287,6 @@
         .edit-header { padding: 20px 16px 0; }
         .edit-body { padding: 0 16px 40px; }
         .form-grid-2 { grid-template-columns: 1fr; }
-        .niche-grid { grid-template-columns: repeat(3, 1fr); }
         .avatar-upload-area { flex-direction: column; text-align: center; }
     }
 </style>
@@ -470,33 +438,6 @@
                 </div>
             </div>
 
-            <!-- ── NICHE ── -->
-            <div class="edit-card">
-                <div class="edit-card-header">
-                    <div class="edit-card-icon">🎨</div>
-                    <div>
-                        <div class="edit-card-title">Ta niche créative</div>
-                        <div class="edit-card-desc">Quel type de contenu tu crées ?</div>
-                    </div>
-                </div>
-                <div class="edit-card-body">
-                    <div class="niche-grid">
-                        @foreach(\App\Models\Setting::getNiches() as $_n)
-                        @php $n = ['val' => $_n['label'], 'emoji' => $_n['emoji']]; @endphp
-                        <div class="niche-option">
-                            <input type="radio" id="niche_{{ $loop->index }}" name="niche"
-                                value="{{ $n['val'] }}"
-                                {{ old('niche', auth()->user()->niche) === $n['val'] ? 'checked' : '' }}>
-                            <label for="niche_{{ $loop->index }}">
-                                <span class="niche-emoji">{{ $n['emoji'] }}</span>
-                                <span class="niche-label">{{ $n['val'] }}</span>
-                            </label>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-
             <!-- ── RÉSEAUX SOCIAUX ── -->
             <div class="edit-card">
                 <div class="edit-card-header">
@@ -545,44 +486,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- ── PAIEMENT MOBILE ── -->
-            <div class="edit-card">
-                <div class="edit-card-header">
-                    <div class="edit-card-icon">💸</div>
-                    <div>
-                        <div class="edit-card-title">Paiement mobile</div>
-                        <div class="edit-card-desc">Numéros pour recevoir des paiements</div>
-                    </div>
-                </div>
-                <div class="edit-card-body">
-                    <div class="form-grid-2">
-                        <div class="form-group">
-                            <label class="form-label" for="wave_number">Wave</label>
-                            <div class="social-input-group">
-                                <span class="social-input-icon">〰</span>
-                                <input class="form-input {{ $errors->has('wave_number') ? 'is-error' : '' }}"
-                                    type="tel" id="wave_number" name="wave_number"
-                                    placeholder="+221 77 000 00 00"
-                                    value="{{ old('wave_number', auth()->user()->wave_number) }}">
-                            </div>
-                            @error('wave_number')<div class="form-error">⚠ {{ $message }}</div>@enderror
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="orange_money_number">Orange Money</label>
-                            <div class="social-input-group">
-                                <span class="social-input-icon">🟠</span>
-                                <input class="form-input {{ $errors->has('orange_money_number') ? 'is-error' : '' }}"
-                                    type="tel" id="orange_money_number" name="orange_money_number"
-                                    placeholder="+221 77 000 00 00"
-                                    value="{{ old('orange_money_number', auth()->user()->orange_money_number) }}">
-                            </div>
-                            @error('orange_money_number')<div class="form-error">⚠ {{ $message }}</div>@enderror
-                        </div>
-                    </div>
-                    <div class="form-hint">Ces numéros permettront à tes abonnés de te payer directement.</div>
                 </div>
             </div>
 
