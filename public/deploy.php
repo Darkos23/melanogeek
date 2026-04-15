@@ -21,4 +21,9 @@ exec('php ' . escapeshellarg(dirname(__DIR__) . '/artisan') . ' config:clear 2>&
 exec('php ' . escapeshellarg(dirname(__DIR__) . '/artisan') . ' view:clear 2>&1', $output);
 exec('php ' . escapeshellarg(dirname(__DIR__) . '/artisan') . ' route:clear 2>&1', $output);
 
+// Recréer les caches pour la prod
+exec('php ' . escapeshellarg(dirname(__DIR__) . '/artisan') . ' config:cache 2>&1', $output);
+exec('php ' . escapeshellarg(dirname(__DIR__) . '/artisan') . ' route:cache 2>&1', $output);
+exec('php ' . escapeshellarg(dirname(__DIR__) . '/artisan') . ' view:cache 2>&1', $output);
+
 echo '<pre>' . htmlspecialchars(implode("\n", $output)) . '</pre>';
