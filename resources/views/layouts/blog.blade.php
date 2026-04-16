@@ -388,31 +388,31 @@
                         <span class="sb-item-icon">✦</span>
                         <span class="sb-item-name">Tout</span>
                     </a>
-                    <a href="{{ route(‘blog.index’) }}?category=manga-anime" class="sb-item {{ $activeCategory === ‘manga-anime’ ? ‘active’ : ‘’ }}">
+                    <a href="{{ route('blog.index') }}?category=manga-anime" class="sb-item {{ $activeCategory === 'manga-anime' ? 'active' : '' }}">
                         <span class="sb-item-icon">🌍</span>
                         <span class="sb-item-name">Manga &amp; Animé</span>
                     </a>
-                    <a href="{{ route(‘blog.index’) }}?category=gaming" class="sb-item {{ $activeCategory === ‘gaming’ ? ‘active’ : ‘’ }}">
+                    <a href="{{ route('blog.index') }}?category=gaming" class="sb-item {{ $activeCategory === 'gaming' ? 'active' : '' }}">
                         <span class="sb-item-icon">🎮</span>
                         <span class="sb-item-name">Gaming</span>
                     </a>
-                    <a href="{{ route(‘blog.index’) }}?category=tech" class="sb-item {{ $activeCategory === ‘tech’ ? ‘active’ : ‘’ }}">
+                    <a href="{{ route('blog.index') }}?category=tech" class="sb-item {{ $activeCategory === 'tech' ? 'active' : '' }}">
                         <span class="sb-item-icon">💻</span>
                         <span class="sb-item-name">Tech &amp; IA</span>
                     </a>
-                    <a href="{{ route(‘blog.index’) }}?category=dev" class="sb-item {{ $activeCategory === ‘dev’ ? ‘active’ : ‘’ }}">
+                    <a href="{{ route('blog.index') }}?category=dev" class="sb-item {{ $activeCategory === 'dev' ? 'active' : '' }}">
                         <span class="sb-item-icon">🔧</span>
                         <span class="sb-item-name">Développement</span>
                     </a>
-                    <a href="{{ route(‘blog.index’) }}?category=cinema-series" class="sb-item {{ $activeCategory === ‘cinema-series’ ? ‘active’ : ‘’ }}">
+                    <a href="{{ route('blog.index') }}?category=cinema-series" class="sb-item {{ $activeCategory === 'cinema-series' ? 'active' : '' }}">
                         <span class="sb-item-icon">🎬</span>
                         <span class="sb-item-name">Cinéma &amp; Séries</span>
                     </a>
-                    <a href="{{ route(‘blog.index’) }}?category=culture" class="sb-item {{ $activeCategory === ‘culture’ ? ‘active’ : ‘’ }}">
+                    <a href="{{ route('blog.index') }}?category=culture" class="sb-item {{ $activeCategory === 'culture' ? 'active' : '' }}">
                         <span class="sb-item-icon">🌍</span>
                         <span class="sb-item-name">Culture &amp; Société</span>
                     </a>
-                    <a href="{{ route(‘blog.index’) }}?category=debat" class="sb-item {{ $activeCategory === ‘debat’ ? ‘active’ : ‘’ }}">
+                    <a href="{{ route('blog.index') }}?category=debat" class="sb-item {{ $activeCategory === 'debat' ? 'active' : '' }}">
                         <span class="sb-item-icon">💬</span>
                         <span class="sb-item-name">Débat</span>
                     </a>
