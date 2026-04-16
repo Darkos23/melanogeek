@@ -769,7 +769,7 @@
     </div>
 
     @if($featured || $side_posts->isNotEmpty())
-    <div class="art-grid-featured">
+    <div class="art-grid-featured" @if($side_posts->isEmpty()) style="grid-template-columns:1fr" @endif>
         {{-- Article featured --}}
         @if($featured)
         @php
@@ -777,7 +777,7 @@
             $featMins     = max(1, (int) ceil(str_word_count(strip_tags($featured->body ?? '')) / 200));
             $featInitial  = strtoupper(substr($featured->user->name ?? '?', 0, 1));
         @endphp
-        <a href="{{ route('blog.index') }}" class="art-featured">
+        <a href="{{ route('posts.show', $featured->id) }}" class="art-featured">
             <div class="art-thumb">
                 @if($featured->thumbnail)
                     <img src="{{ asset('storage/'.$featured->thumbnail) }}" alt="{{ $featured->title }}">
@@ -818,7 +818,7 @@
                 $mins    = max(1, (int) ceil(str_word_count(strip_tags($post->body ?? '')) / 200));
                 $initial = strtoupper(substr($post->user->name ?? '?', 0, 1));
             @endphp
-            <a href="{{ route('blog.index') }}" class="art-side-card">
+            <a href="{{ route('posts.show', $post->id) }}" class="art-side-card">
                 @if($post->category)
                 <div class="art-cat">{{ $post->category_label }}</div>
                 @endif
