@@ -50,6 +50,33 @@
     @endforeach
 </div>
 
+{{-- ── RECHERCHE ── --}}
+<form method="GET" action="{{ route('blog.index') }}" style="margin-bottom:28px;display:flex;gap:8px;align-items:center;">
+    @if(request('category'))
+        <input type="hidden" name="category" value="{{ request('category') }}">
+    @endif
+    <input
+        type="text"
+        name="q"
+        value="{{ $query ?? '' }}"
+        placeholder="Rechercher un article…"
+        style="flex:1;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:var(--font-body);font-size:.84rem;padding:10px 16px;outline:none;transition:border-color .2s;"
+        onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"
+    >
+    <button type="submit" style="background:var(--gold);border:none;color:#000;font-family:var(--font-head);font-size:.78rem;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        Rechercher
+    </button>
+    @if(isset($query) && $query)
+    <a href="{{ route('blog.index') }}{{ request('category') ? '?category='.request('category') : '' }}" style="font-size:.78rem;color:var(--text-muted);text-decoration:none;white-space:nowrap;">✕ Effacer</a>
+    @endif
+</form>
+
+@if(isset($query) && $query)
+<div style="font-size:.72rem;color:var(--text-muted);margin-bottom:16px;margin-top:-12px;">
+    {{ $posts->total() }} résultat{{ $posts->total() > 1 ? 's' : '' }} pour "<strong style="color:var(--text)">{{ $query }}</strong>"
+</div>
+@endif
+
 @if($posts->isEmpty())
 {{-- ── AUCUN RÉSULTAT ── --}}
 <div style="text-align:center;padding:80px 0;color:var(--text-faint)">

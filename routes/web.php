@@ -39,7 +39,13 @@ Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 // Create post (auth required)
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
 // Forum
-Route::get('/forum', fn() => view('forum.index'))->name('forum.index');
+Route::get('/forum', [\App\Http\Controllers\ForumController::class, 'index'])->name('forum.index');
+Route::get('/forum/create', [\App\Http\Controllers\ForumController::class, 'create'])->name('forum.create')->middleware('auth');
+Route::post('/forum', [\App\Http\Controllers\ForumController::class, 'store'])->name('forum.store')->middleware('auth');
+Route::get('/forum/{thread}', [\App\Http\Controllers\ForumController::class, 'show'])->name('forum.show');
+Route::post('/forum/{thread}/reply', [\App\Http\Controllers\ForumController::class, 'reply'])->name('forum.reply')->middleware('auth');
+Route::delete('/forum/threads/{thread}', [\App\Http\Controllers\ForumController::class, 'destroy'])->name('forum.thread.destroy')->middleware('auth');
+Route::delete('/forum/replies/{reply}', [\App\Http\Controllers\ForumController::class, 'destroyReply'])->name('forum.reply.destroy')->middleware('auth');
 
 // Authenticated routes
 Route::middleware('auth')->group(function () {

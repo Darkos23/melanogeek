@@ -193,4 +193,14 @@ class User extends Authenticatable
     {
         return 'username';
     }
+
+    public function forumThreads()
+    {
+        return $this->hasMany(ForumThread::class);
+    }
+
+    public function forumReplies()
+    {
+        return $this->hasMany(ForumReply::class);
+    }
 }

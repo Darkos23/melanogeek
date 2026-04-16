@@ -401,27 +401,7 @@
 
 @section('main')
 
-@php
-$forumCats = [
-    ['icon'=>'🎌','name'=>'Manga & Animé',  'desc'=>'Débats, recommandations, news','count'=>312],
-    ['icon'=>'🎮','name'=>'Gaming',          'desc'=>'Reviews, tournois, guides',    'count'=>248],
-    ['icon'=>'💻','name'=>'Tech & IA',       'desc'=>'Projets, outils, tutoriels',   'count'=>187],
-    ['icon'=>'🌍','name'=>'Culture africaine','desc'=>'Mythes, arts, traditions geek','count'=>143],
-    ['icon'=>'🎭','name'=>'Cosplay',         'desc'=>'Créations, conseils, photos',  'count'=>95],
-    ['icon'=>'☕','name'=>'Off-topic',       'desc'=>'Détente & bavardages',         'count'=>124],
-];
-$threads = [
-    ['avi'=>'N','bg'=>'linear-gradient(135deg,#C84818,#D4A843)','cat'=>'Gaming',         'pin'=>true, 'hot'=>true, 'title'=>'Quelqu\'un a testé Anansi Chronicles sur PS5 ? Mon avis après 20h de jeu',     'author'=>'Nana Osei',    'replies'=>24,'views'=>'1.2k','time'=>'2h'],
-    ['avi'=>'Z','bg'=>'linear-gradient(135deg,#1A5A30,#B87820)','cat'=>'Manga',          'pin'=>false,'hot'=>true, 'title'=>'Top 10 des mangas afrofuturistes — ma liste après 3 ans de lecture intensive','author'=>'Zeynab Ibrahim','replies'=>61,'views'=>'3.8k','time'=>'5h'],
-    ['avi'=>'M','bg'=>'linear-gradient(135deg,#0A3A7A,#C84818)','cat'=>'Tech & IA',      'pin'=>false,'hot'=>false,'title'=>'Comment j\'ai créé une IA qui parle lingala — retour d\'expérience complet',  'author'=>'Mwana Kitoko', 'replies'=>38,'views'=>'2.1k','time'=>'8h'],
-    ['avi'=>'A','bg'=>'linear-gradient(135deg,#7A2080,#D4A843)','cat'=>'Cosplay',        'pin'=>false,'hot'=>false,'title'=>'Partage de costume — Shuri (Black Panther) fait maison, budget 25€',           'author'=>'Aïssata Barry','replies'=>17,'views'=>'890','time'=>'12h'],
-    ['avi'=>'O','bg'=>'linear-gradient(135deg,#5A3010,#E85A1A)','cat'=>'Cinéma',         'pin'=>true, 'hot'=>true, 'title'=>'Débat : Wakanda Forever était-il à la hauteur des attentes ?',                 'author'=>'Olu Adebayo',  'replies'=>112,'views'=>'8.4k','time'=>'1j'],
-    ['avi'=>'S','bg'=>'linear-gradient(135deg,#2A1260,#9B5FD1)','cat'=>'Gaming',         'pin'=>false,'hot'=>false,'title'=>'Tournoi communautaire MelanoGeek — FIFA 2026, inscriptions ouvertes',          'author'=>'Seun Lagos',   'replies'=>43,'views'=>'1.9k','time'=>'2j'],
-    ['avi'=>'I','bg'=>'linear-gradient(135deg,#1A5A30,#2DB8A0)','cat'=>'Culture',        'pin'=>false,'hot'=>false,'title'=>'Les symboles Adinkra dans les jeux vidéo — un relevé exhaustif',               'author'=>'Ifeoma C.',    'replies'=>29,'views'=>'1.1k','time'=>'2j'],
-    ['avi'=>'K','bg'=>'linear-gradient(135deg,#7A1A10,#C84818)','cat'=>'Manga',          'pin'=>false,'hot'=>false,'title'=>'Discussion : l\'influence des griots dans la narration manga africaine',        'author'=>'Kofi Mensah',  'replies'=>55,'views'=>'2.7k','time'=>'3j'],
-];
-$currentSort = request('sort', '');
-@endphp
+@php $currentSort = $sort ?? ''; $currentCat = $cat ?? ''; @endphp
 
 {{-- ── EN-TÊTE ── --}}
 <div class="forum-header">
@@ -442,7 +422,7 @@ $currentSort = request('sort', '');
     </div>
 
     @auth
-    <a href="#" class="forum-new-btn">
+    <a href="{{ route('forum.create') }}" class="forum-new-btn">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
         Nouveau sujet
     </a>
@@ -454,14 +434,13 @@ $currentSort = request('sort', '');
 {{-- ── CATÉGORIES ── --}}
 <div class="forum-cats-label">Catégories</div>
 <div class="forum-cats">
-    @foreach($forumCats as $cat)
-    <a href="{{ route('forum.index') }}?cat={{ Str::slug($cat['name']) }}" class="forum-cat">
-        <div class="forum-cat-icon">{{ $cat['icon'] }}</div>
+    @foreach($categories as $slug => $info)
+    <a href="{{ route('forum.index') }}?cat={{ $slug }}{{ $currentSort ? '&sort='.$currentSort : '' }}"
+       class="forum-cat {{ $currentCat === $slug ? 'forum-cat-active' : '' }}">
+        <div class="forum-cat-icon">{{ $info['icon'] }}</div>
         <div style="flex:1;min-width:0">
-            <div class="forum-cat-name">{{ $cat['name'] }}</div>
-            <div class="forum-cat-desc">{{ $cat['desc'] }}</div>
+            <div class="forum-cat-name">{{ $info['label'] }}</div>
         </div>
-        <div class="forum-cat-count">{{ $cat['count'] }}</div>
     </a>
     @endforeach
 </div>
@@ -475,46 +454,73 @@ $currentSort = request('sort', '');
         <div class="forum-col-label right">Activité</div>
     </div>
 
-    @foreach($threads as $t)
-    <a href="#" class="forum-thread">
+    @forelse($threads as $thread)
+    <a href="{{ route('forum.show', $thread) }}" class="forum-thread">
         <div class="forum-thread-main">
-            <div class="forum-thread-avi" style="background:{{ $t['bg'] }}">{{ $t['avi'] }}</div>
+            <div class="forum-thread-avi" style="background:linear-gradient(135deg,var(--terra),var(--gold))">
+                @if($thread->user->avatar)
+                    <img src="{{ Storage::url($thread->user->avatar) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                @else
+                    {{ mb_strtoupper(mb_substr($thread->user->name, 0, 1)) }}
+                @endif
+            </div>
             <div style="min-width:0">
                 <div class="forum-thread-meta">
-                    <span class="forum-tag forum-tag-cat">{{ $t['cat'] }}</span>
-                    @if($t['pin'])<span class="forum-tag forum-tag-pin">📌 Épinglé</span>@endif
-                    @if($t['hot'])<span style="font-size:.7rem">🔥</span>@endif
+                    <span class="forum-tag forum-tag-cat">{{ $thread->category_label }}</span>
+                    @if($thread->is_pinned)<span class="forum-tag forum-tag-pin">📌 Épinglé</span>@endif
+                    @if($thread->replies_count > 20)<span style="font-size:.7rem">🔥</span>@endif
                 </div>
-                <div class="forum-thread-title">{{ $t['title'] }}</div>
-                <div class="forum-thread-author">par {{ $t['author'] }}</div>
+                <div class="forum-thread-title">{{ $thread->title }}</div>
+                <div class="forum-thread-author">par {{ $thread->user->name }}</div>
             </div>
         </div>
         <div class="forum-thread-num">
-            <div class="forum-thread-num-val">{{ $t['replies'] }}</div>
+            <div class="forum-thread-num-val">{{ number_format($thread->replies_count) }}</div>
             <div class="forum-thread-num-lbl">rép.</div>
         </div>
         <div class="forum-thread-num">
-            <div class="forum-thread-num-val" style="font-family:inherit;font-size:.76rem;font-weight:500;color:var(--text-muted)">{{ $t['views'] }}</div>
+            <div class="forum-thread-num-val" style="font-family:inherit;font-size:.76rem;font-weight:500;color:var(--text-muted)">{{ number_format($thread->views_count) }}</div>
             <div class="forum-thread-num-lbl">vues</div>
         </div>
-        <div class="forum-thread-time">{{ $t['time'] }}</div>
+        <div class="forum-thread-time">{{ $thread->last_reply_at?->diffForHumans(null, true) ?? $thread->created_at->diffForHumans(null, true) }}</div>
     </a>
-    @endforeach
+    @empty
+    <div style="padding:40px;text-align:center;color:var(--text-muted);">
+        <div style="font-size:2rem;margin-bottom:8px;">💬</div>
+        <div style="font-size:.85rem;">Aucun sujet pour l'instant. Sois le premier !</div>
+    </div>
+    @endforelse
 </div>
 
 {{-- ── PAGINATION ── --}}
+@if($threads->hasPages())
 <div class="forum-pagination">
-    <div class="forum-page-info">Page <strong>1</strong> sur <strong>138</strong></div>
+    <div class="forum-page-info">
+        Page <strong>{{ $threads->currentPage() }}</strong> sur <strong>{{ $threads->lastPage() }}</strong>
+    </div>
     <div class="forum-pages">
-        <a href="#" class="forum-page disabled">‹</a>
-        <a href="#" class="forum-page active">1</a>
-        <a href="#" class="forum-page">2</a>
-        <a href="#" class="forum-page">3</a>
-        <span class="forum-page-dots">…</span>
-        <a href="#" class="forum-page">138</a>
-        <a href="#" class="forum-page">›</a>
+        @if($threads->onFirstPage())
+            <span class="forum-page disabled">‹</span>
+        @else
+            <a href="{{ $threads->previousPageUrl() }}" class="forum-page">‹</a>
+        @endif
+        @foreach($threads->getUrlRange(1, $threads->lastPage()) as $page => $url)
+            @if($page == $threads->currentPage())
+                <span class="forum-page active">{{ $page }}</span>
+            @elseif(abs($page - $threads->currentPage()) <= 2 || $page == 1 || $page == $threads->lastPage())
+                <a href="{{ $url }}" class="forum-page">{{ $page }}</a>
+            @elseif(abs($page - $threads->currentPage()) == 3)
+                <span class="forum-page-dots">…</span>
+            @endif
+        @endforeach
+        @if($threads->hasMorePages())
+            <a href="{{ $threads->nextPageUrl() }}" class="forum-page">›</a>
+        @else
+            <span class="forum-page disabled">›</span>
+        @endif
     </div>
 </div>
+@endif
 
 @endsection
 
@@ -524,7 +530,7 @@ $currentSort = request('sort', '');
 <div class="forum-widget">
     <div class="forum-widget-head">Statistiques</div>
     <div class="forum-widget-stats">
-        @foreach(['Sujets' => '1.1k', 'Réponses' => '8.4k', 'Membres' => '2.4k', 'En ligne' => '38'] as $lbl => $val)
+        @foreach(['Sujets' => number_format($stats['threads']), 'Réponses' => number_format($stats['replies']), 'Membres' => number_format($stats['members']), 'En ligne' => '—'] as $lbl => $val)
         <div class="forum-widget-stat">
             <div class="forum-widget-stat-val">{{ $val }}</div>
             <div class="forum-widget-stat-lbl">{{ $lbl }}</div>
@@ -536,11 +542,10 @@ $currentSort = request('sort', '');
 {{-- Catégories sidebar --}}
 <div class="forum-widget">
     <div class="forum-widget-head">Catégories</div>
-    @foreach($forumCats as $cat)
-    <a href="{{ route('forum.index') }}?cat={{ Str::slug($cat['name']) }}" class="forum-widget-row">
-        <span style="font-size:.95rem">{{ $cat['icon'] }}</span>
-        <span style="flex:1;font-weight:500">{{ $cat['name'] }}</span>
-        <span class="forum-widget-row-count">{{ $cat['count'] }}</span>
+    @foreach($categories as $slug => $info)
+    <a href="{{ route('forum.index') }}?cat={{ $slug }}" class="forum-widget-row">
+        <span style="font-size:.95rem">{{ $info['icon'] }}</span>
+        <span style="flex:1;font-weight:500">{{ $info['label'] }}</span>
     </a>
     @endforeach
 </div>
@@ -548,20 +553,23 @@ $currentSort = request('sort', '');
 {{-- Top contributeurs --}}
 <div class="forum-widget">
     <div class="forum-widget-head">Top contributeurs</div>
-    @foreach([
-        ['N','Nana Osei',    '#C84818','312 posts'],
-        ['Z','Zeynab I.',    '#1A5A30','287 posts'],
-        ['O','Olu Adebayo',  '#7A2080','241 posts'],
-        ['K','Kofi M.',      '#0A3A7A','198 posts'],
-    ] as [$avi,$name,$bg,$sub])
+    @forelse($topContributors as $contributor)
     <div class="forum-widget-row" style="cursor:default">
-        <div class="forum-contrib-avi" style="background:{{ $bg }}">{{ $avi }}</div>
+        <div class="forum-contrib-avi" style="background:linear-gradient(135deg,var(--terra),var(--gold))">
+            @if($contributor->avatar)
+                <img src="{{ Storage::url($contributor->avatar) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:7px;">
+            @else
+                {{ mb_strtoupper(mb_substr($contributor->name, 0, 1)) }}
+            @endif
+        </div>
         <div>
-            <div class="forum-contrib-name">{{ $name }}</div>
-            <div class="forum-contrib-sub">{{ $sub }}</div>
+            <div class="forum-contrib-name">{{ $contributor->name }}</div>
+            <div class="forum-contrib-sub">{{ $contributor->forum_threads_count }} sujets</div>
         </div>
     </div>
-    @endforeach
+    @empty
+    <div style="padding:16px;text-align:center;font-size:.78rem;color:var(--text-muted);">Aucun contributeur encore.</div>
+    @endforelse
 </div>
 
 {{-- CTA --}}
