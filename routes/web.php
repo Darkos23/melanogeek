@@ -36,11 +36,8 @@ Route::get('/@{user:username}', [ProfileController::class, 'show'])->name('profi
 // Blog
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 
-// Public post pages
+// Create post (auth required)
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-Route::get('/posts/{post}/data', [PostController::class, 'data'])->name('posts.data');
-
 // Forum
 Route::get('/forum', fn() => view('forum.index'))->name('forum.index');
 
@@ -68,6 +65,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
 });
+
+// Public post pages - APRÈS les routes spécifiques
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{post}/data', [PostController::class, 'data'])->name('posts.data');
 
 // Admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
