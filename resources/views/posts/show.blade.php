@@ -295,6 +295,89 @@
     }
     .comment-input::placeholder { color: var(--text-muted); }
     .comment-input:focus { outline: none; border-color: var(--terra); }
+    /* Comment toolbar */
+    .comment-toolbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 4px 0;
+    }
+    .comment-toolbar-left { display: flex; gap: 4px; align-items: center; position: relative; }
+    .cmt-tool-btn {
+        background: none; border: none; cursor: pointer;
+        font-size: 1rem; padding: 5px 7px; border-radius: 8px;
+        color: var(--text-muted); line-height: 1;
+        transition: background .15s;
+    }
+    .cmt-tool-btn:hover { background: var(--bg-hover); }
+    /* Emoji panel */
+    .cmt-emoji-panel {
+        display: none; position: absolute; bottom: calc(100% + 6px); left: 0;
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 12px; padding: 10px; width: 260px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.3); z-index: 50;
+    }
+    .cmt-emoji-panel.open { display: block; }
+    .cmt-emoji-search {
+        width: 100%; background: var(--bg-card2); border: 1px solid var(--border);
+        border-radius: 8px; padding: 6px 10px; color: var(--text);
+        font-size: .8rem; outline: none; margin-bottom: 8px;
+    }
+    .cmt-emoji-grid {
+        display: grid; grid-template-columns: repeat(8,1fr); gap: 2px;
+        max-height: 160px; overflow-y: auto;
+    }
+    .cmt-emoji-grid button {
+        background: none; border: none; cursor: pointer;
+        font-size: 1.1rem; padding: 4px; border-radius: 6px;
+        line-height: 1; min-height: unset;
+        transition: background .12s;
+    }
+    .cmt-emoji-grid button:hover { background: var(--bg-hover); }
+    /* GIF panel */
+    .cmt-gif-panel {
+        display: none; position: absolute; bottom: calc(100% + 6px); left: 0;
+        background: var(--bg-card); border: 1px solid var(--border);
+        border-radius: 12px; padding: 10px; width: 280px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.3); z-index: 50;
+    }
+    .cmt-gif-panel.open { display: block; }
+    .cmt-gif-search {
+        width: 100%; background: var(--bg-card2); border: 1px solid var(--border);
+        border-radius: 8px; padding: 6px 10px; color: var(--text);
+        font-size: .8rem; outline: none; margin-bottom: 8px;
+    }
+    .cmt-gif-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+        max-height: 180px; overflow-y: auto;
+    }
+    .cmt-gif-grid img {
+        width: 100%; height: 80px; object-fit: cover; border-radius: 6px; cursor: pointer;
+        transition: opacity .15s;
+    }
+    .cmt-gif-grid img:hover { opacity: .8; }
+    .cmt-gif-preview {
+        display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+        background: var(--bg-card2); border-radius: 8px; margin-top: 6px;
+    }
+    .cmt-gif-preview img { height: 40px; border-radius: 4px; }
+    .cmt-gif-remove { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:.8rem; }
+    /* Edit comment */
+    .cmt-edit-wrap {
+        display: none; flex-direction: column; gap: 6px; margin-top: 6px;
+    }
+    .cmt-edit-wrap.open { display: flex; }
+    .cmt-edit-input {
+        width: 100%; background: var(--bg-card2); border: 1px solid var(--border);
+        border-radius: 10px; padding: 8px 12px; color: var(--text);
+        font-family: var(--font-body); font-size: .875rem; line-height: 1.5;
+        resize: none; outline: none;
+    }
+    .cmt-edit-input:focus { border-color: var(--terra); }
+    .cmt-edit-actions { display: flex; gap: 8px; justify-content: flex-end; }
+    .btn-cmt-save { background: var(--terra); border: none; color: white; padding: 5px 14px; border-radius: 100px; font-size: .78rem; font-weight: 600; cursor: pointer; }
+    .btn-cmt-cancel { background: none; border: 1px solid var(--border); color: var(--text-muted); padding: 5px 12px; border-radius: 100px; font-size: .78rem; cursor: pointer; }
+    .btn-comment-edit { background: none; border: none; color: var(--text-muted); font-size: .7rem; cursor: pointer; padding: 2px 6px; border-radius: 6px; transition: color .2s, background .2s; }
+    .btn-comment-edit:hover { color: var(--gold); background: rgba(212,168,67,.08); }
+
     .comment-form-actions { display: flex; justify-content: flex-end; }
     .btn-comment-submit {
         background: var(--terra); border: none; color: white;
@@ -568,9 +651,33 @@
                 <div class="comment-form">
                     <textarea id="commentBody" class="comment-input"
                               placeholder="Ajouter un commentaire…" maxlength="1000" rows="1"></textarea>
-                    <div class="comment-form-actions">
+                    <div id="cmtGifPreview" class="cmt-gif-preview" style="display:none;">
+                        <img id="cmtGifImg" src="" alt="GIF">
+                        <span id="cmtGifLabel" style="font-size:.72rem;color:var(--text-muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                        <button type="button" class="cmt-gif-remove" onclick="removeCmtGif()">✕</button>
+                    </div>
+                    <div class="comment-toolbar">
+                        <div class="comment-toolbar-left">
+                            <!-- Emoji -->
+                            <div style="position:relative;">
+                                <button type="button" class="cmt-tool-btn" id="cmtEmojiBtn" title="Emoji">😊</button>
+                                <div class="cmt-emoji-panel" id="cmtEmojiPanel">
+                                    <input type="text" class="cmt-emoji-search" placeholder="Rechercher…" id="cmtEmojiSearch">
+                                    <div class="cmt-emoji-grid" id="cmtEmojiGrid"></div>
+                                </div>
+                            </div>
+                            <!-- GIF -->
+                            <div style="position:relative;">
+                                <button type="button" class="cmt-tool-btn" id="cmtGifBtn" title="GIF">GIF</button>
+                                <div class="cmt-gif-panel" id="cmtGifPanel">
+                                    <input type="text" class="cmt-gif-search" placeholder="Rechercher un GIF…" id="cmtGifSearch">
+                                    <div class="cmt-gif-grid" id="cmtGifGrid"></div>
+                                </div>
+                            </div>
+                        </div>
                         <button id="commentSubmit" class="btn-comment-submit" disabled>Envoyer</button>
                     </div>
+                    <input type="hidden" id="cmtGifUrl" value="">
                 </div>
             </div>
             @else
@@ -769,14 +876,20 @@
         }
 
         function buildItem(c) {
-            const canDel = AUTH_ID && (AUTH_ID === c.user.id || IS_ADMIN);
+            const isOwn  = AUTH_ID && AUTH_ID === c.user.id;
+            const canDel = AUTH_ID && (isOwn || IS_ADMIN);
             const aviInner = c.user.avatar
                 ? `<img src="${esc(c.user.avatar)}" alt="">`
                 : `<span>${esc((c.user.name || '?')[0].toUpperCase())}</span>`;
-            const verified = c.user.is_verified
-                ? `<span class="comment-verified">✓</span>` : '';
-            const delBtn = canDel
-                ? `<button class="btn-comment-del" data-id="${c.id}" title="Supprimer">✕</button>` : '';
+            const verified = c.user.is_verified ? `<span class="comment-verified">✓</span>` : '';
+            const body = c.body || '';
+            // body may contain a GIF tag like [gif:url]
+            const gifMatch = body.match(/\[gif:(https?[^\]]+)\]/);
+            const textPart = body.replace(/\[gif:https?[^\]]+\]/, '').trim();
+            const bodyHtml = (textPart ? `<div class="comment-body">${esc(textPart)}</div>` : '')
+                + (gifMatch ? `<img src="${gifMatch[1]}" alt="GIF" style="max-width:200px;border-radius:8px;margin-top:6px;display:block;">` : '');
+            const editBtn = isOwn ? `<button class="btn-comment-edit" data-id="${c.id}" title="Modifier">✏️</button>` : '';
+            const delBtn  = canDel ? `<button class="btn-comment-del" data-id="${c.id}" title="Supprimer">✕</button>` : '';
 
             return `<div class="comment-item" id="comment-${c.id}">
                 <a href="/@${esc(c.user.username)}" class="comment-avi">
@@ -787,9 +900,16 @@
                         <a href="/@${esc(c.user.username)}" class="comment-author">${esc(c.user.name)}</a>
                         ${verified}
                         <span class="comment-ago">${timeAgo(c.created_at)}</span>
-                        ${delBtn}
+                        ${editBtn}${delBtn}
                     </div>
-                    <div class="comment-body">${esc(c.body)}</div>
+                    <div class="comment-body-wrap" id="cbw-${c.id}">${bodyHtml}</div>
+                    <div class="cmt-edit-wrap" id="cedit-${c.id}">
+                        <textarea class="cmt-edit-input" rows="2">${esc(body)}</textarea>
+                        <div class="cmt-edit-actions">
+                            <button type="button" class="btn-cmt-cancel" onclick="cancelEdit(${c.id})">Annuler</button>
+                            <button type="button" class="btn-cmt-save"   onclick="saveEdit(${c.id})">Enregistrer</button>
+                        </div>
+                    </div>
                 </div>
             </div>`;
         }
@@ -833,18 +953,24 @@
         }
 
         /* ── Textarea auto-resize + enable submit ── */
+        const gifUrlEl = document.getElementById('cmtGifUrl');
+        function updateSubmitState() {
+            if (submitBtn) submitBtn.disabled = !(bodyEl?.value.trim() || gifUrlEl?.value);
+        }
         if (bodyEl) {
             bodyEl.addEventListener('input', () => {
                 bodyEl.style.height = 'auto';
                 bodyEl.style.height = Math.min(bodyEl.scrollHeight, 160) + 'px';
-                if (submitBtn) submitBtn.disabled = !bodyEl.value.trim();
+                updateSubmitState();
             });
         }
 
         /* ── Soumettre un commentaire ── */
         if (submitBtn) {
             submitBtn.addEventListener('click', async () => {
-                const body = bodyEl.value.trim();
+                let body = bodyEl?.value.trim() || '';
+                const gifUrl = gifUrlEl?.value;
+                if (gifUrl) body = body + (body ? ' ' : '') + `[gif:${gifUrl}]`;
                 if (!body || isPosting) return;
                 isPosting = true;
                 submitBtn.disabled = true;
@@ -852,56 +978,26 @@
                 try {
                     const res = await fetch(`/api/posts/${POST_ID}/comments`, {
                         method:  'POST',
-                        headers: {
-                            'Content-Type':  'application/json',
-                            'Accept':        'application/json',
-                            'X-CSRF-TOKEN':  CSRF,
-                        },
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
                         body: JSON.stringify({ body }),
                     });
-
-                    if (res.status === 401) {
-                        window.location.href = '{{ route('login') }}';
-                        return;
-                    }
-
-                    if (!res.ok) {
-                        const err = await res.json().catch(() => ({}));
-                        alert(err.message || 'Erreur lors de l\'envoi.');
-                        return;
-                    }
-
+                    if (res.status === 401) { window.location.href = '{{ route('login') }}'; return; }
+                    if (!res.ok) { const err = await res.json().catch(() => ({})); alert(err.message || 'Erreur.'); return; }
                     const comment = await res.json();
-
-                    // Retirer l'état vide si présent
                     const empty = list.querySelector('.comments-empty, .comments-loading');
                     if (empty) empty.remove();
-
-                    // Insérer en haut de la liste
                     list.insertAdjacentHTML('afterbegin', buildItem(comment));
-                    attachDeleteListeners();
-
-                    // Reset textarea
-                    bodyEl.value = '';
-                    bodyEl.style.height = 'auto';
-                    submitBtn.disabled = true;
-
-                    // Mettre à jour le compteur
-                    if (countEl) {
-                        const cur = parseInt(countEl.textContent.replace(/\D/g, '')) || 0;
-                        countEl.textContent = cur + 1;
-                    }
-
-                } catch (e) {
-                    alert('Erreur réseau.');
-                } finally {
-                    isPosting = false;
-                }
+                    attachListeners();
+                    if (bodyEl) { bodyEl.value = ''; bodyEl.style.height = 'auto'; }
+                    removeCmtGif();
+                    if (countEl) { const cur = parseInt(countEl.textContent.replace(/\D/g,''))||0; countEl.textContent = cur+1; }
+                } catch (e) { alert('Erreur réseau.'); }
+                finally { isPosting = false; updateSubmitState(); }
             });
         }
 
-        /* ── Supprimer un commentaire ── */
-        function attachDeleteListeners() {
+        /* ── Supprimer / Edit ── */
+        function attachListeners() {
             list.querySelectorAll('.btn-comment-del').forEach(btn => {
                 if (btn.dataset.bound) return;
                 btn.dataset.bound = '1';
@@ -910,31 +1006,139 @@
                     const id = btn.dataset.id;
                     try {
                         const res = await fetch(`/api/comments/${id}`, {
-                            method:  'DELETE',
-                            headers: {
-                                'Accept':       'application/json',
-                                'X-CSRF-TOKEN': CSRF,
-                            },
+                            method: 'DELETE',
+                            headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
                         });
                         if (res.ok) {
                             document.getElementById(`comment-${id}`)?.remove();
-                            if (countEl) {
-                                const cur = parseInt(countEl.textContent.replace(/\D/g, '')) || 1;
-                                countEl.textContent = Math.max(0, cur - 1);
-                            }
-                            if (!list.querySelector('.comment-item')) {
-                                list.innerHTML = `<div class="comments-empty">
-                                    <div class="comments-empty-icon">💬</div>
-                                    Sois le premier à commenter !
-                                </div>`;
-                            }
+                            if (countEl) { const cur = parseInt(countEl.textContent.replace(/\D/g,''))||1; countEl.textContent = Math.max(0,cur-1); }
+                            if (!list.querySelector('.comment-item')) list.innerHTML = `<div class="comments-empty"><div class="comments-empty-icon">💬</div>Sois le premier à commenter !</div>`;
                         }
-                    } catch (e) {
-                        alert('Erreur lors de la suppression.');
-                    }
+                    } catch(e) { alert('Erreur.'); }
+                });
+            });
+            list.querySelectorAll('.btn-comment-edit').forEach(btn => {
+                if (btn.dataset.bound) return;
+                btn.dataset.bound = '1';
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    document.getElementById(`cbw-${id}`)?.style.setProperty('display','none');
+                    document.getElementById(`cedit-${id}`)?.classList.add('open');
                 });
             });
         }
+        window.cancelEdit = function(id) {
+            document.getElementById(`cbw-${id}`)?.style.removeProperty('display');
+            document.getElementById(`cedit-${id}`)?.classList.remove('open');
+        };
+        window.saveEdit = async function(id) {
+            const wrap = document.getElementById(`cedit-${id}`);
+            const inp  = wrap?.querySelector('.cmt-edit-input');
+            const body = inp?.value.trim();
+            if (!body) return;
+            try {
+                const res = await fetch(`/api/comments/${id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN':CSRF },
+                    body: JSON.stringify({ body }),
+                });
+                if (res.ok) {
+                    const updated = await res.json();
+                    const bw = document.getElementById(`cbw-${id}`);
+                    if (bw) {
+                        const gifMatch = body.match(/\[gif:(https?[^\]]+)\]/);
+                        const textPart = body.replace(/\[gif:https?[^\]]+\]/, '').trim();
+                        bw.innerHTML = (textPart ? `<div class="comment-body">${esc(textPart)}</div>` : '')
+                            + (gifMatch ? `<img src="${gifMatch[1]}" alt="GIF" style="max-width:200px;border-radius:8px;margin-top:6px;display:block;">` : '');
+                        bw.style.removeProperty('display');
+                    }
+                    cancelEdit(id);
+                }
+            } catch(e) { alert('Erreur.'); }
+        };
+
+        /* ── Emoji picker ── */
+        const EMOJIS = ['😀','😂','🥲','😍','🥰','😎','🤔','🤯','😤','🥳','🎉','❤️','🔥','💯','👍','👏','🙌','💪','🤝','✨','🌟','💎','🎮','📱','💻','🎵','🎬','📚','🌍','🦁','🐉','⚔️','🏆','🎯','💡','🚀','🌈','😭','😅','🤣','😊','😇','🥺','😢','😡','🤩','🫡','🫠','🫶','💀','👀','🙏','🤦','🤷','💬','🗣️','👑','🎭'];
+        const emojiGrid = document.getElementById('cmtEmojiGrid');
+        const emojiSearch = document.getElementById('cmtEmojiSearch');
+        const emojiPanel = document.getElementById('cmtEmojiPanel');
+        const emojiBtn = document.getElementById('cmtEmojiBtn');
+
+        function renderEmojis(list) {
+            emojiGrid.innerHTML = list.map(e => `<button type="button" onclick="insertEmoji('${e}')">${e}</button>`).join('');
+        }
+        renderEmojis(EMOJIS);
+        emojiSearch?.addEventListener('input', () => {
+            renderEmojis(EMOJIS.filter(e => e.includes(emojiSearch.value)));
+        });
+        window.insertEmoji = function(e) {
+            if (!bodyEl) return;
+            const s = bodyEl.selectionStart, end = bodyEl.selectionEnd;
+            bodyEl.value = bodyEl.value.slice(0,s) + e + bodyEl.value.slice(end);
+            bodyEl.selectionStart = bodyEl.selectionEnd = s + e.length;
+            bodyEl.focus();
+            updateSubmitState();
+        };
+        emojiBtn?.addEventListener('click', e => {
+            e.stopPropagation();
+            emojiPanel?.classList.toggle('open');
+            gifPanel?.classList.remove('open');
+        });
+
+        /* ── GIF picker (Tenor) ── */
+        const gifPanel = document.getElementById('cmtGifPanel');
+        const gifGrid  = document.getElementById('cmtGifGrid');
+        const gifSearch = document.getElementById('cmtGifSearch');
+        const gifBtn   = document.getElementById('cmtGifBtn');
+        let gifTimer;
+
+        async function fetchGifs(q) {
+            const url = q
+                ? `https://tenor.googleapis.com/v2/search?q=${encodeURIComponent(q)}&key=AIzaSyAyimkuYQYF_FXVALexPko2arMuR3S1gc4&limit=12&media_filter=gif`
+                : `https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPko2arMuR3S1gc4&limit=12&media_filter=gif`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                gifGrid.innerHTML = (data.results||[]).map(r => {
+                    const gif = r.media_formats?.gif?.url || r.media_formats?.tinygif?.url || '';
+                    return `<img src="${gif}" alt="${r.content_description||'GIF'}" onclick="selectGif('${gif}','${esc(r.content_description||'GIF')}')">`;
+                }).join('');
+            } catch(e) { gifGrid.innerHTML = '<span style="font-size:.75rem;color:var(--text-muted);padding:8px;">Erreur chargement GIFs</span>'; }
+        }
+
+        gifBtn?.addEventListener('click', e => {
+            e.stopPropagation();
+            gifPanel?.classList.toggle('open');
+            emojiPanel?.classList.remove('open');
+            if (gifPanel?.classList.contains('open') && !gifGrid.innerHTML) fetchGifs('');
+        });
+        gifSearch?.addEventListener('input', () => {
+            clearTimeout(gifTimer);
+            gifTimer = setTimeout(() => fetchGifs(gifSearch.value), 400);
+        });
+        window.selectGif = function(url, label) {
+            if (!gifUrlEl) return;
+            gifUrlEl.value = url;
+            document.getElementById('cmtGifImg').src = url;
+            document.getElementById('cmtGifLabel').textContent = label;
+            document.getElementById('cmtGifPreview').style.display = 'flex';
+            gifPanel?.classList.remove('open');
+            updateSubmitState();
+        };
+        window.removeCmtGif = function() {
+            if (gifUrlEl) gifUrlEl.value = '';
+            document.getElementById('cmtGifPreview').style.display = 'none';
+            document.getElementById('cmtGifImg').src = '';
+            updateSubmitState();
+        };
+
+        // Fermer panels au clic extérieur
+        document.addEventListener('click', () => {
+            emojiPanel?.classList.remove('open');
+            gifPanel?.classList.remove('open');
+        });
+        emojiPanel?.addEventListener('click', e => e.stopPropagation());
+        gifPanel?.addEventListener('click', e => e.stopPropagation());
 
         /* ── Init ── */
         loadComments(1);

@@ -79,6 +79,17 @@ class CommentController extends Controller
         ], 201);
     }
 
+    // ── Modifier un commentaire ───────────────────────────────────
+    public function update(Request $request, Comment $comment): JsonResponse
+    {
+        abort_if($comment->user_id !== $request->user()->id, 403);
+
+        $request->validate(['body' => ['required', 'string', 'max:1000']]);
+        $comment->update(['body' => $request->body]);
+
+        return response()->json(['id' => $comment->id, 'body' => $comment->body]);
+    }
+
     // ── Supprimer un commentaire ──────────────────────────────────
     public function destroy(Request $request, Comment $comment): JsonResponse
     {
