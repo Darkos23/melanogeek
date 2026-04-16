@@ -69,7 +69,9 @@
     }
     .ql-editor a { color: var(--terra); }
     .ql-editor ul, .ql-editor ol { padding-left: 20px; }
-</style>
+
+    /* ══════════════════════════════════════ */
+
     .create-page { padding-top: calc(80px + env(safe-area-inset-top)); min-height: 100vh; }
 
     .create-wrap {
