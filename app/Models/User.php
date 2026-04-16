@@ -130,35 +130,6 @@ class User extends Authenticatable
         )->withTimestamps();
     }
 
-    // ── Waxtu (e-learning — tables conservées bien que projet séparé) ──
-    public function courses()
-    {
-        return $this->hasMany(Course::class, 'instructor_id');
-    }
-
-    public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class);
-    }
-
-    public function progress()
-    {
-        return $this->hasMany(UserProgress::class);
-    }
-
-    public function certificates()
-    {
-        return $this->hasMany(Certificate::class);
-    }
-
-    public function isEnrolledIn(Course $course): bool
-    {
-        return $this->enrollments()
-            ->where('course_id', $course->id)
-            ->where('status', 'active')
-            ->exists();
-    }
-
     // ══════════════════════════════════════════
     // HELPERS
     // ══════════════════════════════════════════
@@ -187,11 +158,6 @@ class User extends Authenticatable
     public function isAdminOrOwner(): bool
     {
         return in_array($this->role, ['admin', 'owner']);
-    }
-
-    public function isInstructor(): bool
-    {
-        return $this->role === 'instructor';
     }
 
     // Blocages
