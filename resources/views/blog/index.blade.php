@@ -4,6 +4,96 @@
 
 @push('styles')
 <style>
+/* Featured card */
+.featured-card {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    background: var(--bg-card);
+    min-height: 360px;
+    transition: border-color .2s, box-shadow .2s;
+}
+.featured-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 32px rgba(0,0,0,.35);
+}
+.featured-img-wrap {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg,#2A1206,#7A3010,#C84818);
+}
+.featured-img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .5s ease;
+}
+.featured-card:hover .featured-img { transform: scale(1.04); }
+.featured-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, rgba(0,0,0,.15) 60%, rgba(13,9,5,.55) 100%);
+}
+.featured-badge {
+    position: absolute; top: 18px; left: 18px;
+    background: var(--terra); color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .55rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 100px;
+}
+.featured-content {
+    padding: 32px 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    gap: 20px;
+}
+.featured-content-top { display: flex; flex-direction: column; gap: 14px; }
+.featured-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .6rem; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--terra);
+    display: flex; align-items: center;
+}
+.featured-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.1rem, 2vw, 1.65rem);
+    font-weight: 800; letter-spacing: -.03em;
+    line-height: 1.2; color: var(--text);
+}
+.featured-excerpt {
+    font-size: .8rem; color: var(--text-muted);
+    line-height: 1.65;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.featured-content-bottom { display: flex; flex-direction: column; gap: 16px; }
+.featured-meta {
+    display: flex; align-items: center; gap: 7px;
+    font-size: .62rem; color: var(--text-muted);
+}
+.featured-avi {
+    width: 22px; height: 22px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+}
+.featured-avi-initial {
+    background: linear-gradient(135deg, var(--terra), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: .58rem; font-weight: 700; color: white;
+}
+.featured-dot {
+    width: 3px; height: 3px;
+    background: var(--text-faint); border-radius: 50%; flex-shrink: 0;
+}
+.featured-cta {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--terra); color: white;
+    font-size: .78rem; font-weight: 700;
+    padding: 10px 18px; border-radius: 100px;
+    align-self: flex-start;
+    transition: opacity .2s;
+}
+.featured-card:hover .featured-cta { opacity: .88; }
+
+/* Posts grid */
 .posts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -14,7 +104,10 @@
     background: var(--border);
     margin-bottom: 28px;
 }
-@media (max-width: 600px) {
+@media (max-width: 700px) {
+    .featured-card { grid-template-columns: 1fr; min-height: unset; }
+    .featured-img-wrap { aspect-ratio: 16/7; }
+    .featured-content { padding: 20px 18px; }
     .posts-grid { grid-template-columns: 1fr; }
 }
 </style>
@@ -108,51 +201,55 @@
 @php $featured = $posts->first(); $rest = $posts->slice(1); @endphp
 
 {{-- ── ARTICLE FEATURED ── --}}
-<a href="{{ route('posts.show', $featured->id) }}" style="display:block;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden;text-decoration:none;margin-bottom:20px;transition:background .2s;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='var(--bg-card)'">
-    <div style="aspect-ratio:16/6;background:linear-gradient(135deg,#2A1206,#7A3010,#C84818);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:4rem">
-        @if($featured->thumbnail)
-            <img src="{{ asset('storage/'.$featured->thumbnail) }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-        @elseif($featured->media_url && $featured->media_type === 'image')
-            <img src="{{ asset('storage/'.$featured->media_url) }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-        @else
-            📰
+@php
+    $featuredImg = $featured->thumbnail
+        ? asset('storage/'.$featured->thumbnail)
+        : ($featured->media_url && $featured->media_type === 'image' ? asset('storage/'.$featured->media_url) : null);
+    $featuredExcerpt = Str::limit(strip_tags($featured->body ?? ''), 180);
+    $featuredMins = max(1,(int)ceil(str_word_count(strip_tags($featured->body??''))/200));
+@endphp
+<a href="{{ route('posts.show', $featured->id) }}" class="featured-card" style="margin-bottom:24px;">
+    {{-- Image gauche --}}
+    <div class="featured-img-wrap">
+        @if($featuredImg)
+            <img src="{{ $featuredImg }}" alt="{{ $featured->title }}" class="featured-img">
         @endif
-        <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(13,9,5,.75) 0%,rgba(13,9,5,.3) 60%)"></div>
-        <div style="position:absolute;bottom:24px;left:28px;right:28px">
-            @if($featured->category)
-            <div style="font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:8px">
-                {{ $featured->category_label }}
-            </div>
-            @endif
-            <div style="font-family:var(--font-head);font-size:clamp(1.2rem,2.5vw,2rem);font-weight:800;letter-spacing:-.03em;color:white;line-height:1.15;text-shadow:0 2px 12px rgba(0,0,0,.4)">
-                {{ $featured->title }}
-            </div>
-        </div>
+        <div class="featured-img-overlay"></div>
+        {{-- Catégorie badge --}}
+        @if($featured->category)
+        <div class="featured-badge">{{ $featured->category_label }}</div>
+        @endif
     </div>
-    <div style="padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
-        <div style="flex:1;min-width:0">
-            @php $excerpt = Str::limit(strip_tags($featured->body ?? ''), 160); @endphp
-            @if($excerpt)
-            <p style="font-size:.78rem;color:var(--text-muted);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">
-                {{ $excerpt }}
-            </p>
+
+    {{-- Contenu droite --}}
+    <div class="featured-content">
+        <div class="featured-content-top">
+            <div class="featured-eyebrow">
+                <span style="display:inline-block;width:20px;height:1px;background:var(--terra);opacity:.8;vertical-align:middle;margin-right:8px;"></span>
+                À la une
+            </div>
+            <h2 class="featured-title">{{ $featured->title }}</h2>
+            @if($featuredExcerpt)
+            <p class="featured-excerpt">{{ $featuredExcerpt }}</p>
             @endif
-            <div style="display:flex;align-items:center;gap:10px;font-size:.62rem;color:var(--text-muted)">
+        </div>
+        <div class="featured-content-bottom">
+            <div class="featured-meta">
                 @if($featured->user->avatar)
-                    <img src="{{ asset('storage/'.$featured->user->avatar) }}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0" alt="">
+                    <img src="{{ asset('storage/'.$featured->user->avatar) }}" class="featured-avi" alt="">
                 @else
-                    <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--terra),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:white;flex-shrink:0">{{ strtoupper(substr($featured->user->name,0,1)) }}</div>
+                    <div class="featured-avi featured-avi-initial">{{ strtoupper(substr($featured->user->name,0,1)) }}</div>
                 @endif
                 <span>{{ $featured->user->name }}</span>
-                <span style="width:3px;height:3px;background:var(--text-faint);border-radius:50%"></span>
+                <span class="featured-dot"></span>
                 <span>{{ $featured->created_at->format('d M Y') }}</span>
-                <span style="width:3px;height:3px;background:var(--text-faint);border-radius:50%"></span>
-                <span>{{ max(1,(int)ceil(str_word_count(strip_tags($featured->body??''))/200)) }} min de lecture</span>
+                <span class="featured-dot"></span>
+                <span>{{ $featuredMins }} min</span>
             </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;font-size:.68rem;font-weight:600;color:var(--terra);white-space:nowrap">
-            Lire l'article
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <div class="featured-cta">
+                Lire l'article
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
         </div>
     </div>
 </a>
