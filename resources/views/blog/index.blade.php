@@ -63,7 +63,7 @@
 @php $featured = $posts->first(); $rest = $posts->slice(1); @endphp
 
 {{-- ── ARTICLE FEATURED ── --}}
-<a href="{{ route('blog.index') }}" style="display:block;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden;text-decoration:none;margin-bottom:20px;transition:background .2s;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='var(--bg-card)'">
+<a href="{{ route('posts.show', $featured->id) }}" style="display:block;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden;text-decoration:none;margin-bottom:20px;transition:background .2s;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='var(--bg-card)'">
     <div style="aspect-ratio:16/6;background:linear-gradient(135deg,#2A1206,#7A3010,#C84818);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:4rem">
         @if($featured->thumbnail)
             <img src="{{ asset('storage/'.$featured->thumbnail) }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
@@ -121,7 +121,7 @@
         $mins    = max(1,(int)ceil(str_word_count(strip_tags($post->body??''))/200));
         $initial = strtoupper(substr($post->user->name ?? '?',0,1));
     @endphp
-    <a href="{{ route('blog.index') }}" style="background:var(--bg-card);padding:24px 26px;text-decoration:none;display:block;transition:background .18s;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='var(--bg-card)'">
+    <a href="{{ route('posts.show', $post->id) }}" style="background:var(--bg-card);padding:24px 26px;text-decoration:none;display:block;transition:background .18s;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='var(--bg-card)'">
         @if($post->category)
         <div style="font-family:'JetBrains Mono',monospace;font-size:.54rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">
             {{ $post->category_label }}

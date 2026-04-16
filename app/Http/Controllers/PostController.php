@@ -170,4 +170,31 @@ class PostController extends Controller
 
         return response()->json(['liked' => $liked, 'count' => $post->fresh()->likes_count]);
     }
+
+    public function publish(Post $post): RedirectResponse
+    {
+        abort_if(auth()->id() !== $post->user_id, 403);
+        $post->update(['is_published' => true]);
+        return redirect()->route('posts.show', $post->id)->with('status', 'post-published');
+    }
+
+    public function destroy(Post $post): RedirectResponse
+    {
+        abort_if(auth()->id() !== $post->user_id && !auth()->user()->isAdmin(), 403);
+
+        // Delete associated media files
+        foreach ($post->mediaFiles as $media) {
+            Storage::disk('public')->delete($media->media_url);
+        }
+        $post->mediaFiles()->delete();
+
+        if ($post->media_url) Storage::disk('public')->delete($post->media_url);
+        if ($post->thumbnail) Storage::disk('public')->delete($post->thumbnail);
+        if ($post->audio_url) Storage::disk('public')->delete($post->audio_url);
+
+        $post->delete();
+
+        return redirect()->route('profile.show', auth()->user()->username)
+                         ->with('status', 'post-deleted');
+    }
 }

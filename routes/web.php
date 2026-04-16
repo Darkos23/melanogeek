@@ -64,6 +64,8 @@ Route::middleware('auth')->group(function () {
     // Posts
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
+    Route::patch('/posts/{post}/publish', [PostController::class, 'publish'])->name('posts.publish');
+    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 });
 
 // Public post pages - APRÈS les routes spécifiques

@@ -66,7 +66,6 @@
         font-size: .95rem; line-height: 1.75;
         color: var(--text-muted);
         padding: 0 24px 20px;
-        white-space: pre-wrap;
     }
 
     /* ── MÉDIA ── */
@@ -454,7 +453,7 @@
 
         {{-- Corps --}}
         @if($post->body)
-            <div class="post-body">{{ $post->body }}</div>
+            <div class="post-body">{!! $post->body !!}</div>
         @endif
 
         {{-- Média --}}
