@@ -328,8 +328,44 @@
             <a href="{{ route('login') }}" class="blog-nav-ghost">Connexion</a>
             <a href="{{ route('register') }}" class="blog-nav-btn">Rejoindre</a>
         @else
-            <div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--terra),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:white;text-decoration:none;cursor:pointer;">
-                {{ mb_strtoupper(mb_substr(auth()->user()->username, 0, 1)) }}
+            <div class="mg-user-menu" id="mgUserMenu">
+                <button class="mg-user-btn" id="mgUserBtn" type="button">
+                    <div class="mg-user-avi">
+                        @if(auth()->user()->avatar)
+                            <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="">
+                        @else
+                            {{ mb_strtoupper(mb_substr(auth()->user()->username, 0, 1)) }}
+                        @endif
+                    </div>
+                    <span class="mg-user-name">{{ auth()->user()->username }}</span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="opacity:.5;transition:transform .2s;" id="mgUserChevron">
+                        <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <div class="mg-user-dropdown" id="mgUserDropdown">
+                    <a href="{{ route('profile.show', auth()->user()->username) }}" class="mg-drop-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                        Mon profil
+                    </a>
+                    <a href="{{ route('profile.edit') }}" class="mg-drop-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        Paramètres
+                    </a>
+                    @if(auth()->user()->isAdminOrOwner())
+                        <a href="{{ route('admin.dashboard') }}" class="mg-drop-item">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            Dashboard admin
+                        </a>
+                    @endif
+                    <div class="mg-drop-divider"></div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="mg-drop-item mg-drop-logout">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            Déconnexion
+                        </button>
+                    </form>
+                </div>
             </div>
         @endguest
 
@@ -463,6 +499,38 @@
 
 
 @stack('scripts')
+<style>
+.mg-user-menu{position:relative;}
+.mg-user-btn{display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:5px 12px 5px 5px;color:var(--text);cursor:pointer;transition:border-color .2s;}
+.mg-user-btn:hover{border-color:var(--border-hover);}
+.mg-user-avi{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--terra),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:white;flex-shrink:0;overflow:hidden;}
+.mg-user-avi img{width:100%;height:100%;object-fit:cover;}
+.mg-user-name{font-size:.78rem;font-weight:600;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.mg-user-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:6px;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,.25);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .18s,transform .18s,visibility .18s;z-index:300;}
+.mg-user-dropdown.open{opacity:1;visibility:visible;transform:translateY(0);}
+.mg-drop-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--text-muted);text-decoration:none;transition:background .15s,color .15s;width:100%;background:none;border:none;text-align:left;cursor:pointer;font-family:var(--font-body);}
+.mg-drop-item:hover{background:var(--bg-hover);color:var(--text);}
+.mg-drop-divider{height:1px;background:var(--border);margin:4px 0;}
+.mg-drop-logout:hover{color:#f87171 !important;background:rgba(248,113,113,.08) !important;}
+</style>
+<script>
+(function(){
+    const btn  = document.getElementById('mgUserBtn');
+    const drop = document.getElementById('mgUserDropdown');
+    const chev = document.getElementById('mgUserChevron');
+    if(btn && drop){
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const open = drop.classList.toggle('open');
+            if(chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+        });
+        document.addEventListener('click', () => {
+            drop.classList.remove('open');
+            if(chev) chev.style.transform = '';
+        });
+    }
+})();
+</script>
 </body>
 </html>
 
