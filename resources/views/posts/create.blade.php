@@ -477,7 +477,7 @@
             <div class="post-toolbar">
                 <div class="toolbar-left">
                     <label for="imgPickerInput" class="toolbar-btn" title="Ajouter des photos" id="imgPickerBtn">
-                        🖼
+                        📷
                     </label>
                     <label for="videoInput" class="toolbar-btn" title="Ajouter une vidéo">
                         🎬
@@ -677,7 +677,7 @@
         wrap.innerHTML = `
             <video src="${url}" controls style="width:100%;max-height:400px;display:block;" id="videoPreviewEl"></video>
             <div id="thumbRow" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card2);border-top:1px solid var(--border);border-radius:0 0 14px 14px;">
-                <span style="font-size:.8rem;color:var(--text-muted);flex-shrink:0;">🖼 Couverture :</span>
+                <span style="font-size:.8rem;color:var(--text-muted);flex-shrink:0;">📷 Couverture :</span>
                 <label for="thumbnailInput" id="thumbLabel" style="cursor:pointer;font-size:.78rem;color:var(--terra);font-weight:600;white-space:nowrap;">+ Ajouter une image</label>
                 <span id="thumbName" style="font-size:.75rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
                 <img id="thumbPreviewImg" style="display:none;height:36px;width:54px;object-fit:cover;border-radius:6px;flex-shrink:0;">
