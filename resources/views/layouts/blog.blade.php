@@ -388,19 +388,31 @@
                         <span class="sb-item-icon">✦</span>
                         <span class="sb-item-name">Tout</span>
                     </a>
-                    @foreach([
-                        ['manga-anime',   '🎌', 'Manga & Animé'],
-                        ['gaming',        '🎮', 'Gaming'],
-                        [‘tech’,          ‘💻’, ‘Tech & IA’],
-                        ['dev',           '🛠️', 'Développement'],
-                        ['cinema-series', '🎬', 'Cinéma & Séries'],
-                        ['culture',       '🌍', 'Culture & Société'],
-                        ['debat',         '💬', 'Débat'],
-                    ] as [$slug, $icon, $name])
-                    <a href="{{ route('blog.index') }}?category={{ $slug }}"
-                       class="sb-item {{ $activeCategory === $slug ? 'active' : '' }}">
-                        <span class="sb-item-icon">{{ $icon }}</span>
-                        <span class="sb-item-name">{{ $name }}</span>
+                    @php
+                    $categories = [
+                        [‘manga-anime’,   ‘Manga &amp; Anim&eacute;’],
+                        [‘gaming’,        ‘Gaming’],
+                        [‘tech’,          ‘Tech &amp; IA’],
+                        [‘dev’,           ‘D&eacute;veloppement’],
+                        [‘cinema-series’, ‘Cin&eacute;ma &amp; S&eacute;ries’],
+                        [‘culture’,       ‘Culture &amp; Soci&eacute;t&eacute;’],
+                        [‘debat’,         ‘D&eacute;bat’],
+                    ];
+                    $icons = [
+                        ‘manga-anime’   => ‘&#127756;’,
+                        ‘gaming’        => ‘&#127918;’,
+                        ‘tech’          => ‘&#128187;’,
+                        ‘dev’           => ‘&#128736;’,
+                        ‘cinema-series’ => ‘&#127916;’,
+                        ‘culture’       => ‘&#127757;’,
+                        ‘debat’         => ‘&#128172;’,
+                    ];
+                    @endphp
+                    @foreach($categories as [$slug, $name])
+                    <a href="{{ route(‘blog.index’) }}?category={{ $slug }}"
+                       class="sb-item {{ $activeCategory === $slug ? ‘active’ : ‘’ }}">
+                        <span class="sb-item-icon">{!! $icons[$slug] !!}</span>
+                        <span class="sb-item-name">{!! $name !!}</span>
                     </a>
                     @endforeach
                 </div>
