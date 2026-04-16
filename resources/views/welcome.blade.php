@@ -468,15 +468,13 @@
 /* ══ CATÉGORIES — GRILLE LÉGÈRE ══ */
 .cat-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
 }
-@media (max-width: 1024px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 500px)  { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
 
 .cat-card {
     background: var(--bg-card);
