@@ -410,7 +410,7 @@
         <div class="explore-hero-sub">Découvre les publications de toute la communauté</div>
 
         {{-- Recherche --}}
-        <form method="GET" action="{{ route('explore') }}">
+        <form method="GET" action="{{ route('community') }}">
             <div class="explore-search-wrap">
                 <div class="explore-search-field">
                     <span class="explore-search-icon">🔍</span>
@@ -425,29 +425,29 @@
                 <button type="submit" class="explore-search-btn">Rechercher</button>
 
                 @if($query || $type || $sort !== 'trending')
-                    <a href="{{ route('explore') }}" class="explore-reset">✕ Réinitialiser</a>
+                    <a href="{{ route('community') }}" class="explore-reset">✕ Réinitialiser</a>
                 @endif
             </div>
 
             {{-- Filtres type + tri --}}
             <div class="explore-filters">
                 <div class="type-pills">
-                    <a href="{{ route('explore', array_filter(['q'=>$query,'sort'=>$sort !== 'trending' ? $sort : null])) }}"
+                    <a href="{{ route('community', array_filter(['q'=>$query,'sort'=>$sort !== 'trending' ? $sort : null])) }}"
                        class="type-pill {{ !$type ? 'active' : '' }}">Tout</a>
-                    <a href="{{ route('explore', array_filter(['q'=>$query,'type'=>'image','sort'=>$sort !== 'trending' ? $sort : null])) }}"
+                    <a href="{{ route('community', array_filter(['q'=>$query,'type'=>'image','sort'=>$sort !== 'trending' ? $sort : null])) }}"
                        class="type-pill {{ $type === 'image' ? 'active' : '' }}">🖼 Images</a>
-                    <a href="{{ route('explore', array_filter(['q'=>$query,'type'=>'video','sort'=>$sort !== 'trending' ? $sort : null])) }}"
+                    <a href="{{ route('community', array_filter(['q'=>$query,'type'=>'video','sort'=>$sort !== 'trending' ? $sort : null])) }}"
                        class="type-pill {{ $type === 'video' ? 'active' : '' }}">▶ Vidéos</a>
-                    <a href="{{ route('explore', array_filter(['q'=>$query,'type'=>'text','sort'=>$sort !== 'trending' ? $sort : null])) }}"
+                    <a href="{{ route('community', array_filter(['q'=>$query,'type'=>'text','sort'=>$sort !== 'trending' ? $sort : null])) }}"
                        class="type-pill {{ $type === 'text' ? 'active' : '' }}">✍ Textes</a>
                 </div>
 
                 <div class="filter-divider"></div>
 
                 <div class="sort-wrap">
-                    <a href="{{ route('explore', array_filter(['q'=>$query,'type'=>$type])) }}"
+                    <a href="{{ route('community', array_filter(['q'=>$query,'type'=>$type])) }}"
                        class="sort-pill {{ $sort === 'trending' ? 'active' : '' }}">🔥 Tendances</a>
-                    <a href="{{ route('explore', array_filter(['q'=>$query,'type'=>$type,'sort'=>'recent'])) }}"
+                    <a href="{{ route('community', array_filter(['q'=>$query,'type'=>$type,'sort'=>'recent'])) }}"
                        class="sort-pill {{ $sort === 'recent' ? 'active' : '' }}">⏱ Récents</a>
                 </div>
             </div>
