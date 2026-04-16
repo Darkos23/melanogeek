@@ -46,8 +46,44 @@
 .thread-body-text {
     font-size: .9rem; line-height: 1.75; color: var(--text-muted);
     padding: 12px 20px 20px;
-    white-space: pre-wrap; word-break: break-word;
+    word-break: break-word;
 }
+.thread-body-text.prose p { margin-bottom: 8px; }
+.thread-body-text.prose h2 { font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 14px 0 6px; }
+.thread-body-text.prose h3 { font-family: var(--font-head); font-size: .95rem; font-weight: 600; color: var(--text); margin: 10px 0 4px; }
+.thread-body-text.prose strong { color: var(--text); font-weight: 600; }
+.thread-body-text.prose em { color: var(--text-muted); font-style: italic; }
+.thread-body-text.prose a { color: var(--terra); text-decoration: underline; text-underline-offset: 3px; }
+.thread-body-text.prose blockquote {
+    border-left: 3px solid var(--terra);
+    padding-left: 14px;
+    color: var(--text-faint);
+    font-style: italic;
+    margin: 10px 0;
+}
+.thread-body-text.prose code {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82em;
+    color: var(--gold);
+}
+.thread-body-text.prose pre {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82em;
+    color: var(--gold);
+    white-space: pre-wrap;
+}
+.thread-body-text.prose ul, .thread-body-text.prose ol { padding-left: 20px; margin: 8px 0; }
+.thread-body-text.prose li { margin-bottom: 4px; }
 .thread-actions-row {
     display: flex; align-items: center; gap: 8px;
     padding: 12px 16px; border-top: 1px solid var(--border);
@@ -171,7 +207,7 @@
     </div>
 
     <div class="thread-title-h">{{ $thread->title }}</div>
-    <div class="thread-body-text">{{ $thread->body }}</div>
+    <div class="thread-body-text prose">{!! $thread->body !!}</div>
 
     <div class="thread-actions-row">
         <span style="font-size:.72rem;color:var(--text-faint);">

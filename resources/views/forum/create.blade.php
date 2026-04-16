@@ -3,6 +3,86 @@
 @section('title', 'Nouveau sujet — Forum MelanoGeek')
 
 @push('styles')
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+<style>
+/* ── QUILL DARK THEME ── */
+.ql-toolbar.ql-snow {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card2);
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 4px;
+    border-radius: 10px 10px 0 0;
+}
+.ql-toolbar.ql-snow .ql-formats { margin-right: 8px; }
+.ql-toolbar.ql-snow button,
+.ql-toolbar.ql-snow .ql-picker-label {
+    color: var(--text-muted);
+    border-radius: 6px;
+    transition: background .15s, color .15s;
+}
+.ql-toolbar.ql-snow button:hover,
+.ql-toolbar.ql-snow .ql-picker-label:hover { background: rgba(255,255,255,.06); color: var(--text); }
+.ql-toolbar.ql-snow button.ql-active,
+.ql-toolbar.ql-snow .ql-picker-label.ql-active { color: var(--terra); }
+.ql-toolbar.ql-snow .ql-stroke { stroke: currentColor; }
+.ql-toolbar.ql-snow .ql-fill  { fill:   currentColor; }
+.ql-toolbar.ql-snow .ql-picker-options {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+}
+.ql-container.ql-snow {
+    border: none;
+    font-family: var(--font-body);
+    font-size: .95rem;
+    line-height: 1.7;
+}
+.ql-editor {
+    min-height: 220px;
+    padding: 16px 20px;
+    color: var(--text);
+    caret-color: var(--terra);
+}
+.ql-editor.ql-blank::before {
+    color: var(--text-faint);
+    font-style: normal;
+    left: 20px;
+}
+.ql-editor p { margin-bottom: 6px; }
+.ql-editor h2 { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; margin: 12px 0 6px; }
+.ql-editor h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 600; margin: 10px 0 4px; }
+.ql-editor blockquote {
+    border-left: 3px solid var(--terra);
+    padding-left: 14px;
+    color: var(--text-muted);
+    margin: 10px 0;
+    font-style: italic;
+}
+.ql-editor code, .ql-editor pre {
+    background: var(--bg-card2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .85em;
+    color: var(--gold);
+}
+.ql-editor pre { padding: 12px 16px; margin: 8px 0; white-space: pre-wrap; }
+.ql-editor a { color: var(--terra); }
+.ql-editor ul, .ql-editor ol { padding-left: 20px; }
+
+/* Quill wrapper border */
+.cf-quill-wrap {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color .2s;
+    background: var(--bg-card2);
+}
+.cf-quill-wrap:focus-within { border-color: var(--terra); }
+</style>
 <style>
 /* ── WRAPPER ── */
 .cf-wrap { max-width: 740px; }
@@ -310,12 +390,11 @@
             <div class="cf-section">
                 <div class="cf-label">
                     <span class="cf-label-text">Contenu</span>
-                    <span class="cf-label-hint" id="cfBodyHint">0 / 10 000</span>
+                    <span class="cf-label-hint" id="cfBodyHint">0 / 10 000 mots</span>
                 </div>
-                <div class="cf-textarea-wrap">
-                    <textarea name="body" id="cfBody" class="cf-textarea"
-                              placeholder="Développe ton sujet, pose ta question ou lance le débat…"
-                              maxlength="10000" required>{{ old('body') }}</textarea>
+                <input type="hidden" name="body" id="cfBodyInput">
+                <div class="cf-quill-wrap">
+                    <div id="cfQuill"></div>
                 </div>
             </div>
 
@@ -354,6 +433,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script>
 (function () {
 
@@ -370,7 +450,7 @@
     });
 
     /* ── Title counter ── */
-    const titleEl = document.getElementById('cfTitle');
+    const titleEl   = document.getElementById('cfTitle');
     const titleHint = document.getElementById('cfTitleHint');
     const MAX_TITLE = 200;
     function updateTitle() {
@@ -381,27 +461,66 @@
     titleEl.addEventListener('input', updateTitle);
     updateTitle();
 
-    /* ── Body counter ── */
-    const bodyEl = document.getElementById('cfBody');
-    const bodyHint = document.getElementById('cfBodyHint');
-    const MAX_BODY = 10000;
-    function updateBody() {
-        const n = bodyEl.value.length;
-        bodyHint.textContent = n.toLocaleString('fr') + ' / ' + MAX_BODY.toLocaleString('fr');
-        bodyHint.className = 'cf-label-hint' + (n >= MAX_BODY ? ' over' : n >= MAX_BODY * .85 ? ' warn' : '');
+    /* ── Quill editor ── */
+    const quill = new Quill('#cfQuill', {
+        theme: 'snow',
+        placeholder: 'Développe ton sujet, pose ta question ou lance le débat…',
+        modules: {
+            toolbar: [
+                [{ header: [2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['link'],
+                ['clean']
+            ]
+        }
+    });
+
+    /* Pré-remplir si old() */
+    @if(old('body'))
+    quill.root.innerHTML = {!! json_encode(old('body')) !!};
+    @endif
+
+    /* Compteur de mots ── */
+    const bodyHint  = document.getElementById('cfBodyHint');
+    const bodyInput = document.getElementById('cfBodyInput');
+    const MAX_WORDS = 10000;
+
+    function countWords(text) {
+        return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
     }
-    bodyEl.addEventListener('input', updateBody);
+    function updateBody() {
+        const text = quill.getText();
+        const n    = countWords(text);
+        bodyHint.textContent = n.toLocaleString('fr') + ' / ' + MAX_WORDS.toLocaleString('fr') + ' mots';
+        bodyHint.className   = 'cf-label-hint' + (n >= MAX_WORDS ? ' over' : n >= MAX_WORDS * .85 ? ' warn' : '');
+        bodyInput.value      = quill.root.innerHTML;
+    }
+    quill.on('text-change', updateBody);
     updateBody();
 
     /* ── Submit guard ── */
     document.getElementById('cfForm').addEventListener('submit', function (e) {
+        /* Sync Quill → hidden input */
+        bodyInput.value = quill.root.innerHTML;
+
+        /* Check catégorie */
         if (!hiddenInput.value) {
             e.preventDefault();
             const grid = document.getElementById('cfCatGrid');
             grid.style.animation = 'none';
-            grid.offsetHeight; // reflow
+            grid.offsetHeight;
             grid.style.animation = 'cfShake .3s ease';
             grid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        /* Check contenu non vide */
+        if (quill.getText().trim().length < 10) {
+            e.preventDefault();
+            document.querySelector('.cf-quill-wrap').style.borderColor = 'var(--terra)';
+            quill.focus();
         }
     });
 

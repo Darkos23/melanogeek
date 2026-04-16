@@ -52,7 +52,7 @@ class ForumController extends Controller
     {
         $data = $request->validate([
             'title'    => ['required', 'string', 'min:5', 'max:200'],
-            'body'     => ['required', 'string', 'min:10', 'max:10000'],
+            'body'     => ['required', 'string', 'min:10', 'max:80000'],
             'category' => ['required', 'string', Rule::in(array_keys(ForumThread::CATEGORIES))],
         ], [
             'title.required' => 'Le titre est obligatoire.',
