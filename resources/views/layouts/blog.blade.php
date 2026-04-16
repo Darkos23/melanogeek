@@ -388,33 +388,34 @@
                         <span class="sb-item-icon">✦</span>
                         <span class="sb-item-name">Tout</span>
                     </a>
-                    @php
-                    $categories = [
-                        [‘manga-anime’,   ‘Manga &amp; Anim&eacute;’],
-                        [‘gaming’,        ‘Gaming’],
-                        [‘tech’,          ‘Tech &amp; IA’],
-                        [‘dev’,           ‘D&eacute;veloppement’],
-                        [‘cinema-series’, ‘Cin&eacute;ma &amp; S&eacute;ries’],
-                        [‘culture’,       ‘Culture &amp; Soci&eacute;t&eacute;’],
-                        [‘debat’,         ‘D&eacute;bat’],
-                    ];
-                    $icons = [
-                        ‘manga-anime’   => ‘&#127756;’,
-                        ‘gaming’        => ‘&#127918;’,
-                        ‘tech’          => ‘&#128187;’,
-                        ‘dev’           => ‘&#128736;’,
-                        ‘cinema-series’ => ‘&#127916;’,
-                        ‘culture’       => ‘&#127757;’,
-                        ‘debat’         => ‘&#128172;’,
-                    ];
-                    @endphp
-                    @foreach($categories as [$slug, $name])
-                    <a href="{{ route(‘blog.index’) }}?category={{ $slug }}"
-                       class="sb-item {{ $activeCategory === $slug ? ‘active’ : ‘’ }}">
-                        <span class="sb-item-icon">{!! $icons[$slug] !!}</span>
-                        <span class="sb-item-name">{!! $name !!}</span>
+                    <a href="{{ route(‘blog.index’) }}?category=manga-anime" class="sb-item {{ $activeCategory === ‘manga-anime’ ? ‘active’ : ‘’ }}">
+                        <span class="sb-item-icon">🌍</span>
+                        <span class="sb-item-name">Manga &amp; Animé</span>
                     </a>
-                    @endforeach
+                    <a href="{{ route(‘blog.index’) }}?category=gaming" class="sb-item {{ $activeCategory === ‘gaming’ ? ‘active’ : ‘’ }}">
+                        <span class="sb-item-icon">🎮</span>
+                        <span class="sb-item-name">Gaming</span>
+                    </a>
+                    <a href="{{ route(‘blog.index’) }}?category=tech" class="sb-item {{ $activeCategory === ‘tech’ ? ‘active’ : ‘’ }}">
+                        <span class="sb-item-icon">💻</span>
+                        <span class="sb-item-name">Tech &amp; IA</span>
+                    </a>
+                    <a href="{{ route(‘blog.index’) }}?category=dev" class="sb-item {{ $activeCategory === ‘dev’ ? ‘active’ : ‘’ }}">
+                        <span class="sb-item-icon">🔧</span>
+                        <span class="sb-item-name">Développement</span>
+                    </a>
+                    <a href="{{ route(‘blog.index’) }}?category=cinema-series" class="sb-item {{ $activeCategory === ‘cinema-series’ ? ‘active’ : ‘’ }}">
+                        <span class="sb-item-icon">🎬</span>
+                        <span class="sb-item-name">Cinéma &amp; Séries</span>
+                    </a>
+                    <a href="{{ route(‘blog.index’) }}?category=culture" class="sb-item {{ $activeCategory === ‘culture’ ? ‘active’ : ‘’ }}">
+                        <span class="sb-item-icon">🌍</span>
+                        <span class="sb-item-name">Culture &amp; Société</span>
+                    </a>
+                    <a href="{{ route(‘blog.index’) }}?category=debat" class="sb-item {{ $activeCategory === ‘debat’ ? ‘active’ : ‘’ }}">
+                        <span class="sb-item-icon">💬</span>
+                        <span class="sb-item-name">Débat</span>
+                    </a>
                 </div>
             </div>
 
