@@ -10,7 +10,7 @@
         <span style="display:inline-block;width:24px;height:1px;background:var(--gold);opacity:.7"></span>
         MelanoGeek · Blog
     </div>
-    <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:400;line-height:1.1;letter-spacing:-.01em;color:rgba(255,255,255,.92);margin-bottom:16px">
+    <h1 style="font-family:var(--font-head);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;color:rgba(255,255,255,.92);margin-bottom:16px">
         Culture geek,<br><span style="color:var(--gold)">vue d'Afrique.</span>
     </h1>
     <p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.65;max-width:460px;font-family:'Inter',sans-serif">
@@ -106,7 +106,7 @@
                 {{ $featured->category_label }}
             </div>
             @endif
-            <div style="font-family:'DM Serif Display',serif;font-size:clamp(1.2rem,2.5vw,2rem);font-weight:400;letter-spacing:-.01em;color:white;line-height:1.2;text-shadow:0 2px 12px rgba(0,0,0,.4)">
+            <div style="font-family:var(--font-head);font-size:clamp(1.2rem,2.5vw,2rem);font-weight:800;letter-spacing:-.03em;color:white;line-height:1.15;text-shadow:0 2px 12px rgba(0,0,0,.4)">
                 {{ $featured->title }}
             </div>
         </div>
@@ -154,7 +154,7 @@
             {{ $post->category_label }}
         </div>
         @endif
-        <div style="font-family:'DM Serif Display',serif;font-size:.95rem;font-weight:400;line-height:1.35;color:rgba(255,255,255,.88);margin-bottom:8px">
+        <div style="font-family:var(--font-head);font-size:.95rem;font-weight:700;line-height:1.35;color:rgba(255,255,255,.88);margin-bottom:8px">
             {{ $post->title }}
         </div>
         @if($excerpt)
