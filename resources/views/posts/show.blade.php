@@ -938,7 +938,7 @@
                 }
 
                 loadMoreBtn.style.display = currentPage < lastPage ? 'block' : 'none';
-                attachDeleteListeners();
+                attachListeners();
             } catch (e) {
                 list.innerHTML = '<div class="comments-empty">Erreur de chargement.</div>';
             }
