@@ -3,7 +3,73 @@
 @section('title', 'Nouvelle publication')
 
 @push('styles')
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
 <style>
+    /* ── QUILL DARK THEME OVERRIDE ── */
+    .ql-toolbar.ql-snow {
+        border: none;
+        border-top: 1px solid var(--border);
+        background: var(--bg-card2);
+        padding: 10px 16px;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .ql-toolbar.ql-snow .ql-formats { margin-right: 8px; }
+    .ql-toolbar.ql-snow button,
+    .ql-toolbar.ql-snow .ql-picker-label {
+        color: var(--text-muted);
+        border-radius: 6px;
+        transition: background .15s, color .15s;
+    }
+    .ql-toolbar.ql-snow button:hover,
+    .ql-toolbar.ql-snow .ql-picker-label:hover { background: var(--bg-card); color: var(--text); }
+    .ql-toolbar.ql-snow button.ql-active,
+    .ql-toolbar.ql-snow .ql-picker-label.ql-active { color: var(--terra); }
+    .ql-toolbar.ql-snow .ql-stroke { stroke: currentColor; }
+    .ql-toolbar.ql-snow .ql-fill  { fill:   currentColor; }
+    .ql-toolbar.ql-snow .ql-picker-options {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+    }
+    .ql-container.ql-snow {
+        border: none;
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    .ql-editor {
+        min-height: 180px;
+        padding: 14px 24px;
+        color: var(--text);
+        caret-color: var(--terra);
+    }
+    .ql-editor.ql-blank::before {
+        color: var(--text-faint);
+        font-style: normal;
+        left: 24px;
+    }
+    .ql-editor h2 { font-family: var(--font-head); font-size: 1.3rem; font-weight: 700; margin: 12px 0 6px; }
+    .ql-editor h3 { font-family: var(--font-head); font-size: 1.1rem; font-weight: 600; margin: 10px 0 4px; }
+    .ql-editor blockquote {
+        border-left: 3px solid var(--terra);
+        padding-left: 14px;
+        color: var(--text-muted);
+        margin: 10px 0;
+        font-style: italic;
+    }
+    .ql-editor pre.ql-syntax {
+        background: var(--bg-card2);
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-size: .88rem;
+        color: var(--text);
+        border: 1px solid var(--border);
+    }
+    .ql-editor a { color: var(--terra); }
+    .ql-editor ul, .ql-editor ol { padding-left: 20px; }
+</style>
     .create-page { padding-top: calc(80px + env(safe-area-inset-top)); min-height: 100vh; }
 
     .create-wrap {
@@ -436,14 +502,9 @@
                 oninput="autoResize(this)"
             >{{ old('title') }}</textarea>
 
-            <!-- Corps -->
-            <textarea
-                class="post-body-input"
-                name="body"
-                id="postBody"
-                placeholder="Quoi de neuf ? Partage ton contenu avec la communauté..."
-                oninput="autoResize(this); updateCounter(this)"
-            >{{ old('body') }}</textarea>
+            <!-- Corps (Quill editor) -->
+            <div id="quillEditor" style="border:none;"></div>
+            <input type="hidden" name="body" id="postBody" value="{{ old('body') }}">
 
             <div class="post-meta-row">
                 <label for="postCategory" class="post-meta-label">Catégorie</label>
@@ -502,6 +563,7 @@
                     <input type="file" id="audioInput" name="audio" style="display:none" accept="audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/x-m4a">
                 </div>
                 <span class="char-counter" id="charCounter">0 / 5000</span>
+                <span id="quillWordCount" style="font-size:.72rem;color:var(--text-faint);"></span>
             </div>
 
             <!-- Visibilité -->
@@ -543,6 +605,7 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <script>
     /* ── Auto-resize textareas ── */
     function autoResize(el) {
@@ -550,12 +613,36 @@
         el.style.height = el.scrollHeight + 'px';
     }
 
-    function updateCounter(el) {
-        const len = el.value.length;
+    /* ── Quill rich editor ── */
+    const quill = new Quill('#quillEditor', {
+        theme: 'snow',
+        placeholder: 'Quoi de neuf ? Partage ton contenu avec la communauté...',
+        modules: {
+            toolbar: [
+                [{ header: [2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['link'],
+                ['clean'],
+            ],
+        },
+    });
+
+    // Pre-fill if old value exists (validation error)
+    const oldBody = document.getElementById('postBody').value;
+    if (oldBody) quill.clipboard.dangerouslyPasteHTML(oldBody);
+
+    // Sync hidden input + char counter on every change
+    quill.on('text-change', function() {
+        const html = quill.getSemanticHTML();
+        const hidden = document.getElementById('postBody');
+        hidden.value = html;
+        const len = quill.getText().trim().length;
         const counter = document.getElementById('charCounter');
         counter.textContent = len + ' / 5000';
         counter.className = 'char-counter' + (len > 4800 ? ' over' : len > 4000 ? ' warn' : '');
-    }
+    });
 
     /* ══════════════════════════════════════
        MULTI-IMAGE PICKER
@@ -779,6 +866,6 @@
     });
 
     /* ── Init ── */
-    document.querySelectorAll('.post-title-input, .post-body-input').forEach(autoResize);
+    document.querySelectorAll('.post-title-input').forEach(autoResize);
 </script>
 @endpush
