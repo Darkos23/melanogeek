@@ -17,7 +17,7 @@ class PostController extends Controller
 {
     public function create(): View
     {
-        $postCategories = collect(Post::CATEGORIES)->mapWithKeys(fn($v, $k) => [$k => $v[0]]);
+        $postCategories = Post::CATEGORIES;
         return view('posts.create', compact('postCategories'));
     }
 
@@ -175,7 +175,7 @@ class PostController extends Controller
     public function edit(Post $post): View
     {
         abort_if(auth()->id() !== $post->user_id, 403);
-        $postCategories = collect(Post::CATEGORIES)->mapWithKeys(fn($v, $k) => [$k => $v[0]]);
+        $postCategories = Post::CATEGORIES;
         return view('posts.edit', compact('post', 'postCategories'));
     }
 
