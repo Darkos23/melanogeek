@@ -468,7 +468,7 @@
 /* ══ CATÉGORIES — GRILLE LÉGÈRE ══ */
 .cat-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
