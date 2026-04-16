@@ -17,7 +17,8 @@ class PostController extends Controller
 {
     public function create(): View
     {
-        return view('posts.create');
+        $postCategories = collect(Post::CATEGORIES)->mapWithKeys(fn($v, $k) => [$k => $v[0]]);
+        return view('posts.create', compact('postCategories'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -169,6 +170,38 @@ class PostController extends Controller
         }
 
         return response()->json(['liked' => $liked, 'count' => $post->fresh()->likes_count]);
+    }
+
+    public function edit(Post $post): View
+    {
+        abort_if(auth()->id() !== $post->user_id, 403);
+        $postCategories = collect(Post::CATEGORIES)->mapWithKeys(fn($v, $k) => [$k => $v[0]]);
+        return view('posts.edit', compact('post', 'postCategories'));
+    }
+
+    public function update(Request $request, Post $post): RedirectResponse
+    {
+        abort_if(auth()->id() !== $post->user_id, 403);
+
+        $data = $request->validate([
+            'title'    => ['nullable', 'string', 'max:150'],
+            'body'     => ['nullable', 'string', 'max:5000'],
+            'category' => ['nullable', 'string', Rule::in(array_keys(Post::CATEGORIES))],
+            'thumbnail'=> ['nullable', 'file', 'image', 'mimetypes:image/jpeg,image/png,image/webp', 'max:5120'],
+        ]);
+
+        if ($request->hasFile('thumbnail')) {
+            if ($post->thumbnail) Storage::disk('public')->delete($post->thumbnail);
+            $data['thumbnail'] = $request->file('thumbnail')->store('posts/thumbnails', 'public');
+        }
+
+        $update = ['title' => $data['title'] ?? null, 'body' => $data['body'] ?? null, 'category' => $data['category'] ?? null];
+        if (isset($data['thumbnail']) && is_string($data['thumbnail'])) {
+            $update['thumbnail'] = $data['thumbnail'];
+        }
+        $post->update($update);
+
+        return redirect()->route('posts.show', $post->id)->with('status', 'post-updated');
     }
 
     public function publish(Post $post): RedirectResponse

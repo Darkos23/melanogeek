@@ -228,6 +228,15 @@
     .owner-actions {
         display: flex; gap: 8px;
     }
+    .btn-edit-post {
+        background: transparent; border: 1px solid var(--border-hover);
+        color: var(--text-muted); padding: 7px 14px; border-radius: 100px;
+        font-family: var(--font-body); font-size: .78rem; font-weight: 500;
+        text-decoration: none; display: inline-flex; align-items: center; gap: 5px;
+        transition: all .2s;
+    }
+    .btn-edit-post:hover { background: var(--bg-hover); color: var(--text); border-color: var(--text-muted); }
+
     .btn-delete-post {
         background: transparent; border: 1px solid rgba(224,85,85,.3);
         color: #E05555; padding: 7px 14px; border-radius: 100px;
@@ -391,6 +400,8 @@
 
     @if(session('status') === 'post-created')
         <div class="post-success">✓ Publication créée avec succès !</div>
+    @elseif(session('status') === 'post-updated')
+        <div class="post-success">✓ Publication mise à jour !</div>
     @endif
 
     <div class="post-card-full">
@@ -436,6 +447,7 @@
             @auth
                 @if(auth()->id() === $post->user_id)
                     <div class="owner-actions">
+                        <a href="{{ route('posts.edit', $post->id) }}" class="btn-edit-post">✏️ Modifier</a>
                         <form method="POST" action="{{ route('posts.destroy', $post->id) }}"
                               onsubmit="return confirm('Supprimer cette publication ?')">
                             @csrf @method('DELETE')
@@ -445,6 +457,13 @@
                 @endif
             @endauth
         </div>
+
+        {{-- Image de couverture --}}
+        @if($post->thumbnail)
+            <div style="margin:0 0 20px;border-radius:10px;overflow:hidden;aspect-ratio:16/6;background:var(--bg-card2);">
+                <img src="{{ asset('storage/'.$post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+            </div>
+        @endif
 
         {{-- Titre --}}
         @if($post->title)

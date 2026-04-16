@@ -311,7 +311,64 @@
         .blog-wrap { padding: 80px 16px 48px; }
         .blog-footer { padding: 24px 16px; flex-direction: column; text-align: center; }
         .blog-footer-links { flex-wrap: wrap; justify-content: center; }
+        /* User menu : pill → icon only */
+        .mg-user-name, #mgUserChevron { display: none !important; }
+        .mg-user-btn { padding: 4px; border-radius: 50%; }
     }
+
+    /* ── MOBILE NAV DRAWER ── */
+    .blog-mobile-nav {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: none;
+    }
+    .blog-mobile-nav.open { display: block; }
+    .blog-mobile-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.55);
+        backdrop-filter: blur(4px);
+    }
+    .blog-mobile-drawer {
+        position: absolute;
+        top: 0; right: 0;
+        width: min(300px, 85vw);
+        height: 100%;
+        background: var(--bg-card);
+        border-left: 1px solid var(--border);
+        padding: 24px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        overflow-y: auto;
+        transform: translateX(100%);
+        transition: transform .25s cubic-bezier(.4,0,.2,1);
+    }
+    .blog-mobile-nav.open .blog-mobile-drawer { transform: translateX(0); }
+    .blog-mobile-close {
+        align-self: flex-end;
+        background: var(--toggle-bg);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: .78rem;
+        cursor: pointer;
+        margin-bottom: 12px;
+    }
+    .blog-mobile-link {
+        display: block;
+        padding: 11px 14px;
+        border-radius: 10px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: .88rem;
+        font-weight: 500;
+        transition: background .15s, color .15s;
+    }
+    .blog-mobile-link:hover { background: var(--bg-hover); color: var(--text); }
+    .blog-mobile-divider { height: 1px; background: var(--border); margin: 8px 0; }
     </style>
 
     @stack('styles')
@@ -404,6 +461,29 @@
 </div>
 
 {{-- â•â• CONTENU â•â• --}}
+
+{{-- ── MOBILE NAV DRAWER ── --}}
+<div class="blog-mobile-nav" id="blogMobileNav">
+    <div class="blog-mobile-overlay" id="blogMobileOverlay"></div>
+    <div class="blog-mobile-drawer">
+        <button class="blog-mobile-close" id="blogMobileClose">✕ Fermer</button>
+        <a href="{{ route('blog.index') }}" class="blog-mobile-link">Blog</a>
+        <a href="{{ route('forum.index') }}" class="blog-mobile-link">Forum</a>
+        <div class="blog-mobile-divider"></div>
+        @guest
+            <a href="{{ route('login') }}" class="blog-mobile-link">Connexion</a>
+            <a href="{{ route('register') }}" class="blog-mobile-link" style="color:var(--terra);font-weight:700;">Rejoindre</a>
+        @else
+            <a href="{{ route('profile.show', auth()->user()->username) }}" class="blog-mobile-link">Mon profil</a>
+            <a href="{{ route('profile.edit') }}" class="blog-mobile-link">Paramètres</a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="blog-mobile-link" style="width:100%;background:none;border:none;text-align:left;cursor:pointer;color:#f87171;">Déconnexion</button>
+            </form>
+        @endguest
+    </div>
+</div>
+
 <div class="blog-wrap">
     <main class="blog-main">
         @if(isset($breadcrumbs))
@@ -527,6 +607,7 @@
 </style>
 <script>
 (function(){
+    // User dropdown
     const btn  = document.getElementById('mgUserBtn');
     const drop = document.getElementById('mgUserDropdown');
     const chev = document.getElementById('mgUserChevron');
@@ -541,6 +622,17 @@
             if(chev) chev.style.transform = '';
         });
     }
+
+    // Hamburger / mobile drawer
+    const ham     = document.getElementById('blogHamburger');
+    const mNav    = document.getElementById('blogMobileNav');
+    const mClose  = document.getElementById('blogMobileClose');
+    const mOver   = document.getElementById('blogMobileOverlay');
+    function openMobile(){ mNav.classList.add('open'); ham && ham.classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeMobile(){ mNav.classList.remove('open'); ham && ham.classList.remove('open'); document.body.style.overflow=''; }
+    if(ham) ham.addEventListener('click', openMobile);
+    if(mClose) mClose.addEventListener('click', closeMobile);
+    if(mOver)  mOver.addEventListener('click', closeMobile);
 })();
 </script>
 </body>

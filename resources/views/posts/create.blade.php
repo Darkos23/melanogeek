@@ -131,6 +131,38 @@
     .author-handle { font-size: .78rem; color: var(--text-muted); }
 
     /* ── TEXTAREA & TITLE ── */
+    /* Cover image zone */
+    .cover-upload-zone {
+        position: relative;
+        margin: 0 0 4px;
+        aspect-ratio: 16/5;
+        border-radius: 10px;
+        border: 1.5px dashed var(--border-hover);
+        background: var(--bg);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        overflow: hidden;
+        transition: border-color .2s, background .2s;
+    }
+    .cover-upload-zone:hover { border-color: var(--terra); background: rgba(200,82,42,.04); }
+    .cover-upload-zone.has-cover { border-style: solid; border-color: transparent; }
+    .cover-placeholder {
+        display: flex; flex-direction: column; align-items: center; gap: 8px;
+        color: var(--text-muted); font-size: .72rem; font-family: var(--font-body);
+        pointer-events: none;
+    }
+    .cover-remove-btn {
+        position: absolute; top: 8px; right: 8px;
+        width: 26px; height: 26px;
+        background: rgba(0,0,0,.6); color: #fff;
+        border: none; border-radius: 50%;
+        font-size: .72rem; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        z-index: 2;
+        transition: background .2s;
+    }
+    .cover-remove-btn:hover { background: rgba(200,50,50,.8); }
+
     .post-title-input {
         width: 100%;
         background: transparent; border: none; outline: none;
@@ -494,6 +526,17 @@
                 </div>
             </div>
 
+            <!-- Image de couverture -->
+            <div class="cover-upload-zone" id="coverZone" onclick="document.getElementById('coverInput').click()">
+                <img id="coverPreview" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;">
+                <div class="cover-placeholder" id="coverPlaceholder">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.4"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                    <span>Ajouter une image de couverture</span>
+                </div>
+                <button type="button" class="cover-remove-btn" id="coverRemoveBtn" style="display:none;" onclick="removeCover(event)">✕</button>
+                <input type="file" id="coverInput" name="thumbnail" accept="image/jpeg,image/png,image/webp" style="display:none">
+            </div>
+
             <!-- Titre (optionnel) -->
             <textarea
                 class="post-title-input"
@@ -559,8 +602,6 @@
                     <input type="file" id="imgMoreInput"   accept="image/jpeg,image/png,image/gif,image/webp" multiple style="display:none">
                     {{-- Vidéo: single --}}
                     <input type="file" id="videoInput" name="media" style="display:none" accept="video/mp4,video/quicktime,video/webm">
-                    {{-- Thumbnail vidéo --}}
-                    <input type="file" id="thumbnailInput" name="thumbnail" style="display:none" accept="image/jpeg,image/png,image/webp">
                     {{-- Audio de fond --}}
                     <input type="file" id="audioInput" name="audio" style="display:none" accept="audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/x-m4a">
                 </div>
@@ -765,25 +806,8 @@
         const url  = URL.createObjectURL(this.files[0]);
         wrap.innerHTML = `
             <video src="${url}" controls style="width:100%;max-height:400px;display:block;" id="videoPreviewEl"></video>
-            <div id="thumbRow" style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card2);border-top:1px solid var(--border);border-radius:0 0 14px 14px;">
-                <span style="font-size:.8rem;color:var(--text-muted);flex-shrink:0;">📷 Couverture :</span>
-                <label for="thumbnailInput" id="thumbLabel" style="cursor:pointer;font-size:.78rem;color:var(--terra);font-weight:600;white-space:nowrap;">+ Ajouter une image</label>
-                <span id="thumbName" style="font-size:.75rem;color:var(--text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-                <img id="thumbPreviewImg" style="display:none;height:36px;width:54px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-            </div>
             <button type="button" class="media-preview-remove" onclick="removeVideo()">✕</button>`;
         wrap.classList.add('visible');
-
-        // Thumbnail input listener
-        document.getElementById('thumbnailInput').addEventListener('change', function() {
-            if (!this.files || !this.files[0]) return;
-            const tUrl = URL.createObjectURL(this.files[0]);
-            document.getElementById('thumbPreviewImg').src = tUrl;
-            document.getElementById('thumbPreviewImg').style.display = 'block';
-            document.getElementById('thumbName').textContent = this.files[0].name;
-            document.getElementById('thumbLabel').textContent = '✓ Changer';
-            document.getElementById('videoPreviewEl').poster = tUrl;
-        });
     });
 
     function removeVideo() {
@@ -791,7 +815,6 @@
         wrap.innerHTML = '';
         wrap.classList.remove('visible');
         document.getElementById('videoInput').value = '';
-        document.getElementById('thumbnailInput').value = '';
     }
 
     /* ── Audio ── */
@@ -807,6 +830,28 @@
         document.getElementById('audioInput').value = '';
         document.getElementById('audioPreview').classList.remove('visible');
         document.getElementById('audioPickerBtn').classList.remove('active');
+    }
+
+    /* ── Cover image ── */
+    document.getElementById('coverInput').addEventListener('change', function() {
+        if (!this.files || !this.files[0]) return;
+        const url = URL.createObjectURL(this.files[0]);
+        const preview = document.getElementById('coverPreview');
+        preview.src = url;
+        preview.style.display = 'block';
+        document.getElementById('coverPlaceholder').style.display = 'none';
+        document.getElementById('coverRemoveBtn').style.display = 'flex';
+        document.getElementById('coverZone').classList.add('has-cover');
+    });
+
+    function removeCover(e) {
+        e.stopPropagation();
+        document.getElementById('coverInput').value = '';
+        document.getElementById('coverPreview').style.display = 'none';
+        document.getElementById('coverPreview').src = '';
+        document.getElementById('coverPlaceholder').style.display = 'flex';
+        document.getElementById('coverRemoveBtn').style.display = 'none';
+        document.getElementById('coverZone').classList.remove('has-cover');
     }
 
     /* ── Toggle visibilité ── */

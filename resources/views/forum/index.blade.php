@@ -396,6 +396,12 @@
     .forum-thread { grid-template-columns: 1fr 60px 80px; }
     .forum-thread-num:nth-child(3) { display: none; }
 }
+@media (max-width: 480px) {
+    .forum-cats { grid-template-columns: 1fr; }
+    .forum-thread { grid-template-columns: 1fr; gap: 4px; }
+    .forum-thread-num { display: none; }
+    .forum-thread-last { display: none; }
+}
 </style>
 @endpush
 

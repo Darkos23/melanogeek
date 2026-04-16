@@ -2,6 +2,24 @@
 
 @section('title', 'Blog')
 
+@push('styles')
+<style>
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--border);
+    margin-bottom: 28px;
+}
+@media (max-width: 600px) {
+    .posts-grid { grid-template-columns: 1fr; }
+}
+</style>
+@endpush
+
 @section('main')
 
 {{-- ── EN-TÊTE PAGE ── --}}
@@ -141,14 +159,20 @@
 
 {{-- ── GRILLE ARTICLES ── --}}
 @if($rest->isNotEmpty())
-<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--border);margin-bottom:28px">
+<div class="posts-grid">
     @foreach($rest as $post)
     @php
         $excerpt = Str::limit(strip_tags($post->body ?? ''), 120);
         $mins    = max(1,(int)ceil(str_word_count(strip_tags($post->body??''))/200));
         $initial = strtoupper(substr($post->user->name ?? '?',0,1));
     @endphp
-    <a href="{{ route('posts.show', $post->id) }}" style="background:var(--bg-card);padding:24px 26px;text-decoration:none;display:block;transition:background .18s;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='var(--bg-card)'">
+    <a href="{{ route('posts.show', $post->id) }}" style="background:var(--bg-card);text-decoration:none;display:block;transition:background .18s;overflow:hidden;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='var(--bg-card)'">
+        @if($post->thumbnail)
+        <div style="aspect-ratio:16/7;overflow:hidden;">
+            <img src="{{ asset('storage/'.$post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        @endif
+        <div style="padding:18px 22px 20px;">
         @if($post->category)
         <div style="font-family:'JetBrains Mono',monospace;font-size:.54rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">
             {{ $post->category_label }}
@@ -173,6 +197,7 @@
             <span>{{ $post->created_at->format('d M Y') }}</span>
             <span style="width:3px;height:3px;background:var(--text-faint);border-radius:50%"></span>
             <span>{{ $mins }} min</span>
+        </div>
         </div>
     </a>
     @endforeach
