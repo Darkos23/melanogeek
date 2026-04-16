@@ -381,21 +381,21 @@
         @else
             {{-- Sidebar par dÃ©faut --}}
             <div class="sidebar-block">
-                <div class="sidebar-block-head">CatÃ©gories</div>
+                <div class="sidebar-block-head">Catégories</div>
                 <div class="sidebar-block-body">
                     @php $activeCategory = request('category'); @endphp
                     <a href="{{ route('blog.index') }}" class="sb-item {{ !$activeCategory ? 'active' : '' }}">
-                        <span class="sb-item-icon">âœ¦</span>
+                        <span class="sb-item-icon">✦</span>
                         <span class="sb-item-name">Tout</span>
                     </a>
                     @foreach([
-                        ['manga-anime',   'ðŸŽŒ', 'Manga & AnimÃ©'],
-                        ['gaming',        'ðŸŽ®', 'Gaming'],
-                        ['tech',          'ðŸ’»', 'Tech & IA'],
-                        ['dev',           'ðŸ› ï¸', 'DÃ©veloppement'],
-                        ['cinema-series', 'ðŸŽ¬', 'CinÃ©ma & SÃ©ries'],
-                        ['culture',       'ðŸŒ', 'Culture & SociÃ©tÃ©'],
-                        ['debat',         'ðŸ’¬', 'DÃ©bat'],
+                        ['manga-anime',   '🎌', 'Manga & Animé'],
+                        ['gaming',        '🎮', 'Gaming'],
+                        [‘tech’,          ‘💻’, ‘Tech & IA’],
+                        ['dev',           '🛠️', 'Développement'],
+                        ['cinema-series', '🎬', 'Cinéma & Séries'],
+                        ['culture',       '🌍', 'Culture & Société'],
+                        ['debat',         '💬', 'Débat'],
                     ] as [$slug, $icon, $name])
                     <a href="{{ route('blog.index') }}?category={{ $slug }}"
                        class="sb-item {{ $activeCategory === $slug ? 'active' : '' }}">
