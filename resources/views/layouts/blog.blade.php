@@ -45,9 +45,9 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        background: rgba(13,9,5,.92);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: var(--nav-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border-bottom: 1px solid var(--border);
     }
     .blog-nav {
@@ -131,12 +131,8 @@
     .blog-nav-btn:hover { background: #fff; }
 
     .blog-editorial-bar {
-        border-bottom: 1px solid var(--border);
         border-top: 1px solid var(--border);
-        margin-top: 14px;
-        background: rgba(31,31,31,.94);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        background: transparent;
         max-width: 1280px;
         margin-left: auto;
         margin-right: auto;
