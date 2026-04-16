@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Story;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -14,7 +13,6 @@ class ExploreController extends Controller
     {
         $query  = $request->input('q');
         $type   = $request->input('type');   // image | video | text
-        $niche  = $request->input('niche');
         $sort   = $request->input('sort', 'trending'); // trending | recent
 
         $posts = Post::with(['user'])
@@ -30,9 +28,6 @@ class ExploreController extends Controller
                 )
             )
             ->when($type, fn ($q) => $q->where('media_type', $type))
-            ->when($niche, fn ($q) =>
-                $q->whereHas('user', fn ($u) => $u->where('niche', $niche))
-            )
             ->when($sort === 'trending',
                 fn ($q) => $q->orderByDesc('likes_count')->orderByDesc('comments_count'),
                 fn ($q) => $q->latest()
@@ -40,16 +35,7 @@ class ExploreController extends Controller
             ->paginate(24)
             ->withQueryString();
 
-        // Niches disponibles pour les filtres
-        $niches = User::where('is_active', true)
-            ->where('is_private', false)
-            ->whereNotNull('niche')
-            ->distinct()
-            ->pluck('niche')
-            ->sort()
-            ->values();
-
-        // Utilisateurs avec des stories actives (requête directe sur users, plus efficace)
+        // Utilisateurs avec des stories actives
         $storyUsers = User::select('id', 'name', 'username', 'avatar', 'is_verified')
             ->whereHas('stories', fn ($q) => $q->where('expires_at', '>', now()))
             ->where('is_active', true)
@@ -57,6 +43,6 @@ class ExploreController extends Controller
             ->limit(30)
             ->get();
 
-        return view('explore.index', compact('posts', 'niches', 'query', 'type', 'niche', 'sort', 'storyUsers'));
+        return view('explore.index', compact('posts', 'query', 'type', 'sort', 'storyUsers'));
     }
 }
