@@ -104,6 +104,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
     Route::patch('/reports/{report}/dismiss', [AdminController::class, 'reportDismiss'])->name('reports.dismiss');
     Route::patch('/reports/{report}/remove-post', [AdminController::class, 'reportRemovePost'])->name('reports.remove-post');
+
+    // Seeder de contenu (one-shot)
+    Route::get('/seed-content', function () {
+        \Artisan::call('db:seed', ['--class' => 'ContentSeeder', '--force' => true]);
+        $output = \Artisan::output();
+        return response('<pre style="background:#111;color:#8f8;padding:20px;font-family:monospace">'
+            . e($output)
+            . "\n✅ Terminé. <a href='/blog' style='color:#C8522A'>Voir le blog</a> · <a href='/forum' style='color:#C8522A'>Voir le forum</a></pre>");
+    })->name('seed-content');
 });
 
 // Owner
