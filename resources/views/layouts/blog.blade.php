@@ -543,23 +543,27 @@
                 </div>
             </div>
 
+            @php
+                $sbCatCounts = \App\Models\Post::published()
+                    ->whereNotNull('category')
+                    ->selectRaw('category, count(*) as total')
+                    ->groupBy('category')
+                    ->pluck('total', 'category');
+            @endphp
+            @if($sbCatCounts->isNotEmpty())
             <div class="sidebar-block">
-                <div class="sidebar-block-head">Tags populaires</div>
+                <div class="sidebar-block-head">Catégories</div>
                 <div class="sb-tags">
-                    <a href="#" class="sb-tag">afrofuturisme</a>
-                    <a href="#" class="sb-tag">manga</a>
-                    <a href="#" class="sb-tag">gaming</a>
-                    <a href="#" class="sb-tag">IA</a>
-                    <a href="#" class="sb-tag">cosplay</a>
-                    <a href="#" class="sb-tag">Nollywood</a>
-                    <a href="#" class="sb-tag">webtoon</a>
-                    <a href="#" class="sb-tag">esports</a>
-                    <a href="#" class="sb-tag">RPG</a>
-                    <a href="#" class="sb-tag">SF africaine</a>
-                    <a href="#" class="sb-tag">comics</a>
-                    <a href="#" class="sb-tag">pixel art</a>
+                    @foreach(\App\Models\Post::CATEGORIES as $slug => $label)
+                        @if($sbCatCounts->has($slug))
+                        <a href="{{ route('blog.index') }}?category={{ $slug }}" class="sb-tag">
+                            {{ $label }} <span style="opacity:.5;font-size:.8em">({{ $sbCatCounts[$slug] }})</span>
+                        </a>
+                        @endif
+                    @endforeach
                 </div>
             </div>
+            @endif
 
             <div class="sidebar-block">
                 <div class="sidebar-block-head">Newsletter</div>

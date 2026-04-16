@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ForumThread;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
@@ -49,6 +50,10 @@ class HomeController extends Controller
             'comments' => Comment::count(),
         ];
 
-        return view('welcome', compact('featured', 'side_posts', 'discussions', 'stats', 'category_counts'));
+        $forum_cat_counts = ForumThread::selectRaw('category, count(*) as total')
+            ->groupBy('category')
+            ->pluck('total', 'category');
+
+        return view('welcome', compact('featured', 'side_posts', 'discussions', 'stats', 'category_counts', 'forum_cat_counts'));
     }
 }

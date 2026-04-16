@@ -926,19 +926,12 @@
                     <div style="padding:16px 22px;border-bottom:1px solid var(--border)">
                         <span style="font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)">Thèmes</span>
                     </div>
-                    @foreach([
-                        ['🎌','Manga & Animé','Débats, recommandations'],
-                        ['🎮','Gaming','Reviews, tournois, news'],
-                        ['💻','Tech & IA','Projets, outils, tutoriels'],
-                        ['🌍','Culture africaine','Mythes, arts, traditions'],
-                        ['🎭','Cosplay','Créations, conseils'],
-                        ['☕','Off-topic','Détente & bavardages'],
-                    ] as [$icon, $name, $desc])
-                    <a href="{{ route('forum.index') }}" class="forum-cat-item">
+                    @foreach(\App\Models\ForumThread::CATEGORIES as $slug => [$label, $icon])
+                    <a href="{{ route('forum.index') }}?cat={{ $slug }}" class="forum-cat-item">
                         <div class="fci-icon">{{ $icon }}</div>
                         <div class="fci-info">
-                            <div class="fci-name">{{ $name }}</div>
-                            <div class="fci-desc">{{ $desc }}</div>
+                            <div class="fci-name">{{ $label }}</div>
+                            <div class="fci-desc">{{ $forum_cat_counts[$slug] ?? 0 }} discussion{{ ($forum_cat_counts[$slug] ?? 0) != 1 ? 's' : '' }}</div>
                         </div>
                     </a>
                     @endforeach
