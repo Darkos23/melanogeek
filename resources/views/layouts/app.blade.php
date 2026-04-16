@@ -433,11 +433,11 @@
         <strong>MelanoGeek</strong> · Vol. I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
     </div>
     <ul class="mg-editorial-links">
-        <li><a href="{{ route('blog.index') }}?category=manga-anime">Manga</a></li>
-        <li><a href="{{ route('blog.index') }}?category=gaming">Gaming</a></li>
-        <li><a href="{{ route('blog.index') }}?category=dev">Développement</a></li>
-        <li><a href="{{ route('blog.index') }}?category=tech">Tech &amp; IA</a></li>
-        <li><a href="{{ route('blog.index') }}?category=cinema-series">Cinéma</a></li>
+        <li><a href="{{ route('blog.index') }}?category=manga-anime" class="{{ request('category') === 'manga-anime' ? 'active' : '' }}">Manga</a></li>
+        <li><a href="{{ route('blog.index') }}?category=gaming"      class="{{ request('category') === 'gaming'      ? 'active' : '' }}">Gaming</a></li>
+        <li><a href="{{ route('blog.index') }}?category=dev"         class="{{ request('category') === 'dev'         ? 'active' : '' }}">Développement</a></li>
+        <li><a href="{{ route('blog.index') }}?category=tech"        class="{{ request('category') === 'tech'        ? 'active' : '' }}">Tech &amp; IA</a></li>
+        <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">Cinéma</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
     </ul>
 </div>

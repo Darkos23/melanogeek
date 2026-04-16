@@ -2,49 +2,6 @@
 
 @push('styles')
 <style>
-/* ── EDITORIAL BAR ── */
-.blog-editorial-bar {
-    border-bottom: 1px solid var(--border);
-    background: transparent;
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.blog-editorial-inner {
-    padding: 9px 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-}
-.blog-editorial-id {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .6rem;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    white-space: nowrap;
-}
-.blog-editorial-id strong { color: var(--gold); font-weight: 600; }
-.blog-editorial-links {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    list-style: none;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-}
-.blog-editorial-links a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    text-decoration: none;
-    transition: color .18s;
-}
-.blog-editorial-links a:hover,
-.blog-editorial-links a.active { color: var(--gold); }
 
 /* ── LAYOUT PRINCIPAL ── */
 .blog-wrap {
@@ -158,7 +115,6 @@
     .blog-sidebar { position: static; }
 }
 @media (max-width: 768px) {
-    .blog-editorial-bar { display: none; }
     .blog-wrap { padding: 24px 16px 48px; }
     .blog-footer { padding: 24px 16px; flex-direction: column; text-align: center; }
     .blog-footer-links { flex-wrap: wrap; justify-content: center; }
@@ -167,23 +123,6 @@
 @endpush
 
 @section('content')
-
-{{-- ══ EDITORIAL BAR ══ --}}
-<div class="blog-editorial-bar">
-    <div class="blog-editorial-inner">
-        <div class="blog-editorial-id">
-            <strong>MelanoGeek</strong> · Vol. I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
-        </div>
-        <ul class="blog-editorial-links">
-            <li><a href="{{ route('blog.index') }}?category=manga-anime" class="{{ request('category') === 'manga-anime' ? 'active' : '' }}">Manga</a></li>
-            <li><a href="{{ route('blog.index') }}?category=gaming"      class="{{ request('category') === 'gaming'      ? 'active' : '' }}">Gaming</a></li>
-            <li><a href="{{ route('blog.index') }}?category=dev"         class="{{ request('category') === 'dev'         ? 'active' : '' }}">Développement</a></li>
-            <li><a href="{{ route('blog.index') }}?category=tech"        class="{{ request('category') === 'tech'        ? 'active' : '' }}">Tech &amp; IA</a></li>
-            <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">Cinéma</a></li>
-            <li><a href="{{ route('forum.index') }}">Forum</a></li>
-        </ul>
-    </div>
-</div>
 
 {{-- ══ TWO-COLUMN LAYOUT ══ --}}
 <div class="blog-wrap">
