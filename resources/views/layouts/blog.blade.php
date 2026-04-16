@@ -41,9 +41,19 @@
     a { cursor: pointer; } button { cursor: pointer; }
 
     /* â”€â”€â”€ NAVIGATION â”€â”€â”€ */
+    .blog-nav-wrapper {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(13,9,5,.92);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+    }
     .blog-nav {
         position: relative;
-        padding: 40px 48px 0;
+        padding: 0 48px;
+        height: 64px;
         display: flex; align-items: center; justify-content: space-between; gap: 24px;
         background: transparent;
         border: none;
@@ -309,6 +319,7 @@
 <body>
 
 {{-- â•â• NAVIGATION â•â• --}}
+<div class="blog-nav-wrapper">
 <nav class="blog-nav">
     <a href="{{ route('home') }}" class="blog-nav-logo">
         <div class="blog-nav-logo-name">melanogeek</div>
@@ -389,6 +400,7 @@
             <li><a href="{{ route('forum.index') }}" >Forum</a></li>
         </ul>
     </div>
+</div>
 </div>
 
 {{-- â•â• CONTENU â•â• --}}
