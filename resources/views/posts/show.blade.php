@@ -4,6 +4,20 @@
 
 @push('styles')
 <style>
+    /* ── BARRE DE LECTURE ── */
+    #mg-read-bar {
+        position: fixed;
+        top: 0; left: 0;
+        height: 3px;
+        width: 0%;
+        background: linear-gradient(90deg, var(--terra), var(--gold));
+        z-index: 10000;
+        pointer-events: none;
+        transition: width .08s linear;
+        border-radius: 0 2px 2px 0;
+        box-shadow: 0 0 8px rgba(200,82,42,.55);
+    }
+
     .post-page { padding-top: calc(80px + env(safe-area-inset-top)); min-height: 100vh; }
 
     .post-wrap {
@@ -476,6 +490,7 @@
 @endpush
 
 @section('content')
+<div id="mg-read-bar" aria-hidden="true"></div>
 <div class="post-page">
 <div class="post-wrap">
 
@@ -1147,6 +1162,20 @@
         if (window.location.hash === '#comments') {
             setTimeout(() => document.getElementById('comments')?.scrollIntoView({ behavior: 'smooth' }), 400);
         }
+    })();
+
+    /* ── Barre de progression lecture ── */
+    (function () {
+        const bar = document.getElementById('mg-read-bar');
+        if (!bar) return;
+        function updateBar() {
+            const scrollTop  = window.scrollY;
+            const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+            const pct        = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            bar.style.width  = Math.min(pct, 100) + '%';
+        }
+        window.addEventListener('scroll', updateBar, { passive: true });
+        updateBar();
     })();
 </script>
 @endpush
