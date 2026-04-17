@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Helpers\ImageHelper;
 
 class PostController extends Controller
 {
@@ -65,7 +66,8 @@ class PostController extends Controller
             $mediaType = 'video';
             // Thumbnail optionnel pour les vidéos
             if ($request->hasFile('thumbnail')) {
-                $thumbnailUrl = $request->file('thumbnail')->store('posts/thumbnails', 'public');
+                $raw = $request->file('thumbnail')->store('posts/thumbnails', 'public');
+                $thumbnailUrl = ImageHelper::cropAndResizePath($raw);
             }
         }
 
@@ -74,6 +76,12 @@ class PostController extends Controller
             $audioFile = $request->file('audio');
             $audioUrl  = $audioFile->store('posts/audio', 'public');
             $audioName = pathinfo($audioFile->getClientOriginalName(), PATHINFO_FILENAME);
+        }
+
+        // Thumbnail pour les posts texte/article (hors vidéo déjà traité au-dessus)
+        if (! $hasVideo && $request->hasFile('thumbnail')) {
+            $raw = $request->file('thumbnail')->store('posts/thumbnails', 'public');
+            $thumbnailUrl = ImageHelper::cropAndResizePath($raw);
         }
 
         $post = $request->user()->posts()->create([
@@ -192,7 +200,8 @@ class PostController extends Controller
 
         if ($request->hasFile('thumbnail')) {
             if ($post->thumbnail) Storage::disk('public')->delete($post->thumbnail);
-            $data['thumbnail'] = $request->file('thumbnail')->store('posts/thumbnails', 'public');
+            $raw = $request->file('thumbnail')->store('posts/thumbnails', 'public');
+            $data['thumbnail'] = ImageHelper::cropAndResizePath($raw);
         }
 
         $update = ['title' => $data['title'] ?? null, 'body' => $data['body'] ?? null, 'category' => $data['category'] ?? null];
