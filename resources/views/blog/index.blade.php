@@ -97,19 +97,123 @@
 .posts-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    background: var(--border);
-    margin-bottom: 28px;
+    gap: 16px;
+    margin-bottom: 32px;
 }
 @media (max-width: 700px) {
     .featured-card { grid-template-columns: 1fr; min-height: unset; }
     .featured-img-wrap { aspect-ratio: 16/7; }
     .featured-content { padding: 20px 18px; }
-    .posts-grid { grid-template-columns: 1fr; }
+    .posts-grid { grid-template-columns: 1fr; gap: 12px; }
 }
+
+/* Card individuelle */
+.post-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .2s, transform .2s, box-shadow .2s;
+}
+.post-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,.35);
+}
+
+/* Banner : image OU gradient placeholder */
+.post-card-banner {
+    width: 100%;
+    aspect-ratio: 16/8;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+.post-card-banner img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform .4s ease;
+}
+.post-card:hover .post-card-banner img { transform: scale(1.04); }
+
+/* Gradients par catégorie quand pas d'image */
+.post-card-banner.cat-manga-anime  { background: linear-gradient(135deg,#1a0a2e,#4a1a6e,#8b2fc9); }
+.post-card-banner.cat-gaming       { background: linear-gradient(135deg,#0a1a0a,#0d3b1a,#1a6b35); }
+.post-card-banner.cat-tech         { background: linear-gradient(135deg,#0a1628,#0d3060,#1a5cb8); }
+.post-card-banner.cat-dev          { background: linear-gradient(135deg,#1a1200,#4a3400,#8b6200); }
+.post-card-banner.cat-cinema-series{ background: linear-gradient(135deg,#1a0808,#4a1010,#9b1a1a); }
+.post-card-banner.cat-culture      { background: linear-gradient(135deg,#0a1a0a,#1a3a10,#2d6b1a); }
+.post-card-banner.cat-debat        { background: linear-gradient(135deg,#1a1218,#3a1a38,#6b2060); }
+.post-card-banner.cat-default      { background: linear-gradient(135deg,var(--bg-card2),var(--bg-hover)); }
+
+/* Icône centrée dans le placeholder */
+.post-card-banner-icon {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.4rem;
+    opacity: .35;
+}
+
+/* Corps de la carte */
+.post-card-body {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 10px;
+}
+.post-card-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .57rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--terra);
+}
+.post-card-title {
+    font-family: var(--font-head);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: rgba(255,255,255,.90);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.post-card-excerpt {
+    font-size: .76rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+}
+.post-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: .62rem;
+    color: var(--text-muted);
+    margin-top: auto;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+}
+.post-card-avi {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: .58rem; font-weight: 700; color: white;
+    flex-shrink: 0; overflow: hidden;
+}
+.post-card-avi img { width: 100%; height: 100%; object-fit: cover; }
+.post-card-dot { width: 3px; height: 3px; background: var(--text-faint); border-radius: 50%; flex-shrink: 0; }
 </style>
 @endpush
 
@@ -259,42 +363,58 @@
 <div class="posts-grid">
     @foreach($rest as $post)
     @php
-        $excerpt = Str::limit(strip_tags($post->body ?? ''), 120);
-        $mins    = max(1,(int)ceil(str_word_count(strip_tags($post->body??''))/200));
-        $initial = strtoupper(substr($post->user->name ?? '?',0,1));
+        $excerpt  = Str::limit(strip_tags($post->body ?? ''), 130);
+        $mins     = max(1,(int)ceil(str_word_count(strip_tags($post->body??''))/200));
+        $initial  = strtoupper(substr($post->user->name ?? '?', 0, 1));
+        $thumbUrl = $post->thumbnail
+            ? asset('storage/'.$post->thumbnail)
+            : ($post->media_url && $post->media_type === 'image' ? asset('storage/'.$post->media_url) : null);
+        $catClass = $post->category ? 'cat-'.str_replace('_','-',$post->category) : 'cat-default';
+        $catIcons = [
+            'manga-anime'   => '🎌',
+            'gaming'        => '🎮',
+            'tech'          => '💻',
+            'dev'           => '⌨️',
+            'cinema-series' => '🎬',
+            'culture'       => '🌍',
+            'debat'         => '💬',
+        ];
+        $catIcon = $catIcons[$post->category] ?? '📰';
     @endphp
-    <a href="{{ route('posts.show', $post->id) }}" style="background:var(--bg-card);text-decoration:none;display:block;transition:background .18s;overflow:hidden;" onmouseover="this.style.background='var(--bg-hover)'" onmouseout="this.style.background='var(--bg-card)'">
-        @if($post->thumbnail)
-        <div style="aspect-ratio:16/7;overflow:hidden;">
-            <img src="{{ asset('storage/'.$post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-        </div>
-        @endif
-        <div style="padding:18px 22px 20px;">
-        @if($post->category)
-        <div style="font-family:'JetBrains Mono',monospace;font-size:.54rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">
-            {{ $post->category_label }}
-        </div>
-        @endif
-        <div style="font-family:var(--font-head);font-size:.95rem;font-weight:700;line-height:1.35;color:rgba(255,255,255,.88);margin-bottom:8px">
-            {{ $post->title }}
-        </div>
-        @if($excerpt)
-        <div style="font-size:.72rem;color:var(--text-muted);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">
-            {{ $excerpt }}
-        </div>
-        @endif
-        <div style="display:flex;align-items:center;gap:8px;font-size:.6rem;color:var(--text-muted)">
-            @if($post->user->avatar)
-                <img src="{{ asset('storage/'.$post->user->avatar) }}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;flex-shrink:0" alt="">
+    <a href="{{ route('posts.show', $post->id) }}" class="post-card">
+
+        {{-- Banner : image ou gradient coloré par catégorie --}}
+        <div class="post-card-banner {{ $thumbUrl ? '' : $catClass }}">
+            @if($thumbUrl)
+                <img src="{{ $thumbUrl }}" alt="{{ $post->title }}">
             @else
-                <div style="width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--terra),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;color:white;flex-shrink:0">{{ $initial }}</div>
+                <div class="post-card-banner-icon">{{ $catIcon }}</div>
             @endif
-            <span>{{ $post->user->name }}</span>
-            <span style="width:3px;height:3px;background:var(--text-faint);border-radius:50%"></span>
-            <span>{{ $post->created_at->format('d M Y') }}</span>
-            <span style="width:3px;height:3px;background:var(--text-faint);border-radius:50%"></span>
-            <span>{{ $mins }} min</span>
         </div>
+
+        {{-- Contenu --}}
+        <div class="post-card-body">
+            @if($post->category)
+            <div class="post-card-cat">{{ $post->category_label }}</div>
+            @endif
+            <div class="post-card-title">{{ $post->title }}</div>
+            @if($excerpt)
+            <div class="post-card-excerpt">{{ $excerpt }}</div>
+            @endif
+            <div class="post-card-meta">
+                <div class="post-card-avi">
+                    @if($post->user->avatar)
+                        <img src="{{ asset('storage/'.$post->user->avatar) }}" alt="">
+                    @else
+                        {{ $initial }}
+                    @endif
+                </div>
+                <span>{{ $post->user->name }}</span>
+                <span class="post-card-dot"></span>
+                <span>{{ $post->created_at->format('d M Y') }}</span>
+                <span class="post-card-dot"></span>
+                <span>{{ $mins }} min</span>
+            </div>
         </div>
     </a>
     @endforeach
