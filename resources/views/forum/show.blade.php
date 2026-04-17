@@ -188,7 +188,7 @@
 @section('main')
 <div class="thread-wrap">
 
-<a href="{{ route('forum.index') }}" style="font-size:.82rem;color:var(--text-muted);text-decoration:none;display:inline-block;margin-bottom:16px;">← Forum</a>
+<a href="{{ route('forum.index') }}" style="font-size:.82rem;color:var(--text-muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;"><x-icon name="arrow-left" :size="14"/> Forum</a>
 
 @if(session('status') === 'reply-added')
 <div style="background:rgba(45,90,61,.12);border:1px solid rgba(45,90,61,.25);color:#6DC48A;padding:12px 18px;border-radius:12px;font-size:.85rem;margin-bottom:16px;">
@@ -217,7 +217,7 @@
         <div style="display:flex;align-items:center;gap:8px;">
             <span class="thread-tag">{{ $thread->category_icon }} {{ $thread->category_label }}</span>
             @if($thread->is_pinned)
-                <span class="thread-tag" style="color:var(--gold);background:var(--gold-soft);border-color:rgba(184,120,32,.2);">📌 Épinglé</span>
+                <span class="thread-tag" style="color:var(--gold);background:var(--gold-soft);border-color:rgba(184,120,32,.2);display:inline-flex;align-items:center;gap:4px;"><x-icon name="pin" :size="11"/> Épinglé</span>
             @endif
         </div>
     </div>
@@ -240,7 +240,7 @@
             </span>
             <form method="POST" action="{{ route('forum.thread.destroy', $thread) }}" style="margin-left:auto;" onsubmit="return confirm('Supprimer ce sujet ?')">
                 @csrf @method('DELETE')
-                <button type="submit" class="btn-del-thread">🗑 Supprimer</button>
+                <button type="submit" class="btn-del-thread" style="display:inline-flex;align-items:center;gap:5px;"><x-icon name="trash" :size="13"/> Supprimer</button>
             </form>
             @else
             <span style="font-size:.72rem;color:var(--text-faint);margin-left:auto;">
@@ -277,7 +277,7 @@
                     @if(auth()->id() === $reply->user_id || auth()->user()->isAdmin())
                     <form method="POST" action="{{ route('forum.reply.destroy', $reply) }}" style="margin-left:auto;" onsubmit="return confirm('Supprimer cette réponse ?')">
                         @csrf @method('DELETE')
-                        <button type="submit" class="btn-del-reply">✕</button>
+                        <button type="submit" class="btn-del-reply"><x-icon name="x" :size="12"/></button>
                     </form>
                     @endif
                 @endauth

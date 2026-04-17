@@ -895,8 +895,8 @@
         @if(auth()->user()->isAdmin())
         <div class="sidebar-create">
             <div class="sidebar-create-title">Publier quelque chose</div>
-            <a href="{{ route('posts.create') }}" class="sidebar-create-input">
-                ✍️ &nbsp;Qu'as-tu à partager ?
+            <a href="{{ route('posts.create') }}" class="sidebar-create-input" style="display:inline-flex;align-items:center;gap:8px;">
+                <x-icon name="pen" :size="14"/> Qu'as-tu à partager ?
             </a>
         </div>
         @endif

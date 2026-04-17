@@ -789,12 +789,12 @@
 <div class="post-page">
 <div class="post-wrap">
 
-    <a href="{{ url()->previous() }}" class="post-back">← Retour</a>
+    <a href="{{ url()->previous() }}" class="post-back"><x-icon name="arrow-left" :size="15"/> Retour</a>
 
     @if(session('status') === 'post-created')
-        <div class="post-success">✓ Publication créée avec succès !</div>
+        <div class="post-success"><x-icon name="check-circle" :size="15"/> Publication créée avec succès !</div>
     @elseif(session('status') === 'post-updated')
-        <div class="post-success">✓ Publication mise à jour !</div>
+        <div class="post-success"><x-icon name="check-circle" :size="15"/> Publication mise à jour !</div>
     @endif
 
     <div class="post-card-full" data-reveal>
@@ -840,11 +840,11 @@
             @auth
                 @if(auth()->id() === $post->user_id)
                     <div class="owner-actions">
-                        <a href="{{ route('posts.edit', $post->id) }}" class="btn-edit-post">✏️ Modifier</a>
+                        <a href="{{ route('posts.edit', $post->id) }}" class="btn-edit-post"><x-icon name="edit" :size="13"/> Modifier</a>
                         <form method="POST" action="{{ route('posts.destroy', $post->id) }}"
                               onsubmit="return confirm('Supprimer cette publication ?')">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn-delete-post">🗑 Supprimer</button>
+                            <button type="submit" class="btn-delete-post"><x-icon name="trash" :size="13"/> Supprimer</button>
                         </form>
                     </div>
                 @endif
@@ -965,7 +965,7 @@
                 <a href="{{ route('profile.show', $post->user->username) }}" class="pac-name">
                     {{ $post->user->name }}
                     @if($post->user->is_verified ?? false)
-                        <span class="pac-verified" title="Vérifié">✓</span>
+                        <x-icon name="check-circle" :size="14" class="pac-verified"/>
                     @endif
                 </a>
                 @if($post->user->bio)
@@ -996,7 +996,7 @@
                     <div id="cmtGifPreview" class="cmt-gif-preview" style="display:none;">
                         <img id="cmtGifImg" src="" alt="GIF">
                         <span id="cmtGifLabel" style="font-size:.72rem;color:var(--text-muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
-                        <button type="button" class="cmt-gif-remove" onclick="removeCmtGif()">✕</button>
+                        <button type="button" class="cmt-gif-remove" onclick="removeCmtGif()"><x-icon name="x" :size="12"/></button>
                     </div>
                     <div class="comment-toolbar">
                         <div class="comment-toolbar-left">
@@ -1223,15 +1223,15 @@
             const aviInner = c.user.avatar
                 ? `<img src="${esc(c.user.avatar)}" alt="">`
                 : `<span>${esc((c.user.name || '?')[0].toUpperCase())}</span>`;
-            const verified = c.user.is_verified ? `<span class="comment-verified">✓</span>` : '';
+            const verified = c.user.is_verified ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="comment-verified" style="color:var(--gold)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>` : '';
             const body = c.body || '';
             // body may contain a GIF tag like [gif:url]
             const gifMatch = body.match(/\[gif:(https?[^\]]+)\]/);
             const textPart = body.replace(/\[gif:https?[^\]]+\]/, '').trim();
             const bodyHtml = (textPart ? `<div class="comment-body">${esc(textPart)}</div>` : '')
                 + (gifMatch ? `<img src="${gifMatch[1]}" alt="GIF" style="max-width:200px;border-radius:8px;margin-top:6px;display:block;">` : '');
-            const editBtn = isOwn ? `<button class="btn-comment-edit" data-id="${c.id}" title="Modifier">✏️</button>` : '';
-            const delBtn  = canDel ? `<button class="btn-comment-del" data-id="${c.id}" title="Supprimer">✕</button>` : '';
+            const editBtn = isOwn ? `<button class="btn-comment-edit" data-id="${c.id}" title="Modifier"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>` : '';
+            const delBtn  = canDel ? `<button class="btn-comment-del" data-id="${c.id}" title="Supprimer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>` : '';
 
             return `<div class="comment-item" id="comment-${c.id}">
                 <a href="/@${esc(c.user.username)}" class="comment-avi">
