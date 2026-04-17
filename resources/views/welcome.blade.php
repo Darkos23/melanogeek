@@ -1249,7 +1249,7 @@
         <li><a href="#">Mentions légales</a></li>
     </ul>
     <div style="margin-top:10px;font-size:.72rem;color:rgba(255,255,255,.18);">
-        Développé par <a href="https://korilab.com" target="_blank" rel="noopener" style="color:rgba(212,168,67,.55);text-decoration:none;font-weight:600;transition:color .2s;" onmouseover="this.style.color='rgba(212,168,67,.9)'" onmouseout="this.style.color='rgba(212,168,67,.55)'">Korilab</a>
+        Développé par <a href="https://korilab.dev" target="_blank" rel="noopener" style="color:rgba(212,168,67,.55);text-decoration:none;font-weight:600;transition:color .2s;" onmouseover="this.style.color='rgba(212,168,67,.9)'" onmouseout="this.style.color='rgba(212,168,67,.55)'">Korilab</a>
     </div>
 </footer>
 
