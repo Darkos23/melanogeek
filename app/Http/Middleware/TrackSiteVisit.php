@@ -18,7 +18,7 @@ class TrackSiteVisit
             $ua = $request->userAgent() ?? '';
             if (! preg_match('/bot|crawl|slurp|spider|mediapartners/i', $ua)) {
                 try {
-                    SiteVisit::increment();
+                    SiteVisit::addVisit();
                 } catch (\Throwable $e) {
                     // Table pas encore migrée — on ignore silencieusement
                 }

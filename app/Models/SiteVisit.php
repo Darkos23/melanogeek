@@ -11,7 +11,7 @@ class SiteVisit extends Model
     protected $fillable = ['total'];
 
     /** Incrémente le compteur global de façon atomique */
-    public static function increment(): void
+    public static function addVisit(): void
     {
         DB::table('site_visits')->where('id', 1)->increment('total');
     }
@@ -19,6 +19,6 @@ class SiteVisit extends Model
     /** Retourne le total de visites */
     public static function total(): int
     {
-        return (int) DB::table('site_visits')->where('id', 1)->value('total') ?? 0;
+        return (int) (DB::table('site_visits')->where('id', 1)->value('total') ?? 0);
     }
 }
