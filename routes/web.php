@@ -36,8 +36,8 @@ Route::get('/@{user:username}', [ProfileController::class, 'show'])->name('profi
 // Blog
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 
-// Create post (auth required)
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
+// Create post (admin only)
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware(['auth', 'admin']);
 // Forum
 Route::get('/forum', [\App\Http\Controllers\ForumController::class, 'index'])->name('forum.index');
 Route::get('/forum/create', [\App\Http\Controllers\ForumController::class, 'create'])->name('forum.create')->middleware('auth');
@@ -67,13 +67,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/push/subscribe', [PushSubscriptionController::class, 'store'])->name('push.subscribe');
     Route::post('/push/unsubscribe', [PushSubscriptionController::class, 'destroy'])->name('push.unsubscribe');
 
-    // Posts
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    // Posts (like = tous les membres, reste = admin uniquement)
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
-    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-    Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-    Route::patch('/posts/{post}/publish', [PostController::class, 'publish'])->name('posts.publish');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+    Route::middleware('admin')->group(function () {
+        Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+        Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+        Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+        Route::patch('/posts/{post}/publish', [PostController::class, 'publish'])->name('posts.publish');
+    });
 });
 
 // Public post pages - APRÈS les routes spécifiques
