@@ -171,11 +171,31 @@
         margin: 0 auto;
     }
 
-    /* Logo — texte seul, style ngrok */
+    /* Logo */
     .mg-logo { display:flex;align-items:center;text-decoration:none; }
-    .mg-logo-name { font-family:var(--font-head);font-weight:800;font-size:1.4rem;letter-spacing:-.04em;color:rgba(255,255,255,.92); }
-    .mg-logo-name:hover { color:#fff; }
-    .mg-logo-name span { color:inherit; }
+    .mg-logo-name {
+        font-family:var(--font-head);font-weight:800;font-size:1.4rem;
+        letter-spacing:-.04em;color:rgba(255,255,255,.92);
+        background: linear-gradient(90deg,
+            rgba(255,255,255,.92) 0%,
+            rgba(255,255,255,.92) 35%,
+            rgba(212,168,67,1)   50%,
+            rgba(255,255,255,.92) 65%,
+            rgba(255,255,255,.92) 100%
+        );
+        background-size: 250% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: logoShimmer 4s ease-in-out infinite;
+    }
+    @keyframes logoShimmer {
+        0%   { background-position: 150% center; }
+        50%  { background-position: -50% center; }
+        100% { background-position: 150% center; }
+    }
+    .mg-logo-name:hover { animation-duration: 1s; }
+    @media (prefers-reduced-motion: reduce) { .mg-logo-name { animation: none; } }
 
     /* Liens — JetBrains Mono comme ngrok */
     .mg-links { display:flex;gap:28px;list-style:none; }
