@@ -144,7 +144,7 @@
 }
 .post-card-banner img {
     width: 100%; height: 100%;
-    object-fit: cover; object-position: center top; display: block;
+    object-fit: cover; object-position: center; display: block;
     transition: transform .4s ease;
 }
 .post-card:hover .post-card-banner img { transform: scale(1.04); }
