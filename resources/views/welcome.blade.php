@@ -74,10 +74,10 @@
 /* Titre principal */
 .lp-h1 {
     font-family: var(--font-head);
-    font-size: clamp(3.8rem, 8.5vw, 7.2rem);
+    font-size: clamp(2.8rem, 5vw, 4.6rem);
     font-weight: 800;
     line-height: 1.05;
-    letter-spacing: -.05em;
+    letter-spacing: -.04em;
     color: rgba(255,255,255,.94);
     margin: 0;
 }
