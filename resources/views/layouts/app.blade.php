@@ -404,7 +404,7 @@
 <!-- ══ NAVIGATION ══ -->
 <nav class="mg-nav">
     <a href="{{ route('home') }}" class="mg-logo">
-        <div class="mg-logo-name">melanogeek</div>
+        <div class="mg-logo-name">Melanogeek</div>
     </a>
 
     <ul class="mg-links">
