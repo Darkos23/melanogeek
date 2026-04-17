@@ -236,7 +236,7 @@
                             <form method="POST" action="{{ route('posts.destroy', $post) }}"
                                   onsubmit="return confirm('Supprimer cette publication ?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="gp-del-btn" title="Supprimer">✕</button>
+                                <button type="submit" class="gp-del-btn" title="Supprimer"><x-icon name="trash" :size="13"/></button>
                             </form>
                         </div>
                         @endif @endauth
@@ -388,7 +388,7 @@
                     <a class="pm-author-name" id="pmAuthorName" href="#">—</a>
                     <div class="pm-author-meta" id="pmAuthorMeta"></div>
                 </div>
-                <button class="pm-close" onclick="closePostModal()">✕</button>
+                <button class="pm-close" onclick="closePostModal()"><x-icon name="x" :size="16"/></button>
             </div>
             <div class="pm-content" id="pmContent">
                 <div class="pm-skeleton">

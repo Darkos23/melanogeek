@@ -297,7 +297,7 @@
 
     <!-- Header -->
     <div class="edit-header">
-        <a href="{{ auth()->user()->isOwner() ? route('owner.dashboard') : route('profile.show', auth()->user()->username) }}" class="edit-header-back">←</a>
+        <a href="{{ auth()->user()->isOwner() ? route('owner.dashboard') : route('profile.show', auth()->user()->username) }}" class="edit-header-back"><x-icon name="arrow-left" :size="18"/></a>
         <div>
             <div class="edit-header-title">Modifier mon profil</div>
             <div class="edit-header-sub">Ces informations sont visibles par tous les membres</div>
@@ -307,7 +307,7 @@
     <div class="edit-body">
 
         @if(session('status') === 'profile-updated')
-            <div class="status-saved">✓ Profil mis à jour avec succès !</div>
+            <div class="status-saved" style="display:flex;align-items:center;gap:6px;"><x-icon name="check-circle" :size="15"/> Profil mis à jour avec succès !</div>
         @endif
 
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
@@ -519,7 +519,7 @@
             <!-- ── BOUTONS ── -->
             <div class="edit-footer">
                 <a href="{{ route('profile.show', auth()->user()->username) }}" class="btn-cancel">Annuler</a>
-                <button type="submit" class="btn-save">💾 Sauvegarder</button>
+                <button type="submit" class="btn-save" style="display:inline-flex;align-items:center;gap:6px;"><x-icon name="check" :size="15"/> Sauvegarder</button>
             </div>
         </form>
 

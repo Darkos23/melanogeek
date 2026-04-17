@@ -473,7 +473,7 @@
             <div style="min-width:0">
                 <div class="forum-thread-meta">
                     <span class="forum-tag forum-tag-cat">{{ $thread->category_label }}</span>
-                    @if($thread->is_pinned)<span class="forum-tag forum-tag-pin">📌 Épinglé</span>@endif
+                    @if($thread->is_pinned)<span class="forum-tag forum-tag-pin" style="display:inline-flex;align-items:center;gap:3px;"><x-icon name="pin" :size="11"/> Épinglé</span>@endif
                     @if($thread->replies_count > 20)<span style="font-size:.7rem">🔥</span>@endif
                 </div>
                 <div class="forum-thread-title">{{ $thread->title }}</div>

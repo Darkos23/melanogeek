@@ -789,7 +789,7 @@
             <div class="story-upload-modal">
                 <div class="story-upload-head">
                     <span class="story-upload-title">Nouvelle story</span>
-                    <button class="story-upload-close" onclick="closeStoryUpload()" type="button">✕</button>
+                    <button class="story-upload-close" onclick="closeStoryUpload()" type="button"><x-icon name="x" :size="16"/></button>
                 </div>
                 <form method="POST" action="{{ route('stories.store') }}" enctype="multipart/form-data" id="storyUploadForm">
                     @csrf
@@ -816,7 +816,7 @@
                         @endif
                         <form method="POST" action="{{ route('stories.destroy', $myActiveStory->id) }}" style="display:inline;">
                             @csrf @method('DELETE')
-                            <button class="story-my-delete" type="submit" onclick="return confirm('Supprimer cette story ?')">🗑</button>
+                            <button class="story-my-delete" type="submit" onclick="return confirm('Supprimer cette story ?')"><x-icon name="trash" :size="13"/></button>
                         </form>
                     </div>
                 </div>
@@ -833,7 +833,7 @@
                 {{-- Header --}}
                 <div class="sv-header">
                     <div class="sv-user-info" id="svUserInfo"></div>
-                    <button class="sv-close" onclick="closeViewer()" type="button">✕</button>
+                    <button class="sv-close" onclick="closeViewer()" type="button"><x-icon name="x" :size="18"/></button>
                 </div>
 
                 {{-- Media --}}
@@ -1119,8 +1119,8 @@
      onclick="if(event.target===this)closeReportModal()">
     <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:20px;width:100%;max-width:400px;overflow:hidden;box-shadow:var(--shadow-lg);">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border);">
-            <div style="font-family:var(--font-head);font-size:.95rem;font-weight:800;">🚩 Signaler ce contenu</div>
-            <button onclick="closeReportModal()" style="background:none;border:none;color:var(--text-muted);font-size:1.1rem;">✕</button>
+            <div style="font-family:var(--font-head);font-size:.95rem;font-weight:800;display:flex;align-items:center;gap:7px;"><x-icon name="flag" :size="15"/> Signaler ce contenu</div>
+            <button onclick="closeReportModal()" style="background:none;border:none;color:var(--text-muted);display:flex;align-items:center;cursor:pointer;"><x-icon name="x" :size="16"/></button>
         </div>
         <form id="reportForm" style="padding:20px;">
             <p style="font-size:.84rem;color:var(--text-muted);margin-bottom:16px;line-height:1.5;">Pourquoi signales-tu cette publication ? Notre équipe de modération examinera le signalement.</p>

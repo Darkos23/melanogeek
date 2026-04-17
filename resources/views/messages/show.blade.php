@@ -633,7 +633,7 @@
             {{-- Header ──────────────────────────────── --}}
             <div class="chat-header">
                 {{-- Retour liste sur mobile --}}
-                <a href="{{ route('messages.index') }}" class="mobile-back-btn" title="Retour">←</a>
+                <a href="{{ route('messages.index') }}" class="mobile-back-btn" title="Retour"><x-icon name="arrow-left" :size="18"/></a>
                 <a href="{{ route('profile.show', $user->username) }}" class="chat-header-avatar" style="text-decoration:none;">
                     @if($user->avatar)
                         <img src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}">
@@ -738,7 +738,7 @@
     <div class="new-msg-modal">
         <div class="new-msg-head">
             <span class="new-msg-title">Nouvelle conversation</span>
-            <button class="new-msg-close" onclick="closeNewMsg()" type="button">✕</button>
+            <button class="new-msg-close" onclick="closeNewMsg()" type="button"><x-icon name="x" :size="16"/></button>
         </div>
         <div class="new-msg-search-wrap">
             <input type="text" class="new-msg-search" id="newMsgSearch"

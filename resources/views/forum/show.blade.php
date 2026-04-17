@@ -192,7 +192,7 @@
 
 @if(session('status') === 'reply-added')
 <div style="background:rgba(45,90,61,.12);border:1px solid rgba(45,90,61,.25);color:#6DC48A;padding:12px 18px;border-radius:12px;font-size:.85rem;margin-bottom:16px;">
-    ✓ Réponse ajoutée.
+    <span style="display:inline-flex;align-items:center;gap:6px;"><x-icon name="check-circle" :size="14"/> Réponse ajoutée.</span>
 </div>
 @endif
 

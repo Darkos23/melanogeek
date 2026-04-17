@@ -425,7 +425,7 @@
         @empty
             {{-- Vide --}}
             <div class="notif-empty">
-                <div class="notif-empty-icon">🔔</div>
+                <div class="notif-empty-icon"><x-icon name="bell" :size="32"/></div>
                 <div class="notif-empty-title">Aucune notification</div>
                 <div class="notif-empty-sub">
                     Quand quelqu'un te suit, aime ou commente tes publications, tu le verras ici.
@@ -440,9 +440,9 @@
         <div class="notif-pagination">
             {{-- Précédent --}}
             @if($notifications->onFirstPage())
-                <span>←</span>
+                <span><x-icon name="arrow-left" :size="14"/></span>
             @else
-                <a href="{{ $notifications->previousPageUrl() }}">←</a>
+                <a href="{{ $notifications->previousPageUrl() }}"><x-icon name="arrow-left" :size="14"/></a>
             @endif
 
             {{-- Pages --}}
@@ -456,9 +456,9 @@
 
             {{-- Suivant --}}
             @if($notifications->hasMorePages())
-                <a href="{{ $notifications->nextPageUrl() }}">→</a>
+                <a href="{{ $notifications->nextPageUrl() }}"><x-icon name="arrow-right" :size="14"/></a>
             @else
-                <span>→</span>
+                <span><x-icon name="arrow-right" :size="14"/></span>
             @endif
         </div>
     @endif

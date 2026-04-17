@@ -61,7 +61,7 @@
 
     <div class="edit-card">
         <div class="edit-header">
-            <h2>✏️ Modifier la publication</h2>
+            <h2 style="display:flex;align-items:center;gap:8px;"><x-icon name="edit" :size="18"/> Modifier la publication</h2>
         </div>
 
         <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
@@ -71,7 +71,7 @@
             <div class="cover-upload-zone" id="coverZone" onclick="document.getElementById('coverInput').click()">
                 @if($post->thumbnail)
                     <img id="coverPreview" src="{{ asset('storage/'.$post->thumbnail) }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;">
-                    <button type="button" class="cover-remove-btn" id="coverRemoveBtn" onclick="removeCover(event)">✕</button>
+                    <button type="button" class="cover-remove-btn" id="coverRemoveBtn" onclick="removeCover(event)"><x-icon name="x" :size="14"/></button>
                     <input type="file" id="coverInput" name="thumbnail" accept="image/jpeg,image/png,image/webp" style="display:none">
                 @else
                     <img id="coverPreview" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;">
@@ -79,7 +79,7 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.4"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
                         <span>Changer l'image de couverture</span>
                     </div>
-                    <button type="button" class="cover-remove-btn" id="coverRemoveBtn" style="display:none;" onclick="removeCover(event)">✕</button>
+                    <button type="button" class="cover-remove-btn" id="coverRemoveBtn" style="display:none;" onclick="removeCover(event)"><x-icon name="x" :size="14"/></button>
                     <input type="file" id="coverInput" name="thumbnail" accept="image/jpeg,image/png,image/webp" style="display:none">
                 @endif
                 @if($post->thumbnail)
@@ -106,7 +106,7 @@
             </div>
 
             <div class="edit-actions">
-                <button type="submit" class="btn-save">✓ Enregistrer</button>
+                <button type="submit" class="btn-save" style="display:inline-flex;align-items:center;gap:6px;"><x-icon name="check" :size="15"/> Enregistrer</button>
                 <a href="{{ route('posts.show', $post->id) }}" class="btn-cancel">Annuler</a>
             </div>
         </form>

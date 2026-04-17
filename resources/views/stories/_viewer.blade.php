@@ -13,7 +13,7 @@
                 <div id="storyViewerName"></div>
                 <div id="storyViewerTime"></div>
             </div>
-            <button id="storyViewerClose" onclick="StoryViewer.close()" type="button">✕</button>
+            <button id="storyViewerClose" onclick="StoryViewer.close()" type="button"><x-icon name="x" :size="20"/></button>
         </div>
 
         {{-- Zone média --}}

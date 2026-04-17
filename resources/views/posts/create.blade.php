@@ -496,7 +496,7 @@
 <div class="create-wrap">
 
     <div class="create-header">
-        <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('home') }}" class="create-back">←</a>
+        <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('home') }}" class="create-back"><x-icon name="arrow-left" :size="18"/></a>
         <div class="create-title">Nouvelle publication</div>
     </div>
 
@@ -538,7 +538,7 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.4"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
                     <span>Ajouter une image de couverture</span>
                 </div>
-                <button type="button" class="cover-remove-btn" id="coverRemoveBtn" style="display:none;" onclick="removeCover(event)">✕</button>
+                <button type="button" class="cover-remove-btn" id="coverRemoveBtn" style="display:none;" onclick="removeCover(event)"><x-icon name="x" :size="14"/></button>
                 <input type="file" id="coverInput" name="thumbnail" accept="image/jpeg,image/png,image/webp" style="display:none">
             </div>
 
@@ -581,23 +581,25 @@
             <div class="audio-preview-wrap" id="audioPreview">
                 <div class="audio-preview-icon">🎵</div>
                 <div class="audio-preview-name" id="audioPreviewName">—</div>
-                <button type="button" class="audio-preview-remove" onclick="removeAudio()">✕</button>
+                <button type="button" class="audio-preview-remove" onclick="removeAudio()"><x-icon name="x" :size="14"/></button>
             </div>
 
             <!-- Toolbar -->
             <div class="post-toolbar">
                 <div class="toolbar-left">
                     <label for="imgPickerInput" class="toolbar-btn" title="Ajouter des photos" id="imgPickerBtn">
-                        📷
+                        <x-icon name="image" :size="18"/>
                     </label>
                     <label for="videoInput" class="toolbar-btn" title="Ajouter une vidéo">
-                        🎬
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                     </label>
                     <label for="audioInput" class="toolbar-btn" title="Ajouter une musique de fond" id="audioPickerBtn">
-                        🎵
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                     </label>
                     <div class="emoji-picker-wrap">
-                        <button type="button" class="toolbar-btn" id="emojiPickerBtn" title="Emojis" onclick="toggleEmojiPanel(event)">😊</button>
+                        <button type="button" class="toolbar-btn" id="emojiPickerBtn" title="Emojis" onclick="toggleEmojiPanel(event)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                        </button>
                         <div class="emoji-panel" id="emojiPanel">
                             <div class="emoji-grid" id="emojiGrid"></div>
                         </div>
@@ -616,7 +618,7 @@
 
             <!-- Visibilité -->
             <div class="visibility-row">
-                <span style="font-size:1rem;">👁</span>
+                <x-icon name="eye" :size="16"/>
                 <span class="visibility-label">Publier immédiatement</span>
                 <label class="toggle-switch">
                     <input type="checkbox" name="is_published" value="1" checked id="publishToggle">
@@ -641,11 +643,11 @@
     <!-- Tips -->
     <div class="create-tips">
         <div class="tips-title">Conseils</div>
-        <div class="tip-item"><span class="tip-icon">📸</span> Jusqu'à 10 images JPG, PNG, GIF ou WEBP (max 20 Mo chacune)</div>
-        <div class="tip-item"><span class="tip-icon">🎬</span> Ou une vidéo MP4, MOV ou WEBM (max 50 Mo) — pas mixable avec des images</div>
-        <div class="tip-item"><span class="tip-icon">🎵</span> Ajoute une musique de fond MP3, OGG, WAV ou M4A (max 20 Mo)</div>
-        <div class="tip-item"><span class="tip-icon">✍️</span> Tu peux publier du texte seul, sans média</div>
-        <div class="tip-item"><span class="tip-icon">💾</span> Enregistre en brouillon pour publier plus tard</div>
+        <div class="tip-item"><span class="tip-icon"><x-icon name="image" :size="14"/></span> Jusqu'à 10 images JPG, PNG, GIF ou WEBP (max 20 Mo chacune)</div>
+        <div class="tip-item"><span class="tip-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span> Ou une vidéo MP4, MOV ou WEBM (max 50 Mo) — pas mixable avec des images</div>
+        <div class="tip-item"><span class="tip-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span> Ajoute une musique de fond MP3, OGG, WAV ou M4A (max 20 Mo)</div>
+        <div class="tip-item"><span class="tip-icon"><x-icon name="pen" :size="14"/></span> Tu peux publier du texte seul, sans média</div>
+        <div class="tip-item"><span class="tip-icon"><x-icon name="bookmark" :size="14"/></span> Enregistre en brouillon pour publier plus tard</div>
     </div>
 
 </div>
@@ -768,7 +770,7 @@
             const div = document.createElement('div');
             div.className = 'img-thumb';
             div.innerHTML = `<img src="${url}" alt="">
-                <button type="button" class="img-thumb-remove" data-idx="${i}">✕</button>
+                <button type="button" class="img-thumb-remove" data-idx="${i}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                 ${isLast ? `<div class="img-thumb-more">+${overflow}</div>` : ''}`;
             grid.appendChild(div);
         }
@@ -811,7 +813,7 @@
         const url  = URL.createObjectURL(this.files[0]);
         wrap.innerHTML = `
             <video src="${url}" controls style="width:100%;max-height:400px;display:block;" id="videoPreviewEl"></video>
-            <button type="button" class="media-preview-remove" onclick="removeVideo()">✕</button>`;
+            <button type="button" class="media-preview-remove" onclick="removeVideo()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
         wrap.classList.add('visible');
     });
 
