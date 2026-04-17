@@ -408,6 +408,62 @@
 }
 .lp-ed-header-link:hover { color: var(--gold) !important; }
 
+/* ── ARTICLES POPULAIRES ── */
+.lp-popular-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,.06);
+}
+.lp-popular-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 18px 4px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    text-decoration: none;
+    transition: background .2s;
+}
+.lp-popular-item:hover { background: rgba(255,255,255,.015); }
+.lp-popular-item:hover .lp-popular-title { color: var(--gold); }
+.lp-popular-rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--terra);
+    opacity: .55;
+    line-height: 1;
+    min-width: 42px;
+    letter-spacing: -.02em;
+}
+.lp-popular-content { flex: 1; min-width: 0; }
+.lp-popular-title {
+    font-family: var(--font-head, 'Bricolage Grotesque', sans-serif);
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: rgba(255,255,255,.88);
+    line-height: 1.35;
+    letter-spacing: -.01em;
+    margin-bottom: 6px;
+    transition: color .2s;
+}
+.lp-popular-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    color: rgba(255,255,255,.35);
+    letter-spacing: .03em;
+}
+.lp-popular-dot { opacity: .5; }
+@media (max-width: 640px) {
+    .lp-popular-grid { grid-template-columns: 1fr; }
+    .lp-popular-rank { font-size: 1.3rem; min-width: 34px; }
+    .lp-popular-title { font-size: .92rem; }
+}
+
 /* ══ ARTICLES — GRILLE ÉDITORIALE ══ */
 
 /* Featured : grand + stack */
@@ -1100,10 +1156,40 @@
     @endif
 </section>
 
-{{-- ══ CATÉGORIES ══ --}}
+{{-- ══ ARTICLES POPULAIRES ══ --}}
+@if(isset($popularPosts) && $popularPosts->isNotEmpty())
 <section class="lp-section" style="padding-top:0">
     <div class="lp-ed-header">
         <span class="lp-ed-header-num">§ 02</span>
+        <span class="lp-ed-header-title">Les plus lus · 30 derniers jours</span>
+        <div class="lp-ed-header-line"></div>
+    </div>
+    <div class="lp-popular-grid">
+        @foreach($popularPosts as $i => $pp)
+        <a href="{{ route('posts.show', $pp->id) }}" class="lp-popular-item">
+            <div class="lp-popular-rank">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</div>
+            <div class="lp-popular-content">
+                <div class="lp-popular-title">{{ $pp->title }}</div>
+                <div class="lp-popular-meta">
+                    <span>{{ $pp->user->name }}</span>
+                    <span class="lp-popular-dot">·</span>
+                    <span>👁 {{ number_format($pp->views_count) }}</span>
+                    @if($pp->likes_count > 0)
+                    <span class="lp-popular-dot">·</span>
+                    <span>♥ {{ number_format($pp->likes_count) }}</span>
+                    @endif
+                </div>
+            </div>
+        </a>
+        @endforeach
+    </div>
+</section>
+@endif
+
+{{-- ══ CATÉGORIES ══ --}}
+<section class="lp-section" style="padding-top:0">
+    <div class="lp-ed-header">
+        <span class="lp-ed-header-num">§ 03</span>
         <span class="lp-ed-header-title">Explorer par thème</span>
         <div class="lp-ed-header-line"></div>
     </div>
@@ -1137,7 +1223,7 @@
     <div class="lp-section-inner">
         <div style="padding-top:72px;padding-bottom:72px">
             <div class="lp-ed-header">
-                <span class="lp-ed-header-num">§ 03</span>
+                <span class="lp-ed-header-num">§ 04</span>
                 <span class="lp-ed-header-title">Forum</span>
                 <div class="lp-ed-header-line"></div>
                 <a href="{{ route('forum.index') }}" class="lp-ed-header-link">Accéder au forum →</a>

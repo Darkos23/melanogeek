@@ -60,10 +60,21 @@ class HomeController extends Controller
         $recentPosts   = Post::with('user')->published()->whereNotNull('title')->latest()->take(6)->get();
         $recentThreads = ForumThread::with('user')->latest()->take(4)->get();
 
+        // Articles populaires : les plus vus des 30 derniers jours
+        $popularPosts = rescue(fn() => Post::with('user')
+            ->published()
+            ->whereNotNull('title')
+            ->where('title', '!=', '')
+            ->where('created_at', '>=', now()->subDays(30))
+            ->orderByDesc('views_count')
+            ->orderByDesc('likes_count')
+            ->take(5)
+            ->get(), collect(), false);
+
         return view('welcome', compact(
             'featured', 'side_posts', 'discussions', 'stats',
             'category_counts', 'forum_cat_counts',
-            'recentPosts', 'recentThreads'
+            'recentPosts', 'recentThreads', 'popularPosts'
         ));
     }
 }

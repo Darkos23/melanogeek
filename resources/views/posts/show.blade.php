@@ -398,6 +398,70 @@
     .action-btn.liked:hover { background: rgba(224,85,85,.08); border-color: rgba(224,85,85,.3); }
     .action-btn svg { width: 17px; height: 17px; }
     .action-sep { flex: 1; }
+    /* ── CARD BIO AUTEUR ── */
+    .post-author-card {
+        display: flex; gap: 18px; align-items: flex-start;
+        padding: 24px;
+        margin: 20px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(200,82,42,.05), rgba(212,168,67,.04));
+        border: 1px solid rgba(212,168,67,.12);
+    }
+    .pac-avatar {
+        width: 68px; height: 68px; border-radius: 50%;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, var(--terra), var(--gold));
+        padding: 2px; overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
+        text-decoration: none;
+    }
+    .pac-avatar img, .pac-avatar span {
+        width: 100%; height: 100%; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--bg-card2);
+        color: var(--text); font-weight: 700; font-size: 1.5rem;
+        object-fit: cover;
+    }
+    .pac-body { flex: 1; min-width: 0; }
+    .pac-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .64rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: .12em;
+        color: var(--terra); opacity: .8;
+        margin-bottom: 4px;
+    }
+    .pac-name {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-family: var(--font-head);
+        font-size: 1.15rem; font-weight: 700;
+        color: var(--text); text-decoration: none;
+        letter-spacing: -.01em;
+        transition: color .2s;
+    }
+    .pac-name:hover { color: var(--gold); }
+    .pac-verified { color: var(--gold); font-size: .85rem; }
+    .pac-bio {
+        font-size: .86rem; line-height: 1.55;
+        color: var(--text-muted);
+        margin: 8px 0 10px;
+    }
+    .pac-link {
+        display: inline-block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .72rem; font-weight: 600;
+        color: var(--gold);
+        text-decoration: none;
+        letter-spacing: .04em;
+        transition: opacity .2s;
+    }
+    .pac-link:hover { opacity: .75; }
+    @media (max-width: 520px) {
+        .post-author-card { margin: 16px 12px; padding: 18px; gap: 14px; }
+        .pac-avatar { width: 54px; height: 54px; }
+        .pac-name { font-size: 1rem; }
+        .pac-bio { font-size: .82rem; }
+    }
+
     .post-views-pill {
         display: inline-flex; align-items: center; gap: 5px;
         padding: 6px 13px; border-radius: 100px;
@@ -885,6 +949,32 @@
             <a href="#" class="action-share" onclick="sharePost(); return false;">
                 ↗ Partager
             </a>
+        </div>
+
+        {{-- ── BIO AUTEUR ── --}}
+        <div class="post-author-card">
+            <a href="{{ route('profile.show', $post->user->username) }}" class="pac-avatar">
+                @if($post->user->avatar)
+                    <img src="{{ Storage::url($post->user->avatar) }}" alt="">
+                @else
+                    <span>{{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}</span>
+                @endif
+            </a>
+            <div class="pac-body">
+                <div class="pac-label">Écrit par</div>
+                <a href="{{ route('profile.show', $post->user->username) }}" class="pac-name">
+                    {{ $post->user->name }}
+                    @if($post->user->is_verified ?? false)
+                        <span class="pac-verified" title="Vérifié">✓</span>
+                    @endif
+                </a>
+                @if($post->user->bio)
+                <p class="pac-bio">{{ Str::limit($post->user->bio, 180) }}</p>
+                @endif
+                <a href="{{ route('profile.show', $post->user->username) }}" class="pac-link">
+                    Voir le profil →
+                </a>
+            </div>
         </div>
 
         {{-- ── COMMENTAIRES ── --}}
