@@ -688,46 +688,6 @@
 @media (prefers-reduced-motion: reduce) {
     [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
-
-/* ══════════════════════════════════════════
-   CURSEUR PERSONNALISÉ (desktop uniquement)
-══════════════════════════════════════════ */
-@media (pointer: fine) {
-    html, body, *, *::before, *::after { cursor: none !important; }
-    #mg-cursor {
-        position: fixed;
-        width: 8px; height: 8px;
-        background: var(--terra);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 99998;
-        transform: translate(-50%, -50%);
-        transition: width .18s, height .18s, background .18s, opacity .25s;
-        will-change: left, top;
-    }
-    #mg-cursor-ring {
-        position: fixed;
-        width: 32px; height: 32px;
-        border: 1.5px solid rgba(200,82,42,.55);
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 99997;
-        transform: translate(-50%, -50%);
-        transition: width .35s cubic-bezier(.22,1,.36,1),
-                    height .35s cubic-bezier(.22,1,.36,1),
-                    border-color .25s, opacity .3s,
-                    left .06s linear, top .06s linear;
-        will-change: left, top;
-    }
-    #mg-cursor.cursor-hover { width: 14px; height: 14px; background: var(--gold); }
-    #mg-cursor-ring.cursor-hover {
-        width: 44px; height: 44px;
-        border-color: rgba(212,168,67,.7);
-    }
-    #mg-cursor.cursor-text { width: 3px; height: 22px; border-radius: 2px; }
-    #mg-cursor-ring.cursor-text { width: 14px; height: 28px; border-radius: 4px; opacity: .4; }
-    #mg-cursor.cursor-hidden, #mg-cursor-ring.cursor-hidden { opacity: 0; }
-}
 </style>
 
 <!-- ══ MENU MOBILE ══ -->
@@ -1260,9 +1220,6 @@ if ('serviceWorker' in navigator) {
     }, false);
 })();
 </script>
-{{-- ══ CURSEUR PERSONNALISÉ ══ --}}
-<div id="mg-cursor" aria-hidden="true"></div>
-<div id="mg-cursor-ring" aria-hidden="true"></div>
 
 <script>
 /* ══════════════════════════════════════════
@@ -1294,57 +1251,6 @@ if ('serviceWorker' in navigator) {
     }
 })();
 
-/* ══════════════════════════════════════════
-   CURSEUR PERSONNALISÉ
-══════════════════════════════════════════ */
-(function () {
-    // Uniquement sur les appareils pointer:fine (souris)
-    if (!window.matchMedia('(pointer: fine)').matches) return;
-
-    const dot  = document.getElementById('mg-cursor');
-    const ring = document.getElementById('mg-cursor-ring');
-    if (!dot || !ring) return;
-
-    let mx = -100, my = -100;
-    let rx = -100, ry = -100;
-
-    document.addEventListener('mousemove', function (e) {
-        mx = e.clientX; my = e.clientY;
-        dot.style.left = mx + 'px';
-        dot.style.top  = my + 'px';
-    }, { passive: true });
-
-    // Ring suit avec un léger lag via rAF
-    (function loop() {
-        rx += (mx - rx) * 0.14;
-        ry += (my - ry) * 0.14;
-        ring.style.left = rx + 'px';
-        ring.style.top  = ry + 'px';
-        requestAnimationFrame(loop);
-    })();
-
-    // Hover state
-    const hoverSel = 'a, button, label, [onclick], [role="button"], .post-card, .featured-card, .forum-card-link';
-    const textSel  = 'input[type=text], input[type=email], input[type=password], input[type=search], textarea';
-
-    document.addEventListener('mouseover', function (e) {
-        const el = e.target.closest(hoverSel);
-        const te = e.target.closest(textSel);
-        dot.classList.toggle('cursor-hover', !!el && !te);
-        ring.classList.toggle('cursor-hover', !!el && !te);
-        dot.classList.toggle('cursor-text', !!te);
-        ring.classList.toggle('cursor-text', !!te);
-    }, { passive: true });
-
-    document.addEventListener('mouseleave', function () {
-        dot.classList.add('cursor-hidden');
-        ring.classList.add('cursor-hidden');
-    });
-    document.addEventListener('mouseenter', function () {
-        dot.classList.remove('cursor-hidden');
-        ring.classList.remove('cursor-hidden');
-    });
-})();
 </script>
 
 {{-- ══ GRAIN CINÉMATIQUE ══ --}}
