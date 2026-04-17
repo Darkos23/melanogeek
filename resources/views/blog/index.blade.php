@@ -100,6 +100,10 @@
     gap: 16px;
     margin-bottom: 32px;
 }
+/* Barre de filtres scrollable sur mobile */
+.cat-filter-bar::-webkit-scrollbar { display: none; }
+.cat-filter-bar > a { flex-shrink: 0; }
+
 @media (max-width: 860px) {
     .featured-card { grid-template-columns: 1fr; min-height: unset; }
     .featured-img-wrap { aspect-ratio: 16/7; }
@@ -245,7 +249,7 @@
 </div>
 
 {{-- ── FILTRES CATÉGORIES ── --}}
-<div style="display:flex;align-items:center;gap:0;margin-bottom:36px;border-bottom:1px solid var(--border)">
+<div style="display:flex;align-items:center;gap:0;margin-bottom:36px;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;" class="cat-filter-bar">
     @php
     $cats = [
         ''               => 'Tous les articles',
