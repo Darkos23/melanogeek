@@ -1199,5 +1199,42 @@ if ('serviceWorker' in navigator) {
     }, false);
 })();
 </script>
+{{-- ══ GRAIN CINÉMATIQUE ══ --}}
+<div id="mg-grain" aria-hidden="true"></div>
+<style>
+#mg-grain {
+    position: fixed;
+    inset: -150%;
+    width: 400%;
+    height: 400%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.038;
+    will-change: transform;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+    animation: mgGrain .18s steps(1) infinite;
+}
+@keyframes mgGrain {
+    0%   { transform: translate(0%,   0%)   }
+    11%  { transform: translate(-6%,  -9%)  }
+    22%  { transform: translate(8%,   4%)   }
+    33%  { transform: translate(-3%,  14%)  }
+    44%  { transform: translate(11%,  -7%)  }
+    55%  { transform: translate(-8%,  11%)  }
+    66%  { transform: translate(4%,   -14%) }
+    77%  { transform: translate(-11%, 6%)   }
+    88%  { transform: translate(6%,   -4%)  }
+    100% { transform: translate(-4%,  9%)   }
+}
+
+/* Réduire la visibilité du grain sur mobile pour économiser les ressources */
+@media (max-width: 768px) {
+    #mg-grain { opacity: 0.025; animation-duration: .28s; }
+}
+/* Désactiver pour les utilisateurs qui préfèrent moins de mouvement */
+@media (prefers-reduced-motion: reduce) {
+    #mg-grain { animation: none; }
+}
+</style>
 </body>
 </html>
