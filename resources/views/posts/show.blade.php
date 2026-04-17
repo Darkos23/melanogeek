@@ -76,23 +76,221 @@
         color: var(--text); line-height: 1.3;
         padding: 0 24px 12px;
     }
+    /* ══════════════════════════════════════════
+       CORPS ARTICLE — TYPOGRAPHIE ÉDITORIALE
+    ══════════════════════════════════════════ */
     .post-body {
-        font-size: .95rem; line-height: 1.75;
-        color: var(--text-muted);
-        padding: 0 24px 20px;
+        font-size: 1rem;
+        line-height: 1.82;
+        color: rgba(240,232,216,.72);
+        padding: 4px 28px 28px;
+        font-family: var(--font-body);
+        counter-reset: section-counter;
     }
 
-    /* ── DROP CAP — première lettre des articles longs ── */
-    .post-body.has-drop-cap > p:first-of-type::first-letter,
-    .post-body.has-drop-cap::first-letter {
+    /* ── Paragraphes ── */
+    .post-body p {
+        margin-bottom: 1.35em;
+    }
+
+    /* ── Premier paragraphe — légèrement plus grand ── */
+    .post-body > p:first-of-type {
+        font-size: 1.06rem;
+        color: rgba(240,232,216,.82);
+        line-height: 1.78;
+    }
+
+    /* ── DROP CAP ── */
+    .post-body.has-drop-cap > p:first-of-type::first-letter {
         font-family: var(--font-head);
-        font-size: 4em;
+        font-size: 4.4em;
         font-weight: 800;
-        line-height: 0.82;
+        line-height: 0.78;
         float: left;
-        margin: 4px 10px 0 0;
+        margin: 6px 12px -4px 0;
         color: var(--terra);
-        text-shadow: 0 0 32px rgba(200,82,42,.25);
+        text-shadow: 0 0 40px rgba(200,82,42,.30);
+    }
+
+    /* ── H2 — chapitres éditoriaux ── */
+    .post-body h2 {
+        font-family: var(--font-head);
+        font-size: 1.35rem;
+        font-weight: 800;
+        line-height: 1.25;
+        color: var(--cream);
+        margin: 2.6em 0 .75em;
+        padding-left: 16px;
+        border-left: 3px solid var(--terra);
+        letter-spacing: -.02em;
+        position: relative;
+    }
+    .post-body h2::before {
+        content: counter(section-counter, decimal-leading-zero);
+        counter-increment: section-counter;
+        display: block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .55rem;
+        font-weight: 600;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--terra);
+        margin-bottom: 6px;
+        opacity: .85;
+    }
+
+    /* ── H3 — sous-sections ── */
+    .post-body h3 {
+        font-family: var(--font-head);
+        font-size: 1.08rem;
+        font-weight: 700;
+        color: var(--gold);
+        margin: 2em 0 .6em;
+        letter-spacing: -.01em;
+    }
+
+    /* ── H4 ── */
+    .post-body h4 {
+        font-size: .9rem;
+        font-weight: 700;
+        color: var(--cream);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin: 1.6em 0 .5em;
+    }
+
+    /* ── Gras & italique ── */
+    .post-body strong, .post-body b {
+        color: var(--cream);
+        font-weight: 700;
+    }
+    .post-body em, .post-body i {
+        color: rgba(240,232,216,.88);
+        font-style: italic;
+    }
+
+    /* ── Liens ── */
+    .post-body a {
+        color: var(--gold);
+        text-decoration: underline;
+        text-decoration-color: rgba(212,168,67,.35);
+        text-underline-offset: 3px;
+        transition: color .18s, text-decoration-color .18s;
+    }
+    .post-body a:hover {
+        color: #e8c060;
+        text-decoration-color: var(--gold);
+    }
+
+    /* ── Blockquote — citation éditoriale ── */
+    .post-body blockquote {
+        margin: 2.2em 0;
+        padding: 20px 24px 20px 28px;
+        border-left: 3px solid var(--gold);
+        background: rgba(212,168,67,.05);
+        border-radius: 0 10px 10px 0;
+        font-size: 1.08rem;
+        line-height: 1.72;
+        color: rgba(240,232,216,.88);
+        font-style: italic;
+        position: relative;
+    }
+    .post-body blockquote::before {
+        content: '\201C';
+        position: absolute;
+        top: -8px; left: 18px;
+        font-size: 4rem;
+        line-height: 1;
+        color: var(--gold);
+        opacity: .25;
+        font-family: Georgia, serif;
+    }
+    .post-body blockquote p { margin-bottom: 0; }
+
+    /* ── Code inline ── */
+    .post-body code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .82em;
+        background: rgba(212,168,67,.10);
+        color: var(--gold);
+        padding: 2px 7px;
+        border-radius: 5px;
+        border: 1px solid rgba(212,168,67,.18);
+    }
+
+    /* ── Bloc de code ── */
+    .post-body pre {
+        background: #141414;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 20px 22px;
+        overflow-x: auto;
+        margin: 1.8em 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .82rem;
+        line-height: 1.65;
+        color: rgba(240,232,216,.80);
+    }
+    .post-body pre code {
+        background: none;
+        border: none;
+        padding: 0;
+        color: inherit;
+        font-size: inherit;
+    }
+
+    /* ── Listes ── */
+    .post-body ul, .post-body ol {
+        padding-left: 0;
+        margin: 1.2em 0 1.4em;
+        list-style: none;
+    }
+    .post-body ul li, .post-body ol li {
+        position: relative;
+        padding-left: 22px;
+        margin-bottom: .6em;
+        color: rgba(240,232,216,.72);
+        line-height: 1.72;
+        counter-increment: list-counter;
+    }
+    .post-body ul li::before {
+        content: '';
+        position: absolute;
+        left: 0; top: .62em;
+        width: 6px; height: 6px;
+        background: var(--terra);
+        border-radius: 50%;
+        opacity: .85;
+    }
+    .post-body ol {
+        counter-reset: list-counter;
+    }
+    .post-body ol li::before {
+        content: counter(list-counter) '.';
+        position: absolute;
+        left: 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: .75em;
+        font-weight: 700;
+        color: var(--terra);
+        top: .18em;
+    }
+
+    /* ── Séparateur horizontal ── */
+    .post-body hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        opacity: .3;
+        margin: 2.5em 0;
+    }
+
+    /* ── Images dans l'article ── */
+    .post-body img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin: 1.4em 0;
+        display: block;
     }
 
     /* ── MÉDIA ── */
