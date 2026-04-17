@@ -592,28 +592,37 @@
 }
 
 .cat-card {
-    padding: 28px 22px;
+    padding: 24px 20px;
     text-decoration: none;
     display: flex; flex-direction: column;
     gap: 0; border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.07);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
     position: relative; overflow: hidden;
-    transition: transform .22s, box-shadow .22s, border-color .22s;
+    transition: transform .22s, box-shadow .22s, border-color .22s, background .22s;
     min-height: 130px; justify-content: flex-end;
+}
+.cat-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: 0.06;
+    transition: opacity .22s;
+    border-radius: 14px;
 }
 .cat-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.45);
-    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border-color: var(--border-hover);
 }
-/* Gradients par catégorie */
-.cat-card[href*="manga-anime"]   { background: linear-gradient(145deg,#120820,#2d1050,#6b22a0); }
-.cat-card[href*="gaming"]        { background: linear-gradient(145deg,#081408,#0e2e14,#1a5e2a); }
-.cat-card[href*="tech"]          { background: linear-gradient(145deg,#080c18,#101e3c,#1e3878); }
-.cat-card[href*="dev"]           { background: linear-gradient(145deg,#0e0900,#281c00,#5a3c00); }
-.cat-card[href*="cinema"]        { background: linear-gradient(145deg,#100404,#300a0a,#701414); }
-.cat-card[href*="culture"]       { background: linear-gradient(145deg,#040e08,#0c2416,#1a5030); }
-.cat-card[href*="debat"]         { background: linear-gradient(145deg,#0a0610,#1e1030,#4a1e80); }
+.cat-card:hover::after { opacity: 0.12; }
+/* Teinte subtile par catégorie */
+.cat-card[href*="manga-anime"]::after   { background: linear-gradient(145deg, #7c3aed, #a855f7); }
+.cat-card[href*="gaming"]::after        { background: linear-gradient(145deg, #16a34a, #4ade80); }
+.cat-card[href*="tech"]::after          { background: linear-gradient(145deg, #2563eb, #60a5fa); }
+.cat-card[href*="dev"]::after           { background: linear-gradient(145deg, #d97706, #fbbf24); }
+.cat-card[href*="cinema"]::after        { background: linear-gradient(145deg, #dc2626, #f87171); }
+.cat-card[href*="culture"]::after       { background: linear-gradient(145deg, #059669, #34d399); }
+.cat-card[href*="debat"]::after  { background: linear-gradient(145deg, #7c3aed, #c084fc); }
 /* Overlay hover lumineux */
 .cat-card::before {
     content: ''; position: absolute; inset: 0;
