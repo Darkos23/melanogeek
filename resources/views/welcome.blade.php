@@ -343,6 +343,7 @@
     display: flex;
     flex-direction: column;
     transition: background .2s;
+    border-right: 1px solid var(--border);
 }
 .art-featured:hover { background: var(--bg-hover); }
 
@@ -354,14 +355,44 @@
 }
 .art-side-card {
     background: var(--bg-card);
-    padding: 24px 28px;
+    padding: 22px 26px;
     text-decoration: none;
     display: flex;
     flex-direction: column;
     flex: 1;
     transition: background .2s;
+    position: relative;
+}
+.art-side-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--terra);
+    opacity: 0;
+    transition: opacity .2s;
 }
 .art-side-card:hover { background: var(--bg-hover); }
+.art-side-card:hover::before { opacity: 1; }
+
+/* Numéro éditorial sur les side cards */
+.art-side-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .55rem;
+    letter-spacing: .14em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.art-side-num::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
 
 /* Grille 3 colonnes pour les récents */
 .art-grid {
@@ -817,14 +848,15 @@
                 $initial = strtoupper(substr($post->user->name ?? '?', 0, 1));
             @endphp
             <a href="{{ route('posts.show', $post->id) }}" class="art-side-card">
+                <div class="art-side-num">0{{ $loop->iteration }}</div>
                 @if($post->category)
                 <div class="art-cat">{{ $post->category_label }}</div>
                 @endif
-                <div class="art-title">{{ $post->title }}</div>
+                <div class="art-title" style="font-size:1rem;line-height:1.3;margin-bottom:10px">{{ $post->title }}</div>
                 @if($excerpt)
-                <div class="art-excerpt">{{ $excerpt }}</div>
+                <div class="art-excerpt" style="font-size:.78rem;-webkit-line-clamp:2">{{ $excerpt }}</div>
                 @endif
-                <div class="art-meta" style="margin-top:auto">
+                <div class="art-meta" style="margin-top:auto;padding-top:12px">
                     @if($post->user->avatar)
                         <img src="{{ asset('storage/'.$post->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
                     @else
