@@ -66,14 +66,15 @@
        BASE
     ═══════════════════════════════════════════════ */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; overflow-x: hidden; }
+    html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100%; }
     body {
         background: var(--bg);
         color: var(--text);
         font-family: var(--font-body);
         transition: background .35s, color .35s;
-        /* overflow-x sur html pour éviter le bug iOS PWA où
-           body overflow:hidden bloque le focus des inputs */
+        overflow-x: hidden;
+        position: relative;
+        max-width: 100%;
     }
 
     /* Restauration des curseurs natifs */
