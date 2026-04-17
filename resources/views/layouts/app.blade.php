@@ -9,19 +9,25 @@
     {{-- ══ SEO & Open Graph ══ --}}
     @php
         $seoTitle  = trim($__env->yieldContent('og_title'))        ?: (trim($__env->yieldContent('title')) ?: 'MelanoGeek');
-        $seoDesc   = trim($__env->yieldContent('meta_description')) ?: 'MelanoGeek — La culture geek vue d\'Afrique. Articles, débats et reviews autour du manga, gaming, tech et de la culture nerd africaine.';
+        $seoDesc   = trim($__env->yieldContent('meta_description')) ?: "MelanoGeek — La culture geek vue d'Afrique. Articles, débats et reviews autour du manga, gaming, tech et de la culture nerd africaine.";
         $seoImg    = trim($__env->yieldContent('og_image'))         ?: asset('images/og-default.svg');
         $seoUrl    = trim($__env->yieldContent('canonical'))        ?: url()->current();
         $seoType   = trim($__env->yieldContent('og_type'))          ?: 'website';
         $seoRobots = trim($__env->yieldContent('meta_robots'))      ?: 'index, follow';
+        // Décoder les entités HTML pour éviter &#039; dans les previews WhatsApp/Facebook
+        $seoTitle  = html_entity_decode($seoTitle, ENT_QUOTES, 'UTF-8');
+        $seoDesc   = html_entity_decode($seoDesc,  ENT_QUOTES, 'UTF-8');
+        // Réencoder uniquement ce qui est dangereux dans un attribut double-quote
+        $seoTitle  = htmlspecialchars($seoTitle, ENT_COMPAT, 'UTF-8');
+        $seoDesc   = htmlspecialchars($seoDesc,  ENT_COMPAT, 'UTF-8');
     @endphp
-    <meta name="description"         content="{{ $seoDesc }}">
+    <meta name="description"         content="{!! $seoDesc !!}">
     <meta name="robots"              content="{{ $seoRobots }}">
     <link rel="canonical"            href="{{ $seoUrl }}">
     <meta property="og:type"         content="{{ $seoType }}">
     <meta property="og:site_name"    content="MelanoGeek">
-    <meta property="og:title"        content="{{ $seoTitle }}">
-    <meta property="og:description"  content="{{ $seoDesc }}">
+    <meta property="og:title"        content="{!! $seoTitle !!}">
+    <meta property="og:description"  content="{!! $seoDesc !!}">
     <meta property="og:url"          content="{{ $seoUrl }}">
     <meta property="og:image"        content="{{ $seoImg }}">
     <meta property="og:image:width"  content="1200">
@@ -29,8 +35,8 @@
     <meta property="og:locale"       content="fr_FR">
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:site"        content="@melanogeek">
-    <meta name="twitter:title"       content="{{ $seoTitle }}">
-    <meta name="twitter:description" content="{{ $seoDesc }}">
+    <meta name="twitter:title"       content="{!! $seoTitle !!}">
+    <meta name="twitter:description" content="{!! $seoDesc !!}">
     <meta name="twitter:image"       content="{{ $seoImg }}">
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
