@@ -166,6 +166,16 @@
     font-size: .84rem; color: var(--text-muted);
 }
 .reply-guest a { color: var(--terra); text-decoration: none; font-weight: 600; }
+
+@media (max-width: 640px) {
+    .thread-wrap { padding: 0; }
+    .thread-title-h { font-size: 1rem; padding: 14px 16px 0; }
+    .thread-body-text { padding: 10px 16px 16px; font-size: .86rem; }
+    .thread-post-head { padding: 12px 16px; }
+    .reply-form-wrap { border-radius: 12px; }
+    .reply-form-head { padding: 10px 14px; font-size: .8rem; }
+    .reply-form-actions { padding: 8px 12px; }
+}
 </style>
 @endpush
 

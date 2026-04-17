@@ -285,6 +285,10 @@
     /* ═══════════════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+        .mg-nav { padding: 20px 24px 0; }
+        .mg-editorial-bar { padding: 9px 24px; }
+    }
     @media (max-width: 768px) {
         .mg-nav { padding: env(safe-area-inset-top) 16px 0; height: calc(64px + env(safe-area-inset-top)); }
         .mg-links { display: none; }

@@ -349,9 +349,14 @@
     max-width: 1280px;
     margin: 0 auto;
 }
+@media (max-width: 1024px) {
+    .lp-section { padding: 52px 28px; }
+    .lp-section-full { padding: 52px 28px; }
+}
 @media (max-width: 768px) {
-    .lp-section { padding: 52px 20px; }
-    .lp-section-full { padding: 52px 20px; }
+    .lp-section { padding: 44px 16px; }
+    .lp-section-full { padding: 44px 16px; }
+    .lp-ed-header { margin-bottom: 28px; }
 }
 
 /* ── En-tête éditorial de section (trait + numéro + titre) ── */
@@ -864,8 +869,16 @@
     .lp-footer { flex-direction: column; text-align: center; padding: 28px 20px; }
     .lp-footer-links { flex-wrap: wrap; justify-content: center; }
 }
+@media (max-width: 1024px) {
+    .lp-cta-section { padding: 72px 28px; }
+    .lp-newsletter { padding: 52px 28px; }
+}
 @media (max-width: 768px) {
-    .lp-cta-section { padding: 64px 20px; }
+    .lp-cta-section { padding: 52px 16px; }
+    .lp-newsletter { padding: 44px 16px; }
+    .art-grid-featured { gap: 12px; }
+    .art-side { gap: 12px; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
 }
 </style>
 @endpush

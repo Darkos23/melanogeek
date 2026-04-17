@@ -100,11 +100,14 @@
     gap: 16px;
     margin-bottom: 32px;
 }
-@media (max-width: 700px) {
+@media (max-width: 860px) {
     .featured-card { grid-template-columns: 1fr; min-height: unset; }
     .featured-img-wrap { aspect-ratio: 16/7; }
     .featured-content { padding: 20px 18px; }
+}
+@media (max-width: 640px) {
     .posts-grid { grid-template-columns: 1fr; gap: 12px; }
+    .featured-title { font-size: 1.1rem; }
 }
 
 /* Card individuelle */
