@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0d0d0d"/>
-      <stop offset="100%" style="stop-color:#1a1a1a"/>
+      <stop offset="0%" stop-color="#0d0d0d"/>
+      <stop offset="100%" stop-color="#1a1209"/>
     </linearGradient>
-    <radialGradient id="glow1" cx="20%" cy="60%" r="50%">
-      <stop offset="0%" style="stop-color:#C8522A;stop-opacity:0.15"/>
-      <stop offset="100%" style="stop-color:#C8522A;stop-opacity:0"/>
+    <radialGradient id="glow1" cx="20%" cy="65%" r="55%">
+      <stop offset="0%" stop-color="#C8522A" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#C8522A" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="glow2" cx="80%" cy="30%" r="40%">
-      <stop offset="0%" style="stop-color:#D4A843;stop-opacity:0.08"/>
-      <stop offset="100%" style="stop-color:#D4A843;stop-opacity:0"/>
+    <radialGradient id="glow2" cx="85%" cy="25%" r="45%">
+      <stop offset="0%" stop-color="#D4A843" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#D4A843" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
@@ -20,7 +20,7 @@
   <rect width="1200" height="630" fill="url(#glow2)"/>
 
   <!-- Border -->
-  <rect x="40" y="40" width="1120" height="550" rx="24" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <rect x="40" y="40" width="1120" height="550" rx="24" fill="none" stroke="#FFFFFF" stroke-opacity="0.07" stroke-width="1"/>
 
   <!-- Favicon icon (hexagon + M shape) -->
   <g transform="translate(80, 80)">
@@ -29,43 +29,43 @@
   </g>
 
   <!-- Top label -->
-  <text x="152" y="116" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="600" letter-spacing="3" fill="#D4A843" text-transform="uppercase">MELANOGEEK · BLOG &amp; FORUM</text>
+  <text x="152" y="116" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#D4A843">MELANOGEEK · BLOG &amp; FORUM</text>
 
   <!-- Decorative line -->
-  <line x1="80" y1="148" x2="400" y2="148" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <line x1="80" y1="148" x2="420" y2="148" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="1"/>
 
   <!-- Main title -->
-  <text x="80" y="290" font-family="'Bricolage Grotesque', 'Arial Black', sans-serif" font-size="88" font-weight="800" letter-spacing="-4" fill="rgba(255,255,255,0.92)">Melanogeek</text>
+  <text x="80" y="300" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="92" font-weight="900" letter-spacing="-3" fill="#EDEBE6">Melanogeek</text>
 
   <!-- Tagline -->
-  <text x="80" y="360" font-family="'Outfit', Arial, sans-serif" font-size="32" font-weight="400" fill="rgba(255,255,255,0.45)">La culture geek, vue d'Afrique.</text>
+  <text x="80" y="366" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="400" fill="#8C8070">La culture geek, vue d'Afrique.</text>
 
   <!-- Decorative gold bar -->
-  <rect x="80" y="400" width="80" height="3" rx="2" fill="#D4A843" opacity="0.7"/>
+  <rect x="80" y="404" width="80" height="3" rx="2" fill="#D4A843" opacity="0.75"/>
 
   <!-- Bottom tags -->
-  <g font-family="'JetBrains Mono', monospace" font-size="13" font-weight="500" letter-spacing="1" fill="rgba(255,255,255,0.25)">
-    <text x="80" y="490">Manga &amp; Animé</text>
-    <text x="222" y="490">·</text>
-    <text x="234" y="490">Gaming</text>
-    <text x="326" y="490">·</text>
-    <text x="338" y="490">Tech &amp; IA</text>
-    <text x="438" y="490">·</text>
-    <text x="450" y="490">Développement</text>
-    <text x="614" y="490">·</text>
-    <text x="626" y="490">Cinéma</text>
-    <text x="706" y="490">·</text>
-    <text x="718" y="490">Culture &amp; Société</text>
-    <text x="908" y="490">·</text>
-    <text x="920" y="490">Débat</text>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="500" fill="#5A5248">
+    <text x="80"  y="496">Manga &amp; Animé</text>
+    <text x="232" y="496">·</text>
+    <text x="248" y="496">Gaming</text>
+    <text x="344" y="496">·</text>
+    <text x="360" y="496">Tech &amp; IA</text>
+    <text x="460" y="496">·</text>
+    <text x="476" y="496">Développement</text>
+    <text x="648" y="496">·</text>
+    <text x="664" y="496">Cinéma</text>
+    <text x="748" y="496">·</text>
+    <text x="764" y="496">Culture &amp; Société</text>
+    <text x="956" y="496">·</text>
+    <text x="972" y="496">Débat</text>
   </g>
 
   <!-- Bottom url -->
-  <text x="80" y="548" font-family="'JetBrains Mono', monospace" font-size="14" fill="rgba(255,255,255,0.15)" letter-spacing="1">melanogeek.com</text>
+  <text x="80" y="552" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#3A3530" letter-spacing="1">melanogeek.com</text>
 
   <!-- Right decorative element -->
-  <g transform="translate(920, 200)" opacity="0.04">
-    <path d="M140 0L280 80V240L140 320L0 240V80L140 0Z" fill="none" stroke="white" stroke-width="2"/>
-    <path d="M60 240V80L100 140L140 80L180 140L220 80V240" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <g transform="translate(900, 180)" opacity="0.05">
+    <path d="M150 0L300 86V260L150 346L0 260V86L150 0Z" fill="none" stroke="white" stroke-width="2"/>
+    <path d="M60 260V86L105 152L150 86L195 152L240 86V260" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
   </g>
 </svg>
