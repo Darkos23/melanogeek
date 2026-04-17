@@ -16,14 +16,11 @@ class ContentSeeder extends Seeder
               ?? User::first();
 
         if (! $user) {
-            $this->command->warn('Aucun utilisateur trouvé. Crée un compte d\'abord.');
-            return;
+            throw new \RuntimeException('Aucun utilisateur trouvé. Crée un compte d\'abord.');
         }
 
         $this->seedPosts($user);
         $this->seedThreads($user);
-
-        $this->command->info('✅ Contenu généré avec succès !');
     }
 
     /* ─────────────────────────────────────────────────────────────

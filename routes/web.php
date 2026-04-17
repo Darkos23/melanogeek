@@ -107,11 +107,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Seeder de contenu (one-shot)
     Route::get('/seed-content', function () {
-        \Artisan::call('db:seed', ['--class' => 'ContentSeeder', '--force' => true]);
-        $output = \Artisan::output();
-        return response('<pre style="background:#111;color:#8f8;padding:20px;font-family:monospace">'
-            . e($output)
-            . "\n✅ Terminé. <a href='/blog' style='color:#C8522A'>Voir le blog</a> · <a href='/forum' style='color:#C8522A'>Voir le forum</a></pre>");
+        try {
+            $seeder = new \Database\Seeders\ContentSeeder();
+            $seeder->run();
+            return response('<pre style="background:#111;color:#8f8;padding:20px;font-family:monospace">✅ Contenu généré avec succès !'
+                . "\n\n<a href='/blog' style='color:#C8522A'>→ Voir le blog</a>   <a href='/forum' style='color:#C8522A'>→ Voir le forum</a></pre>");
+        } catch (\Throwable $e) {
+            return response('<pre style="background:#111;color:#f88;padding:20px;font-family:monospace">❌ Erreur : ' . e($e->getMessage()) . "\n\n" . e($e->getTraceAsString()) . '</pre>', 500);
+        }
     })->name('seed-content');
 });
 
