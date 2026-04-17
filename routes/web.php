@@ -105,6 +105,37 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('/reports/{report}/dismiss', [AdminController::class, 'reportDismiss'])->name('reports.dismiss');
     Route::patch('/reports/{report}/remove-post', [AdminController::class, 'reportRemovePost'])->name('reports.remove-post');
 
+    // Fix: remplace le post Laravel en double
+    Route::get('/fix-duplicate-laravel', function () {
+        $post = \App\Models\Post::where('title', 'Comment structurer son premier projet Laravel solo sans se perdre')->first();
+        if (! $post) return response('<pre style="background:#111;color:#f88;padding:20px">Post introuvable ou déjà corrigé.</pre>');
+
+        $post->update([
+            'title' => 'Git et le versioning : les bonnes pratiques que tout dev africain devrait adopter',
+            'body'  => <<<HTML
+<h2>Pourquoi Git est non-négociable</h2>
+<p>Git n'est pas juste un outil de sauvegarde — c'est le langage commun de toute équipe de développement professionnelle. Pourtant, beaucoup de développeurs autodidactes africains passent des années à coder sans vraiment maîtriser Git, travaillant en solo sur des projets qui deviennent impossibles à maintenir dès qu'une deuxième personne rejoint.</p>
+<h2>Les erreurs les plus fréquentes</h2>
+<p>Le commit fourre-tout : <code>git commit -m "modifications"</code> qui regroupe 15 changements sans rapport. L'absence de branches — tout sur <code>main</code>, ce qui rend chaque bug correction un cauchemar. Et le <code>git push --force</code> en équipe, qui efface le travail des autres.</p>
+<h2>Un workflow simple qui fonctionne</h2>
+<p>Pour un projet solo ou une petite équipe, ce flow couvre 90% des besoins :</p>
+<ul>
+<li><strong>main</strong> — uniquement du code stable et deployé</li>
+<li><strong>develop</strong> — branche d'intégration, toujours potentiellement deployable</li>
+<li><strong>feature/nom-feature</strong> — une branche par fonctionnalité</li>
+</ul>
+<p>Chaque commit doit répondre à la question : <em>"Qu'est-ce que ce commit fait ?"</em> en une phrase. <code>feat: ajouter l'authentification Google</code> vaut mieux que <code>update</code>.</p>
+<h2>Les conventions de commit (Conventional Commits)</h2>
+<p>Le standard <strong>Conventional Commits</strong> est adopté par la majorité des projets open source sérieux. La syntaxe : <code>type(scope): description</code>. Types principaux : <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>refactor</code>, <code>test</code>, <code>chore</code>. Ça paraît formel mais ça devient instinctif en 2 semaines.</p>
+<h2>GitHub comme portfolio</h2>
+<p>Pour un développeur africain qui cherche à travailler avec des clients internationaux, un profil GitHub actif avec des commits propres et réguliers est souvent plus convaincant qu'un CV. Le code parle.</p>
+HTML,
+            'category' => 'dev',
+        ]);
+
+        return response('<pre style="background:#111;color:#8f8;padding:20px">✅ Post mis à jour. <a href="/blog" style="color:#C8522A">Voir le blog</a></pre>');
+    })->name('fix-duplicate-laravel');
+
     // Seeder de contenu (one-shot)
     Route::get('/seed-content', function () {
         try {
