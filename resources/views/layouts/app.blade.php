@@ -93,12 +93,15 @@
         /* Taille de texte minimale lisible sur mobile */
         body { font-size: 15px; }
 
-        /* Touch targets : min 44px (recommandation Apple) */
-        button, a, [role="button"],
+        /* Touch targets : min 44px — seulement les éléments de nav/action principaux */
+        .mg-hamburger, .mg-notif-btn, .mg-user-btn,
+        .mg-btn-ghost, .mg-btn-solid,
         input[type=submit], input[type=button] {
             min-height: 44px;
             touch-action: manipulation;
         }
+        /* touch-action pour tous les interactifs, sans forcer la hauteur */
+        button, a, [role="button"] { touch-action: manipulation; }
 
         /* Inputs plus grands sur mobile */
         input, textarea, select {

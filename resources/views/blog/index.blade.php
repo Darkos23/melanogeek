@@ -104,8 +104,6 @@
 .cat-filter-bar::-webkit-scrollbar { display: none; }
 .cat-filter-bar > a {
     flex-shrink: 0;
-    min-height: unset !important;
-    height: auto;
     white-space: nowrap;
 }
 
