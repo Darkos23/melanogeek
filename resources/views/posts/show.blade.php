@@ -971,9 +971,6 @@
                 @if($post->user->bio)
                 <p class="pac-bio">{{ Str::limit($post->user->bio, 180) }}</p>
                 @endif
-                <a href="{{ route('profile.show', $post->user->username) }}" class="pac-link">
-                    Voir le profil →
-                </a>
             </div>
         </div>
 
