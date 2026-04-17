@@ -461,7 +461,7 @@
     </div>
 
     @forelse($threads as $thread)
-    <a href="{{ route('forum.show', $thread) }}" class="forum-thread">
+    <a href="{{ route('forum.show', $thread) }}" class="forum-thread" data-reveal data-delay="{{ ($loop->index % 5) + 1 }}">
         <div class="forum-thread-main">
             <div class="forum-thread-avi" style="background:linear-gradient(135deg,var(--terra),var(--gold))">
                 @if($thread->user->avatar)

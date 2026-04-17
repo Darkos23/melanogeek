@@ -82,6 +82,19 @@
         padding: 0 24px 20px;
     }
 
+    /* ── DROP CAP — première lettre des articles longs ── */
+    .post-body.has-drop-cap > p:first-of-type::first-letter,
+    .post-body.has-drop-cap::first-letter {
+        font-family: var(--font-head);
+        font-size: 4em;
+        font-weight: 800;
+        line-height: 0.82;
+        float: left;
+        margin: 4px 10px 0 0;
+        color: var(--terra);
+        text-shadow: 0 0 32px rgba(200,82,42,.25);
+    }
+
     /* ── MÉDIA ── */
     .post-media {
         width: 100%;
@@ -502,7 +515,7 @@
         <div class="post-success">✓ Publication mise à jour !</div>
     @endif
 
-    <div class="post-card-full">
+    <div class="post-card-full" data-reveal>
 
         {{-- Brouillon --}}
         @if(! $post->is_published)
@@ -570,7 +583,8 @@
 
         {{-- Corps --}}
         @if($post->body)
-            <div class="post-body">{!! $post->body !!}</div>
+            @php $hasDropCap = $post->title && str_word_count(strip_tags($post->body)) >= 80; @endphp
+            <div class="post-body{{ $hasDropCap ? ' has-drop-cap' : '' }}">{!! $post->body !!}</div>
         @endif
 
         {{-- Média --}}

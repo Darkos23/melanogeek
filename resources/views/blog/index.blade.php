@@ -225,7 +225,7 @@
         <span style="display:inline-block;width:24px;height:1px;background:var(--gold);opacity:.7"></span>
         MelanoGeek · Blog
     </div>
-    <h1 style="font-family:var(--font-head);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;color:rgba(255,255,255,.92);margin-bottom:16px">
+    <h1 data-scramble style="font-family:var(--font-head);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;color:rgba(255,255,255,.92);margin-bottom:16px">
         Culture geek,<br><span style="color:var(--gold)">vue d'Afrique.</span>
     </h1>
     <p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.65;max-width:460px;font-family:'Inter',sans-serif">
@@ -312,7 +312,7 @@
     $featuredExcerpt = Str::limit(strip_tags($featured->body ?? ''), 180);
     $featuredMins = max(1,(int)ceil(str_word_count(strip_tags($featured->body??''))/200));
 @endphp
-<a href="{{ route('posts.show', $featured->id) }}" class="featured-card" style="margin-bottom:24px;">
+<a href="{{ route('posts.show', $featured->id) }}" class="featured-card" data-reveal style="margin-bottom:24px;">
     {{-- Image gauche --}}
     <div class="featured-img-wrap">
         @if($featuredImg)
@@ -381,7 +381,7 @@
         ];
         $catIcon = $catIcons[$post->category] ?? '📰';
     @endphp
-    <a href="{{ route('posts.show', $post->id) }}" class="post-card">
+    <a href="{{ route('posts.show', $post->id) }}" class="post-card" data-reveal data-delay="{{ ($loop->index % 5) + 1 }}">
 
         {{-- Banner : image ou gradient coloré par catégorie --}}
         <div class="post-card-banner {{ $thumbUrl ? '' : $catClass }}">
@@ -457,3 +457,55 @@
 @endif {{-- end $posts->isEmpty() --}}
 
 @endsection
+
+@push('scripts')
+<script>
+/* ══ TEXT SCRAMBLE — titre hero ══ */
+(function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+
+    function scramble(el) {
+        // On ne travaille que sur le premier noeud texte du h1 (avant le <br>)
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        const nodes  = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        if (!nodes.length) return;
+
+        // Prendre uniquement les deux premiers noeuds texte (avant/après <br>)
+        nodes.slice(0, 2).forEach(function (node) {
+            const original = node.nodeValue;
+            if (!original.trim()) return;
+
+            let frame = 0;
+            const totalFrames = original.length * 3 + 12;
+
+            const tick = setInterval(function () {
+                let result = '';
+                for (let i = 0; i < original.length; i++) {
+                    if (original[i] === ' ' || original[i] === '\n') {
+                        result += original[i];
+                    } else if (i < frame / 3) {
+                        result += original[i];
+                    } else {
+                        result += chars[Math.floor(Math.random() * chars.length)];
+                    }
+                }
+                node.nodeValue = result;
+                frame++;
+                if (frame >= totalFrames) {
+                    node.nodeValue = original;
+                    clearInterval(tick);
+                }
+            }, 40);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const el = document.querySelector('[data-scramble]');
+        if (el) setTimeout(function () { scramble(el); }, 200);
+    });
+})();
+</script>
+@endpush
