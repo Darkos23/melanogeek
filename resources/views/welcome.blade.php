@@ -725,7 +725,7 @@
     <div class="lp-hero-left">
         <div class="lp-vol">Vol. I · {{ date('Y') }}</div>
 
-        <h1 class="lp-h1" data-scramble>
+        <h1 class="lp-h1">
             La culture geek,<br>
             <span class="lp-h1-gold">vue d'Afrique.</span>
         </h1>
@@ -1013,35 +1013,6 @@
 @push('scripts')
 <script>
 (function () {
-    /* ══ TEXT SCRAMBLE — hero h1 ══ */
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
-        function scramble(el) {
-            const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-            const nodes  = [];
-            while (walker.nextNode()) nodes.push(walker.currentNode);
-            nodes.slice(0, 2).forEach(function (node) {
-                const original = node.nodeValue;
-                if (!original.trim()) return;
-                let frame = 0;
-                const totalFrames = original.length * 3 + 12;
-                const tick = setInterval(function () {
-                    let result = '';
-                    for (let i = 0; i < original.length; i++) {
-                        if (original[i] === ' ' || original[i] === '\n') { result += original[i]; }
-                        else if (i < frame / 3) { result += original[i]; }
-                        else { result += chars[Math.floor(Math.random() * chars.length)]; }
-                    }
-                    node.nodeValue = result;
-                    frame++;
-                    if (frame >= totalFrames) { node.nodeValue = original; clearInterval(tick); }
-                }, 40);
-            });
-        }
-        var el = document.querySelector('[data-scramble]');
-        if (el) setTimeout(function () { scramble(el); }, 300);
-    }
-
     /* ══ COMPTEURS ANIMÉS — stats hero ══ */
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         function animateCount(el) {
