@@ -587,9 +587,13 @@
 /* ══ CATÉGORIES — CARTES GRADIENT ══ */
 .cat-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(7, 1fr);
     gap: 12px;
 }
+@media (max-width: 1024px) { .cat-grid { grid-template-columns: repeat(4, 1fr); justify-items: stretch; } }
+@media (max-width: 600px)  { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+/* Dernière carte seule → pleine largeur sur mobile */
+@media (max-width: 600px)  { .cat-grid > a:last-child:nth-child(odd) { grid-column: span 2; } }
 
 .cat-card {
     padding: 24px 20px;
