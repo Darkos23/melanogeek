@@ -25,8 +25,18 @@
     margin: 0 auto;
     padding: 56px 52px 80px;
     position: relative;
+    overflow: hidden;
     align-items: center;
 }
+.lp-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse 70% 80% at 15% 60%, rgba(200,82,42,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 70% at 85% 30%, rgba(212,168,67,0.06) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+}
+.lp-hero > * { position: relative; z-index: 1; }
 @media (max-width: 1100px) {
     .lp-hero { grid-template-columns: 1fr; padding: 44px 28px 60px; }
     .lp-hero-right { display: none; }
@@ -64,14 +74,19 @@
 /* Titre principal */
 .lp-h1 {
     font-family: var(--font-head);
-    font-size: clamp(3rem, 6.5vw, 5.4rem);
+    font-size: clamp(3.8rem, 8.5vw, 7.2rem);
     font-weight: 800;
     line-height: 1.05;
-    letter-spacing: -.04em;
+    letter-spacing: -.05em;
     color: rgba(255,255,255,.94);
     margin: 0;
 }
-.lp-h1-gold { color: var(--gold); }
+.lp-h1-gold {
+    background: linear-gradient(135deg, #D4A843 0%, #f0c060 40%, #C8522A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 /* Filet or sous le titre */
 .lp-hero-rule {
@@ -169,6 +184,27 @@
     color: rgba(255,255,255,.85) !important;
     border-color: rgba(255,255,255,.28);
 }
+
+/* Scroll hint */
+.lp-scroll-hint {
+    width: 26px; height: 42px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
+    display: flex; align-items: flex-start;
+    justify-content: center; padding-top: 5px;
+    margin-top: 8px;
+}
+.lp-scroll-dot {
+    width: 4px; height: 8px;
+    background: rgba(255,255,255,0.45);
+    border-radius: 100px;
+    animation: scrollBounce 1.8s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); opacity: .45; }
+    50%       { transform: translateY(12px); opacity: .9; }
+}
+@media (prefers-reduced-motion: reduce) { .lp-scroll-dot { animation: none; } }
 
 /* ── Colonne droite — encart éditorial ── */
 .lp-hero-right {
@@ -367,51 +403,57 @@
 .art-grid-featured {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
+    gap: 16px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
 }
 @media (max-width: 1024px) { .art-grid-featured { grid-template-columns: 1fr; } }
 
 .art-featured {
     background: var(--bg-card);
-    padding: 36px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 0;
     text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    transition: background .2s;
-    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+    overflow: hidden;
 }
-.art-featured:hover { background: var(--bg-hover); }
+.art-featured:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.45);
+    transform: translateY(-2px);
+    background: var(--bg-card);
+}
+.art-featured-inner { padding: 24px 28px 28px; display: flex; flex-direction: column; flex: 1; }
 
 .art-side {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    background: var(--border);
+    display: flex; flex-direction: column;
+    gap: 12px; background: transparent;
 }
 .art-side-card {
     background: var(--bg-card);
-    padding: 22px 26px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
     text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    transition: background .2s;
-    position: relative;
+    display: flex; flex-direction: column;
+    flex: 1; transition: border-color .2s, box-shadow .2s, transform .2s;
+    position: relative; overflow: hidden;
 }
 .art-side-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: var(--terra);
-    opacity: 0;
-    transition: opacity .2s;
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--terra); opacity: 0; transition: opacity .2s;
+    border-radius: 0;
 }
-.art-side-card:hover { background: var(--bg-hover); }
+.art-side-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    transform: translateY(-1px);
+}
 .art-side-card:hover::before { opacity: 1; }
 
 /* Numéro éditorial sur les side cards */
@@ -479,7 +521,7 @@
     margin-bottom: 20px;
     overflow: hidden;
 }
-.art-featured .art-thumb { aspect-ratio: 16/8; margin-bottom: 24px; }
+.art-featured .art-thumb { aspect-ratio: 16/8; margin-bottom: 0; }
 .art-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .art-thumb-placeholder {
     width: 100%; height: 100%;
@@ -535,58 +577,64 @@
 }
 .art-dot { width: 2px; height: 2px; background: var(--text-faint); border-radius: 50%; }
 
-/* ══ CATÉGORIES — GRILLE LÉGÈRE ══ */
+/* ══ CATÉGORIES — CARTES GRADIENT ══ */
 .cat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
+    gap: 12px;
 }
 
 .cat-card {
-    background: var(--bg-card);
-    padding: 24px 20px;
+    padding: 28px 22px;
     text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    transition: background .2s;
-    position: relative;
-    overflow: hidden;
+    display: flex; flex-direction: column;
+    gap: 0; border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.07);
+    position: relative; overflow: hidden;
+    transition: transform .22s, box-shadow .22s, border-color .22s;
+    min-height: 130px; justify-content: flex-end;
 }
-.cat-card::after {
-    content: '';
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 1px;
-    background: var(--gold);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform .25s;
+.cat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+    border-color: rgba(255,255,255,0.14);
 }
-.cat-card:hover { background: var(--bg-hover); }
-.cat-card:hover::after { transform: scaleX(1); }
+/* Gradients par catégorie */
+.cat-card[href*="manga-anime"]   { background: linear-gradient(145deg,#120820,#2d1050,#6b22a0); }
+.cat-card[href*="gaming"]        { background: linear-gradient(145deg,#081408,#0e2e14,#1a5e2a); }
+.cat-card[href*="tech"]          { background: linear-gradient(145deg,#080c18,#101e3c,#1e3878); }
+.cat-card[href*="dev"]           { background: linear-gradient(145deg,#0e0900,#281c00,#5a3c00); }
+.cat-card[href*="cinema"]        { background: linear-gradient(145deg,#100404,#300a0a,#701414); }
+.cat-card[href*="culture"]       { background: linear-gradient(145deg,#040e08,#0c2416,#1a5030); }
+.cat-card[href*="debat"]         { background: linear-gradient(145deg,#0a0610,#1e1030,#4a1e80); }
+/* Overlay hover lumineux */
+.cat-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%);
+    opacity: 0; transition: opacity .22s;
+}
+.cat-card:hover::before { opacity: 1; }
+/* Supprimer l'ancien ::after (la barre gold) */
+.cat-card::after { display: none; }
 
 .cat-icon {
-    font-size: 1.4rem;
-    line-height: 1;
-    margin-bottom: 4px;
+    font-size: 2rem; line-height: 1;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
 }
 .cat-name {
-    font-family: var(--serif);
-    font-size: .92rem;
-    font-weight: 400;
-    color: rgba(255,255,255,.80);
+    font-family: var(--font-head);
+    font-size: .95rem; font-weight: 700;
+    color: rgba(255,255,255,.88);
     transition: color .2s;
+    letter-spacing: -.01em;
 }
-.cat-card:hover .cat-name { color: var(--gold); }
+.cat-card:hover .cat-name { color: white; }
 .cat-count {
     font-family: 'JetBrains Mono', monospace;
-    font-size: .56rem;
-    letter-spacing: .08em;
-    color: var(--text-faint);
-    text-transform: uppercase;
+    font-size: .58rem; letter-spacing: .08em;
+    color: rgba(255,255,255,0.35); text-transform: uppercase;
+    margin-top: 4px;
 }
 
 /* ══ FORUM PREVIEW ══ */
@@ -861,6 +909,9 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
         </div>
+        <div class="lp-scroll-hint" aria-hidden="true">
+            <div class="lp-scroll-dot"></div>
+        </div>
     </div>
 
     {{-- Colonne droite — encart éditorial --}}
@@ -946,24 +997,26 @@
                     <div class="art-thumb-placeholder">📰</div>
                 @endif
             </div>
-            @if($featured->category)
-            <div class="art-cat">{{ $featured->category_label }}</div>
-            @endif
-            <div class="art-title">{{ $featured->title }}</div>
-            @if($featExcerpt)
-            <div class="art-excerpt">{{ $featExcerpt }}</div>
-            @endif
-            <div class="art-meta" style="margin-top:auto">
-                @if($featured->user->avatar)
-                    <img src="{{ asset('storage/'.$featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
-                @else
-                    <div class="art-avi">{{ $featInitial }}</div>
+            <div class="art-featured-inner">
+                @if($featured->category)
+                <div class="art-cat">{{ $featured->category_label }}</div>
                 @endif
-                <span>{{ $featured->user->name }}</span>
-                <span class="art-dot"></span>
-                <span>{{ $featured->created_at->format('d M Y') }}</span>
-                <span class="art-dot"></span>
-                <span>{{ $featMins }} min</span>
+                <div class="art-title">{{ $featured->title }}</div>
+                @if($featExcerpt)
+                <div class="art-excerpt">{{ $featExcerpt }}</div>
+                @endif
+                <div class="art-meta" style="margin-top:auto">
+                    @if($featured->user->avatar)
+                        <img src="{{ asset('storage/'.$featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
+                    @else
+                        <div class="art-avi">{{ $featInitial }}</div>
+                    @endif
+                    <span>{{ $featured->user->name }}</span>
+                    <span class="art-dot"></span>
+                    <span>{{ $featured->created_at->format('d M Y') }}</span>
+                    <span class="art-dot"></span>
+                    <span>{{ $featMins }} min</span>
+                </div>
             </div>
         </a>
         @endif
