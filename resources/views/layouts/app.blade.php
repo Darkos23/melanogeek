@@ -289,10 +289,12 @@
         .mg-nav { padding: 20px 24px 0; }
         .mg-editorial-bar { padding: 9px 24px; }
     }
+    @media (max-width: 960px) {
+        .mg-editorial-bar { display: none; }
+    }
     @media (max-width: 768px) {
         .mg-nav { padding: env(safe-area-inset-top) 16px 0; height: calc(64px + env(safe-area-inset-top)); }
         .mg-links { display: none; }
-        .mg-editorial-bar { display: none; }
         .mg-hamburger { display: flex; }
         /* Boutons Connexion / Rejoindre / Mon fil → dans le burger */
         .mg-btn-ghost, .mg-btn-solid { display: none; }
