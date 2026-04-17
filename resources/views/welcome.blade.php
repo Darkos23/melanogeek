@@ -14,7 +14,7 @@
 /* ── Fond neutre, pas de motifs hérités ── */
 
 /* ── Variable serif ── */
-.lp { --serif: 'DM Serif Display', 'Georgia', serif; }
+.lp { --serif: 'DM Serif Display', 'Georgia', serif; overflow-x: hidden; width: 100%; }
 
 /* ══ HERO — EDITORIAL ASYMÉTRIQUE ══ */
 .lp-hero {
@@ -275,6 +275,8 @@
     position: relative;
     display: flex;
     align-items: stretch;
+    max-width: 100vw;
+    width: 100%;
 }
 .lp-ticker-label {
     flex-shrink: 0;
@@ -813,7 +815,7 @@
     line-height: 1.65;
 }
 .lp-newsletter-form { display: flex; flex-direction: column; gap: 10px; }
-.lp-newsletter-row { display: flex; gap: 8px; }
+.lp-newsletter-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .lp-newsletter-input {
     flex: 1;
     background: var(--bg-card);
@@ -879,6 +881,9 @@
     .art-grid-featured { gap: 12px; }
     .art-side { gap: 12px; }
     .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .lp-newsletter-row { flex-direction: column; }
+    .lp-newsletter-btn { width: 100%; }
+    .lp-section, .lp-section-full, .lp-cta-section, .lp-newsletter { max-width: 100vw; box-sizing: border-box; }
 }
 </style>
 @endpush
