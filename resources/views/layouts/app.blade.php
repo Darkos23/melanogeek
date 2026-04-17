@@ -7,27 +7,31 @@
     <title>@yield('title', config('app.name', 'MelanoGeek'))</title>
 
     {{-- ══ SEO & Open Graph ══ --}}
-    <meta name="description" content="@yield('meta_description', 'MelanoGeek — La culture geek vue d\'Afrique. Articles, débats et reviews autour du manga, gaming, tech et de la culture nerd africaine.')">
-    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
-    <link rel="canonical" href="@yield('canonical', url()->current())">
-
-    {{-- Open Graph (Facebook, WhatsApp, LinkedIn…) --}}
-    <meta property="og:type"        content="@yield('og_type', 'website')">
-    <meta property="og:site_name"   content="MelanoGeek">
-    <meta property="og:title"       content="@yield('og_title', @yield('title', 'MelanoGeek'))">
-    <meta property="og:description" content="@yield('og_description', @yield('meta_description', 'La culture geek vue d\'Afrique.'))">
-    <meta property="og:url"         content="@yield('canonical', url()->current())">
-    <meta property="og:image"       content="@yield('og_image', asset('images/og-default.jpg'))">
+    @php
+        $seoTitle  = trim($__env->yieldContent('og_title'))        ?: (trim($__env->yieldContent('title')) ?: 'MelanoGeek');
+        $seoDesc   = trim($__env->yieldContent('meta_description')) ?: 'MelanoGeek — La culture geek vue d\'Afrique. Articles, débats et reviews autour du manga, gaming, tech et de la culture nerd africaine.';
+        $seoImg    = trim($__env->yieldContent('og_image'))         ?: asset('images/og-default.jpg');
+        $seoUrl    = trim($__env->yieldContent('canonical'))        ?: url()->current();
+        $seoType   = trim($__env->yieldContent('og_type'))          ?: 'website';
+        $seoRobots = trim($__env->yieldContent('meta_robots'))      ?: 'index, follow';
+    @endphp
+    <meta name="description"         content="{{ $seoDesc }}">
+    <meta name="robots"              content="{{ $seoRobots }}">
+    <link rel="canonical"            href="{{ $seoUrl }}">
+    <meta property="og:type"         content="{{ $seoType }}">
+    <meta property="og:site_name"    content="MelanoGeek">
+    <meta property="og:title"        content="{{ $seoTitle }}">
+    <meta property="og:description"  content="{{ $seoDesc }}">
+    <meta property="og:url"          content="{{ $seoUrl }}">
+    <meta property="og:image"        content="{{ $seoImg }}">
     <meta property="og:image:width"  content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:locale"      content="fr_FR">
-
-    {{-- Twitter Card --}}
+    <meta property="og:locale"       content="fr_FR">
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:site"        content="@melanogeek">
-    <meta name="twitter:title"       content="@yield('og_title', @yield('title', 'MelanoGeek'))">
-    <meta name="twitter:description" content="@yield('og_description', @yield('meta_description', 'La culture geek vue d\'Afrique.'))">
-    <meta name="twitter:image"       content="@yield('og_image', asset('images/og-default.jpg'))">
+    <meta name="twitter:title"       content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDesc }}">
+    <meta name="twitter:image"       content="{{ $seoImg }}">
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="manifest" href="/manifest.json">
