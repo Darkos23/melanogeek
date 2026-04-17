@@ -769,8 +769,8 @@
 
         {{-- Image de couverture --}}
         @if($post->thumbnail)
-            <div style="margin:0 0 20px;border-radius:10px;overflow:hidden;background:var(--bg-card2);">
-                <img src="{{ asset('storage/'.$post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;height:auto;display:block;">
+            <div style="margin:0 0 20px;border-radius:10px;overflow:hidden;background:var(--bg-card2);max-height:480px;">
+                <img src="{{ asset('storage/'.$post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;height:100%;max-height:480px;object-fit:cover;object-position:center;display:block;">
             </div>
         @endif
 
