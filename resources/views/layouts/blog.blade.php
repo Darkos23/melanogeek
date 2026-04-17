@@ -112,11 +112,10 @@
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
     .blog-wrap { grid-template-columns: 1fr; padding: 32px 28px 56px; }
-    .blog-sidebar { position: static; }
+    .blog-sidebar { display: none; }
 }
 @media (max-width: 768px) {
     .blog-wrap { padding: 20px 16px 48px; }
-    .blog-sidebar { display: none; }
     .blog-footer { padding: 20px 16px; flex-direction: column; text-align: center; }
     .blog-footer-links { flex-wrap: wrap; justify-content: center; }
 }

@@ -102,7 +102,12 @@
 }
 /* Barre de filtres scrollable sur mobile */
 .cat-filter-bar::-webkit-scrollbar { display: none; }
-.cat-filter-bar > a { flex-shrink: 0; }
+.cat-filter-bar > a {
+    flex-shrink: 0;
+    min-height: unset !important;
+    height: auto;
+    white-space: nowrap;
+}
 
 @media (max-width: 860px) {
     .featured-card { grid-template-columns: 1fr; min-height: unset; }
