@@ -26,9 +26,13 @@
 .ql-editor ul, .ql-editor ol { padding-left:18px; }
 .ql-editor p { margin-bottom:4px; }
 /* Page */
-.edit-page { min-height:100vh; padding-top:24px; padding-bottom:60px; }
-.edit-wrap { max-width:720px; margin:0 auto; padding:0 16px; }
+.edit-page { min-height:100vh; padding-top:24px; padding-bottom:60px; overflow-x:hidden; width:100%; }
+.edit-wrap { max-width:720px; margin:0 auto; padding:0 16px; overflow-x:hidden; }
 .edit-card { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+/* Quill overflow fix */
+.ql-toolbar.ql-snow { flex-wrap:wrap !important; overflow-x:hidden !important; }
+.ql-editor { overflow-x:hidden !important; word-break:break-word; }
+.ql-container { max-width:100%; }
 .edit-header { padding:20px 24px 16px; border-bottom:1px solid var(--border); }
 .edit-header h2 { font-family:var(--font-head); font-size:1.1rem; font-weight:700; color:var(--text); }
 .edit-title { width:100%; background:transparent; border:none; outline:none; font-family:var(--font-head); font-size:1.25rem; font-weight:700; color:var(--text); padding:18px 24px 0; resize:none; line-height:1.4; }

@@ -11,9 +11,14 @@
         border-top: 1px solid var(--border);
         background: var(--bg-card2);
         padding: 10px 16px;
-        flex-wrap: wrap;
+        flex-wrap: wrap !important;
+        overflow-x: hidden !important;
         gap: 4px;
     }
+    .ql-editor { overflow-x: hidden !important; word-break: break-word; }
+    .ql-container { max-width: 100%; }
+    .create-page { overflow-x: hidden; }
+    .create-wrap { overflow-x: hidden; }
     .ql-toolbar.ql-snow .ql-formats { margin-right: 8px; }
     .ql-toolbar.ql-snow button,
     .ql-toolbar.ql-snow .ql-picker-label {
