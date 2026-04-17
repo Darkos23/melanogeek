@@ -115,6 +115,13 @@ class PostController extends Controller
     {
         $post->load(['user', 'mediaFiles']);
 
+        // Compter la vue — une fois par session, jamais pour l'auteur lui-même
+        $sessionKey = 'viewed_post_' . $post->id;
+        if (! session()->has($sessionKey) && auth()->id() !== $post->user_id) {
+            $post->increment('views_count');
+            session()->put($sessionKey, true);
+        }
+
         $liked = auth()->check()
             ? Like::where('user_id', auth()->id())->where('post_id', $post->id)->exists()
             : false;

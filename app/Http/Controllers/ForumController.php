@@ -74,7 +74,12 @@ class ForumController extends Controller
 
     public function show(Request $request, ForumThread $thread): View
     {
-        $thread->increment('views_count');
+        // Compter la vue — une fois par session, jamais pour l'auteur lui-même
+        $sessionKey = 'viewed_thread_' . $thread->id;
+        if (! session()->has($sessionKey) && auth()->id() !== $thread->user_id) {
+            $thread->increment('views_count');
+            session()->put($sessionKey, true);
+        }
         $thread->load('user');
 
         $replies = $thread->replies()

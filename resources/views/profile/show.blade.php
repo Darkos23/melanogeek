@@ -287,7 +287,7 @@
                         <div class="empty-posts-title">Aucune publication</div>
                         <div class="empty-posts-desc">
                             @if(auth()->id() === $user->id)
-                                Tu n'as pas encore publié de contenu. <a href="{{ route('posts.create') }}" style="color:var(--terra);text-decoration:none;font-weight:600;">Créer ta première publication →</a>
+                                Tu n'as pas encore publié de contenu.@if(auth()->user()->isAdmin()) <a href="{{ route('posts.create') }}" style="color:var(--terra);text-decoration:none;font-weight:600;">Créer ta première publication →</a>@endif
                             @else
                                 {{ $user->username }} n'a pas encore publié de contenu.
                             @endif

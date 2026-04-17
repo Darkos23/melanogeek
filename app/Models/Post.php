@@ -14,7 +14,7 @@ class Post extends Model
         'user_id', 'title', 'body',
         'media_url', 'media_type', 'thumbnail',
         'audio_url', 'audio_name',
-        'likes_count', 'comments_count',
+        'likes_count', 'comments_count', 'views_count',
         'is_published',
         'category', 'tags',
     ];

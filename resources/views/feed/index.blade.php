@@ -890,13 +890,17 @@
     ════════════════════════════════════ --}}
     <aside class="feed-sidebar">
 
-        {{-- Créer un post --}}
+        {{-- Créer un post (admin uniquement) --}}
+        @auth
+        @if(auth()->user()->isAdmin())
         <div class="sidebar-create">
             <div class="sidebar-create-title">Publier quelque chose</div>
             <a href="{{ route('posts.create') }}" class="sidebar-create-input">
                 ✍️ &nbsp;Qu'as-tu à partager ?
             </a>
         </div>
+        @endif
+        @endauth
 
         {{-- Suggestions --}}
         @if($suggestions->isNotEmpty())

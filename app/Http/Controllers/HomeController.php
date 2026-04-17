@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ForumThread;
 use App\Models\Post;
+use App\Models\SiteVisit;
 use App\Models\User;
 use App\Models\Comment;
 
@@ -48,6 +49,7 @@ class HomeController extends Controller
             'users'    => User::count(),
             'posts'    => Post::published()->count(),
             'comments' => Comment::count(),
+            'visits'   => SiteVisit::total(),
         ];
 
         $forum_cat_counts = ForumThread::selectRaw('category, count(*) as total')

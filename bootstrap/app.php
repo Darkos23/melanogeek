@@ -20,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // Headers de sécurité HTTP sur toutes les réponses
         $middleware->append(\App\Http\Middleware\SecurityHeadersMiddleware::class);
 
+        // Compteur de visites (1 incrément par session, web uniquement)
+        $middleware->appendToGroup('web', \App\Http\Middleware\TrackSiteVisit::class);
+
         $middleware->alias([
             'owner'    => \App\Http\Middleware\SuperAdminMiddleware::class,
             'admin'    => \App\Http\Middleware\AdminMiddleware::class,

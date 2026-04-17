@@ -226,16 +226,31 @@
     <div class="thread-body-text prose">{!! $thread->body !!}</div>
 
     <div class="thread-actions-row">
+        {{-- Stats visibles par tout le monde --}}
         <span style="font-size:.72rem;color:var(--text-faint);">
-            {{ number_format($thread->views_count) }} vues · {{ number_format($thread->replies_count) }} réponses
+            {{ number_format($thread->replies_count) }} réponse{{ $thread->replies_count != 1 ? 's' : '' }}
         </span>
+
+        {{-- Vues — pill dorée visible seulement à l'auteur/admin --}}
         @auth
             @if(auth()->id() === $thread->user_id || auth()->user()->isAdmin())
+            <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:100px;background:rgba(212,168,67,.07);border:1px solid rgba(212,168,67,.18);color:rgba(212,168,67,.75);font-size:.75rem;font-weight:600;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                {{ number_format($thread->views_count) }} vue{{ $thread->views_count != 1 ? 's' : '' }}
+            </span>
             <form method="POST" action="{{ route('forum.thread.destroy', $thread) }}" style="margin-left:auto;" onsubmit="return confirm('Supprimer ce sujet ?')">
                 @csrf @method('DELETE')
                 <button type="submit" class="btn-del-thread">🗑 Supprimer</button>
             </form>
+            @else
+            <span style="font-size:.72rem;color:var(--text-faint);margin-left:auto;">
+                👁 {{ number_format($thread->views_count) }}
+            </span>
             @endif
+        @else
+        <span style="font-size:.72rem;color:var(--text-faint);margin-left:auto;">
+            👁 {{ number_format($thread->views_count) }}
+        </span>
         @endauth
     </div>
 </div>

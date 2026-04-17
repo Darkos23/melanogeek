@@ -398,6 +398,13 @@
     .action-btn.liked:hover { background: rgba(224,85,85,.08); border-color: rgba(224,85,85,.3); }
     .action-btn svg { width: 17px; height: 17px; }
     .action-sep { flex: 1; }
+    .post-views-pill {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 6px 13px; border-radius: 100px;
+        background: rgba(212,168,67,.07); border: 1px solid rgba(212,168,67,.18);
+        color: rgba(212,168,67,.75); font-size: .8rem; font-weight: 600;
+        letter-spacing: .01em;
+    }
     .action-share {
         display: inline-flex; align-items: center; gap: 7px;
         padding: 8px 16px; border-radius: 100px;
@@ -851,6 +858,18 @@
             <button class="audio-vol-btn" id="audioVolBtn" onclick="audioMuteToggle()" title="Couper le son">🔊</button>
         </div>
         @endif
+
+        {{-- Stats auteur (vues) --}}
+        @auth
+        @if(auth()->id() === $post->user_id || auth()->user()->isAdmin())
+        <div style="padding:10px 20px 0;display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="post-views-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                {{ number_format($post->views_count) }} vue{{ $post->views_count != 1 ? 's' : '' }}
+            </span>
+        </div>
+        @endif
+        @endauth
 
         {{-- Actions --}}
         <div class="post-actions">

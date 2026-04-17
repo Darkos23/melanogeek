@@ -970,6 +970,10 @@
                 <span class="lp-ed-stat-n" data-count="{{ $stats['comments'] }}">{{ $stats['comments'] }}</span>
                 <span class="lp-ed-stat-l">Contributions<br>communauté</span>
             </div>
+            <div class="lp-ed-stat">
+                <span class="lp-ed-stat-n" data-count="{{ $stats['visits'] }}">{{ $stats['visits'] }}</span>
+                <span class="lp-ed-stat-l">Visites<br>du site</span>
+            </div>
         </div>
     </div>
 </section>
@@ -1244,6 +1248,9 @@
         <li><a href="{{ route('about') }}">À propos</a></li>
         <li><a href="#">Mentions légales</a></li>
     </ul>
+    <div style="margin-top:10px;font-size:.72rem;color:rgba(255,255,255,.18);">
+        Développé par <a href="https://korilab.com" target="_blank" rel="noopener" style="color:rgba(212,168,67,.55);text-decoration:none;font-weight:600;transition:color .2s;" onmouseover="this.style.color='rgba(212,168,67,.9)'" onmouseout="this.style.color='rgba(212,168,67,.55)'">Korilab</a>
+    </div>
 </footer>
 
 </div>
