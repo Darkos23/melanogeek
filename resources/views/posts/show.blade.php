@@ -859,18 +859,6 @@
         </div>
         @endif
 
-        {{-- Stats auteur (vues) --}}
-        @auth
-        @if(auth()->id() === $post->user_id || auth()->user()->isAdmin())
-        <div style="padding:10px 20px 0;display:flex;gap:8px;flex-wrap:wrap;">
-            <span class="post-views-pill">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                {{ number_format($post->views_count) }} vue{{ $post->views_count != 1 ? 's' : '' }}
-            </span>
-        </div>
-        @endif
-        @endauth
-
         {{-- Actions --}}
         <div class="post-actions">
             <button class="action-btn {{ $liked ? 'liked' : '' }}" id="likeBtn" onclick="toggleLike({{ $post->id }}, this)">
@@ -885,6 +873,14 @@
                 </svg>
                 <span id="commentsCount">{{ number_format($post->comments_count) }}</span>
             </button>
+            @auth
+            @if(auth()->id() === $post->user_id || auth()->user()->isAdmin())
+            <span class="post-views-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                {{ number_format($post->views_count) }} vue{{ $post->views_count != 1 ? 's' : '' }}
+            </span>
+            @endif
+            @endauth
             <div class="action-sep"></div>
             <a href="#" class="action-share" onclick="sharePost(); return false;">
                 ↗ Partager
