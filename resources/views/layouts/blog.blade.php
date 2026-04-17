@@ -116,6 +116,7 @@
 }
 @media (max-width: 768px) {
     .blog-wrap { padding: 20px 16px 48px; }
+    .blog-sidebar { display: none; }
     .blog-footer { padding: 20px 16px; flex-direction: column; text-align: center; }
     .blog-footer-links { flex-wrap: wrap; justify-content: center; }
 }
