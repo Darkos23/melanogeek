@@ -496,7 +496,7 @@
 <div class="create-wrap">
 
     <div class="create-header">
-        <a href="{{ route('profile.show', auth()->user()->username) }}" class="create-back">←</a>
+        <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('home') }}" class="create-back">←</a>
         <div class="create-title">Nouvelle publication</div>
     </div>
 
