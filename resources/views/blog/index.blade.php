@@ -137,14 +137,14 @@
 /* Banner : image OU gradient placeholder */
 .post-card-banner {
     width: 100%;
-    aspect-ratio: 16/8;
+    aspect-ratio: 16/10;
     overflow: hidden;
     position: relative;
     flex-shrink: 0;
 }
 .post-card-banner img {
     width: 100%; height: 100%;
-    object-fit: cover; display: block;
+    object-fit: cover; object-position: center top; display: block;
     transition: transform .4s ease;
 }
 .post-card:hover .post-card-banner img { transform: scale(1.04); }
