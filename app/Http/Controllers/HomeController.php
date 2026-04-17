@@ -54,6 +54,14 @@ class HomeController extends Controller
             ->groupBy('category')
             ->pluck('total', 'category');
 
-        return view('welcome', compact('featured', 'side_posts', 'discussions', 'stats', 'category_counts', 'forum_cat_counts'));
+        // Activité récente pour le ticker
+        $recentPosts   = Post::with('user')->published()->whereNotNull('title')->latest()->take(6)->get();
+        $recentThreads = ForumThread::with('user')->latest()->take(4)->get();
+
+        return view('welcome', compact(
+            'featured', 'side_posts', 'discussions', 'stats',
+            'category_counts', 'forum_cat_counts',
+            'recentPosts', 'recentThreads'
+        ));
     }
 }

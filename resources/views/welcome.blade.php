@@ -228,38 +228,77 @@
     text-align: right;
 }
 
-/* ══ TICKER ══ */
+/* ══ TICKER ACTIVITÉ ══ */
 .lp-ticker {
     background: var(--bg-card);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: 10px 0;
+    padding: 0;
     overflow: hidden;
     white-space: nowrap;
     position: relative;
+    display: flex;
+    align-items: stretch;
 }
-.lp-ticker::before, .lp-ticker::after {
-    content: '';
-    position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2;
+.lp-ticker-label {
+    flex-shrink: 0;
+    display: flex; align-items: center;
+    padding: 0 18px;
+    background: var(--terra);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: white;
+    gap: 7px;
+    z-index: 3;
 }
-.lp-ticker::before { left: 0; background: linear-gradient(90deg, var(--bg-card), transparent); }
-.lp-ticker::after  { right: 0; background: linear-gradient(-90deg, var(--bg-card), transparent); }
-.lp-ticker-t { display: inline-flex; animation: tickr 30s linear infinite; }
+.lp-ticker-label-dot {
+    width: 6px; height: 6px;
+    background: white; border-radius: 50%;
+    animation: tickerPulse 1.4s ease-in-out infinite;
+}
+@keyframes tickerPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: .4; transform: scale(.7); }
+}
+.lp-ticker-track {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+.lp-ticker-track::after {
+    content: ''; position: absolute;
+    right: 0; top: 0; bottom: 0; width: 60px; z-index: 2;
+    background: linear-gradient(-90deg, var(--bg-card), transparent);
+}
+.lp-ticker-t { display: inline-flex; animation: tickr 40s linear infinite; padding: 11px 0; }
+.lp-ticker-t:hover { animation-play-state: paused; }
 @keyframes tickr { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 .lp-tt {
     font-family: 'JetBrains Mono', monospace;
     font-size: .6rem;
     font-weight: 500;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-faint);
+    letter-spacing: .06em;
+    color: var(--text-muted);
     padding: 0 32px;
     display: inline-flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
+    text-decoration: none;
+    transition: color .18s;
 }
-.lp-tt strong { color: var(--gold); font-weight: 600; }
-.lp-tt-dot { width: 3px; height: 3px; background: var(--border); border-radius: 50%; }
+.lp-tt:hover { color: var(--cream); }
+.lp-tt-type {
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-size: .55rem;
+    flex-shrink: 0;
+}
+.lp-tt-type.blog   { color: var(--terra); }
+.lp-tt-type.forum  { color: var(--gold); }
+.lp-tt-title { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-tt-sep { color: var(--border); flex-shrink: 0; }
 
 /* ══ STRUCTURE SECTIONS ══ */
 .lp-section {
@@ -679,6 +718,81 @@
     margin-left: auto; margin-right: auto;
 }
 
+/* ══ NEWSLETTER ══ */
+.lp-newsletter {
+    border-top: 1px solid var(--border);
+    padding: 72px 52px;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+@media (max-width: 768px) {
+    .lp-newsletter { grid-template-columns: 1fr; padding: 48px 20px; gap: 28px; }
+}
+.lp-newsletter-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+}
+.lp-newsletter-eyebrow::before {
+    content: ''; display: block;
+    width: 20px; height: 1px; background: var(--gold); opacity: .7;
+}
+.lp-newsletter-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -.04em;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 10px;
+}
+.lp-newsletter-title span { color: var(--terra); }
+.lp-newsletter-sub {
+    font-size: .85rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+.lp-newsletter-form { display: flex; flex-direction: column; gap: 10px; }
+.lp-newsletter-row { display: flex; gap: 8px; }
+.lp-newsletter-input {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 13px 22px;
+    color: var(--text);
+    font-family: var(--font-body); font-size: .88rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+.lp-newsletter-input::placeholder { color: var(--text-faint); }
+.lp-newsletter-input:focus {
+    border-color: var(--terra);
+    box-shadow: 0 0 0 3px rgba(200,82,42,.1);
+}
+.lp-newsletter-btn {
+    background: var(--terra); color: white;
+    border: none; border-radius: 100px;
+    padding: 13px 24px;
+    font-family: var(--font-body); font-size: .88rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: background .2s, transform .15s;
+}
+.lp-newsletter-btn:hover { background: var(--accent); transform: translateY(-1px); }
+.lp-newsletter-note {
+    font-size: .72rem;
+    color: var(--text-faint);
+    padding-left: 8px;
+}
+.lp-newsletter-note strong { color: var(--gold); }
+
 /* ══ FOOTER ══ */
 .lp-footer {
     border-top: 1px solid var(--border);
@@ -759,15 +873,15 @@
         </div>
         <div class="lp-ed-stats">
             <div class="lp-ed-stat">
-                <span class="lp-ed-stat-n">{{ $stats['users'] }}</span>
+                <span class="lp-ed-stat-n" data-count="{{ $stats['users'] }}">{{ $stats['users'] }}</span>
                 <span class="lp-ed-stat-l">Membres<br>inscrits</span>
             </div>
             <div class="lp-ed-stat">
-                <span class="lp-ed-stat-n">{{ $stats['posts'] }}</span>
+                <span class="lp-ed-stat-n" data-count="{{ $stats['posts'] }}">{{ $stats['posts'] }}</span>
                 <span class="lp-ed-stat-l">Articles<br>publiés</span>
             </div>
             <div class="lp-ed-stat">
-                <span class="lp-ed-stat-n">{{ $stats['comments'] }}</span>
+                <span class="lp-ed-stat-n" data-count="{{ $stats['comments'] }}">{{ $stats['comments'] }}</span>
                 <span class="lp-ed-stat-l">Contributions<br>communauté</span>
             </div>
         </div>
@@ -776,15 +890,31 @@
 
 {{-- ══ TICKER ══ --}}
 <div class="lp-ticker">
-    <div class="lp-ticker-t">
-        @php
-            $tickerCategories = \App\Models\Post::CATEGORIES;
-        @endphp
-        @foreach(array_fill(0, 2, null) as $_)
-        @foreach($tickerCategories as $label)
-        <span class="lp-tt"><span class="lp-tt-dot"></span> <strong>{{ $label }}</strong></span>
-        @endforeach
-        @endforeach
+    <div class="lp-ticker-label">
+        <span class="lp-ticker-label-dot"></span>
+        Live
+    </div>
+    <div class="lp-ticker-track">
+        <div class="lp-ticker-t">
+            @foreach(array_fill(0, 2, null) as $_)
+            @foreach($recentPosts as $rp)
+            <a href="{{ route('posts.show', $rp->id) }}" class="lp-tt">
+                <span class="lp-tt-type blog">Blog</span>
+                <span class="lp-tt-title">{{ $rp->title }}</span>
+                <span class="lp-tt-sep">·</span>
+                <span style="color:var(--text-faint);font-size:.56rem">{{ $rp->created_at->diffForHumans(null, true) }}</span>
+            </a>
+            @endforeach
+            @foreach($recentThreads as $rt)
+            <a href="{{ route('forum.show', $rt) }}" class="lp-tt">
+                <span class="lp-tt-type forum">Forum</span>
+                <span class="lp-tt-title">{{ $rt->title }}</span>
+                <span class="lp-tt-sep">·</span>
+                <span style="color:var(--text-faint);font-size:.56rem">{{ $rt->created_at->diffForHumans(null, true) }}</span>
+            </a>
+            @endforeach
+            @endforeach
+        </div>
     </div>
 </div>
 
@@ -994,16 +1124,37 @@
     </div>
 </section>
 
+{{-- ══ NEWSLETTER ══ --}}
+<div class="lp-newsletter" data-reveal>
+    <div>
+        <div class="lp-newsletter-eyebrow">Newsletter</div>
+        <div class="lp-newsletter-title">Reste dans<br>la <span>boucle.</span></div>
+        <p class="lp-newsletter-sub">
+            Les meilleurs articles, débats chauds et sorties geek — directement dans ta boîte mail. Pas de spam, jamais.
+        </p>
+    </div>
+    <div>
+        <form class="lp-newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <div class="lp-newsletter-row">
+                <input type="email" class="lp-newsletter-input" id="nlEmail"
+                    placeholder="ton@email.com" required autocomplete="email">
+                <button type="submit" class="lp-newsletter-btn">S'inscrire</button>
+            </div>
+            <div class="lp-newsletter-note" id="nlNote">
+                Rejoins <strong>{{ $stats['users'] }} membres</strong> — désinscription en 1 clic.
+            </div>
+        </form>
+    </div>
+</div>
+
 {{-- ══ FOOTER ══ --}}
 <footer class="lp-footer">
     <div class="lp-footer-copy">© {{ date('Y') }} MelanoGeek — La culture geek, vue d'Afrique.</div>
     <ul class="lp-footer-links">
         <li><a href="{{ route('blog.index') }}">Blog</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
-        <li><a href="{{ route('community') }}">Communauté</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
         <li><a href="#">Mentions légales</a></li>
-        <li><a href="#">Contact</a></li>
     </ul>
 </footer>
 
@@ -1064,6 +1215,17 @@
             });
         });
     }
+
+    /* ══ NEWSLETTER — feedback visuel ══ */
+    window.handleNewsletterSubmit = function (e) {
+        e.preventDefault();
+        const note = document.getElementById('nlNote');
+        const btn  = e.target.querySelector('.lp-newsletter-btn');
+        btn.textContent  = '✓ Inscrit !';
+        btn.style.background = '#2A7A48';
+        btn.disabled = true;
+        if (note) note.innerHTML = 'Tu es sur la liste. On se retrouve dans ta boîte mail bientôt.';
+    };
 })();
 </script>
 @endpush
