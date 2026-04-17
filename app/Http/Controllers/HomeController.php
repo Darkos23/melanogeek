@@ -49,7 +49,7 @@ class HomeController extends Controller
             'users'    => User::count(),
             'posts'    => Post::published()->count(),
             'comments' => Comment::count(),
-            'visits'   => SiteVisit::total(),
+            'visits'   => rescue(fn() => SiteVisit::total(), 0, false),
         ];
 
         $forum_cat_counts = ForumThread::selectRaw('category, count(*) as total')

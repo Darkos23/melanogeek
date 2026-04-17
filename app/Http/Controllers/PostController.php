@@ -118,7 +118,7 @@ class PostController extends Controller
         // Compter la vue — une fois par session, jamais pour l'auteur lui-même
         $sessionKey = 'viewed_post_' . $post->id;
         if (! session()->has($sessionKey) && auth()->id() !== $post->user_id) {
-            $post->increment('views_count');
+            try { $post->increment('views_count'); } catch (\Throwable $e) {}
             session()->put($sessionKey, true);
         }
 

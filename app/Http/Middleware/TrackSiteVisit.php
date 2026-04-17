@@ -17,7 +17,11 @@ class TrackSiteVisit
             // Ne pas compter bots / crawlers
             $ua = $request->userAgent() ?? '';
             if (! preg_match('/bot|crawl|slurp|spider|mediapartners/i', $ua)) {
-                SiteVisit::increment();
+                try {
+                    SiteVisit::increment();
+                } catch (\Throwable $e) {
+                    // Table pas encore migrée — on ignore silencieusement
+                }
             }
         }
 

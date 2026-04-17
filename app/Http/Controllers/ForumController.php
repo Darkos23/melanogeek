@@ -77,7 +77,7 @@ class ForumController extends Controller
         // Compter la vue — une fois par session, jamais pour l'auteur lui-même
         $sessionKey = 'viewed_thread_' . $thread->id;
         if (! session()->has($sessionKey) && auth()->id() !== $thread->user_id) {
-            $thread->increment('views_count');
+            try { $thread->increment('views_count'); } catch (\Throwable $e) {}
             session()->put($sessionKey, true);
         }
         $thread->load('user');
