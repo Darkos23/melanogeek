@@ -10,7 +10,7 @@
     @php
         $seoTitle  = trim($__env->yieldContent('og_title'))        ?: (trim($__env->yieldContent('title')) ?: 'MelanoGeek');
         $seoDesc   = trim($__env->yieldContent('meta_description')) ?: "MelanoGeek — La culture geek vue d'Afrique. Articles, débats et reviews autour du manga, gaming, tech et de la culture nerd africaine.";
-        $seoImg    = trim($__env->yieldContent('og_image'))         ?: asset('images/og-default.svg');
+        $seoImg    = trim($__env->yieldContent('og_image'))         ?: asset('images/og-default.png');
         $seoUrl    = trim($__env->yieldContent('canonical'))        ?: url()->current();
         $seoType   = trim($__env->yieldContent('og_type'))          ?: 'website';
         $seoRobots = trim($__env->yieldContent('meta_robots'))      ?: 'index, follow';
