@@ -725,7 +725,7 @@
     <div class="lp-hero-left">
         <div class="lp-vol">Vol. I · {{ date('Y') }}</div>
 
-        <h1 class="lp-h1">
+        <h1 class="lp-h1" data-scramble>
             La culture geek,<br>
             <span class="lp-h1-gold">vue d'Afrique.</span>
         </h1>
@@ -806,7 +806,7 @@
             $featMins     = max(1, (int) ceil(str_word_count(strip_tags($featured->body ?? '')) / 200));
             $featInitial  = strtoupper(substr($featured->user->name ?? '?', 0, 1));
         @endphp
-        <a href="{{ route('posts.show', $featured->id) }}" class="art-featured">
+        <a href="{{ route('posts.show', $featured->id) }}" class="art-featured" data-reveal>
             <div class="art-thumb">
                 @if($featured->thumbnail)
                     <img src="{{ asset('storage/'.$featured->thumbnail) }}" alt="{{ $featured->title }}">
@@ -847,7 +847,7 @@
                 $mins    = max(1, (int) ceil(str_word_count(strip_tags($post->body ?? '')) / 200));
                 $initial = strtoupper(substr($post->user->name ?? '?', 0, 1));
             @endphp
-            <a href="{{ route('posts.show', $post->id) }}" class="art-side-card">
+            <a href="{{ route('posts.show', $post->id) }}" class="art-side-card" data-reveal data-delay="{{ $loop->iteration }}">
                 <div class="art-side-num">0{{ $loop->iteration }}</div>
                 @if($post->category)
                 <div class="art-cat">{{ $post->category_label }}</div>
@@ -899,7 +899,7 @@
     <div class="cat-grid">
         @foreach($cats as $slug => [$icon, $label])
         @php $count = $category_counts[$slug] ?? 0; @endphp
-        <a href="{{ route('blog.index') }}?category={{ $slug }}" class="cat-card">
+        <a href="{{ route('blog.index') }}?category={{ $slug }}" class="cat-card" data-reveal data-delay="{{ $loop->iteration }}">
             <div class="cat-icon">{{ $icon }}</div>
             <div class="cat-name">{{ $label }}</div>
             @if($count > 0)
@@ -1009,3 +1009,90 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    /* ══ TEXT SCRAMBLE — hero h1 ══ */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+        function scramble(el) {
+            const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+            const nodes  = [];
+            while (walker.nextNode()) nodes.push(walker.currentNode);
+            nodes.slice(0, 2).forEach(function (node) {
+                const original = node.nodeValue;
+                if (!original.trim()) return;
+                let frame = 0;
+                const totalFrames = original.length * 3 + 12;
+                const tick = setInterval(function () {
+                    let result = '';
+                    for (let i = 0; i < original.length; i++) {
+                        if (original[i] === ' ' || original[i] === '\n') { result += original[i]; }
+                        else if (i < frame / 3) { result += original[i]; }
+                        else { result += chars[Math.floor(Math.random() * chars.length)]; }
+                    }
+                    node.nodeValue = result;
+                    frame++;
+                    if (frame >= totalFrames) { node.nodeValue = original; clearInterval(tick); }
+                }, 40);
+            });
+        }
+        var el = document.querySelector('[data-scramble]');
+        if (el) setTimeout(function () { scramble(el); }, 300);
+    }
+
+    /* ══ COMPTEURS ANIMÉS — stats hero ══ */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        function animateCount(el) {
+            const target = parseInt(el.textContent.replace(/\D/g, ''), 10);
+            if (isNaN(target) || target === 0) return;
+            const duration = 1200;
+            const start    = performance.now();
+            const easeOut  = function (t) { return 1 - Math.pow(1 - t, 3); };
+            function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                el.textContent = Math.round(easeOut(progress) * target);
+                if (progress < 1) requestAnimationFrame(tick);
+                else el.textContent = target;
+            }
+            requestAnimationFrame(tick);
+        }
+
+        const statEls = document.querySelectorAll('.lp-ed-stat-n, .forum-widget-stat-val');
+        const countObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    animateCount(entry.target);
+                    countObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        statEls.forEach(function (el) { countObserver.observe(el); });
+    }
+
+    /* ══ TILT 3D — cards ══ */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !window.matchMedia('(pointer: coarse)').matches) {
+        const tiltSel = '.post-card, .art-featured, .art-side-card, .featured-card, .cat-card';
+        document.querySelectorAll(tiltSel).forEach(function (card) {
+            card.style.transition = 'transform .12s ease, box-shadow .12s ease';
+            card.addEventListener('mousemove', function (e) {
+                const rect = card.getBoundingClientRect();
+                const cx   = rect.left + rect.width  / 2;
+                const cy   = rect.top  + rect.height / 2;
+                const dx   = (e.clientX - cx) / (rect.width  / 2);
+                const dy   = (e.clientY - cy) / (rect.height / 2);
+                const rotX = dy * -4;
+                const rotY = dx *  5;
+                card.style.transform = 'perspective(600px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(1.015)';
+            });
+            card.addEventListener('mouseleave', function () {
+                card.style.transform = '';
+            });
+        });
+    }
+})();
+</script>
+@endpush
