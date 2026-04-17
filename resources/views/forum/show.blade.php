@@ -1,6 +1,12 @@
 @extends('layouts.blog')
 
-@section('title', $thread->title . ' — Forum')
+@section('title', $thread->title . ' — Forum MelanoGeek')
+
+@php $threadDesc = Str::limit(strip_tags($thread->body ?? ''), 155); @endphp
+@section('meta_description', $threadDesc)
+@section('og_title', $thread->title . ' — Forum MelanoGeek')
+@section('og_description', $threadDesc)
+@section('canonical', route('forum.show', $thread))
 
 @push('styles')
 <style>

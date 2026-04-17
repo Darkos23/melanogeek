@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('title', 'MelanoGeek — La Culture Geek, Vue d\'Afrique')
+@section('meta_description', 'MelanoGeek — La culture geek vue d\'Afrique. Articles, débats et reviews autour du manga, gaming, tech, cinéma et de la culture nerd africaine.')
+@section('og_title', 'MelanoGeek — La Culture Geek, Vue d\'Afrique')
+@section('og_description', 'Articles, débats et reviews autour du manga, gaming, tech, cinéma et de la culture nerd africaine.')
+@section('canonical', route('home'))
 
 @push('styles')
 <style>

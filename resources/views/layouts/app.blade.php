@@ -5,6 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', config('app.name', 'MelanoGeek'))</title>
+
+    {{-- ══ SEO & Open Graph ══ --}}
+    <meta name="description" content="@yield('meta_description', 'MelanoGeek — La culture geek vue d\'Afrique. Articles, débats et reviews autour du manga, gaming, tech et de la culture nerd africaine.')">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+    <link rel="canonical" href="@yield('canonical', url()->current())">
+
+    {{-- Open Graph (Facebook, WhatsApp, LinkedIn…) --}}
+    <meta property="og:type"        content="@yield('og_type', 'website')">
+    <meta property="og:site_name"   content="MelanoGeek">
+    <meta property="og:title"       content="@yield('og_title', @yield('title', 'MelanoGeek'))">
+    <meta property="og:description" content="@yield('og_description', @yield('meta_description', 'La culture geek vue d\'Afrique.'))">
+    <meta property="og:url"         content="@yield('canonical', url()->current())">
+    <meta property="og:image"       content="@yield('og_image', asset('images/og-default.jpg'))">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale"      content="fr_FR">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:site"        content="@melanogeek">
+    <meta name="twitter:title"       content="@yield('og_title', @yield('title', 'MelanoGeek'))">
+    <meta name="twitter:description" content="@yield('og_description', @yield('meta_description', 'La culture geek vue d\'Afrique.'))">
+    <meta name="twitter:image"       content="@yield('og_image', asset('images/og-default.jpg'))">
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#C8522A">

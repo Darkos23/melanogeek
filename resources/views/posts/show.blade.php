@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
-@section('title', $post->title ?? 'Publication de @' . $post->user->username)
+@section('title', ($post->title ?? 'Publication') . ' — MelanoGeek')
+
+@php
+    $metaDesc    = Str::limit(strip_tags($post->body ?? ''), 155);
+    $metaImage   = $post->thumbnail
+        ? asset('storage/' . $post->thumbnail)
+        : ($post->media_url && $post->media_type === 'image' ? asset('storage/' . $post->media_url) : asset('images/og-default.jpg'));
+@endphp
+@section('meta_description', $metaDesc)
+@section('og_type', 'article')
+@section('og_title', ($post->title ?? 'Publication') . ' — MelanoGeek')
+@section('og_description', $metaDesc)
+@section('og_image', $metaImage)
+@section('canonical', route('posts.show', $post->id))
 
 @push('styles')
 <style>
