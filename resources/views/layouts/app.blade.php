@@ -380,7 +380,8 @@
 <!-- ══ NAVIGATION ══ -->
 <nav class="mg-nav">
     <a href="{{ route('home') }}" class="mg-logo">
-        <div class="mg-logo-name">melanogeek</div>
+        <img src="/favicon.svg" alt="" width="28" height="28" style="width:28px;height:28px;flex-shrink:0;margin-right:8px;">
+        <div class="mg-logo-name"><span style="color:var(--terra)">M</span>elano<span style="color:var(--gold)">G</span>eek</div>
     </a>
 
     <ul class="mg-links">
