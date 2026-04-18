@@ -154,35 +154,35 @@
                 <div class="sidebar-block-body">
                     @php $activeCategory = request('category'); @endphp
                     <a href="{{ route('blog.index') }}" class="sb-item {{ !$activeCategory ? 'active' : '' }}">
-                        <span class="sb-item-icon">✦</span>
+                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>
                         <span class="sb-item-name">Tout</span>
                     </a>
                     <a href="{{ route('blog.index') }}?category=manga-anime" class="sb-item {{ $activeCategory === 'manga-anime' ? 'active' : '' }}">
-                        <span class="sb-item-icon">🌍</span>
+                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
                         <span class="sb-item-name">Manga &amp; Animé</span>
                     </a>
                     <a href="{{ route('blog.index') }}?category=gaming" class="sb-item {{ $activeCategory === 'gaming' ? 'active' : '' }}">
-                        <span class="sb-item-icon">🎮</span>
+                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1" fill="currentColor"/><circle cx="18" cy="12" r="1" fill="currentColor"/></svg></span>
                         <span class="sb-item-name">Gaming</span>
                     </a>
                     <a href="{{ route('blog.index') }}?category=tech" class="sb-item {{ $activeCategory === 'tech' ? 'active' : '' }}">
-                        <span class="sb-item-icon">💻</span>
+                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
                         <span class="sb-item-name">Tech &amp; IA</span>
                     </a>
                     <a href="{{ route('blog.index') }}?category=dev" class="sb-item {{ $activeCategory === 'dev' ? 'active' : '' }}">
-                        <span class="sb-item-icon">🔧</span>
+                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
                         <span class="sb-item-name">Développement</span>
                     </a>
                     <a href="{{ route('blog.index') }}?category=cinema-series" class="sb-item {{ $activeCategory === 'cinema-series' ? 'active' : '' }}">
-                        <span class="sb-item-icon">🎬</span>
+                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M17 7h5M2 17h5M17 17h5"/></svg></span>
                         <span class="sb-item-name">Cinéma &amp; Séries</span>
                     </a>
                     <a href="{{ route('blog.index') }}?category=culture" class="sb-item {{ $activeCategory === 'culture' ? 'active' : '' }}">
-                        <span class="sb-item-icon">🌍</span>
+                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
                         <span class="sb-item-name">Culture &amp; Société</span>
                     </a>
                     <a href="{{ route('blog.index') }}?category=debat" class="sb-item {{ $activeCategory === 'debat' ? 'active' : '' }}">
-                        <span class="sb-item-icon">💬</span>
+                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
                         <span class="sb-item-name">Débat</span>
                     </a>
                 </div>

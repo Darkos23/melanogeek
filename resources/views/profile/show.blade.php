@@ -17,7 +17,7 @@
         <div class="profile-cover-overlay"></div>
         @auth
             @if(auth()->id() === $user->id)
-                <a href="{{ route('profile.edit') }}" class="cover-edit-btn">✎ Modifier la couverture</a>
+                <a href="{{ route('profile.edit') }}" class="cover-edit-btn" style="display:inline-flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Modifier la couverture</a>
             @endif
         @endauth
     </div>
@@ -58,7 +58,7 @@
                         </span>
                     @endif
                     @if($user->isCM())
-                        <span class="badge-cm">🛡️ CM</span>
+                        <span class="badge-cm" style="display:inline-flex;align-items:center;gap:4px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2L2 6v6c0 5.55 3.84 10.74 10 12 6.16-1.26 10-6.45 10-12V6L12 2z"/></svg> CM</span>
                     @endif
                 </div>
                 @if($user->name !== $user->username)
@@ -79,16 +79,17 @@
                 <!-- Meta -->
                 <div class="profile-meta">
                     @if($user->location)
-                        <div class="profile-meta-item">📍 <span>{{ $user->location }}</span></div>
+                        <div class="profile-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> <span>{{ $user->location }}</span></div>
                     @endif
                     @if($user->website)
                         <div class="profile-meta-item">
-                            🔗 <a href="{{ $user->website }}" target="_blank" rel="noopener">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            <a href="{{ $user->website }}" target="_blank" rel="noopener">
                                 {{ parse_url($user->website, PHP_URL_HOST) ?? $user->website }}
                             </a>
                         </div>
                     @endif
-                    <div class="profile-meta-item">📅 <span>Membre depuis {{ $user->created_at->translatedFormat('F Y') }}</span></div>
+                    <div class="profile-meta-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> <span>Membre depuis {{ $user->created_at->translatedFormat('F Y') }}</span></div>
                 </div>
 
                 <!-- Réseaux sociaux -->
@@ -126,19 +127,23 @@
             <div class="profile-actions">
                 @auth
                     @if(auth()->id() === $user->id)
-                        <a href="{{ route('profile.edit') }}" class="btn-edit">✎ Modifier le profil</a>
+                        <a href="{{ route('profile.edit') }}" class="btn-edit" style="display:inline-flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Modifier le profil</a>
                     @else
                         <button class="btn-follow {{ auth()->user()->isFollowing($user) ? 'following' : '' }}"
                             id="followBtn" onclick="toggleFollow('{{ $user->username }}', this)">
-                            {{ auth()->user()->isFollowing($user) ? 'Abonné ✓' : '+ Suivre' }}
+                            @if(auth()->user()->isFollowing($user))
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg> Abonné
+                            @else
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Suivre
+                            @endif
                         </button>
-                        <a href="{{ route('messages.show', $user->username) }}" class="btn-message">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            Message
-                        </a>
                         <button class="btn-block {{ auth()->user()->isBlocking($user) ? 'blocking' : '' }}"
                             id="blockBtn" onclick="toggleBlock('{{ $user->username }}', this)">
-                            {{ auth()->user()->isBlocking($user) ? '🚫 Bloqué' : '⊘ Bloquer' }}
+                            @if(auth()->user()->isBlocking($user))
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Bloqué
+                            @else
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Bloquer
+                            @endif
                         </button>
                     @endif
                 @else
@@ -167,49 +172,31 @@
         </div>
     </div>
 
-    {{-- ══ STORIES ══ --}}
-    @if($stories->isNotEmpty())
-    <div class="profile-stories">
-        <div class="profile-stories-label">Stories actives</div>
-        <div class="profile-stories-list">
-            @foreach($stories as $i => $story)
-            <button class="profile-story-thumb" type="button"
-                onclick="openProfileStory({{ $i }})" title="Story {{ $i + 1 }}">
-                <div class="profile-story-ring">
-                    <div class="profile-story-ring-inner">
-                        @if($story->media_type === 'image')
-                            <img src="{{ Storage::url($story->media_url) }}" alt="Story">
-                        @else
-                            ▶
-                        @endif
-                    </div>
-                </div>
-                <div class="profile-story-video-badge">
-                    {{ $story->media_type === 'video' ? 'vidéo' : $story->created_at->diffForHumans(null, true) }}
-                </div>
-            </button>
-            @endforeach
-        </div>
-    </div>
-    @endif
-
     <!-- ══ BODY ══ -->
     <div class="profile-body">
 
         <!-- Tabs -->
         <div class="profile-tabs">
-            <button class="profile-tab active" data-tab="posts">
-                @if($isLocked) 🔒 Publications @else ⊞ Publications @endif
+            <button class="profile-tab active" data-tab="posts" style="display:inline-flex;align-items:center;gap:6px;">
+                @if($isLocked)
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                @else
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                @endif
+                Publications
                 <span class="tab-count">{{ $isLocked ? '—' : $postsPublishedCount }}</span>
             </button>
-            <button class="profile-tab" data-tab="about">👤 À propos</button>
+            <button class="profile-tab" data-tab="about" style="display:inline-flex;align-items:center;gap:6px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                À propos
+            </button>
         </div>
 
         <!-- Tab: Posts -->
         <div id="tab-posts">
             @if($isLocked)
             <div class="private-lock">
-                <div class="private-lock-icon">🔒</div>
+                <div class="private-lock-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                 <div class="private-lock-title">Ce compte est privé</div>
                 <div class="private-lock-desc">Suivez ce compte pour voir ses photos et publications.</div>
                 <div class="private-lock-divider">ou</div>
@@ -217,7 +204,11 @@
                     @if(auth()->id() !== $user->id)
                         <button class="btn-follow {{ auth()->user()->isFollowing($user) ? 'following' : '' }}"
                             id="followBtnLock" onclick="toggleFollow('{{ $user->username }}', this)">
-                            {{ auth()->user()->isFollowing($user) ? 'Abonné ✓' : '+ Suivre' }}
+                            @if(auth()->user()->isFollowing($user))
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg> Abonné
+                            @else
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Suivre
+                            @endif
                         </button>
                     @endif
                 @else
@@ -246,7 +237,7 @@
                                 <img src="{{ Storage::url($post->mediaFiles->first()->media_url) }}"
                                      alt="" style="">
                                 @if($post->mediaFiles->count() > 1)
-                                    <div class="grid-post-badge">⧉</div>
+                                    <div class="grid-post-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2"/><rect x="2" y="5" width="14" height="20" rx="2" fill="rgba(0,0,0,.4)"/></svg></div>
                                 @endif
                             @elseif($post->media_url && $post->media_type === 'image')
                                 <img src="{{ Storage::url($post->media_url) }}" alt="{{ $post->title }}"
@@ -257,13 +248,13 @@
                                          style="width:100%;height:100%;object-fit:cover;">
                                 @else
                                     <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#2d1b3d);display:flex;align-items:center;justify-content:center;">
-                                        <div style="width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;">▶</div>
+                                        <div style="width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
                                     </div>
                                 @endif
-                                <div class="grid-post-badge">▶</div>
+                                <div class="grid-post-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
                             @else
                                 <div style="width:100%;height:100%;background:var(--bg-card2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;gap:6px;">
-                                    <span style="font-size:1.2rem;opacity:.4;">📝</span>
+                                    <span style="opacity:.25;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
                                     <div style="font-size:.68rem;color:var(--text-muted);text-align:center;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;">
                                         {{ Str::limit($post->title ?: $post->body, 60) }}
                                     </div>
@@ -283,7 +274,7 @@
                     </div>
                 @empty
                     <div class="empty-posts">
-                        <div class="empty-posts-icon">📭</div>
+                        <div class="empty-posts-icon"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
                         <div class="empty-posts-title">Aucune publication</div>
                         <div class="empty-posts-desc">
                             @if(auth()->id() === $user->id)
@@ -305,18 +296,18 @@
                     <div class="about-card-title">Informations</div>
                     @if($user->location)
                     <div class="about-item">
-                        <span class="about-item-icon">📍</span>
+                        <span class="about-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
                         <span>Localisation</span>
                         <span class="about-item-value" style="margin-left:auto;">{{ $user->location }}</span>
                     </div>
                     @endif
                     <div class="about-item">
-                        <span class="about-item-icon">📅</span>
+                        <span class="about-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
                         <span>Membre depuis</span>
                         <span class="about-item-value" style="margin-left:auto;">{{ $user->created_at->translatedFormat('d F Y') }}</span>
                     </div>
                     <div class="about-item">
-                        <span class="about-item-icon">🌍</span>
+                        <span class="about-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
                         <span>Origine</span>
                         <span class="about-item-value" style="margin-left:auto;">
                             @if($user->country_type === 'senegal')
@@ -329,15 +320,15 @@
                                     </svg> Sénégal
                                 </span>
                             @elseif($user->country_type === 'africa')
-                                🌍 Afrique
+                                Afrique
                             @else
-                                ✈️ Diaspora
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 2 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Diaspora
                             @endif
                         </span>
                     </div>
                     @if($user->website)
                     <div class="about-item">
-                        <span class="about-item-icon">🔗</span>
+                        <span class="about-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
                         <span>Site web</span>
                         <span class="about-item-value" style="margin-left:auto;">
                             <a href="{{ $user->website }}" target="_blank">{{ parse_url($user->website, PHP_URL_HOST) }}</a>
@@ -347,15 +338,23 @@
                 </div>
                 <div class="about-card">
                     <div class="about-card-title">Réseaux sociaux</div>
+                    @php
+                    $socialIcons = [
+                        'instagram' => '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>',
+                        'tiktok'    => '<path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>',
+                        'youtube'   => '<path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/>',
+                        'twitter'   => '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>',
+                    ];
+                    @endphp
                     @forelse([
-                        ['icon'=>'📸','label'=>'Instagram','val'=>$user->instagram,'url'=>'https://instagram.com/'],
-                        ['icon'=>'🎵','label'=>'TikTok','val'=>$user->tiktok,'url'=>'https://tiktok.com/@'],
-                        ['icon'=>'▶️','label'=>'YouTube','val'=>$user->youtube,'url'=>'https://youtube.com/@'],
-                        ['icon'=>'✖','label'=>'X / Twitter','val'=>$user->twitter,'url'=>'https://twitter.com/'],
+                        ['key'=>'instagram','label'=>'Instagram','val'=>$user->instagram,'url'=>'https://instagram.com/'],
+                        ['key'=>'tiktok','label'=>'TikTok','val'=>$user->tiktok,'url'=>'https://tiktok.com/@'],
+                        ['key'=>'youtube','label'=>'YouTube','val'=>$user->youtube,'url'=>'https://youtube.com/@'],
+                        ['key'=>'twitter','label'=>'X / Twitter','val'=>$user->twitter,'url'=>'https://twitter.com/'],
                     ] as $social)
                         @if($social['val'])
                         <div class="about-item">
-                            <span class="about-item-icon">{{ $social['icon'] }}</span>
+                            <span class="about-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">{!! $socialIcons[$social['key']] !!}</svg></span>
                             <span>{{ $social['label'] }}</span>
                             <span class="about-item-value" style="margin-left:auto;">
                                 <a href="{{ $social['url'].$social['val'] }}" target="_blank">{{ '@'.$social['val'] }}</a>
@@ -372,8 +371,6 @@
 
     </div>
 </div>
-
-@include('stories._viewer')
 
 {{-- Post Modal --}}
 <div class="pm-overlay" id="pmOverlay" onclick="pmClickOutside(event)">

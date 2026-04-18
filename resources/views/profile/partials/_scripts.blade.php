@@ -1,26 +1,4 @@
 <script>
-@if($stories->isNotEmpty())
-@php
-    $storiesData = $stories->map(fn($s) => [
-        'id'         => $s->id,
-        'media_url'  => \Storage::url($s->media_url),
-        'media_type' => $s->media_type,
-        'created_at' => $s->created_at->diffForHumans(),
-    ]);
-    $userData = [
-        'name'        => $user->name,
-        'username'    => $user->username,
-        'avatar'      => $user->avatar ? \Storage::url($user->avatar) : null,
-        'is_verified' => (bool) $user->is_verified,
-    ];
-@endphp
-const _profileStories = @json($storiesData);
-const _profileUser    = @json($userData);
-function openProfileStory(idx) {
-    StoryViewer.open(_profileStories, _profileUser, idx);
-}
-@endif
-
     // Tabs
     const tabContents = ['posts', 'about'].map(id => document.getElementById('tab-' + id)).filter(Boolean);
     document.querySelectorAll('.profile-tab').forEach(tab => {
@@ -58,7 +36,7 @@ function openProfileStory(idx) {
         .then(data => {
             if (data.following) {
                 document.querySelectorAll('.btn-follow').forEach(b => {
-                    b.textContent = 'Abonné ✓';
+                    b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;"><polyline points="20 6 9 17 4 12"/></svg> Abonné';
                     b.classList.add('following');
                 });
                 const counter = document.getElementById('followersCount');
@@ -69,7 +47,7 @@ function openProfileStory(idx) {
                 }
             } else {
                 document.querySelectorAll('.btn-follow').forEach(b => {
-                    b.textContent = '+ Suivre';
+                    b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Suivre';
                     b.classList.remove('following');
                 });
                 const counter = document.getElementById('followersCount');
@@ -103,16 +81,16 @@ function openProfileStory(idx) {
         .then(r => r.json())
         .then(data => {
             if (data.blocked) {
-                btn.textContent = '🚫 Bloqué';
+                btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Bloqué';
                 btn.classList.add('blocking');
                 document.querySelectorAll('.btn-follow').forEach(b => {
-                    b.textContent = '+ Suivre';
+                    b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Suivre';
                     b.classList.remove('following');
                 });
                 const counter = document.getElementById('followersCount');
                 if (counter && data.count !== undefined) counter.textContent = data.count.toLocaleString('fr-FR');
             } else {
-                btn.textContent = '⊘ Bloquer';
+                btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Bloquer';
                 btn.classList.remove('blocking');
             }
             btn.style.opacity = '';
@@ -168,19 +146,6 @@ function openProfileStory(idx) {
         document.getElementById('pmAviInner').parentElement.href = p.user.profile_url;
         document.getElementById('pmAuthorMeta').textContent = `@${p.user.username} · ${p.created_at}`;
 
-        if (p.locked) {
-            const left = document.getElementById('pmLeft');
-            left.innerHTML = `<div style="width:100%;height:100%;background:linear-gradient(135deg,rgba(212,168,67,.08),rgba(0,0,0,.5));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;">
-                <div style="font-size:3rem;line-height:1;">🔒</div>
-                <div style="font-family:var(--font-head);font-size:1.05rem;font-weight:800;color:#fff;">Contenu exclusif</div>
-                <div style="font-size:.82rem;color:rgba(255,255,255,.7);">Réservé aux abonnés MelanoGeek</div>
-                <a href="${p.post_url}" style="display:inline-block;background:var(--gold);color:#1C1208;font-family:var(--font-head);font-size:.85rem;font-weight:700;padding:9px 22px;border-radius:100px;text-decoration:none;margin-top:4px;">S'abonner pour voir ✦</a>
-            </div>`;
-            document.getElementById('pmContent').innerHTML = '';
-            document.getElementById('pmActions').style.display = 'none';
-            return;
-        }
-
         const left = document.getElementById('pmLeft');
         if (p.media_files && p.media_files.length > 0) {
             pmCarTotal = p.media_files.length;
@@ -204,8 +169,8 @@ function openProfileStory(idx) {
         if (p.body)  html += `<div class="pm-body">${esc(p.body)}</div>`;
         if (p.audio_url) {
             html += `<div class="pm-audio">
-                <button class="pm-audio-btn" id="pmAudioBtn" onclick="pmToggleAudio('${p.audio_url}')">▶</button>
-                <span class="pm-audio-name">🎵 ${esc(p.audio_name || 'Musique de fond')}</span>
+                <button class="pm-audio-btn" id="pmAudioBtn" onclick="pmToggleAudio('${p.audio_url}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+                <span class="pm-audio-name"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> ${esc(p.audio_name || 'Musique de fond')}</span>
                 <audio id="pmAudioEl" src="${p.audio_url}" loop></audio>
             </div>`;
         }
@@ -248,8 +213,10 @@ function openProfileStory(idx) {
         const el  = document.getElementById('pmAudioEl');
         const btn = document.getElementById('pmAudioBtn');
         if (!el) return;
-        if (el.paused) { el.play(); btn.textContent = '⏸'; }
-        else           { el.pause(); btn.textContent = '▶'; }
+        const pauseSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+        const playSvg  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+        if (el.paused) { el.play(); btn.innerHTML = pauseSvg; }
+        else           { el.pause(); btn.innerHTML = playSvg; }
     }
 
     function closePostModal() {

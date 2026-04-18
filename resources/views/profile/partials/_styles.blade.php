@@ -188,17 +188,6 @@
     .btn-follow.following:hover { background: var(--bg-hover); color: var(--text); border-color: var(--border-hover); }
     .btn-follow:not(.following):hover { background: var(--accent); }
 
-    .btn-message {
-        display: inline-flex; align-items: center; gap: 6px;
-        padding: 9px 20px; border-radius: 100px;
-        background: var(--bg-card2); border: 1px solid var(--border);
-        color: var(--text-muted); font-family: var(--font-body);
-        font-size: .84rem; font-weight: 600;
-        text-decoration: none; cursor: pointer;
-        transition: all .2s;
-    }
-    .btn-message:hover { color: var(--text); border-color: var(--border-hover); background: var(--bg-hover); }
-
     .btn-block { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 100px; background: var(--bg-card2); border: 1px solid var(--border); color: var(--text-muted); font-family: var(--font-body); font-size: .82rem; font-weight: 600; cursor: pointer; transition: all .2s; }
     .btn-block:hover { border-color: #E05555; color: #E05555; }
     .btn-block.blocking { border-color: rgba(224,85,85,.4); color: #E05555; background: rgba(224,85,85,.06); }
@@ -215,37 +204,6 @@
     .stat-item { text-align: center; }
     .stat-value { font-family: var(--font-head); font-size: 1.2rem; font-weight: 800; color: var(--text); transition: color .4s; }
     .stat-label { font-size: .72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; transition: color .4s; }
-
-    /* Stories */
-    .profile-stories {
-        max-width: 900px; margin: 0 auto;
-        padding: 14px 32px 0;
-    }
-    .profile-stories-label {
-        font-size: .68rem; font-weight: 700;
-        text-transform: uppercase; letter-spacing: .06em;
-        color: var(--text-muted); margin-bottom: 10px;
-    }
-    .profile-stories-list { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; }
-    .profile-story-thumb { background: none; border: none; padding: 0; cursor: pointer; flex-shrink: 0; }
-    .profile-story-ring {
-        width: 64px; height: 64px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--terra), var(--gold));
-        padding: 2.5px;
-        display: flex; align-items: center; justify-content: center;
-    }
-    .profile-story-ring-inner {
-        width: 100%; height: 100%;
-        border-radius: 50%;
-        background: var(--bg-card);
-        border: 2px solid var(--bg);
-        display: flex; align-items: center; justify-content: center;
-        font-size: .8rem;
-        overflow: hidden;
-    }
-    .profile-story-ring-inner img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-    .profile-story-video-badge { font-size: .58rem; color: var(--text-muted); text-align: center; margin-top: 4px; }
 
     /* Body */
     .profile-body {
@@ -363,20 +321,6 @@
         letter-spacing: .02em;
         z-index: 3;
     }
-    .grid-post-locked-overlay {
-        position: absolute; inset: 0;
-        background: rgba(0,0,0,.52);
-        display: flex; align-items: center; justify-content: center;
-        transition: background .3s;
-    }
-    .grid-post-locked-overlay:hover { background: rgba(0,0,0,.68); }
-    .grid-lock-icon {
-        font-size: 1.6rem;
-        filter: drop-shadow(0 2px 6px rgba(0,0,0,.5));
-        transition: transform .2s;
-    }
-    .grid-post-locked-overlay:hover .grid-lock-icon { transform: scale(1.15); }
-
     /* Owner delete button on posts */
     .grid-post-owner-actions {
         position: absolute; top: 7px; right: 7px;

@@ -110,6 +110,33 @@ class ForumController extends Controller
                          ->fragment('replies');
     }
 
+    public function update(Request $request, ForumThread $thread): RedirectResponse
+    {
+        abort_if($request->user()->id !== $thread->user_id && !$request->user()->isAdmin(), 403);
+
+        $data = $request->validate([
+            'title' => ['required', 'string', 'min:5', 'max:200'],
+            'body'  => ['required', 'string', 'min:10', 'max:80000'],
+        ]);
+
+        $thread->update($data);
+
+        return redirect()->route('forum.show', $thread)->with('status', 'thread-updated');
+    }
+
+    public function updateReply(Request $request, ForumReply $reply): RedirectResponse
+    {
+        abort_if($request->user()->id !== $reply->user_id && !$request->user()->isAdmin(), 403);
+
+        $request->validate(['body' => ['required', 'string', 'min:1', 'max:5000']]);
+
+        $reply->update(['body' => $request->input('body')]);
+
+        return redirect()->route('forum.show', $reply->thread_id)
+            ->with('status', 'reply-updated')
+            ->fragment('reply-' . $reply->id);
+    }
+
     public function destroy(Request $request, ForumThread $thread): RedirectResponse
     {
         abort_if($request->user()->id !== $thread->user_id && !$request->user()->isAdmin(), 403);

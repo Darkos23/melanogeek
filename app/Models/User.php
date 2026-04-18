@@ -93,19 +93,9 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function stories()
-    {
-        return $this->hasMany(Story::class);
-    }
-
     public function pushSubscriptions()
     {
         return $this->hasMany(PushSubscription::class);
-    }
-
-    public function subscriptions()
-    {
-        return $this->hasMany(Subscription::class);
     }
 
     // Abonnés (ceux qui me suivent)

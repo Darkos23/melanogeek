@@ -195,6 +195,16 @@
     <span style="display:inline-flex;align-items:center;gap:6px;"><x-icon name="check-circle" :size="14"/> Réponse ajoutée.</span>
 </div>
 @endif
+@if(session('status') === 'thread-updated')
+<div style="background:rgba(45,90,61,.12);border:1px solid rgba(45,90,61,.25);color:#6DC48A;padding:12px 18px;border-radius:12px;font-size:.85rem;margin-bottom:16px;">
+    <span style="display:inline-flex;align-items:center;gap:6px;"><x-icon name="check-circle" :size="14"/> Sujet modifié.</span>
+</div>
+@endif
+@if(session('status') === 'reply-updated')
+<div style="background:rgba(45,90,61,.12);border:1px solid rgba(45,90,61,.25);color:#6DC48A;padding:12px 18px;border-radius:12px;font-size:.85rem;margin-bottom:16px;">
+    <span style="display:inline-flex;align-items:center;gap:6px;"><x-icon name="check-circle" :size="14"/> Réponse modifiée.</span>
+</div>
+@endif
 
 {{-- Thread principal --}}
 <div class="thread-post">
@@ -215,7 +225,17 @@
             </div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-            <span class="thread-tag">{{ $thread->category_icon }} {{ $thread->category_label }}</span>
+            @php
+            $catSvgMap = [
+                'manga-anime'  => '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>',
+                'gaming'       => '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1.2" fill="currentColor"/><circle cx="18" cy="12" r="1.2" fill="currentColor"/>',
+                'tech'         => '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
+                'culture'      => '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+                'cosplay'      => '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+                'off-topic'    => '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+            ];
+            @endphp
+            <span class="thread-tag" style="display:inline-flex;align-items:center;gap:5px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">{!! $catSvgMap[$thread->category] ?? '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' !!}</svg> {{ $thread->category_label }}</span>
             @if($thread->is_pinned)
                 <span class="thread-tag" style="color:var(--gold);background:var(--gold-soft);border-color:rgba(184,120,32,.2);display:inline-flex;align-items:center;gap:4px;"><x-icon name="pin" :size="11"/> Épinglé</span>
             @endif
@@ -238,22 +258,62 @@
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 {{ number_format($thread->views_count) }} vue{{ $thread->views_count != 1 ? 's' : '' }}
             </span>
-            <form method="POST" action="{{ route('forum.thread.destroy', $thread) }}" style="margin-left:auto;" onsubmit="return confirm('Supprimer ce sujet ?')">
-                @csrf @method('DELETE')
-                <button type="submit" class="btn-del-thread" style="display:inline-flex;align-items:center;gap:5px;"><x-icon name="trash" :size="13"/> Supprimer</button>
-            </form>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+                <button type="button" class="btn-del-thread" onclick="toggleThreadEdit()" style="display:inline-flex;align-items:center;gap:5px;"><x-icon name="edit" :size="13"/> Modifier</button>
+                <form method="POST" action="{{ route('forum.thread.destroy', $thread) }}" onsubmit="return confirm('Supprimer ce sujet ?')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="btn-del-thread" style="display:inline-flex;align-items:center;gap:5px;"><x-icon name="trash" :size="13"/> Supprimer</button>
+                </form>
+            </div>
             @else
             <span style="font-size:.72rem;color:var(--text-faint);margin-left:auto;">
-                👁 {{ number_format($thread->views_count) }}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:middle;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                {{ number_format($thread->views_count) }}
             </span>
             @endif
         @else
         <span style="font-size:.72rem;color:var(--text-faint);margin-left:auto;">
-            👁 {{ number_format($thread->views_count) }}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:middle;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            {{ number_format($thread->views_count) }}
         </span>
         @endauth
     </div>
 </div>
+
+{{-- Formulaire d'édition du thread (masqué par défaut) --}}
+@auth
+@if(auth()->id() === $thread->user_id || auth()->user()->isAdmin())
+<div id="threadEditWrap" style="display:none;margin-bottom:20px;">
+    <form method="POST" action="{{ route('forum.thread.update', $thread) }}">
+        @csrf @method('PATCH')
+        <div style="background:var(--bg-card);border:1px solid var(--terra);border-radius:16px;overflow:hidden;">
+            <div style="padding:12px 18px;border-bottom:1px solid var(--border);font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--terra);display:flex;align-items:center;gap:6px;">
+                <x-icon name="edit" :size="13"/> Modifier le sujet
+            </div>
+            <div style="padding:14px 18px 10px;">
+                <input type="text" name="title" value="{{ old('title', $thread->title) }}"
+                       style="width:100%;background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font-body);font-size:.9rem;margin-bottom:10px;box-sizing:border-box;outline:none;"
+                       placeholder="Titre du sujet" maxlength="200">
+                @error('title')<div style="font-size:.75rem;color:#E05555;margin:-6px 0 8px;">{{ $message }}</div>@enderror
+                <textarea name="body" rows="7"
+                          style="width:100%;background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font-body);font-size:.9rem;line-height:1.65;resize:vertical;box-sizing:border-box;outline:none;">{{ old('body', $thread->body) }}</textarea>
+                @error('body')<div style="font-size:.75rem;color:#E05555;margin:4px 0;">{{ $message }}</div>@enderror
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;padding:10px 16px;border-top:1px solid var(--border);">
+                <button type="button" onclick="toggleThreadEdit()"
+                        style="background:none;border:1px solid var(--border);color:var(--text-muted);padding:8px 18px;border-radius:100px;font-family:var(--font-head);font-size:.84rem;font-weight:600;cursor:pointer;">
+                    Annuler
+                </button>
+                <button type="submit"
+                        style="background:var(--terra);border:none;color:white;padding:8px 22px;border-radius:100px;font-family:var(--font-head);font-size:.86rem;font-weight:700;cursor:pointer;">
+                    Sauvegarder
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+@endif
+@endauth
 
 {{-- Réponses --}}
 <div class="replies-section" id="replies">
@@ -261,7 +321,7 @@
     <div class="replies-title">{{ number_format($replies->total()) }} réponse{{ $replies->total() > 1 ? 's' : '' }}</div>
 
     @foreach($replies as $reply)
-    <div class="reply-item">
+    <div class="reply-item" id="reply-{{ $reply->id }}">
         <a href="{{ route('profile.show', $reply->user->username) }}" class="reply-avi">
             @if($reply->user->avatar)
                 <img src="{{ Storage::url($reply->user->avatar) }}" alt="">
@@ -275,14 +335,40 @@
                 <span class="reply-ago">{{ $reply->created_at->diffForHumans() }}</span>
                 @auth
                     @if(auth()->id() === $reply->user_id || auth()->user()->isAdmin())
-                    <form method="POST" action="{{ route('forum.reply.destroy', $reply) }}" style="margin-left:auto;" onsubmit="return confirm('Supprimer cette réponse ?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn-del-reply"><x-icon name="x" :size="12"/></button>
-                    </form>
+                    <div style="margin-left:auto;display:flex;align-items:center;gap:4px;">
+                        <button type="button" class="btn-del-reply" onclick="toggleReplyEdit({{ $reply->id }})" title="Modifier" style="display:inline-flex;align-items:center;gap:3px;"><x-icon name="edit" :size="11"/></button>
+                        <form method="POST" action="{{ route('forum.reply.destroy', $reply) }}" onsubmit="return confirm('Supprimer cette réponse ?')">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="btn-del-reply" title="Supprimer"><x-icon name="trash" :size="11"/></button>
+                        </form>
+                    </div>
                     @endif
                 @endauth
             </div>
-            <div class="reply-body">{{ $reply->body }}</div>
+            {{-- Corps de la réponse --}}
+            <div class="reply-body" id="reply-body-{{ $reply->id }}">{{ $reply->body }}</div>
+            {{-- Formulaire d'édition inline --}}
+            @auth
+            @if(auth()->id() === $reply->user_id || auth()->user()->isAdmin())
+            <div id="reply-edit-{{ $reply->id }}" style="display:none;margin-top:8px;">
+                <form method="POST" action="{{ route('forum.reply.update', $reply) }}">
+                    @csrf @method('PATCH')
+                    <textarea name="body" rows="4"
+                              style="width:100%;background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font-body);font-size:.875rem;line-height:1.6;resize:vertical;box-sizing:border-box;outline:none;">{{ $reply->body }}</textarea>
+                    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;">
+                        <button type="button" onclick="toggleReplyEdit({{ $reply->id }})"
+                                style="background:none;border:1px solid var(--border);color:var(--text-muted);padding:6px 14px;border-radius:100px;font-family:var(--font-head);font-size:.8rem;font-weight:600;cursor:pointer;">
+                            Annuler
+                        </button>
+                        <button type="submit"
+                                style="background:var(--terra);border:none;color:white;padding:6px 16px;border-radius:100px;font-family:var(--font-head);font-size:.82rem;font-weight:700;cursor:pointer;">
+                            Sauvegarder
+                        </button>
+                    </div>
+                </form>
+            </div>
+            @endif
+            @endauth
         </div>
     </div>
     @endforeach
@@ -324,4 +410,36 @@
 </div>
 
 </div>
+
+@push('scripts')
+<script>
+function toggleThreadEdit() {
+    const wrap = document.getElementById('threadEditWrap');
+    if (!wrap) return;
+    const isHidden = wrap.style.display === 'none';
+    wrap.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function toggleReplyEdit(id) {
+    const editDiv  = document.getElementById('reply-edit-' + id);
+    const bodyDiv  = document.getElementById('reply-body-' + id);
+    if (!editDiv) return;
+    const isHidden = editDiv.style.display === 'none';
+    editDiv.style.display = isHidden ? 'block' : 'none';
+    if (bodyDiv) bodyDiv.style.display = isHidden ? 'none' : 'block';
+    if (isHidden) {
+        const ta = editDiv.querySelector('textarea');
+        if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+    }
+}
+
+// Si on revient avec status thread-updated ou reply-updated, scroll vers l'élément
+@if(session('status') === 'thread-updated')
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.thread-post')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+@endif
+</script>
+@endpush
 @endsection

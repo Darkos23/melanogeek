@@ -163,9 +163,9 @@
 .post-card-banner-icon {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    font-size: 2.4rem;
-    opacity: .35;
+    opacity: .2;
 }
+.post-card-banner-icon svg { width: 56px; height: 56px; }
 
 /* Corps de la carte */
 .post-card-body {
@@ -294,7 +294,7 @@
         Rechercher
     </button>
     @if(isset($query) && $query)
-    <a href="{{ route('blog.index') }}{{ request('category') ? '?category='.request('category') : '' }}" style="font-size:.78rem;color:var(--text-muted);text-decoration:none;white-space:nowrap;">✕ Effacer</a>
+    <a href="{{ route('blog.index') }}{{ request('category') ? '?category='.request('category') : '' }}" style="font-size:.78rem;color:var(--text-muted);text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Effacer</a>
     @endif
 </form>
 
@@ -307,9 +307,9 @@
 @if($posts->isEmpty())
 {{-- ── AUCUN RÉSULTAT ── --}}
 <div style="text-align:center;padding:80px 0;color:var(--text-faint)">
-    <div style="font-size:2.5rem;margin-bottom:16px">📭</div>
+    <div style="margin-bottom:16px;display:flex;justify-content:center;opacity:.3;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
     <div style="font-family:var(--font-head);font-size:1rem;font-weight:600;color:var(--text-muted);margin-bottom:8px">Aucun article dans cette catégorie</div>
-    <a href="{{ route('blog.index') }}" style="font-size:.75rem;color:var(--terra);text-decoration:none">← Voir tous les articles</a>
+    <a href="{{ route('blog.index') }}" style="font-size:.75rem;color:var(--terra);text-decoration:none;display:inline-flex;align-items:center;gap:5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 5l-7 7 7 7"/></svg> Voir tous les articles</a>
 </div>
 
 @else
@@ -383,15 +383,16 @@
             : ($post->media_url && $post->media_type === 'image' ? asset('storage/'.$post->media_url) : null);
         $catClass = $post->category ? 'cat-'.str_replace('_','-',$post->category) : 'cat-default';
         $catIcons = [
-            'manga-anime'   => '🎌',
-            'gaming'        => '🎮',
-            'tech'          => '💻',
-            'dev'           => '⌨️',
-            'cinema-series' => '🎬',
-            'culture'       => '🌍',
-            'debat'         => '💬',
+            'manga-anime'   => '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>',
+            'gaming'        => '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1" fill="currentColor"/><circle cx="18" cy="12" r="1" fill="currentColor"/>',
+            'tech'          => '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
+            'dev'           => '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+            'cinema-series' => '<rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>',
+            'culture'       => '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+            'debat'         => '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
         ];
-        $catIcon = $catIcons[$post->category] ?? '📰';
+        $catIconDefault = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>';
+        $catIcon = $catIcons[$post->category] ?? $catIconDefault;
     @endphp
     <a href="{{ route('posts.show', $post->id) }}" class="post-card" data-reveal data-delay="{{ ($loop->index % 5) + 1 }}">
 
@@ -400,7 +401,7 @@
             @if($thumbUrl)
                 <img src="{{ $thumbUrl }}" alt="{{ $post->title }}">
             @else
-                <div class="post-card-banner-icon">{{ $catIcon }}</div>
+                <div class="post-card-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">{!! $catIcon !!}</svg></div>
             @endif
         </div>
 

@@ -440,10 +440,20 @@
 {{-- ── CATÉGORIES ── --}}
 <div class="forum-cats-label">Catégories</div>
 <div class="forum-cats">
+    @php
+    $catSvg = [
+        'manga-anime'  => '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>',
+        'gaming'       => '<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1.2" fill="currentColor"/><circle cx="18" cy="12" r="1.2" fill="currentColor"/>',
+        'tech'         => '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
+        'culture'      => '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+        'cosplay'      => '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+        'off-topic'    => '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>',
+    ];
+    @endphp
     @foreach($categories as $slug => $info)
     <a href="{{ route('forum.index') }}?cat={{ $slug }}{{ $currentSort ? '&sort='.$currentSort : '' }}"
        class="forum-cat {{ $currentCat === $slug ? 'forum-cat-active' : '' }}">
-        <div class="forum-cat-icon">{{ $info['icon'] }}</div>
+        <div class="forum-cat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">{!! $catSvg[$slug] ?? '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' !!}</svg></div>
         <div style="flex:1;min-width:0">
             <div class="forum-cat-name">{{ $info['label'] }}</div>
         </div>
@@ -474,7 +484,7 @@
                 <div class="forum-thread-meta">
                     <span class="forum-tag forum-tag-cat">{{ $thread->category_label }}</span>
                     @if($thread->is_pinned)<span class="forum-tag forum-tag-pin" style="display:inline-flex;align-items:center;gap:3px;"><x-icon name="pin" :size="11"/> Épinglé</span>@endif
-                    @if($thread->replies_count > 20)<span style="font-size:.7rem">🔥</span>@endif
+                    @if($thread->replies_count > 20)<span style="display:inline-flex;align-items:center;color:var(--terra);opacity:.8;" title="Populaire"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c0 0-5 5.5-5 10a5 5 0 0 0 10 0c0-4.5-5-10-5-10zm0 13a2 2 0 0 1-2-2c0-1.5 2-4 2-4s2 2.5 2 4a2 2 0 0 1-2 2z"/></svg></span>@endif
                 </div>
                 <div class="forum-thread-title">{{ $thread->title }}</div>
                 <div class="forum-thread-author">par {{ $thread->user->name }}</div>
@@ -492,7 +502,7 @@
     </a>
     @empty
     <div style="padding:40px;text-align:center;color:var(--text-muted);">
-        <div style="font-size:2rem;margin-bottom:8px;">💬</div>
+        <div style="margin-bottom:12px;opacity:.3;"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
         <div style="font-size:.85rem;">Aucun sujet pour l'instant. Sois le premier !</div>
     </div>
     @endforelse
@@ -550,7 +560,7 @@
     <div class="forum-widget-head">Catégories</div>
     @foreach($categories as $slug => $info)
     <a href="{{ route('forum.index') }}?cat={{ $slug }}" class="forum-widget-row">
-        <span style="font-size:.95rem">{{ $info['icon'] }}</span>
+        <span style="display:flex;align-items:center;color:var(--text-muted);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">{!! $catSvg[$slug] ?? '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' !!}</svg></span>
         <span style="flex:1;font-weight:500">{{ $info['label'] }}</span>
     </a>
     @endforeach
@@ -582,7 +592,7 @@
 @guest
 <div class="forum-widget">
     <div class="forum-widget-cta">
-        <div class="forum-widget-cta-icon">🌍</div>
+        <div class="forum-widget-cta-icon" style="display:flex;justify-content:center;margin-bottom:10px;opacity:.6;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
         <div class="forum-widget-cta-title">Rejoins la conversation</div>
         <p class="forum-widget-cta-desc">Crée ton compte pour poster, voter et participer aux débats.</p>
         <a href="{{ route('register') }}" class="forum-widget-cta-btn">Créer un compte</a>

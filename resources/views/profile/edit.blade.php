@@ -317,7 +317,7 @@
             <!-- ── PHOTO ── -->
             <div class="edit-card">
                 <div class="edit-card-header">
-                    <div class="edit-card-icon">📸</div>
+                    <div class="edit-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
                     <div>
                         <div class="edit-card-title">Photos</div>
                         <div class="edit-card-desc">Avatar et photo de couverture</div>
@@ -340,7 +340,7 @@
                             <div class="avatar-upload-title">Photo de profil</div>
                             <div class="avatar-upload-hint">JPG, PNG ou GIF · Max 2 Mo<br>Recommandé : 400×400 px</div>
                         </div>
-                        <label for="avatar" class="btn-upload">📁 Choisir</label>
+                        <label for="avatar" class="btn-upload" style="display:inline-flex;align-items:center;gap:6px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Choisir</label>
                         <input type="file" id="avatar" name="avatar" accept="image/*" style="display:none;" onchange="previewAvatar(this)">
                     </div>
 
@@ -351,11 +351,11 @@
                             @if(auth()->user()->cover_photo)
                                 <img src="{{ Storage::url(auth()->user()->cover_photo) }}" id="coverPreview">
                                 <div class="cover-overlay">
-                                    <div class="cover-upload-icon">✎</div>
+                                    <div class="cover-upload-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
                                     <div class="cover-upload-text">Modifier la couverture</div>
                                 </div>
                             @else
-                                <div class="cover-upload-icon">🖼</div>
+                                <div class="cover-upload-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
                                 <div class="cover-upload-text">Cliquer pour ajouter une photo de couverture</div>
                             @endif
                         </label>
@@ -367,7 +367,7 @@
             <!-- ── IDENTITÉ ── -->
             <div class="edit-card">
                 <div class="edit-card-header">
-                    <div class="edit-card-icon">👤</div>
+                    <div class="edit-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
                     <div>
                         <div class="edit-card-title">Identité</div>
                         <div class="edit-card-desc">Nom, pseudo et biographie</div>
@@ -380,7 +380,7 @@
                             <input class="form-input {{ $errors->has('name') ? 'is-error' : '' }}"
                                 type="text" id="name" name="name"
                                 value="{{ old('name', auth()->user()->name) }}" required>
-                            @error('name')<div class="form-error">⚠ {{ $message }}</div>@enderror
+                            @error('name')<div class="form-error" style="display:flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> {{ $message }}</div>@enderror
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="username">Pseudo <span>*</span></label>
@@ -390,7 +390,7 @@
                                     type="text" id="username" name="username"
                                     value="{{ old('username', auth()->user()->username) }}" required>
                             </div>
-                            @error('username')<div class="form-error">⚠ {{ $message }}</div>@enderror
+                            @error('username')<div class="form-error" style="display:flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> {{ $message }}</div>@enderror
                         </div>
                     </div>
 
@@ -399,11 +399,11 @@
                         <input class="form-input {{ $errors->has('email') ? 'is-error' : '' }}"
                             type="email" id="email" name="email"
                             value="{{ old('email', auth()->user()->email) }}" required>
-                        @error('email')<div class="form-error">⚠ {{ $message }}</div>@enderror
+                        @error('email')<div class="form-error" style="display:flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> {{ $message }}</div>@enderror
                         @if(auth()->user()->email_verified_at)
-                            <div class="form-hint" style="color:#6DC48A;">✓ Email vérifié</div>
+                            <div class="form-hint" style="color:#6DC48A;display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Email vérifié</div>
                         @else
-                            <div class="form-hint" style="color:#E09020;">⚠ Email non vérifié</div>
+                            <div class="form-hint" style="color:#E09020;display:flex;align-items:center;gap:4px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Email non vérifié</div>
                         @endif
                     </div>
 
@@ -441,7 +441,7 @@
             <!-- ── RÉSEAUX SOCIAUX ── -->
             <div class="edit-card">
                 <div class="edit-card-header">
-                    <div class="edit-card-icon">🔗</div>
+                    <div class="edit-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
                     <div>
                         <div class="edit-card-title">Réseaux sociaux</div>
                         <div class="edit-card-desc">Tes autres plateformes</div>
@@ -452,7 +452,7 @@
                         <div class="form-group">
                             <label class="form-label" for="instagram">Instagram</label>
                             <div class="social-input-group">
-                                <span class="social-input-icon">📸</span>
+                                <span class="social-input-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></span>
                                 <input class="form-input" type="text" id="instagram" name="instagram"
                                     placeholder="tonpseudo"
                                     value="{{ old('instagram', auth()->user()->instagram) }}">
@@ -461,7 +461,7 @@
                         <div class="form-group">
                             <label class="form-label" for="tiktok">TikTok</label>
                             <div class="social-input-group">
-                                <span class="social-input-icon">🎵</span>
+                                <span class="social-input-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></span>
                                 <input class="form-input" type="text" id="tiktok" name="tiktok"
                                     placeholder="tonpseudo"
                                     value="{{ old('tiktok', auth()->user()->tiktok) }}">
@@ -470,7 +470,7 @@
                         <div class="form-group">
                             <label class="form-label" for="youtube">YouTube</label>
                             <div class="social-input-group">
-                                <span class="social-input-icon">▶️</span>
+                                <span class="social-input-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></span>
                                 <input class="form-input" type="text" id="youtube" name="youtube"
                                     placeholder="@tachaine"
                                     value="{{ old('youtube', auth()->user()->youtube) }}">
@@ -479,7 +479,7 @@
                         <div class="form-group">
                             <label class="form-label" for="twitter">X / Twitter</label>
                             <div class="social-input-group">
-                                <span class="social-input-icon">✖</span>
+                                <span class="social-input-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>
                                 <input class="form-input" type="text" id="twitter" name="twitter"
                                     placeholder="tonpseudo"
                                     value="{{ old('twitter', auth()->user()->twitter) }}">
@@ -492,7 +492,7 @@
             <!-- ── CONFIDENTIALITÉ ── -->
             <div class="edit-card">
                 <div class="edit-card-header">
-                    <div class="edit-card-icon">🔒</div>
+                    <div class="edit-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                     <div>
                         <div class="edit-card-title">Confidentialité</div>
                         <div class="edit-card-desc">Visibilité de ton profil</div>
@@ -526,7 +526,7 @@
         <!-- ── DANGER ZONE ── -->
         <div class="edit-card danger-zone">
             <div class="edit-card-header">
-                <div class="edit-card-icon">⚠️</div>
+                <div class="edit-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
                 <div>
                     <div class="edit-card-title">Zone dangereuse</div>
                     <div class="edit-card-desc">Actions irréversibles</div>
@@ -575,7 +575,7 @@
                 area.innerHTML = `
                     <img src="${e.target.result}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
                     <div class="cover-overlay" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:rgba(0,0,0,0.4);padding:8px 16px;border-radius:8px;">
-                        <div style="font-size:1.2rem;">✎</div>
+                        <div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
                         <div style="font-size:.78rem;color:white;">Modifier</div>
                     </div>`;
             };

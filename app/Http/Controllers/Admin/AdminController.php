@@ -7,7 +7,6 @@ use App\Models\ActivityLog;
 use App\Models\Post;
 use App\Models\Report;
 use App\Models\Setting;
-use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -215,99 +214,6 @@ class AdminController extends Controller
         ActivityLog::record('settings.about', 'Page A propos mise a jour', null, null);
 
         return back()->with('success', 'Page A propos mise a jour.');
-    }
-
-    public function subscriptions(Request $request)
-    {
-        $query = Subscription::with('user');
-
-        if ($status = $request->status) {
-            $query->where('status', $status);
-        }
-
-        $subscriptions = $query->latest()->paginate(25)->withQueryString();
-
-        $revenue = [
-            'xof' => Subscription::where('status', 'active')->where('currency', 'XOF')->sum('amount'),
-            'eur' => Subscription::where('status', 'active')->where('currency', 'EUR')->sum('amount'),
-            'total' => Subscription::where('status', 'active')->count(),
-            'pending' => Subscription::where('status', 'pending')->count(),
-        ];
-
-        return view('admin.subscriptions.index', compact('subscriptions', 'revenue'));
-    }
-
-    public function subscriptionApprove(Subscription $subscription)
-    {
-        $subscription->update([
-            'status' => 'active',
-            'expires_at' => now()->addDays(30),
-        ]);
-
-        $subscription->user->update([
-            'plan' => $subscription->plan,
-            'plan_expires_at' => now()->addDays(30),
-        ]);
-
-        ActivityLog::record('subscription.approve', "Abonnement #{$subscription->id} approuve", 'Subscription', $subscription->id);
-
-        return back()->with('success', 'Abonnement active.');
-    }
-
-    public function subscriptionCancel(Subscription $subscription)
-    {
-        $subscription->update(['status' => 'cancelled']);
-
-        ActivityLog::record('subscription.cancel', "Abonnement #{$subscription->id} annule", 'Subscription', $subscription->id);
-
-        return back()->with('success', 'Abonnement annule.');
-    }
-
-    public function applications(Request $request)
-    {
-        $currentStatus = $request->get('status', 'pending');
-
-        $creatorsOnly = fn ($query) => $query->where(function ($query) {
-            $query->whereNull('role')->orWhere('role', 'creator');
-        });
-
-        $pending = User::where('status', $currentStatus)
-            ->tap($creatorsOnly)
-            ->latest()
-            ->paginate(20);
-
-        return view('admin.applications.index', [
-            'pending' => $pending,
-            'currentStatus' => $currentStatus,
-            'approved' => User::where('status', 'approved')->tap($creatorsOnly)->count(),
-            'rejected' => User::where('status', 'rejected')->tap($creatorsOnly)->count(),
-        ]);
-    }
-
-    public function applicationApprove(User $user)
-    {
-        $user->update([
-            'status' => 'approved',
-            'role' => 'creator',
-            'is_active' => true,
-            'approved_at' => now(),
-        ]);
-
-        ActivityLog::record('application.approve', "Candidature de @{$user->username} approuvee", 'User', $user->id);
-
-        return back()->with('success', "Candidature de {$user->name} approuvee.");
-    }
-
-    public function applicationReject(Request $request, User $user)
-    {
-        $user->update([
-            'status' => 'rejected',
-            'rejection_reason' => $request->rejection_reason,
-        ]);
-
-        ActivityLog::record('application.reject', "Candidature de @{$user->username} refusee", 'User', $user->id);
-
-        return back()->with('success', "Candidature de {$user->name} refusee.");
     }
 
     public function reports(Request $request)

@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        return redirect()->intended(route('feed', absolute: false));
+        return redirect()->route('feed');
     }
 
     /**

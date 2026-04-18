@@ -361,7 +361,6 @@
         .mg-user-btn { padding: 4px; border-radius: 50%; }
         /* Logo : réduire légèrement le nom */
         .mg-logo-name { font-size: .8rem; }
-        /* Theme toggle : visible sur mobile (la place libérée par le bouton message) */
         /* Réduire le gap entre icônes */
         .mg-right { gap: 4px; }
         /* Corriger les boutons ronds : annuler le min-height: 44px global */
@@ -681,18 +680,6 @@
 }
 .mg-nd-footer:hover { background: rgba(255,255,255,.04); color: var(--text); }
 
-/* ── Lien messages dans dropdown notifs ── */
-.mg-nd-msg-link {
-    position: relative;
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: .74rem; font-weight: 600;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color .15s;
-    font-family: var(--font-body);
-}
-.mg-nd-msg-link:hover { color: var(--text); }
-
 .mg-user-menu { position:relative; }
 .mg-user-btn {
     display:flex;align-items:center;gap:8px;
@@ -888,13 +875,13 @@
                 dot.style.display = data.unread > 0 ? 'block' : 'none';
                 renderList(data.items);
             } catch (e) {
-                list.innerHTML = '<div class="mg-nd-empty"><div class="mg-nd-empty-icon">⚠️</div><div class="mg-nd-empty-text">Erreur de chargement</div></div>';
+                list.innerHTML = '<div class="mg-nd-empty"><div class="mg-nd-empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="mg-nd-empty-text">Erreur de chargement</div></div>';
             }
         }
 
         function renderList(items) {
             if (!items.length) {
-                list.innerHTML = '<div class="mg-nd-empty"><div class="mg-nd-empty-icon">🔔</div><div class="mg-nd-empty-text">Aucune notification pour l\'instant</div></div>';
+                list.innerHTML = '<div class="mg-nd-empty"><div class="mg-nd-empty-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div class="mg-nd-empty-text">Aucune notification pour l\'instant</div></div>';
                 return;
             }
             list.innerHTML = items.map(n => {
@@ -903,8 +890,12 @@
                 const avatarEl = n.avatar
                     ? `<img src="/storage/${n.avatar}" alt="">`
                     : `<span>${(n.name || '?')[0].toUpperCase()}</span>`;
-                const icons    = { follow: '👤', like: '❤️', comment: '💬' };
-                const typeIcon = icons[n.type] || '🔔';
+                const svgIcons = {
+                    follow:  '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+                    like:    '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+                    comment: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+                };
+                const typeIcon = svgIcons[n.type] || '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>';
 
                 let text = '';
                 if (n.type === 'follow')        text = `<strong>${esc(n.name)}</strong> a commencé à te suivre`;

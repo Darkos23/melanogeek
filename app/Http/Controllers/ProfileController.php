@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Story;
 use App\Models\User;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
@@ -42,11 +41,6 @@ class ProfileController extends Controller
             ? collect()
             : $user->posts()->with('mediaFiles')->where('is_published', true)->latest()->get();
 
-        $stories = Story::where('user_id', $user->id)
-            ->where('expires_at', '>', now())
-            ->oldest()
-            ->get();
-
         // Stats pré-calculées (évite les requêtes N+1 dans le Blade)
         $postsPublishedCount = $isLocked ? 0 : $user->posts()->where('is_published', true)->count();
         $postsAllCount       = $user->posts()->count();
@@ -59,7 +53,6 @@ class ProfileController extends Controller
             'posts'               => $posts,
             'isLocked'            => $isLocked,
             'totalLikes'          => $totalLikes,
-            'stories'             => $stories,
             'isBlocking'          => $isBlocking,
             'postsPublishedCount' => $postsPublishedCount,
             'postsAllCount'       => $postsAllCount,

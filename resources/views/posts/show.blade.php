@@ -911,9 +911,9 @@
         @if($post->audio_url)
         <div class="post-audio" id="postAudioBar">
             <audio id="postAudio" src="{{ Storage::url($post->audio_url) }}" loop preload="metadata" controlsList="nodownload" oncontextmenu="return false"></audio>
-            <button class="audio-play-btn" id="audioPlayBtn" onclick="audioToggle()">▶</button>
+            <button class="audio-play-btn" id="audioPlayBtn" onclick="audioToggle()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
             <div class="audio-info">
-                <div class="audio-track-name">🎵 {{ $post->audio_name ?? 'Musique' }}</div>
+                <div class="audio-track-name" style="display:inline-flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> {{ $post->audio_name ?? 'Musique' }}</div>
                 <div class="audio-progress-wrap" id="audioProgressWrap">
                     <div class="audio-progress-bar" id="audioProgressBar"></div>
                 </div>
@@ -957,13 +957,13 @@
                 @if($post->user->avatar)
                     <img src="{{ Storage::url($post->user->avatar) }}" alt="">
                 @else
-                    <span>{{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}</span>
+                    <span>{{ mb_strtoupper(mb_substr($post->user->username, 0, 1)) }}</span>
                 @endif
             </a>
             <div class="pac-body">
                 <div class="pac-label">Écrit par</div>
                 <a href="{{ route('profile.show', $post->user->username) }}" class="pac-name">
-                    {{ $post->user->name }}
+                    {{ $post->user->username }}
                     @if($post->user->is_verified ?? false)
                         <x-icon name="check-circle" :size="14" class="pac-verified"/>
                     @endif
@@ -1121,8 +1121,10 @@
         }
 
         window.audioToggle = function() {
-            if (audio.paused) { audio.play(); playBtn.textContent = '⏸'; }
-            else              { audio.pause(); playBtn.textContent = '▶'; }
+            const pauseSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+            const playSvg  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+            if (audio.paused) { audio.play(); playBtn.innerHTML = pauseSvg; }
+            else              { audio.pause(); playBtn.innerHTML = playSvg; }
         };
 
         window.audioMuteToggle = function() {
@@ -1269,7 +1271,7 @@
                 if (page === 1) {
                     if (!json.data.length) {
                         list.innerHTML = `<div class="comments-empty">
-                            <div class="comments-empty-icon">💬</div>
+                            <div class="comments-empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
                             Sois le premier à commenter !
                         </div>`;
                     } else {
@@ -1354,7 +1356,7 @@
                         if (res.ok) {
                             document.getElementById(`comment-${id}`)?.remove();
                             if (countEl) { const cur = parseInt(countEl.textContent.replace(/\D/g,''))||1; countEl.textContent = Math.max(0,cur-1); }
-                            if (!list.querySelector('.comment-item')) list.innerHTML = `<div class="comments-empty"><div class="comments-empty-icon">💬</div>Sois le premier à commenter !</div>`;
+                            if (!list.querySelector('.comment-item')) list.innerHTML = `<div class="comments-empty"><div class="comments-empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>Sois le premier à commenter !</div>`;
                         }
                     } catch(e) { alert('Erreur.'); }
                 });

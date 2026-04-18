@@ -416,15 +416,15 @@
     {{-- ── TIPS ── --}}
     <div class="cf-tips">
         <div class="cf-tip">
-            <span class="cf-tip-icon">✦</span>
+            <span class="cf-tip-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
             <span>Un bon titre résume ton sujet en une phrase et donne envie de cliquer.</span>
         </div>
         <div class="cf-tip">
-            <span class="cf-tip-icon">💬</span>
+            <span class="cf-tip-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
             <span>Plus tu es précis dans ton contenu, plus tu obtiendras des réponses utiles.</span>
         </div>
         <div class="cf-tip">
-            <span class="cf-tip-icon">🌍</span>
+            <span class="cf-tip-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
             <span>Reste respectueux et constructif — c'est ici qu'on construit la communauté.</span>
         </div>
     </div>

@@ -1089,7 +1089,7 @@
                 @elseif($featured->media_url && $featured->media_type === 'image')
                     <img src="{{ asset('storage/'.$featured->media_url) }}" alt="{{ $featured->title }}">
                 @else
-                    <div class="art-thumb-placeholder">📰</div>
+                    <div class="art-thumb-placeholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;opacity:.18;"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
                 @endif
             </div>
             <div class="art-featured-inner">
@@ -1173,10 +1173,10 @@
                 <div class="lp-popular-meta">
                     <span>{{ $pp->user->name }}</span>
                     <span class="lp-popular-dot">·</span>
-                    <span>👁 {{ number_format($pp->views_count) }}</span>
+                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> {{ number_format($pp->views_count) }}</span>
                     @if($pp->likes_count > 0)
                     <span class="lp-popular-dot">·</span>
-                    <span>♥ {{ number_format($pp->likes_count) }}</span>
+                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> {{ number_format($pp->likes_count) }}</span>
                     @endif
                 </div>
             </div>
@@ -1195,20 +1195,20 @@
     </div>
     @php
         $cats = [
-            'manga-anime'   => ['🎌', 'Manga & Animé'],
-            'gaming'        => ['🎮', 'Gaming'],
-            'tech'          => ['💻', 'Tech & IA'],
-            'dev'           => ['🛠️', 'Développement'],
-            'cinema-series' => ['🎬', 'Cinéma & Séries'],
-            'culture'       => ['🌍', 'Culture & Société'],
-            'debat'         => ['💬', 'Débat'],
+            'manga-anime'   => ['<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>', 'Manga & Animé'],
+            'gaming'        => ['<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1.2" fill="currentColor"/><circle cx="18" cy="12" r="1.2" fill="currentColor"/>', 'Gaming'],
+            'tech'          => ['<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>', 'Tech & IA'],
+            'dev'           => ['<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>', 'Développement'],
+            'cinema-series' => ['<rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M17 7h5M2 17h5M17 17h5"/>', 'Cinéma & Séries'],
+            'culture'       => ['<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>', 'Culture & Société'],
+            'debat'         => ['<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>', 'Débat'],
         ];
     @endphp
     <div class="cat-grid">
         @foreach($cats as $slug => [$icon, $label])
         @php $count = $category_counts[$slug] ?? 0; @endphp
         <a href="{{ route('blog.index') }}?category={{ $slug }}" class="cat-card" data-reveal data-delay="{{ $loop->iteration }}">
-            <div class="cat-icon">{{ $icon }}</div>
+            <div class="cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">{!! $icon !!}</svg></div>
             <div class="cat-name">{{ $label }}</div>
             @if($count > 0)
             <div class="cat-count">{{ $count }} article{{ $count > 1 ? 's' : '' }}</div>

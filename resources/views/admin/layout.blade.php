@@ -309,25 +309,11 @@
             @endif
 
             <div class="sidebar-section">Modération</div>
-            <a href="{{ route('admin.applications') }}" class="sidebar-link {{ request()->routeIs('admin.applications*') ? 'active' : '' }}">
-                <span class="icon">📋</span> Candidatures
-                @php $pendingApps = \App\Models\User::where('status','pending')->where(fn($q) => $q->whereNull('role')->orWhere('role','creator'))->count(); @endphp
-                @if($pendingApps > 0)
-                    <span style="margin-left:auto;background:#E8B84B;color:#1A0E06;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:100px;">{{ $pendingApps }}</span>
-                @endif
-            </a>
             <a href="{{ route('admin.users') }}" class="sidebar-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
                 <span class="icon">👥</span> Utilisateurs
             </a>
             <a href="{{ route('admin.posts') }}" class="sidebar-link {{ request()->routeIs('admin.posts*') ? 'active' : '' }}">
                 <span class="icon">📝</span> Publications
-            </a>
-            <a href="{{ route('admin.subscriptions') }}" class="sidebar-link {{ request()->routeIs('admin.subscriptions*') ? 'active' : '' }}">
-                <span class="icon">💳</span> Abonnements
-                @php $pendingSubscriptions = \App\Models\Subscription::where('status','pending')->count(); @endphp
-                @if($pendingSubscriptions > 0)
-                    <span style="margin-left:auto;background:var(--gold);color:#1C1208;font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:100px;">{{ $pendingSubscriptions }}</span>
-                @endif
             </a>
             <a href="{{ route('admin.reports') }}" class="sidebar-link {{ request()->routeIs('admin.reports*') ? 'active' : '' }}" style="position:relative;">
                 <span class="icon">🚩</span> Signalements

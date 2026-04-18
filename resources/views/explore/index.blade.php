@@ -127,59 +127,6 @@
     .niche-chip.active { border-color: var(--terra); background: var(--terra-soft); color: var(--terra); font-weight: 600; }
 
     /* ══════════════════════════════════════
-       STORIES BAR
-    ══════════════════════════════════════ */
-    .explore-stories {
-        max-width: 1200px;
-        margin: 0 auto 8px;
-        padding: 0 40px 24px;
-        border-bottom: 1px solid var(--border);
-    }
-    .explore-stories-label {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: .58rem; font-weight: 600;
-        letter-spacing: .12em; text-transform: uppercase;
-        color: var(--text-faint); margin-bottom: 14px;
-    }
-    .explore-stories-scroll {
-        display: flex; gap: 16px;
-        overflow-x: auto; padding-bottom: 4px;
-        scrollbar-width: none;
-    }
-    .explore-stories-scroll::-webkit-scrollbar { display: none; }
-    .explore-story-item {
-        display: flex; flex-direction: column; align-items: center; gap: 6px;
-        flex-shrink: 0; background: none; border: none;
-        padding: 0; cursor: pointer; width: 64px;
-    }
-    .explore-story-ring {
-        width: 64px; height: 64px; border-radius: 50%;
-        padding: 2.5px;
-        background: linear-gradient(135deg, var(--terra), var(--gold));
-        transition: transform .2s, box-shadow .2s;
-    }
-    .explore-story-item:hover .explore-story-ring {
-        transform: scale(1.07);
-        box-shadow: 0 0 0 3px rgba(200,82,42,.2);
-    }
-    .explore-story-ring-inner {
-        width: 100%; height: 100%; border-radius: 50%;
-        border: 2.5px solid var(--bg);
-        background: var(--bg-card2);
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 700; color: var(--text); font-size: .95rem;
-        overflow: hidden;
-    }
-    .explore-story-ring-inner img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
-    .explore-story-name {
-        font-size: .62rem; font-weight: 600;
-        color: var(--text-muted);
-        white-space: nowrap; overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 64px; text-align: center;
-    }
-
-    /* ══════════════════════════════════════
        BODY + GRILLE
     ══════════════════════════════════════ */
     .explore-body {
@@ -387,7 +334,7 @@
         <form method="GET" action="{{ route('community') }}">
             <div class="explore-search-wrap">
                 <div class="explore-search-field">
-                    <span class="explore-search-icon">🔍</span>
+                    <span class="explore-search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
                     <input type="text" name="q" class="explore-search-input"
                         placeholder="Rechercher une publication…"
                         value="{{ $query }}">
@@ -405,47 +352,22 @@
                     <a href="{{ route('community', array_filter(['q'=>$query,'sort'=>$sort !== 'trending' ? $sort : null])) }}"
                        class="type-pill {{ !$type ? 'active' : '' }}">Tout</a>
                     <a href="{{ route('community', array_filter(['q'=>$query,'type'=>'image','sort'=>$sort !== 'trending' ? $sort : null])) }}"
-                       class="type-pill {{ $type === 'image' ? 'active' : '' }}">🖼 Images</a>
+                       class="type-pill {{ $type === 'image' ? 'active' : '' }}" style="display:inline-flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg> Images</a>
                     <a href="{{ route('community', array_filter(['q'=>$query,'type'=>'video','sort'=>$sort !== 'trending' ? $sort : null])) }}"
-                       class="type-pill {{ $type === 'video' ? 'active' : '' }}">▶ Vidéos</a>
+                       class="type-pill {{ $type === 'video' ? 'active' : '' }}" style="display:inline-flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Vidéos</a>
                     <a href="{{ route('community', array_filter(['q'=>$query,'type'=>'text','sort'=>$sort !== 'trending' ? $sort : null])) }}"
-                       class="type-pill {{ $type === 'text' ? 'active' : '' }}">✍ Textes</a>
+                       class="type-pill {{ $type === 'text' ? 'active' : '' }}" style="display:inline-flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Textes</a>
                 </div>
                 <div class="filter-divider"></div>
                 <div class="sort-wrap">
                     <a href="{{ route('community', array_filter(['q'=>$query,'type'=>$type])) }}"
-                       class="sort-pill {{ $sort === 'trending' ? 'active' : '' }}">🔥 Tendances</a>
+                       class="sort-pill {{ $sort === 'trending' ? 'active' : '' }}" style="display:inline-flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c0 0-5 5.5-5 10a5 5 0 0 0 10 0c0-4.5-5-10-5-10zm0 13a2 2 0 0 1-2-2c0-1.5 2-4 2-4s2 2.5 2 4a2 2 0 0 1-2 2z"/></svg> Tendances</a>
                     <a href="{{ route('community', array_filter(['q'=>$query,'type'=>$type,'sort'=>'recent'])) }}"
-                       class="sort-pill {{ $sort === 'recent' ? 'active' : '' }}">⏱ Récents</a>
+                       class="sort-pill {{ $sort === 'recent' ? 'active' : '' }}" style="display:inline-flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Récents</a>
                 </div>
             </div>
         </form>
     </div>
-
-    {{-- ── STORIES ── --}}
-    @if($storyUsers->isNotEmpty())
-    <div class="explore-stories">
-        <div class="explore-stories-label">Membres actifs</div>
-        <div class="explore-stories-scroll">
-            @foreach($storyUsers as $su)
-            <button class="explore-story-item" type="button"
-                onclick="openExploreStory('{{ $su->username }}')"
-                title="{{ $su->name }}">
-                <div class="explore-story-ring">
-                    <div class="explore-story-ring-inner">
-                        @if($su->avatar)
-                            <img src="{{ Storage::url($su->avatar) }}" alt="{{ $su->name }}">
-                        @else
-                            {{ mb_strtoupper(mb_substr($su->name, 0, 1)) }}
-                        @endif
-                    </div>
-                </div>
-                <div class="explore-story-name">{{ Str::limit($su->name, 10) }}</div>
-            </button>
-            @endforeach
-        </div>
-    </div>
-    @endif
 
     {{-- ── GRILLE ── --}}
     <div class="explore-body">
@@ -457,7 +379,7 @@
 
         @if($posts->isEmpty())
             <div class="explore-empty" data-reveal>
-                <div class="explore-empty-icon">🔍</div>
+                <div class="explore-empty-icon"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
                 <div class="explore-empty-title">Aucune publication trouvée</div>
                 <div>Essaie d'autres mots-clés ou retire les filtres.</div>
             </div>
@@ -470,8 +392,8 @@
                     $img      = $thumb ?? $mediaImg;
                     $isVideo  = $post->media_url && $post->media_type === 'video';
                     $catClass = $post->category ? 'cat-'.str_replace('_','-',$post->category) : 'cat-default';
-                    $catIcons = ['manga-anime'=>'🎌','gaming'=>'🎮','tech'=>'💻','dev'=>'⌨️','cinema-series'=>'🎬','culture'=>'🌍','debat'=>'💬'];
-                    $catIcon  = $catIcons[$post->category] ?? '📰';
+                    $catSvgPaths = ['manga-anime'=>'<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>','gaming'=>'<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1.2" fill="currentColor"/><circle cx="18" cy="12" r="1.2" fill="currentColor"/>','tech'=>'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>','dev'=>'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>','cinema-series'=>'<rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20"/>','culture'=>'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>','debat'=>'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'];
+                    $catIcon = $catSvgPaths[$post->category] ?? '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>';
                     $excerpt  = Str::limit(strip_tags($post->body ?? ''), 120);
                 @endphp
                 <a class="explore-item" href="{{ route('posts.show', $post->id) }}" data-reveal data-delay="{{ ($loop->index % 5) + 1 }}">
@@ -481,14 +403,14 @@
                         <div class="explore-item-media">
                             <video src="{{ Storage::url($post->media_url) }}"
                                 muted preload="none" style="max-height:320px;"></video>
-                            <div class="explore-type-badge">▶ Vidéo</div>
+                            <div class="explore-type-badge" style="display:inline-flex;align-items:center;gap:4px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> Vidéo</div>
                             <div class="explore-item-overlay">
                                 @if($post->title)
                                     <div class="overlay-title">{{ Str::limit($post->title, 65) }}</div>
                                 @endif
                                 <div class="overlay-stats">
-                                    <span>❤ {{ number_format($post->likes_count) }}</span>
-                                    <span>💬 {{ number_format($post->comments_count) }}</span>
+                                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> {{ number_format($post->likes_count) }}</span>
+                                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> {{ number_format($post->comments_count) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -502,16 +424,16 @@
                                     <div class="overlay-title">{{ Str::limit($post->title, 65) }}</div>
                                 @endif
                                 <div class="overlay-stats">
-                                    <span>❤ {{ number_format($post->likes_count) }}</span>
-                                    <span>💬 {{ number_format($post->comments_count) }}</span>
+                                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> {{ number_format($post->likes_count) }}</span>
+                                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> {{ number_format($post->comments_count) }}</span>
                                 </div>
                             </div>
                         </div>
 
                     @else
                         {{-- Bannière catégorie --}}
-                        <div class="explore-cat-banner {{ $catClass }}">
-                            <span style="font-size:2.4rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))">{{ $catIcon }}</span>
+                        <div class="explore-cat-banner {{ $catClass }}" style="display:flex;align-items:center;justify-content:center;">
+                            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:.25;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))">{!! $catIcon !!}</svg>
                         </div>
                     @endif
 
@@ -527,8 +449,8 @@
                             <div class="explore-item-excerpt">{{ $excerpt }}</div>
                         @endif
                         <div class="explore-item-stats">
-                            <span>❤ {{ number_format($post->likes_count) }}</span>
-                            <span>💬 {{ number_format($post->comments_count) }}</span>
+                            <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> {{ number_format($post->likes_count) }}</span>
+                            <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> {{ number_format($post->comments_count) }}</span>
                         </div>
                     </div>
 
@@ -545,7 +467,7 @@
                         </div>
                         <span class="explore-author-name">{{ $post->user->username }}</span>
                         @if($post->user->is_verified ?? false)
-                            <span class="explore-author-verified" title="Vérifié">✦</span>
+                            <span class="explore-author-verified" title="Vérifié" style="display:inline-flex;align-items:center;"><svg width="12" height="12" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#3897F0"/><path d="M7 12.3L10.4 15.8L17 8.5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
                         @endif
                         <span class="explore-author-time">{{ $post->created_at?->diffForHumans(null, true) ?? '—' }}</span>
                     </div>
@@ -564,19 +486,4 @@
     </div>
 </div>
 
-@include('stories._viewer')
-
 @endsection
-
-@push('scripts')
-<script>
-async function openExploreStory(username) {
-    try {
-        const res  = await fetch(`/stories/${username}/list`, { headers: { 'Accept': 'application/json' } });
-        const data = await res.json();
-        if (!data.stories || data.stories.length === 0) return;
-        StoryViewer.open(data.stories, data.user, 0);
-    } catch (e) {}
-}
-</script>
-@endpush

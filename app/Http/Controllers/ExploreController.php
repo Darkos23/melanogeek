@@ -35,14 +35,6 @@ class ExploreController extends Controller
             ->paginate(24)
             ->withQueryString();
 
-        // Utilisateurs avec des stories actives
-        $storyUsers = User::select('id', 'name', 'username', 'avatar', 'is_verified')
-            ->whereHas('stories', fn ($q) => $q->where('expires_at', '>', now()))
-            ->where('is_active', true)
-            ->where('is_private', false)
-            ->limit(30)
-            ->get();
-
-        return view('explore.index', compact('posts', 'query', 'type', 'sort', 'storyUsers'));
+        return view('explore.index', compact('posts', 'query', 'type', 'sort'));
     }
 }
