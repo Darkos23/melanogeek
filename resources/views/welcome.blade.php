@@ -466,7 +466,134 @@
 
 /* ══ ARTICLES — GRILLE ÉDITORIALE ══ */
 
-/* Featured : grand + stack */
+/* ── Cover Story (full-width magazine cover) ── */
+.cover-story {
+    display: block;
+    text-decoration: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: border-color .25s, box-shadow .25s, transform .25s;
+    margin-bottom: 48px;
+}
+.cover-story:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    transform: translateY(-3px);
+}
+.cover-story-thumb {
+    width: 100%;
+    aspect-ratio: 21/9;
+    background: var(--bg-card2);
+    overflow: hidden;
+    position: relative;
+}
+.cover-story-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .8s cubic-bezier(.2,.8,.2,1);
+}
+.cover-story:hover .cover-story-thumb img { transform: scale(1.03); }
+.cover-story-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--bg-card2), var(--bg-hover));
+    color: var(--text-faint);
+    opacity: .25;
+}
+.cover-story-body {
+    padding: 40px 48px 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.cover-story-tags {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+}
+.cover-story-label {
+    color: var(--terra);
+    padding: 4px 10px;
+    border: 1px solid var(--terra);
+    border-radius: 3px;
+}
+.cover-story-sep { color: var(--text-faint); }
+.cover-story-cat { color: var(--text-dim); }
+.cover-story-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    line-height: 1.15;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+.cover-story:hover .cover-story-title { color: var(--terra); }
+.cover-story-excerpt {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--text-dim);
+    margin: 0;
+    max-width: 78ch;
+}
+.cover-story-byline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    color: var(--text-faint);
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+}
+.cover-story-author { color: var(--text-dim); font-weight: 600; }
+
+@media (max-width: 768px) {
+    .cover-story-thumb { aspect-ratio: 16/10; }
+    .cover-story-body { padding: 28px 24px 32px; gap: 14px; }
+    .cover-story-excerpt { font-size: .95rem; }
+    .cover-story-byline { flex-wrap: wrap; font-size: .62rem; }
+}
+
+/* ── À lire aussi : 3 colonnes ── */
+.cover-story-related { margin-top: 16px; }
+.cover-story-related-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.cover-story-related-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+.cover-story-related-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+.cover-story-related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+@media (max-width: 960px) { .cover-story-related-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .cover-story-related-grid { grid-template-columns: 1fr; } }
+
+/* ── Legacy featured grid (conservée au cas où) ── */
 .art-grid-featured {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
@@ -1064,61 +1191,69 @@
     </div>
 </div>
 
-{{-- ══ ARTICLES À LA UNE ══ --}}
+{{-- ══ COVER STORY ══ --}}
 <section class="lp-section">
     <div class="lp-ed-header">
         <span class="lp-ed-header-num">§ 01</span>
-        <span class="lp-ed-header-title">À la une</span>
+        <span class="lp-ed-header-title">Cover Story</span>
         <div class="lp-ed-header-line"></div>
         <a href="{{ route('blog.index') }}" class="lp-ed-header-link">Tous les articles →</a>
     </div>
 
-    @if($featured || $side_posts->isNotEmpty())
-    <div class="art-grid-featured" @if($side_posts->isEmpty()) style="grid-template-columns:1fr" @endif>
-        {{-- Article featured --}}
-        @if($featured)
-        @php
-            $featExcerpt  = Str::limit(strip_tags($featured->body ?? ''), 140);
-            $featMins     = max(1, (int) ceil(str_word_count(strip_tags($featured->body ?? '')) / 200));
-            $featInitial  = strtoupper(substr($featured->user->name ?? '?', 0, 1));
-        @endphp
-        <a href="{{ route('posts.show', $featured->id) }}" class="art-featured" data-reveal>
-            <div class="art-thumb">
-                @if($featured->thumbnail)
-                    <img src="{{ asset('storage/'.$featured->thumbnail) }}" alt="{{ $featured->title }}">
-                @elseif($featured->media_url && $featured->media_type === 'image')
-                    <img src="{{ asset('storage/'.$featured->media_url) }}" alt="{{ $featured->title }}">
-                @else
-                    <div class="art-thumb-placeholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;opacity:.18;"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
-                @endif
-            </div>
-            <div class="art-featured-inner">
-                @if($featured->category)
-                <div class="art-cat">{{ $featured->category_label }}</div>
-                @endif
-                <div class="art-title">{{ $featured->title }}</div>
-                @if($featExcerpt)
-                <div class="art-excerpt">{{ $featExcerpt }}</div>
-                @endif
-                <div class="art-meta" style="margin-top:auto">
-                    @if($featured->user->avatar)
-                        <img src="{{ asset('storage/'.$featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
-                    @else
-                        <div class="art-avi">{{ $featInitial }}</div>
-                    @endif
-                    <span>{{ $featured->user->name }}</span>
-                    <span class="art-dot"></span>
-                    <span>{{ $featured->created_at->format('d M Y') }}</span>
-                    <span class="art-dot"></span>
-                    <span>{{ $featMins }} min</span>
+    @if($featured)
+    @php
+        $featExcerpt  = Str::limit(strip_tags($featured->body ?? ''), 220);
+        $featMins     = max(1, (int) ceil(str_word_count(strip_tags($featured->body ?? '')) / 200));
+        $featInitial  = strtoupper(substr($featured->user->name ?? '?', 0, 1));
+    @endphp
+    <a href="{{ route('posts.show', $featured->id) }}" class="cover-story" data-reveal>
+        <div class="cover-story-thumb">
+            @if($featured->thumbnail)
+                <img src="{{ asset('storage/'.$featured->thumbnail) }}" alt="{{ $featured->title }}">
+            @elseif($featured->media_url && $featured->media_type === 'image')
+                <img src="{{ asset('storage/'.$featured->media_url) }}" alt="{{ $featured->title }}">
+            @else
+                <div class="cover-story-placeholder">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 </div>
+            @endif
+        </div>
+        <div class="cover-story-body">
+            <div class="cover-story-tags">
+                <span class="cover-story-label">À LA UNE</span>
+                @if($featured->category)
+                    <span class="cover-story-sep">/</span>
+                    <span class="cover-story-cat">{{ $featured->category_label }}</span>
+                @endif
             </div>
-        </a>
-        @endif
+            <h2 class="cover-story-title">{{ $featured->title }}</h2>
+            @if($featExcerpt)
+                <p class="cover-story-excerpt">{{ $featExcerpt }}</p>
+            @endif
+            <div class="cover-story-byline">
+                @if($featured->user->avatar)
+                    <img src="{{ asset('storage/'.$featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
+                @else
+                    <div class="art-avi">{{ $featInitial }}</div>
+                @endif
+                <span class="cover-story-author">{{ $featured->user->name }}</span>
+                <span class="art-dot"></span>
+                <span>{{ $featured->created_at->format('d M Y') }}</span>
+                <span class="art-dot"></span>
+                <span>{{ $featMins }} min de lecture</span>
+            </div>
+        </div>
+    </a>
+    @endif
 
-        {{-- Articles côté --}}
-        @if($side_posts->isNotEmpty())
-        <div class="art-side">
+    {{-- À lire aussi : 3 articles récents en grille --}}
+    @if($side_posts->isNotEmpty())
+    <div class="cover-story-related">
+        <div class="cover-story-related-header">
+            <span class="cover-story-related-title">À lire aussi</span>
+            <div class="cover-story-related-line"></div>
+        </div>
+        <div class="cover-story-related-grid">
             @foreach($side_posts as $post)
             @php
                 $excerpt = Str::limit(strip_tags($post->body ?? ''), 100);
@@ -1147,9 +1282,10 @@
             </a>
             @endforeach
         </div>
-        @endif
     </div>
-    @else
+    @endif
+
+    @if(!$featured && $side_posts->isEmpty())
     <div style="text-align:center;padding:64px 0;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.08em">
         Aucun article publié pour le moment.
     </div>
