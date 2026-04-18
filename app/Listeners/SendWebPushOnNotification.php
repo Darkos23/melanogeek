@@ -42,18 +42,21 @@ class SendWebPushOnNotification
     {
         $name = $data['name'] ?? 'Quelqu\'un';
 
+        $title = $data['post_title'] ?? null;
+
         return match ($type) {
-            'like'    => ['Nouveau like 🔥',       "$name a aimé votre publication"],
-            'follow'  => ['Nouveau abonné 👋',      "$name vous suit maintenant"],
-            'comment' => ['Nouveau commentaire 💬', "$name a commenté : " . ($data['comment_body'] ?? '')],
-            default   => ['MelanoGeek', 'Vous avez une nouvelle notification'],
+            'like'     => ['Nouveau like 🔥',        "$name a aimé votre publication"],
+            'follow'   => ['Nouvel abonné 👋',        "$name vous suit maintenant"],
+            'comment'  => ['Nouveau commentaire 💬',  "$name a commenté : " . ($data['comment_body'] ?? '')],
+            'new_post' => ['Nouvelle publication ✍🏾', $title ? "$name : $title" : "$name vient de publier"],
+            default    => ['MelanoGeek', 'Vous avez une nouvelle notification'],
         };
     }
 
     private function buildUrl(string $type, array $data): string
     {
         return match ($type) {
-            'like', 'comment' => isset($data['post_id'])
+            'like', 'comment', 'new_post' => isset($data['post_id'])
                 ? "/posts/{$data['post_id']}"
                 : '/notifications',
             'follow' => isset($data['username'])

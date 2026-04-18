@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ImageHelper;
+use App\Jobs\SendNewPostNotifications;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\PostMedia;
 use App\Notifications\LikeNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use App\Helpers\ImageHelper;
 
 class PostController extends Controller
 {
@@ -105,6 +106,11 @@ class PostController extends Controller
                     'sort_order' => $order,
                 ]);
             }
+        }
+
+        // Notifier les abonnés si le post est publié directement
+        if ($post->is_published) {
+            SendNewPostNotifications::dispatch($post);
         }
 
         return redirect()->route('posts.show', $post->id)
@@ -224,6 +230,7 @@ class PostController extends Controller
     {
         abort_if(auth()->id() !== $post->user_id, 403);
         $post->update(['is_published' => true]);
+        SendNewPostNotifications::dispatch($post);
         return redirect()->route('posts.show', $post->id)->with('status', 'post-published');
     }
 
