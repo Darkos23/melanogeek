@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
@@ -16,12 +17,13 @@ class BlogController extends Controller
             ->whereNotNull('title')
             ->where('title', '!=', '')
             ->when($category, fn($q) => $q->where('category', $category))
-            ->when($query, fn($q) =>
-                $q->where(fn($sub) =>
-                    $sub->where('title', 'like', "%{$query}%")
-                        ->orWhere('body', 'like', "%{$query}%")
-                )
-            )
+            ->when($query, function ($q) use ($query) {
+                $safe = '%'.Str::escapeLike($query).'%';
+                $q->where(fn ($sub) =>
+                    $sub->where('title', 'like', $safe)
+                        ->orWhere('body', 'like', $safe)
+                );
+            })
             ->latest()
             ->paginate(12)
             ->withQueryString();

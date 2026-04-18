@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -33,10 +34,11 @@ class AdminController extends Controller
         $query = User::withTrashed();
 
         if ($search = $request->search) {
-            $query->where(function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('username', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+            $safe = '%'.Str::escapeLike($search).'%';
+            $query->where(function ($query) use ($safe) {
+                $query->where('name', 'like', $safe)
+                    ->orWhere('username', 'like', $safe)
+                    ->orWhere('email', 'like', $safe);
             });
         }
 
@@ -150,9 +152,10 @@ class AdminController extends Controller
         $query = Post::with('user')->withTrashed();
 
         if ($search = $request->search) {
-            $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('body', 'like', "%{$search}%");
+            $safe = '%'.Str::escapeLike($search).'%';
+            $query->where(function ($query) use ($safe) {
+                $query->where('title', 'like', $safe)
+                    ->orWhere('body', 'like', $safe);
             });
         }
 

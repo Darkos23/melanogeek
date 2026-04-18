@@ -9,6 +9,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ExploreController extends Controller
 {
@@ -18,12 +19,14 @@ class ExploreController extends Controller
 
         if ($query) {
             // Recherche dans les posts (créateurs uniquement)
+            $safe = '%'.Str::escapeLike($query).'%';
+
             $posts = Post::published()
                 ->with('user')
                 ->whereHas('user', fn ($q) => $q->where('role', 'creator'))
-                ->where(function ($q) use ($query) {
-                    $q->where('title', 'like', "%{$query}%")
-                      ->orWhere('body', 'like', "%{$query}%");
+                ->where(function ($q) use ($safe) {
+                    $q->where('title', 'like', $safe)
+                      ->orWhere('body', 'like', $safe);
                 })
                 ->latest()
                 ->paginate(20);
@@ -31,10 +34,10 @@ class ExploreController extends Controller
             // Recherche dans les créateurs uniquement
             $users = User::where('is_active', true)
                 ->where('role', 'creator')
-                ->where(function ($q) use ($query) {
-                    $q->where('name', 'like', "%{$query}%")
-                      ->orWhere('username', 'like', "%{$query}%")
-                      ->orWhere('niche', 'like', "%{$query}%");
+                ->where(function ($q) use ($safe) {
+                    $q->where('name', 'like', $safe)
+                      ->orWhere('username', 'like', $safe)
+                      ->orWhere('niche', 'like', $safe);
                 })
                 ->withCount('followers')
                 ->limit(10)

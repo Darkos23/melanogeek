@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostAdminController extends Controller
 {
     public function index(Request $request)
     {
         $posts = Post::with('user')
-            ->when($request->search, fn($q) => $q->where('title', 'like', '%'.$request->search.'%'))
+            ->when($request->search, fn($q) => $q->where('title', 'like', '%'.Str::escapeLike($request->search).'%'))
             ->when($request->has('published') && $request->published !== '', fn($q) => $q->where('is_published', $request->published))
             ->latest()
             ->paginate(25)

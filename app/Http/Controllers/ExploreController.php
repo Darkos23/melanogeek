@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ExploreController extends Controller
@@ -21,12 +22,13 @@ class ExploreController extends Controller
                 ->where('is_active', true)
                 ->where('is_private', false)
             )
-            ->when($query, fn ($q) =>
+            ->when($query, function ($q) use ($query) {
+                $safe = '%'.Str::escapeLike($query).'%';
                 $q->where(fn ($sub) =>
-                    $sub->where('title', 'like', "%{$query}%")
-                        ->orWhere('body', 'like', "%{$query}%")
-                )
-            )
+                    $sub->where('title', 'like', $safe)
+                        ->orWhere('body', 'like', $safe)
+                );
+            })
             ->when($type, fn ($q) => $q->where('media_type', $type))
             ->when($sort === 'trending',
                 fn ($q) => $q->orderByDesc('likes_count')->orderByDesc('comments_count'),

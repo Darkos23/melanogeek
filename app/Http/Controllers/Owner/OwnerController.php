@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\Report;
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class OwnerController extends Controller
@@ -111,7 +112,7 @@ class OwnerController extends Controller
         $query = ActivityLog::with('staff');
 
         if ($action = $request->action) {
-            $query->where('action', 'like', "{$action}%");
+            $query->where('action', 'like', Str::escapeLike($action).'%');
         }
 
         if ($staffId = $request->staff) {
