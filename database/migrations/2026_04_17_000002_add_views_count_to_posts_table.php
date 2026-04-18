@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->unsignedInteger('views_count')->default(0)->after('comments_count');
-        });
+        if (!Schema::hasColumn('posts', 'views_count')) {
+            Schema::table('posts', function (Blueprint $table) {
+                $table->unsignedInteger('views_count')->default(0)->after('comments_count');
+            });
+        }
     }
 
     public function down(): void
