@@ -14,7 +14,7 @@ class BabstaroiSeeder extends Seeder
         $user = User::where('username', 'babstaroi')->firstOrFail();
 
         // ── Article 1 ──────────────────────────────────────────────────────
-        Post::create([
+        Post::firstOrCreate(['user_id' => $user->id, 'title' => 'J\'ai utilisé Claude, Gemini et ChatGPT pendant 3 mois — voilà ce que personne ne te dit'], [
             'user_id'    => $user->id,
             'title'      => 'J\'ai utilisé Claude, Gemini et ChatGPT pendant 3 mois — voilà ce que personne ne te dit',
             'body'       => <<<HTML
@@ -62,7 +62,7 @@ HTML,
         ]);
 
         // ── Article 2 ──────────────────────────────────────────────────────
-        Post::create([
+        Post::firstOrCreate(['user_id' => $user->id, 'title' => 'Le "vibe coding" va-t-il tuer le développeur junior africain ?'], [
             'user_id'    => $user->id,
             'title'      => 'Le "vibe coding" va-t-il tuer le développeur junior africain ?',
             'body'       => <<<HTML
