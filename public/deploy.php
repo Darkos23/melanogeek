@@ -23,6 +23,9 @@ try {
 
 $artisan = escapeshellarg(dirname(__DIR__) . '/artisan');
 
+// Package discovery (remplace post-autoload-dump Composer)
+exec("php {$artisan} package:discover --ansi 2>&1", $output);
+
 // Artisan caches
 exec("php {$artisan} config:clear 2>&1", $output);
 exec("php {$artisan} view:clear 2>&1", $output);
