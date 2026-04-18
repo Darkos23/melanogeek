@@ -1191,69 +1191,61 @@
     </div>
 </div>
 
-{{-- ══ COVER STORY ══ --}}
+{{-- ══ ARTICLES À LA UNE ══ --}}
 <section class="lp-section">
     <div class="lp-ed-header">
         <span class="lp-ed-header-num">§ 01</span>
-        <span class="lp-ed-header-title">Cover Story</span>
+        <span class="lp-ed-header-title">À la une</span>
         <div class="lp-ed-header-line"></div>
         <a href="{{ route('blog.index') }}" class="lp-ed-header-link">Tous les articles →</a>
     </div>
 
-    @if($featured)
-    @php
-        $featExcerpt  = Str::limit(strip_tags($featured->body ?? ''), 220);
-        $featMins     = max(1, (int) ceil(str_word_count(strip_tags($featured->body ?? '')) / 200));
-        $featInitial  = strtoupper(substr($featured->user->name ?? '?', 0, 1));
-    @endphp
-    <a href="{{ route('posts.show', $featured->id) }}" class="cover-story" data-reveal>
-        <div class="cover-story-thumb">
-            @if($featured->thumbnail)
-                <img src="{{ asset('storage/'.$featured->thumbnail) }}" alt="{{ $featured->title }}">
-            @elseif($featured->media_url && $featured->media_type === 'image')
-                <img src="{{ asset('storage/'.$featured->media_url) }}" alt="{{ $featured->title }}">
-            @else
-                <div class="cover-story-placeholder">
-                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                </div>
-            @endif
-        </div>
-        <div class="cover-story-body">
-            <div class="cover-story-tags">
-                <span class="cover-story-label">À LA UNE</span>
-                @if($featured->category)
-                    <span class="cover-story-sep">/</span>
-                    <span class="cover-story-cat">{{ $featured->category_label }}</span>
-                @endif
-            </div>
-            <h2 class="cover-story-title">{{ $featured->title }}</h2>
-            @if($featExcerpt)
-                <p class="cover-story-excerpt">{{ $featExcerpt }}</p>
-            @endif
-            <div class="cover-story-byline">
-                @if($featured->user->avatar)
-                    <img src="{{ asset('storage/'.$featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
+    @if($featured || $side_posts->isNotEmpty())
+    <div class="art-grid-featured" @if($side_posts->isEmpty()) style="grid-template-columns:1fr" @endif>
+        {{-- Article featured --}}
+        @if($featured)
+        @php
+            $featExcerpt  = Str::limit(strip_tags($featured->body ?? ''), 140);
+            $featMins     = max(1, (int) ceil(str_word_count(strip_tags($featured->body ?? '')) / 200));
+            $featInitial  = strtoupper(substr($featured->user->name ?? '?', 0, 1));
+        @endphp
+        <a href="{{ route('posts.show', $featured->id) }}" class="art-featured" data-reveal>
+            <div class="art-thumb">
+                @if($featured->thumbnail)
+                    <img src="{{ asset('storage/'.$featured->thumbnail) }}" alt="{{ $featured->title }}">
+                @elseif($featured->media_url && $featured->media_type === 'image')
+                    <img src="{{ asset('storage/'.$featured->media_url) }}" alt="{{ $featured->title }}">
                 @else
-                    <div class="art-avi">{{ $featInitial }}</div>
+                    <div class="art-thumb-placeholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;opacity:.18;"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
                 @endif
-                <span class="cover-story-author">{{ $featured->user->name }}</span>
-                <span class="art-dot"></span>
-                <span>{{ $featured->created_at->format('d M Y') }}</span>
-                <span class="art-dot"></span>
-                <span>{{ $featMins }} min de lecture</span>
             </div>
-        </div>
-    </a>
-    @endif
+            <div class="art-featured-inner">
+                @if($featured->category)
+                <div class="art-cat">{{ $featured->category_label }}</div>
+                @endif
+                <div class="art-title">{{ $featured->title }}</div>
+                @if($featExcerpt)
+                <div class="art-excerpt">{{ $featExcerpt }}</div>
+                @endif
+                <div class="art-meta" style="margin-top:auto">
+                    @if($featured->user->avatar)
+                        <img src="{{ asset('storage/'.$featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
+                    @else
+                        <div class="art-avi">{{ $featInitial }}</div>
+                    @endif
+                    <span>{{ $featured->user->name }}</span>
+                    <span class="art-dot"></span>
+                    <span>{{ $featured->created_at->format('d M Y') }}</span>
+                    <span class="art-dot"></span>
+                    <span>{{ $featMins }} min</span>
+                </div>
+            </div>
+        </a>
+        @endif
 
-    {{-- À lire aussi : 3 articles récents en grille --}}
-    @if($side_posts->isNotEmpty())
-    <div class="cover-story-related">
-        <div class="cover-story-related-header">
-            <span class="cover-story-related-title">À lire aussi</span>
-            <div class="cover-story-related-line"></div>
-        </div>
-        <div class="cover-story-related-grid">
+        {{-- Articles côté --}}
+        @if($side_posts->isNotEmpty())
+        <div class="art-side">
             @foreach($side_posts as $post)
             @php
                 $excerpt = Str::limit(strip_tags($post->body ?? ''), 100);
@@ -1282,10 +1274,9 @@
             </a>
             @endforeach
         </div>
+        @endif
     </div>
-    @endif
-
-    @if(!$featured && $side_posts->isEmpty())
+    @else
     <div style="text-align:center;padding:64px 0;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.08em">
         Aucun article publié pour le moment.
     </div>
