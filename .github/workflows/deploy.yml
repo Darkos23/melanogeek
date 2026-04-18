@@ -1,0 +1,14 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Hostinger git pull
+        run: |
+          sleep 15
+          curl -s "https://melanogeek.com/deploy.php?token=CHANGE_ME_IN_ENV" || true
