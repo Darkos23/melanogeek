@@ -1336,7 +1336,7 @@
             'tech'          => ['<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>', 'Tech & IA'],
             'dev'           => ['<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>', 'Développement'],
             'cinema-series' => ['<rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M17 7h5M2 17h5M17 17h5"/>', 'Cinéma & Séries'],
-            'culture'       => ['<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>', 'Culture & Société'],
+            'culture'       => ['<path d="M12 2l2.5 7.5H22l-6 4.5 2.5 7.5L12 17l-6.5 4.5L8 14 2 9.5h7.5z"/>', 'Afrofuturisme'],
             'debat'         => ['<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>', 'Débat'],
         ];
     @endphp

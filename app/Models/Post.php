@@ -30,7 +30,7 @@ class Post extends Model
         'tech'           => 'Tech & IA',
         'dev'            => 'Développement',
         'cinema-series'  => 'Cinéma & Séries',
-        'culture'        => 'Culture & Société',
+        'culture'        => 'Afrofuturisme',
         'debat'          => 'Débat',
     ];
 
