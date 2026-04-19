@@ -30,6 +30,25 @@ foreach ($preApplied as $key => $m) {
     }
 }
 
+// Créer les colonnes manquantes directement si les fichiers de migration ne sont pas encore sur le serveur
+try {
+    if (!\Schema::hasColumn('posts', 'pending_review')) {
+        \Schema::table('posts', function ($table) {
+            $table->boolean('pending_review')->default(false)->after('is_published');
+            $table->text('rejection_reason')->nullable()->after('pending_review');
+        });
+        $output[] = '✓ Colonnes pending_review + rejection_reason ajoutées.';
+    }
+    if (!\Schema::hasColumn('posts', 'youtube_url')) {
+        \Schema::table('posts', function ($table) {
+            $table->string('youtube_url', 255)->nullable()->after('audio_name');
+        });
+        $output[] = '✓ Colonne youtube_url ajoutée.';
+    }
+} catch (\Throwable $e) {
+    $output[] = 'Schema fix: ' . $e->getMessage();
+}
+
 $artisan = escapeshellarg(dirname(__DIR__) . '/artisan');
 
 // Migrations
