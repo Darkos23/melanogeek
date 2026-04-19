@@ -120,11 +120,10 @@ Route::middleware('auth')->group(function () {
     // Tous les membres peuvent soumettre un article
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 
-    Route::middleware('admin')->group(function () {
-        Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-        Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-        Route::patch('/posts/{post}/publish', [PostController::class, 'publish'])->name('posts.publish');
-    });
+    // Édition réservée à l'auteur du post (vérification dans le controller)
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+    Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::patch('/posts/{post}/publish', [PostController::class, 'publish'])->name('posts.publish');
 });
 
 // Public post pages - APRÈS les routes spécifiques

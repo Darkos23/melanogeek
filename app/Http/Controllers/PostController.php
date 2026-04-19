@@ -220,10 +220,11 @@ class PostController extends Controller
         abort_if(auth()->id() !== $post->user_id, 403);
 
         $data = $request->validate([
-            'title'    => ['nullable', 'string', 'max:150'],
-            'body'     => ['nullable', 'string', 'max:5000'],
-            'category' => ['nullable', 'string', Rule::in(array_keys(Post::CATEGORIES))],
-            'thumbnail'=> ['nullable', 'file', 'image', 'mimetypes:image/jpeg,image/png,image/webp', 'max:5120'],
+            'title'       => ['nullable', 'string', 'max:150'],
+            'body'        => ['nullable', 'string', 'max:5000'],
+            'category'    => ['nullable', 'string', Rule::in(array_keys(Post::CATEGORIES))],
+            'thumbnail'   => ['nullable', 'file', 'image', 'mimetypes:image/jpeg,image/png,image/webp', 'max:5120'],
+            'youtube_url' => ['nullable', 'string', 'max:255'],
         ]);
 
         if ($request->hasFile('thumbnail')) {
@@ -232,7 +233,7 @@ class PostController extends Controller
             $data['thumbnail'] = ImageHelper::cropAndResizePath($raw);
         }
 
-        $update = ['title' => $data['title'] ?? null, 'body' => $data['body'] ?? null, 'category' => $data['category'] ?? null];
+        $update = ['title' => $data['title'] ?? null, 'body' => $data['body'] ?? null, 'category' => $data['category'] ?? null, 'youtube_url' => $data['youtube_url'] ?? null];
         if (isset($data['thumbnail']) && is_string($data['thumbnail'])) {
             $update['thumbnail'] = $data['thumbnail'];
         }

@@ -105,6 +105,24 @@
                 </select>
             </div>
 
+            {{-- YouTube --}}
+            <div class="edit-meta" style="flex-direction:column;align-items:stretch;gap:8px;">
+                <label>Vidéo YouTube (optionnel)</label>
+                <div style="display:flex;align-items:center;gap:10px;background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:#ff0000;flex-shrink:0"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg>
+                    <input type="text" name="youtube_url" id="youtubeUrlInput"
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        value="{{ old('youtube_url', $post->youtube_url) }}"
+                        style="flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:.88rem;"
+                        oninput="updateYoutubePreview(this.value)">
+                </div>
+                <div id="youtubePreviewWrap" style="border-radius:10px;overflow:hidden;aspect-ratio:16/9;background:#000;{{ old('youtube_url', $post->youtube_url) ? '' : 'display:none;' }}">
+                    <iframe id="youtubePreviewFrame"
+                        src="{{ $post->youtube_id ? 'https://www.youtube.com/embed/'.$post->youtube_id : '' }}"
+                        width="100%" height="100%" frameborder="0" allowfullscreen style="display:block;"></iframe>
+                </div>
+            </div>
+
             <div class="edit-actions">
                 <button type="submit" class="btn-save" style="display:inline-flex;align-items:center;gap:6px;"><x-icon name="check" :size="15"/> Enregistrer</button>
                 <a href="{{ route('posts.show', $post->id) }}" class="btn-cancel">Annuler</a>
@@ -166,6 +184,29 @@ function removeCover(e) {
     if (ph) ph.style.display = 'flex';
     document.getElementById('coverRemoveBtn').style.display = 'none';
     document.getElementById('coverZone').classList.remove('has-cover');
+}
+
+function updateYoutubePreview(url) {
+    const id = extractYoutubeId(url);
+    const wrap  = document.getElementById('youtubePreviewWrap');
+    const frame = document.getElementById('youtubePreviewFrame');
+    if (id) {
+        frame.src = 'https://www.youtube.com/embed/' + id;
+        wrap.style.display = 'block';
+    } else {
+        frame.src = '';
+        wrap.style.display = 'none';
+    }
+}
+
+function extractYoutubeId(url) {
+    if (!url) return null;
+    let m;
+    if ((m = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/))) return m[1];
+    if ((m = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/))) return m[1];
+    if ((m = url.match(/embed\/([a-zA-Z0-9_-]{11})/))) return m[1];
+    if ((m = url.match(/shorts\/([a-zA-Z0-9_-]{11})/))) return m[1];
+    return null;
 }
 </script>
 @endpush
