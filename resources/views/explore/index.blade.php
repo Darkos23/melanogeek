@@ -389,7 +389,8 @@
                 @php
                     $thumb    = $post->thumbnail ? Storage::url($post->thumbnail) : null;
                     $mediaImg = (!$thumb && $post->media_url && $post->media_type !== 'video') ? Storage::url($post->media_url) : null;
-                    $img      = $thumb ?? $mediaImg;
+                    $ytThumb  = (!$thumb && !$mediaImg && $post->youtube_id) ? 'https://img.youtube.com/vi/'.$post->youtube_id.'/hqdefault.jpg' : null;
+                    $img      = $thumb ?? $mediaImg ?? $ytThumb;
                     $isVideo  = $post->media_url && $post->media_type === 'video';
                     $catClass = $post->category ? 'cat-'.str_replace('_','-',$post->category) : 'cat-default';
                     $catSvgPaths = ['manga-anime'=>'<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>','gaming'=>'<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1.2" fill="currentColor"/><circle cx="18" cy="12" r="1.2" fill="currentColor"/>','tech'=>'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>','dev'=>'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>','cinema-series'=>'<rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20"/>','culture'=>'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>','debat'=>'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'];
