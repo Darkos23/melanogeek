@@ -232,9 +232,7 @@
         <li><a href="{{ route('community') }}">Communauté</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
     </ul>
-    <div style="margin-top:10px;font-size:.7rem;color:var(--text-faint,rgba(255,255,255,.2));">
-        Développé par <a href="https://korilab.dev" target="_blank" rel="noopener" style="color:var(--gold,#D4A843);text-decoration:none;font-weight:600;">Korilab</a>
-    </div>
+    {{-- Développé par Korilab — masqué temporairement --}}
 </footer>
 
 @endsection
