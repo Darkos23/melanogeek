@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: Trigger Hostinger git pull
         run: |
-          sleep 15
+          sleep 45
           curl -s "https://melanogeek.com/deploy.php?token=CHANGE_ME_IN_ENV" || true
