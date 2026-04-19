@@ -16,6 +16,7 @@ class Post extends Model
         'audio_url', 'audio_name',
         'likes_count', 'comments_count', 'views_count',
         'is_published', 'pending_review', 'rejection_reason',
+        'youtube_url',
         'category', 'tags',
     ];
 
@@ -75,5 +76,26 @@ class Post extends Model
     public function getCategoryLabelAttribute(): string
     {
         return self::CATEGORIES[$this->category] ?? '';
+    }
+
+    /**
+     * Extrait l'ID YouTube depuis une URL (youtu.be, youtube.com/watch, /embed, /shorts)
+     */
+    public function getYoutubeIdAttribute(): ?string
+    {
+        if (! $this->youtube_url) return null;
+
+        $url = trim($this->youtube_url);
+
+        // youtu.be/ID
+        if (preg_match('/youtu\.be\/([a-zA-Z0-9_-]{11})/', $url, $m)) return $m[1];
+        // youtube.com/watch?v=ID
+        if (preg_match('/[?&]v=([a-zA-Z0-9_-]{11})/', $url, $m)) return $m[1];
+        // youtube.com/embed/ID
+        if (preg_match('/embed\/([a-zA-Z0-9_-]{11})/', $url, $m)) return $m[1];
+        // youtube.com/shorts/ID
+        if (preg_match('/shorts\/([a-zA-Z0-9_-]{11})/', $url, $m)) return $m[1];
+
+        return null;
     }
 }

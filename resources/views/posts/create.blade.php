@@ -584,6 +584,22 @@
                 <button type="button" class="audio-preview-remove" onclick="removeAudio()"><x-icon name="x" :size="14"/></button>
             </div>
 
+            <!-- Lien YouTube -->
+            <div id="youtubeWrap" style="display:none;margin:0 24px 16px;">
+                <div style="display:flex;align-items:center;gap:10px;background:var(--bg-card2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:#ff0000;flex-shrink:0"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg>
+                    <input type="text" name="youtube_url" id="youtubeUrlInput"
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        value="{{ old('youtube_url') }}"
+                        style="flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:.88rem;"
+                        oninput="updateYoutubePreview(this.value)">
+                    <button type="button" onclick="removeYoutube()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:0;display:flex;align-items:center;"><x-icon name="x" :size="14"/></button>
+                </div>
+                <div id="youtubePreviewWrap" style="margin-top:10px;border-radius:12px;overflow:hidden;display:none;aspect-ratio:16/9;background:#000;">
+                    <iframe id="youtubePreviewFrame" src="" width="100%" height="100%" frameborder="0" allowfullscreen style="display:block;"></iframe>
+                </div>
+            </div>
+
             <!-- Toolbar -->
             <div class="post-toolbar">
                 <div class="toolbar-left">
@@ -593,6 +609,9 @@
                     <label for="videoInput" class="toolbar-btn" title="Ajouter une vidéo">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                     </label>
+                    <button type="button" class="toolbar-btn" title="Ajouter une vidéo YouTube" id="youtubeBtn" onclick="toggleYoutube()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg>
+                    </button>
                     <label for="audioInput" class="toolbar-btn" title="Ajouter une musique de fond" id="audioPickerBtn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                     </label>
@@ -647,6 +666,7 @@
         <div class="tip-item"><span class="tip-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span> Ou une vidéo MP4, MOV ou WEBM (max 50 Mo) — pas mixable avec des images</div>
         <div class="tip-item"><span class="tip-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span> Ajoute une musique de fond MP3, OGG, WAV ou M4A (max 20 Mo)</div>
         <div class="tip-item"><span class="tip-icon"><x-icon name="pen" :size="14"/></span> Tu peux publier du texte seul, sans média</div>
+        <div class="tip-item"><span class="tip-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.55A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.5 12 20.5 12 20.5s7.54 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.75 15.52V8.48L15.5 12l-5.75 3.52z"/></svg></span> Colle un lien YouTube pour intégrer une vidéo dans l'article</div>
         <div class="tip-item"><span class="tip-icon"><x-icon name="bookmark" :size="14"/></span> Enregistre en brouillon pour publier plus tard</div>
     </div>
 
@@ -918,6 +938,57 @@
             panel.classList.remove('open');
         }
     });
+
+    /* ── YouTube ── */
+    function extractYoutubeId(url) {
+        if (!url) return null;
+        let m;
+        if ((m = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/))) return m[1];
+        if ((m = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/))) return m[1];
+        if ((m = url.match(/embed\/([a-zA-Z0-9_-]{11})/))) return m[1];
+        if ((m = url.match(/shorts\/([a-zA-Z0-9_-]{11})/))) return m[1];
+        return null;
+    }
+
+    function toggleYoutube() {
+        const wrap = document.getElementById('youtubeWrap');
+        const btn  = document.getElementById('youtubeBtn');
+        const isOpen = wrap.style.display !== 'none';
+        wrap.style.display = isOpen ? 'none' : 'block';
+        btn.classList.toggle('active', !isOpen);
+        if (!isOpen) document.getElementById('youtubeUrlInput').focus();
+    }
+
+    function updateYoutubePreview(url) {
+        const id = extractYoutubeId(url);
+        const previewWrap  = document.getElementById('youtubePreviewWrap');
+        const previewFrame = document.getElementById('youtubePreviewFrame');
+        if (id) {
+            previewFrame.src = `https://www.youtube.com/embed/${id}`;
+            previewWrap.style.display = 'block';
+        } else {
+            previewFrame.src = '';
+            previewWrap.style.display = 'none';
+        }
+    }
+
+    function removeYoutube() {
+        document.getElementById('youtubeUrlInput').value = '';
+        document.getElementById('youtubePreviewWrap').style.display = 'none';
+        document.getElementById('youtubePreviewFrame').src = '';
+        document.getElementById('youtubeWrap').style.display = 'none';
+        document.getElementById('youtubeBtn').classList.remove('active');
+    }
+
+    // Pré-remplir si old value
+    (function() {
+        const val = document.getElementById('youtubeUrlInput').value;
+        if (val) {
+            document.getElementById('youtubeWrap').style.display = 'block';
+            document.getElementById('youtubeBtn').classList.add('active');
+            updateYoutubePreview(val);
+        }
+    })();
 
     /* ── Init ── */
     document.querySelectorAll('.post-title-input').forEach(autoResize);

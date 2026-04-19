@@ -911,6 +911,20 @@
             </div>
         @endif
 
+        {{-- Vidéo YouTube --}}
+        @if($post->youtube_id)
+        <div class="post-media" style="aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;">
+            <iframe
+                src="https://www.youtube.com/embed/{{ $post->youtube_id }}"
+                width="100%" height="100%"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                style="display:block;">
+            </iframe>
+        </div>
+        @endif
+
         {{-- Audio de fond --}}
         @if($post->audio_url)
         <div class="post-audio" id="postAudioBar">

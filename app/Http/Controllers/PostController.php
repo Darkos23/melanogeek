@@ -34,6 +34,7 @@ class PostController extends Controller
             'media'        => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,video/webm', 'max:51200'],
             'thumbnail'    => ['nullable', 'file', 'image', 'mimetypes:image/jpeg,image/png,image/webp', 'max:5120'],
             'audio'        => ['nullable', 'file', 'mimetypes:audio/mpeg,audio/ogg,audio/wav,audio/mp4,audio/x-m4a', 'max:20480'],
+            'youtube_url'  => ['nullable', 'string', 'max:255'],
             'is_published'  => ['nullable', 'boolean'],
         ], [
             'images.max'      => 'Tu peux ajouter au maximum 10 images.',
@@ -97,6 +98,7 @@ class PostController extends Controller
             'thumbnail'      => $thumbnailUrl,
             'audio_url'      => $audioUrl,
             'audio_name'     => $audioName,
+            'youtube_url'    => $data['youtube_url'] ?? null,
             'is_published'   => $isAdmin ? $request->boolean('is_published', true) : false,
             'pending_review' => $pendingReview,
         ]);
