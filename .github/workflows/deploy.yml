@@ -8,7 +8,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Hostinger git pull
+      - name: Wait for Hostinger git pull
+        run: sleep 45
+
+      - name: Call deploy.php
         run: |
-          sleep 45
-          curl -s "https://melanogeek.com/deploy.php?token=CHANGE_ME_IN_ENV" || true
+          RESPONSE=$(curl -s -o /tmp/deploy_out.txt -w "%{http_code}" "https://melanogeek.com/deploy.php")
+          echo "HTTP status: $RESPONSE"
+          cat /tmp/deploy_out.txt | head -50
