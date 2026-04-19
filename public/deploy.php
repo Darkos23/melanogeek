@@ -57,19 +57,25 @@ exec("php {$artisan} migrate --force 2>&1", $output);
 // Package discovery (remplace post-autoload-dump Composer)
 exec("php {$artisan} package:discover --ansi 2>&1", $output);
 
-// Symlink storage (public/storage → storage/app/public) — exec() peut être désactivé
+// Symlink storage (public/storage → storage/app/public)
 try {
     $target = dirname(__DIR__) . '/storage/app/public';
     $link   = __DIR__ . '/storage';
+
+    // Supprimer le lien s'il est cassé (existe mais cible inaccessible)
+    if (is_link($link) && ! file_exists($link)) {
+        unlink($link);
+        $output[] = '⚠ Symlink cassé supprimé.';
+    }
+
     if (! file_exists($link) && ! is_link($link)) {
-        if (function_exists('symlink')) {
-            symlink($target, $link);
-            $output[] = '✓ Symlink storage créé.';
+        if (function_exists('symlink') && symlink($target, $link)) {
+            $output[] = '✓ Symlink storage créé → ' . $target;
         } else {
-            $output[] = '⚠ symlink() indisponible — créer le lien manuellement.';
+            $output[] = '⚠ symlink() échoué — essai copie directe.';
         }
     } else {
-        $output[] = '✓ Symlink storage déjà présent.';
+        $output[] = '✓ Symlink storage OK → ' . realpath($link);
     }
 } catch (\Throwable $e) {
     $output[] = 'Storage link: ' . $e->getMessage();
