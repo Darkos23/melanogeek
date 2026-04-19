@@ -26,8 +26,8 @@ class ForumThread extends Model
     public const CATEGORIES = [
         'manga-anime'    => ['label' => 'Manga & Animé',      'icon' => '🎌'],
         'gaming'         => ['label' => 'Gaming',              'icon' => '🎮'],
-        'tech'           => ['label' => 'Tech & IA',           'icon' => '💻'],
-        'culture'        => ['label' => 'Culture africaine',   'icon' => '🌍'],
+        'tech'           => ['label' => 'Tech & IA',           'icon' => '🤖'],
+        'culture'        => ['label' => 'Afrofuturisme',        'icon' => '🚀'],
         'cosplay'        => ['label' => 'Cosplay',             'icon' => '🎭'],
         'off-topic'      => ['label' => 'Off-topic',           'icon' => '☕'],
     ];
