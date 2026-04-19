@@ -807,13 +807,13 @@
 }
 .cat-card:hover::after { opacity: 0.12; }
 /* Teinte subtile par catégorie */
-.cat-card[href*="manga-anime"]::after   { background: linear-gradient(145deg, #7c3aed, #a855f7); }
-.cat-card[href*="gaming"]::after        { background: linear-gradient(145deg, #16a34a, #4ade80); }
-.cat-card[href*="tech"]::after          { background: linear-gradient(145deg, #2563eb, #60a5fa); }
-.cat-card[href*="dev"]::after           { background: linear-gradient(145deg, #d97706, #fbbf24); }
-.cat-card[href*="cinema"]::after        { background: linear-gradient(145deg, #dc2626, #f87171); }
-.cat-card[href*="culture"]::after       { background: linear-gradient(145deg, #059669, #34d399); }
-.cat-card[href*="debat"]::after  { background: linear-gradient(145deg, #7c3aed, #c084fc); }
+.cat-card[href*="manga-anime"]::after   { background: linear-gradient(145deg, #7c3aed, #a855f7); display: block; }
+.cat-card[href*="gaming"]::after        { background: linear-gradient(145deg, #16a34a, #4ade80); display: block; }
+.cat-card[href*="tech"]::after          { background: linear-gradient(145deg, #2563eb, #60a5fa); display: block; }
+.cat-card[href*="dev"]::after           { background: linear-gradient(145deg, #d97706, #fbbf24); display: block; }
+.cat-card[href*="cinema"]::after        { background: linear-gradient(145deg, #dc2626, #f87171); display: block; }
+.cat-card[href*="culture"]::after       { background: linear-gradient(145deg, #059669, #34d399); display: block; }
+.cat-card[href*="debat"]::after         { background: linear-gradient(145deg, #7c3aed, #c084fc); display: block; }
 /* Overlay hover lumineux */
 .cat-card::before {
     content: ''; position: absolute; inset: 0;
@@ -821,14 +821,20 @@
     opacity: 0; transition: opacity .22s;
 }
 .cat-card:hover::before { opacity: 1; }
-/* Supprimer l'ancien ::after (la barre gold) */
-.cat-card::after { display: none; }
 
+/* Couleur icône par catégorie */
 .cat-icon {
     font-size: 2rem; line-height: 1;
     margin-bottom: 12px;
     filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
 }
+.cat-card[href*="manga-anime"] .cat-icon { color: #a855f7; }
+.cat-card[href*="gaming"] .cat-icon      { color: #4ade80; }
+.cat-card[href*="tech"] .cat-icon        { color: #60a5fa; }
+.cat-card[href*="dev"] .cat-icon         { color: #fbbf24; }
+.cat-card[href*="cinema"] .cat-icon      { color: #f87171; }
+.cat-card[href*="culture"] .cat-icon     { color: #34d399; }
+.cat-card[href*="debat"] .cat-icon       { color: #c084fc; }
 .cat-name {
     font-family: var(--font-head);
     font-size: .95rem; font-weight: 700;
