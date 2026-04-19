@@ -1328,20 +1328,20 @@
     </div>
     @php
         $cats = [
-            'manga-anime'   => ['<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>', 'Manga & Animé'],
-            'gaming'        => ['<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1.2" fill="currentColor"/><circle cx="18" cy="12" r="1.2" fill="currentColor"/>', 'Gaming'],
-            'tech'          => ['<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>', 'Tech & IA'],
-            'dev'           => ['<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>', 'Développement'],
-            'cinema-series' => ['<rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M17 7h5M2 17h5M17 17h5"/>', 'Cinéma & Séries'],
-            'culture'       => ['<path d="M12 2l2.5 7.5H22l-6 4.5 2.5 7.5L12 17l-6.5 4.5L8 14 2 9.5h7.5z"/>', 'Afrofuturisme'],
-            'debat'         => ['<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>', 'Débat'],
+            'manga-anime'   => ['🎌', 'Manga & Animé'],
+            'gaming'        => ['🎮', 'Gaming'],
+            'tech'          => ['🤖', 'Tech & IA'],
+            'dev'           => ['💻', 'Développement'],
+            'cinema-series' => ['🎬', 'Cinéma & Séries'],
+            'culture'       => ['🚀', 'Afrofuturisme'],
+            'debat'         => ['💬', 'Débat'],
         ];
     @endphp
     <div class="cat-grid">
         @foreach($cats as $slug => [$icon, $label])
         @php $count = $category_counts[$slug] ?? 0; @endphp
         <a href="{{ route('blog.index') }}?category={{ $slug }}" class="cat-card" data-reveal data-delay="{{ $loop->iteration }}">
-            <div class="cat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">{!! $icon !!}</svg></div>
+            <div class="cat-icon" style="font-size:2rem;line-height:1;margin-bottom:12px">{{ $icon }}</div>
             <div class="cat-name">{{ $label }}</div>
             @if($count > 0)
             <div class="cat-count">{{ $count }} article{{ $count > 1 ? 's' : '' }}</div>
