@@ -15,13 +15,14 @@ class Post extends Model
         'media_url', 'media_type', 'thumbnail',
         'audio_url', 'audio_name',
         'likes_count', 'comments_count', 'views_count',
-        'is_published',
+        'is_published', 'pending_review', 'rejection_reason',
         'category', 'tags',
     ];
 
     protected $casts = [
-        'is_published' => 'boolean',
-        'tags'         => 'array',
+        'is_published'   => 'boolean',
+        'pending_review' => 'boolean',
+        'tags'           => 'array',
     ];
 
     const CATEGORIES = [
@@ -57,7 +58,12 @@ class Post extends Model
     // ── Scopes ────────────────────────────────────────────────────
     public function scopePublished($query)
     {
-        return $query->where('is_published', true);
+        return $query->where('is_published', true)->where('pending_review', false);
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('pending_review', true)->where('is_published', false);
     }
 
     public function scopeInCategory($query, string $category)

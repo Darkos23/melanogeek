@@ -62,7 +62,7 @@ class GoogleController extends Controller
 
         Auth::login($user, remember: true);
 
-        return redirect()->route('feed');
+        return redirect()->route('home');
     }
 
     /**

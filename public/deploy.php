@@ -23,8 +23,14 @@ try {
 
 $artisan = escapeshellarg(dirname(__DIR__) . '/artisan');
 
+// Migrations
+exec("php {$artisan} migrate --force 2>&1", $output);
+
 // Package discovery (remplace post-autoload-dump Composer)
 exec("php {$artisan} package:discover --ansi 2>&1", $output);
+
+// Symlink storage (public/storage → storage/app/public)
+exec("php {$artisan} storage:link 2>&1", $output);
 
 // Artisan caches
 exec("php {$artisan} config:clear 2>&1", $output);

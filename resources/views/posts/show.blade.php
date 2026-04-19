@@ -793,6 +793,10 @@
 
     @if(session('status') === 'post-created')
         <div class="post-success"><x-icon name="check-circle" :size="15"/> Publication créée avec succès !</div>
+    @elseif(session('status') === 'post-pending')
+        <div class="post-success" style="background:rgba(230,160,30,.12);border-color:rgba(230,160,30,.3);color:#e6c96e;">
+            <x-icon name="check-circle" :size="15"/> Article soumis ! Il sera publié après validation par l'équipe.
+        </div>
     @elseif(session('status') === 'post-updated')
         <div class="post-success"><x-icon name="check-circle" :size="15"/> Publication mise à jour !</div>
     @endif

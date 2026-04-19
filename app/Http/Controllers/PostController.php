@@ -85,16 +85,20 @@ class PostController extends Controller
             $thumbnailUrl = ImageHelper::cropAndResizePath($raw);
         }
 
+        $isAdmin       = $request->user()->isAdminOrOwner();
+        $pendingReview = ! $isAdmin; // Les non-admins passent en attente de validation
+
         $post = $request->user()->posts()->create([
-            'title'        => $data['title'] ?? null,
-            'body'         => $data['body'] ?? null,
-            'category'     => $data['category'] ?? null,
-            'media_url'    => $mediaUrl,
-            'media_type'   => $mediaType,
-            'thumbnail'    => $thumbnailUrl,
-            'audio_url'    => $audioUrl,
-            'audio_name'   => $audioName,
-            'is_published'  => $request->boolean('is_published', true),
+            'title'          => $data['title'] ?? null,
+            'body'           => $data['body'] ?? null,
+            'category'       => $data['category'] ?? null,
+            'media_url'      => $mediaUrl,
+            'media_type'     => $mediaType,
+            'thumbnail'      => $thumbnailUrl,
+            'audio_url'      => $audioUrl,
+            'audio_name'     => $audioName,
+            'is_published'   => $isAdmin ? $request->boolean('is_published', true) : false,
+            'pending_review' => $pendingReview,
         ]);
 
         // Images multiples → post_media
@@ -108,13 +112,22 @@ class PostController extends Controller
             }
         }
 
-        // Notifier les abonnés si le post est publié directement
-        if ($post->is_published) {
+        // Notifier les abonnés si le post est publié directement (admin)
+        if ($post->is_published && ! $pendingReview) {
             SendNewPostNotifications::dispatch($post);
         }
 
+        // Notifier les admins qu'un article est en attente de validation
+        if ($pendingReview) {
+            $admins = \App\Models\User::whereIn('role', ['admin', 'owner'])->get();
+            foreach ($admins as $admin) {
+                $admin->notify(new \App\Notifications\PostPendingNotification($post));
+            }
+        }
+
+        $status = $pendingReview ? 'post-pending' : 'post-created';
         return redirect()->route('posts.show', $post->id)
-                         ->with('status', 'post-created');
+                         ->with('status', $status);
     }
 
     public function show(Post $post): View
