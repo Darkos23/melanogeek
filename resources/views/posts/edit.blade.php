@@ -70,7 +70,7 @@
             {{-- Cover image --}}
             <div class="cover-upload-zone" id="coverZone" onclick="document.getElementById('coverInput').click()">
                 @if($post->thumbnail)
-                    <img id="coverPreview" src="{{ asset('storage/'.$post->thumbnail) }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;">
+                    <img id="coverPreview" src="{{ Storage::url($post->thumbnail) }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:10px;">
                     <button type="button" class="cover-remove-btn" id="coverRemoveBtn" onclick="removeCover(event)"><x-icon name="x" :size="14"/></button>
                     <input type="file" id="coverInput" name="thumbnail" accept="image/jpeg,image/png,image/webp" style="display:none">
                 @else

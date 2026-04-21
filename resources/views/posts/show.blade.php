@@ -4,9 +4,7 @@
 
 @php
     $metaDesc    = Str::limit(strip_tags($post->body ?? ''), 155);
-    $metaImage   = $post->thumbnail
-        ? asset('storage/' . $post->thumbnail)
-        : ($post->media_url && $post->media_type === 'image' ? asset('storage/' . $post->media_url) : asset('images/og-default.jpg'));
+    $metaImage   = $post->primary_image_url ?? asset('images/og-default.jpg');
 @endphp
 @section('meta_description', $metaDesc)
 @section('og_type', 'article')
@@ -858,7 +856,7 @@
         {{-- Image de couverture --}}
         @if($post->thumbnail)
             <div style="margin:0 0 20px;border-radius:10px;overflow:hidden;">
-                <img src="{{ asset('storage/'.$post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;max-height:500px;object-fit:cover;object-position:center;display:block;">
+                <img src="{{ Storage::url($post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;max-height:500px;object-fit:cover;object-position:center;display:block;">
             </div>
         @endif
 

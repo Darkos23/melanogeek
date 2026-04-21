@@ -12,11 +12,18 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PushSubscriptionController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 // Public pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/communaute', [ExploreController::class, 'index'])->name('community');
 Route::get('/offline', fn() => view('pages.offline'))->name('offline');
+Route::get('/files/{path}', function (string $path) {
+    abort_if(str_contains($path, '..'), 404);
+    abort_unless(Storage::disk('public')->exists($path), 404);
+
+    return Storage::disk('public')->response($path);
+})->where('path', '.*')->name('files.public');
 
 Route::get('/a-propos', function () {
     $settings = [
