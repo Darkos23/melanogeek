@@ -1,4 +1,4 @@
-const CACHE_NAME = 'melanogeek-v3';
+const CACHE_NAME = 'melanogeek-v4';
 
 // Ressources essentielles à pré-cacher
 const PRECACHE_URLS = [
@@ -33,6 +33,12 @@ self.addEventListener('fetch', event => {
     }
 
     // Assets statiques (CSS, JS, images) → Cache First
+    // Uploaded media should never be cached by the service worker.
+    if (url.pathname.startsWith('/files/') || url.pathname.startsWith('/storage/')) {
+        event.respondWith(fetch(request));
+        return;
+    }
+
     if (url.pathname.match(/\.(css|js|png|jpg|jpeg|gif|svg|woff2?|ico)$/)) {
         event.respondWith(
             caches.match(request).then(cached => cached || fetch(request).then(response => {
