@@ -12,7 +12,7 @@
     <!-- ══ COVER ══ -->
     <div class="profile-cover">
         @if($user->cover_photo)
-            <img src="{{ Storage::url($user->cover_photo) }}" alt="Cover">
+            <img src="{{ Storage::disk('public')->url($user->cover_photo) }}" alt="Cover">
         @endif
         <div class="profile-cover-overlay"></div>
         @auth
@@ -29,7 +29,7 @@
         <div class="profile-avatar-wrap">
             <div class="profile-avatar">
                 @if($user->avatar)
-                    <img src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}">
+                    <img src="{{ Storage::disk('public')->url($user->avatar) }}" alt="{{ $user->name }}">
                 @else
                     <div class="profile-avatar-inner">{{ mb_strtoupper(mb_substr($user->name,0,1)) }}</div>
                 @endif
@@ -234,17 +234,17 @@
 
                         <div class="grid-post-media">
                             @if($post->mediaFiles->isNotEmpty())
-                                <img src="{{ Storage::url($post->mediaFiles->first()->media_url) }}"
+                                <img src="{{ Storage::disk('public')->url($post->mediaFiles->first()->media_url) }}"
                                      alt="" style="">
                                 @if($post->mediaFiles->count() > 1)
                                     <div class="grid-post-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2"/><rect x="2" y="5" width="14" height="20" rx="2" fill="rgba(0,0,0,.4)"/></svg></div>
                                 @endif
                             @elseif($post->media_url && $post->media_type === 'image')
-                                <img src="{{ Storage::url($post->media_url) }}" alt="{{ $post->title }}"
+                                <img src="{{ Storage::disk('public')->url($post->media_url) }}" alt="{{ $post->title }}"
                                      style="">
                             @elseif($post->media_url && $post->media_type === 'video')
                                 @if($post->thumbnail)
-                                    <img src="{{ Storage::url($post->thumbnail) }}" alt="{{ $post->title }}"
+                                    <img src="{{ Storage::disk('public')->url($post->thumbnail) }}" alt="{{ $post->title }}"
                                          style="width:100%;height:100%;object-fit:cover;">
                                 @else
                                     <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1a2e,#2d1b3d);display:flex;align-items:center;justify-content:center;">

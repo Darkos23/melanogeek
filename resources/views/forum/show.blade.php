@@ -212,7 +212,7 @@
         <div style="display:flex;align-items:center;gap:10px;">
             <a href="{{ route('profile.show', $thread->user->username) }}" class="thread-avi">
                 @if($thread->user->avatar)
-                    <img src="{{ Storage::url($thread->user->avatar) }}" alt="">
+                    <img src="{{ Storage::disk('public')->url($thread->user->avatar) }}" alt="">
                 @else
                     {{ mb_strtoupper(mb_substr($thread->user->name, 0, 1)) }}
                 @endif
@@ -324,7 +324,7 @@
     <div class="reply-item" id="reply-{{ $reply->id }}">
         <a href="{{ route('profile.show', $reply->user->username) }}" class="reply-avi">
             @if($reply->user->avatar)
-                <img src="{{ Storage::url($reply->user->avatar) }}" alt="">
+                <img src="{{ Storage::disk('public')->url($reply->user->avatar) }}" alt="">
             @else
                 {{ mb_strtoupper(mb_substr($reply->user->name, 0, 1)) }}
             @endif

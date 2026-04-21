@@ -822,7 +822,7 @@
                 <a href="{{ route('profile.show', $post->user->username) }}" class="post-avatar">
                     <div class="post-avatar-inner">
                         @if($post->user->avatar)
-                            <img src="{{ Storage::url($post->user->avatar) }}" alt="">
+                            <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="">
                         @else
                             {{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}
                         @endif
@@ -856,7 +856,7 @@
         {{-- Image de couverture --}}
         @if($post->thumbnail)
             <div style="margin:0 0 20px;border-radius:10px;overflow:hidden;">
-                <img src="{{ Storage::url($post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;max-height:500px;object-fit:cover;object-position:center;display:block;">
+                <img src="{{ Storage::disk('public')->url($post->thumbnail) }}" alt="{{ $post->title }}" style="width:100%;max-height:500px;object-fit:cover;object-position:center;display:block;">
             </div>
         @endif
 
@@ -876,7 +876,7 @@
             @php $imgs = $post->mediaFiles; $total = $imgs->count(); @endphp
             @if($total === 1)
                 <div class="post-media">
-                    <img src="{{ Storage::url($imgs->first()->media_url) }}" alt="{{ $post->title }}">
+                    <img src="{{ Storage::disk('public')->url($imgs->first()->media_url) }}" alt="{{ $post->title }}">
                 </div>
             @else
                 <div class="post-carousel" id="postCarousel">
@@ -884,7 +884,7 @@
                         <div class="carousel-track" id="carouselTrack">
                             @foreach($imgs as $img)
                                 <div class="carousel-slide">
-                                    <img src="{{ Storage::url($img->media_url) }}" alt="">
+                                    <img src="{{ Storage::disk('public')->url($img->media_url) }}" alt="">
                                 </div>
                             @endforeach
                         </div>
@@ -902,9 +902,9 @@
         @elseif($post->media_url)
             <div class="post-media">
                 @if($post->media_type === 'video')
-                    <video src="{{ Storage::url($post->media_url) }}" controls controlsList="nodownload" oncontextmenu="return false"></video>
+                    <video src="{{ Storage::disk('public')->url($post->media_url) }}" controls controlsList="nodownload" oncontextmenu="return false"></video>
                 @else
-                    <img src="{{ Storage::url($post->media_url) }}" alt="{{ $post->title }}">
+                    <img src="{{ Storage::disk('public')->url($post->media_url) }}" alt="{{ $post->title }}">
                 @endif
             </div>
         @endif
@@ -926,7 +926,7 @@
         {{-- Audio de fond --}}
         @if($post->audio_url)
         <div class="post-audio" id="postAudioBar">
-            <audio id="postAudio" src="{{ Storage::url($post->audio_url) }}" loop preload="metadata" controlsList="nodownload" oncontextmenu="return false"></audio>
+            <audio id="postAudio" src="{{ Storage::disk('public')->url($post->audio_url) }}" loop preload="metadata" controlsList="nodownload" oncontextmenu="return false"></audio>
             <button class="audio-play-btn" id="audioPlayBtn" onclick="audioToggle()"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
             <div class="audio-info">
                 <div class="audio-track-name" style="display:inline-flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> {{ $post->audio_name ?? 'Musique' }}</div>
@@ -971,7 +971,7 @@
         <div class="post-author-card">
             <a href="{{ route('profile.show', $post->user->username) }}" class="pac-avatar">
                 @if($post->user->avatar)
-                    <img src="{{ Storage::url($post->user->avatar) }}" alt="">
+                    <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="">
                 @else
                     <span>{{ mb_strtoupper(mb_substr($post->user->username, 0, 1)) }}</span>
                 @endif
@@ -1000,7 +1000,7 @@
                 <div class="comment-form-avi">
                     <div class="comment-form-avi-inner">
                         @if(auth()->user()->avatar)
-                            <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="">
+                            <img src="{{ Storage::disk('public')->url(auth()->user()->avatar) }}" alt="">
                         @else
                             {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                         @endif

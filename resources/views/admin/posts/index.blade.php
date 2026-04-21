@@ -80,7 +80,7 @@
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div class="user-avatar-mini">
                             <div class="user-avatar-mini-inner">
-                                @if($post->user->avatar)<img src="{{ Storage::url($post->user->avatar) }}" alt="">@else{{ mb_strtoupper(mb_substr($post->user->name,0,1)) }}@endif
+                                @if($post->user->avatar)<img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="">@else{{ mb_strtoupper(mb_substr($post->user->name,0,1)) }}@endif
                             </div>
                         </div>
                         <span style="font-size:.8rem;">&#64;{{ $post->user->username }}</span>

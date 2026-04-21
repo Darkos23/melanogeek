@@ -330,7 +330,7 @@
                         <div class="avatar-preview">
                             <div class="avatar-preview-inner">
                                 @if(auth()->user()->avatar)
-                                    <img src="{{ Storage::url(auth()->user()->avatar) }}" id="avatarPreview">
+                                    <img src="{{ Storage::disk('public')->url(auth()->user()->avatar) }}" id="avatarPreview">
                                 @else
                                     <span id="avatarInitial">{{ mb_strtoupper(mb_substr(auth()->user()->name,0,1)) }}</span>
                                 @endif
@@ -349,7 +349,7 @@
                         <label class="form-label">Photo de couverture</label>
                         <label for="cover_photo" class="cover-upload-area" id="coverArea">
                             @if(auth()->user()->cover_photo)
-                                <img src="{{ Storage::url(auth()->user()->cover_photo) }}" id="coverPreview">
+                                <img src="{{ Storage::disk('public')->url(auth()->user()->cover_photo) }}" id="coverPreview">
                                 <div class="cover-overlay">
                                     <div class="cover-upload-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
                                     <div class="cover-upload-text">Modifier la couverture</div>

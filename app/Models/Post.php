@@ -103,7 +103,7 @@ class Post extends Model
     public function getPrimaryImageUrlAttribute(): ?string
     {
         if ($this->primary_image_path) {
-            return Storage::url($this->primary_image_path);
+            return Storage::disk('public')->url($this->primary_image_path);
         }
 
         if ($this->youtube_id) {

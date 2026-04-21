@@ -387,8 +387,8 @@
             <div class="explore-grid">
                 @foreach($posts as $post)
                 @php
-                    $thumb    = $post->thumbnail ? Storage::url($post->thumbnail) : null;
-                    $mediaImg = (!$thumb && $post->media_url && $post->media_type !== 'video') ? Storage::url($post->media_url) : null;
+                    $thumb    = $post->thumbnail ? Storage::disk('public')->url($post->thumbnail) : null;
+                    $mediaImg = (!$thumb && $post->media_url && $post->media_type !== 'video') ? Storage::disk('public')->url($post->media_url) : null;
                     $ytThumb  = (!$thumb && !$mediaImg && $post->youtube_id) ? 'https://img.youtube.com/vi/'.$post->youtube_id.'/hqdefault.jpg' : null;
                     $img      = $thumb ?? $mediaImg ?? $ytThumb;
                     $isVideo  = $post->media_url && $post->media_type === 'video';
@@ -402,7 +402,7 @@
                     @if($isVideo)
                         {{-- Vidéo --}}
                         <div class="explore-item-media">
-                            <video src="{{ Storage::url($post->media_url) }}"
+                            <video src="{{ Storage::disk('public')->url($post->media_url) }}"
                                 muted preload="none" style="max-height:320px;"></video>
                             <div class="explore-type-badge" style="display:inline-flex;align-items:center;gap:4px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg> Vidéo</div>
                             <div class="explore-item-overlay">
@@ -460,7 +460,7 @@
                         <div class="explore-author-avi">
                             <div class="explore-author-avi-inner">
                                 @if($post->user->avatar)
-                                    <img src="{{ Storage::url($post->user->avatar) }}" alt="">
+                                    <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="">
                                 @else
                                     {{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}
                                 @endif

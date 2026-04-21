@@ -6,7 +6,7 @@
             <div class="feed-avatar">
                 <div class="feed-avatar-inner">
                     @if($post->user->avatar)
-                        <img src="{{ Storage::url($post->user->avatar) }}" alt="{{ $post->user->name }}">
+                        <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="{{ $post->user->name }}">
                     @else
                         {{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}
                     @endif
@@ -55,10 +55,10 @@
         @if($post->media_url)
             <div class="feed-card-media">
                 @if($post->media_type === 'video')
-                    <video src="{{ Storage::url($post->media_url) }}" controls></video>
+                    <video src="{{ Storage::disk('public')->url($post->media_url) }}" controls></video>
                 @else
                     <a href="{{ route('posts.show', $post->id) }}">
-                        <img src="{{ Storage::url($post->media_url) }}" alt="{{ $post->title }}">
+                        <img src="{{ Storage::disk('public')->url($post->media_url) }}" alt="{{ $post->title }}">
                     </a>
                 @endif
             </div>

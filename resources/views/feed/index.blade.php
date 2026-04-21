@@ -570,7 +570,7 @@
                 <a href="{{ route('profile.show', $user->username) }}" class="suggestion-avatar">
                     <div class="suggestion-avatar-inner">
                         @if($user->avatar)
-                            <img src="{{ Storage::url($user->avatar) }}" alt="{{ $user->name }}">
+                            <img src="{{ Storage::disk('public')->url($user->avatar) }}" alt="{{ $user->name }}">
                         @else
                             {{ mb_strtoupper(mb_substr($user->name, 0, 1)) }}
                         @endif
@@ -802,4 +802,3 @@
 #reportModal { display: none; }
 #reportModal.open { display: flex !important; }
 </style>
-

@@ -335,7 +335,7 @@
             <div class="user-avatar-mini">
                 <div class="user-avatar-mini-inner">
                     @if(auth()->user()->avatar)
-                        <img src="{{ Storage::url(auth()->user()->avatar) }}" alt="">
+                        <img src="{{ Storage::disk('public')->url(auth()->user()->avatar) }}" alt="">
                     @else
                         {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                     @endif

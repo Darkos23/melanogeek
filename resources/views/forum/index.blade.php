@@ -465,7 +465,7 @@
         <div class="forum-thread-main">
             <div class="forum-thread-avi" style="background:linear-gradient(135deg,var(--terra),var(--gold))">
                 @if($thread->user->avatar)
-                    <img src="{{ Storage::url($thread->user->avatar) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                    <img src="{{ Storage::disk('public')->url($thread->user->avatar) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
                 @else
                     {{ mb_strtoupper(mb_substr($thread->user->name, 0, 1)) }}
                 @endif
@@ -563,7 +563,7 @@
     <div class="forum-widget-row" style="cursor:default">
         <div class="forum-contrib-avi" style="background:linear-gradient(135deg,var(--terra),var(--gold))">
             @if($contributor->avatar)
-                <img src="{{ Storage::url($contributor->avatar) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:7px;">
+                <img src="{{ Storage::disk('public')->url($contributor->avatar) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:7px;">
             @else
                 {{ mb_strtoupper(mb_substr($contributor->name, 0, 1)) }}
             @endif

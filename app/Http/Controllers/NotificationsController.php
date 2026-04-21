@@ -64,7 +64,7 @@ class NotificationsController extends Controller
                     'type'       => $n->data['type']     ?? 'unknown',
                     'name'       => $n->data['name']     ?? null,
                     'username'   => $n->data['username'] ?? null,
-                    'avatar'     => $avatar ? Storage::url($avatar) : null,
+                    'avatar'     => $avatar ? Storage::disk('public')->url($avatar) : null,
                     'post_id'    => $n->data['post_id']  ?? null,
                     'post_title' => $n->data['post_title'] ?? null,
                     'comment_body' => $n->data['comment_body'] ?? null,

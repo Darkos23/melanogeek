@@ -1241,7 +1241,7 @@
                 @endif
                 <div class="art-meta" style="margin-top:auto">
                     @if($featured->user->avatar)
-                        <img src="{{ Storage::url($featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
+                        <img src="{{ Storage::disk('public')->url($featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
                     @else
                         <div class="art-avi">{{ $featInitial }}</div>
                     @endif
@@ -1275,7 +1275,7 @@
                 @endif
                 <div class="art-meta" style="margin-top:auto;padding-top:12px">
                     @if($post->user->avatar)
-                        <img src="{{ Storage::url($post->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
+                        <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
                     @else
                         <div class="art-avi">{{ $initial }}</div>
                     @endif
@@ -1378,7 +1378,7 @@
                     @endphp
                     <a href="{{ route('forum.index') }}" class="forum-thread">
                         @if($disc->user->avatar)
-                            <img src="{{ Storage::url($disc->user->avatar) }}" class="ft-avi" style="object-fit:cover" alt="">
+                            <img src="{{ Storage::disk('public')->url($disc->user->avatar) }}" class="ft-avi" style="object-fit:cover" alt="">
                         @else
                             <div class="ft-avi">{{ $discInitial }}</div>
                         @endif

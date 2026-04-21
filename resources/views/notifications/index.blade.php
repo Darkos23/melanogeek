@@ -353,7 +353,7 @@
 
                 // Avatar
                 $avatarPath = $data['avatar'] ?? null;
-                $avatarUrl  = $avatarPath ? \Storage::url($avatarPath) : null;
+                $avatarUrl  = $avatarPath ? \Storage::disk('public')->url($avatarPath) : null;
                 $initials   = mb_strtoupper(mb_substr($data['name'] ?? '?', 0, 1));
 
                 // Liens
