@@ -464,7 +464,7 @@
     <a href="{{ route('forum.show', $thread) }}" class="forum-thread" data-reveal data-delay="{{ ($loop->index % 5) + 1 }}">
         <div class="forum-thread-main">
             <div class="forum-thread-avi" style="background:linear-gradient(135deg,var(--terra),var(--gold))">
-                @if($thread->user->avatar)
+                @if($thread->user->avatar && Storage::disk('public')->exists($thread->user->avatar))
                     <img src="{{ Storage::disk('public')->url($thread->user->avatar) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
                 @else
                     {{ mb_strtoupper(mb_substr($thread->user->name, 0, 1)) }}
@@ -562,7 +562,7 @@
     @forelse($topContributors as $contributor)
     <div class="forum-widget-row" style="cursor:default">
         <div class="forum-contrib-avi" style="background:linear-gradient(135deg,var(--terra),var(--gold))">
-            @if($contributor->avatar)
+            @if($contributor->avatar && Storage::disk('public')->exists($contributor->avatar))
                 <img src="{{ Storage::disk('public')->url($contributor->avatar) }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:7px;">
             @else
                 {{ mb_strtoupper(mb_substr($contributor->name, 0, 1)) }}

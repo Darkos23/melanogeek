@@ -211,7 +211,7 @@
     <div class="thread-post-head">
         <div style="display:flex;align-items:center;gap:10px;">
             <a href="{{ route('profile.show', $thread->user->username) }}" class="thread-avi">
-                @if($thread->user->avatar)
+                @if($thread->user->avatar && Storage::disk('public')->exists($thread->user->avatar))
                     <img src="{{ Storage::disk('public')->url($thread->user->avatar) }}" alt="">
                 @else
                     {{ mb_strtoupper(mb_substr($thread->user->name, 0, 1)) }}
@@ -323,7 +323,7 @@
     @foreach($replies as $reply)
     <div class="reply-item" id="reply-{{ $reply->id }}">
         <a href="{{ route('profile.show', $reply->user->username) }}" class="reply-avi">
-            @if($reply->user->avatar)
+            @if($reply->user->avatar && Storage::disk('public')->exists($reply->user->avatar))
                 <img src="{{ Storage::disk('public')->url($reply->user->avatar) }}" alt="">
             @else
                 {{ mb_strtoupper(mb_substr($reply->user->name, 0, 1)) }}
