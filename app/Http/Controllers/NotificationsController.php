@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NotificationsController extends Controller
 {
@@ -55,18 +56,22 @@ class NotificationsController extends Controller
 
         return response()->json([
             'unread' => $unread,
-            'items'  => $notifications->map(fn($n) => [
-                'id'         => $n->id,
-                'type'       => $n->data['type']     ?? 'unknown',
-                'name'       => $n->data['name']     ?? null,
-                'username'   => $n->data['username'] ?? null,
-                'avatar'     => $n->data['avatar']   ?? null,
-                'post_id'    => $n->data['post_id']  ?? null,
-                'post_title' => $n->data['post_title'] ?? null,
-                'comment_body' => $n->data['comment_body'] ?? null,
-                'read_at'    => $n->read_at,
-                'ago'        => $n->created_at->diffForHumans(),
-            ]),
+            'items'  => $notifications->map(function ($n) {
+                $avatar = $n->data['avatar'] ?? null;
+
+                return [
+                    'id'         => $n->id,
+                    'type'       => $n->data['type']     ?? 'unknown',
+                    'name'       => $n->data['name']     ?? null,
+                    'username'   => $n->data['username'] ?? null,
+                    'avatar'     => $avatar ? Storage::url($avatar) : null,
+                    'post_id'    => $n->data['post_id']  ?? null,
+                    'post_title' => $n->data['post_title'] ?? null,
+                    'comment_body' => $n->data['comment_body'] ?? null,
+                    'read_at'    => $n->read_at,
+                    'ago'        => $n->created_at->diffForHumans(),
+                ];
+            }),
         ]);
     }
 }

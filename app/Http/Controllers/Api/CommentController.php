@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Notifications\CommentNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CommentController extends Controller
 {
@@ -28,7 +29,7 @@ class CommentController extends Controller
                     'id'          => $c->user->id,
                     'name'        => $c->user->name,
                     'username'    => $c->user->username,
-                    'avatar'      => $c->user->avatar ? asset('storage/' . $c->user->avatar) : null,
+                    'avatar'      => $c->user->avatar ? Storage::url($c->user->avatar) : null,
                     'is_verified' => $c->user->is_verified,
                     'role'        => $c->user->role,
                 ],
@@ -72,7 +73,7 @@ class CommentController extends Controller
                 'id'          => $comment->user->id,
                 'name'        => $comment->user->name,
                 'username'    => $comment->user->username,
-                'avatar'      => $comment->user->avatar ? asset('storage/' . $comment->user->avatar) : null,
+                'avatar'      => $comment->user->avatar ? Storage::url($comment->user->avatar) : null,
                 'is_verified' => $comment->user->is_verified,
                 'role'        => $comment->user->role,
             ],
