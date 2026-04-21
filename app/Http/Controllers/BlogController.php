@@ -12,7 +12,7 @@ class BlogController extends Controller
         $category = request('category');
         $query    = request('q');
 
-        $posts = Post::with('user')
+        $posts = Post::with(['user', 'mediaFiles'])
             ->published()
             ->whereNotNull('title')
             ->where('title', '!=', '')

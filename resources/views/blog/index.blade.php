@@ -321,10 +321,7 @@
 
 {{-- ── ARTICLE FEATURED ── --}}
 @php
-    $featuredImg = $featured->thumbnail
-        ? asset('storage/'.$featured->thumbnail)
-        : ($featured->media_url && $featured->media_type === 'image' ? asset('storage/'.$featured->media_url)
-        : ($featured->youtube_id ? 'https://img.youtube.com/vi/'.$featured->youtube_id.'/hqdefault.jpg' : null));
+    $featuredImg = $featured->primary_image_url;
     $featuredExcerpt = Str::limit(strip_tags($featured->body ?? ''), 180);
     $featuredMins = max(1,(int)ceil(str_word_count(strip_tags($featured->body??''))/200));
 @endphp
@@ -382,10 +379,7 @@
         $excerpt  = Str::limit(strip_tags($post->body ?? ''), 130);
         $mins     = max(1,(int)ceil(str_word_count(strip_tags($post->body??''))/200));
         $initial  = strtoupper(substr($post->user->name ?? '?', 0, 1));
-        $thumbUrl = $post->thumbnail
-            ? asset('storage/'.$post->thumbnail)
-            : ($post->media_url && $post->media_type === 'image' ? asset('storage/'.$post->media_url)
-            : ($post->youtube_id ? 'https://img.youtube.com/vi/'.$post->youtube_id.'/hqdefault.jpg' : null));
+        $thumbUrl = $post->primary_image_url;
         $catClass = $post->category ? 'cat-'.str_replace('_','-',$post->category) : 'cat-default';
         $catIcons = [
             'manga-anime'   => '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>',

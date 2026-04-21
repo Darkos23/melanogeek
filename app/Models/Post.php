@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -80,6 +81,36 @@ class Post extends Model
     public function getCategoryLabelAttribute(): string
     {
         return self::CATEGORIES[$this->category] ?? '';
+    }
+
+    public function getPrimaryImagePathAttribute(): ?string
+    {
+        if ($this->thumbnail) {
+            return $this->thumbnail;
+        }
+
+        if ($this->media_url && $this->media_type === 'image') {
+            return $this->media_url;
+        }
+
+        $firstImage = $this->relationLoaded('mediaFiles')
+            ? $this->mediaFiles->first()
+            : $this->mediaFiles()->orderBy('sort_order')->first();
+
+        return $firstImage?->media_url;
+    }
+
+    public function getPrimaryImageUrlAttribute(): ?string
+    {
+        if ($this->primary_image_path) {
+            return Storage::url($this->primary_image_path);
+        }
+
+        if ($this->youtube_id) {
+            return 'https://img.youtube.com/vi/'.$this->youtube_id.'/hqdefault.jpg';
+        }
+
+        return null;
     }
 
     /**

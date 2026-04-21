@@ -13,14 +13,14 @@ class HomeController extends Controller
     public function index()
     {
         // Articles à la une : derniers posts publiés avec un titre
-        $featured = Post::with('user')
+        $featured = Post::with(['user', 'mediaFiles'])
             ->published()
             ->whereNotNull('title')
             ->where('title', '!=', '')
             ->latest()
             ->first();
 
-        $side_posts = Post::with('user')
+        $side_posts = Post::with(['user', 'mediaFiles'])
             ->published()
             ->whereNotNull('title')
             ->where('title', '!=', '')
@@ -30,7 +30,7 @@ class HomeController extends Controller
             ->get();
 
         // Discussions actives : posts les plus commentés
-        $discussions = Post::with('user')
+        $discussions = Post::with(['user', 'mediaFiles'])
             ->published()
             ->orderByDesc('comments_count')
             ->orderByDesc('created_at')
@@ -57,11 +57,11 @@ class HomeController extends Controller
             ->pluck('total', 'category');
 
         // Activité récente pour le ticker
-        $recentPosts   = Post::with('user')->published()->whereNotNull('title')->latest()->take(6)->get();
+        $recentPosts   = Post::with(['user', 'mediaFiles'])->published()->whereNotNull('title')->latest()->take(6)->get();
         $recentThreads = ForumThread::with('user')->latest()->take(4)->get();
 
         // Articles populaires : les plus vus des 30 derniers jours
-        $popularPosts = rescue(fn() => Post::with('user')
+        $popularPosts = rescue(fn() => Post::with(['user', 'mediaFiles'])
             ->published()
             ->whereNotNull('title')
             ->where('title', '!=', '')
