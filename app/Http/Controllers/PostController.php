@@ -178,7 +178,7 @@ class PostController extends Controller
             'user'           => [
                 'name'        => $post->user->name,
                 'username'    => $post->user->username,
-                'avatar'      => $post->user->avatar ? Storage::disk('public')->url($post->user->avatar) : null,
+                'avatar'      => $post->user->avatar_url,
                 'profile_url' => route('profile.show', $post->user->username),
                 'is_verified' => (bool) ($post->user->is_verified ?? false),
             ],

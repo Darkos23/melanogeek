@@ -1240,8 +1240,8 @@
                 <div class="art-excerpt">{{ $featExcerpt }}</div>
                 @endif
                 <div class="art-meta" style="margin-top:auto">
-                    @if($featured->user->avatar)
-                        <img src="{{ Storage::disk('public')->url($featured->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
+                    @if($featured->user->avatar_url)
+                        <img src="{{ $featured->user->avatar_url }}" class="art-avi" style="object-fit:cover" alt="">
                     @else
                         <div class="art-avi">{{ $featInitial }}</div>
                     @endif
@@ -1274,8 +1274,8 @@
                 <div class="art-excerpt" style="font-size:.78rem;-webkit-line-clamp:2">{{ $excerpt }}</div>
                 @endif
                 <div class="art-meta" style="margin-top:auto;padding-top:12px">
-                    @if($post->user->avatar)
-                        <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" class="art-avi" style="object-fit:cover" alt="">
+                    @if($post->user->avatar_url)
+                        <img src="{{ $post->user->avatar_url }}" class="art-avi" style="object-fit:cover" alt="">
                     @else
                         <div class="art-avi">{{ $initial }}</div>
                     @endif
@@ -1377,8 +1377,8 @@
                         $discLabel   = $disc->title ? Str::limit($disc->title, 80) : Str::limit(strip_tags($disc->body ?? ''), 80);
                     @endphp
                     <a href="{{ route('forum.index') }}" class="forum-thread">
-                        @if($disc->user->avatar)
-                            <img src="{{ Storage::disk('public')->url($disc->user->avatar) }}" class="ft-avi" style="object-fit:cover" alt="">
+                        @if($disc->user->avatar_url)
+                            <img src="{{ $disc->user->avatar_url }}" class="ft-avi" style="object-fit:cover" alt="">
                         @else
                             <div class="ft-avi">{{ $discInitial }}</div>
                         @endif

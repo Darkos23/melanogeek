@@ -821,8 +821,8 @@
             <div class="post-author-left">
                 <a href="{{ route('profile.show', $post->user->username) }}" class="post-avatar">
                     <div class="post-avatar-inner">
-                        @if($post->user->avatar)
-                            <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="">
+                        @if($post->user->avatar_url)
+                            <img src="{{ $post->user->avatar_url }}" alt="">
                         @else
                             {{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}
                         @endif
@@ -970,8 +970,8 @@
         {{-- ── BIO AUTEUR ── --}}
         <div class="post-author-card">
             <a href="{{ route('profile.show', $post->user->username) }}" class="pac-avatar">
-                @if($post->user->avatar)
-                    <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="">
+                @if($post->user->avatar_url)
+                    <img src="{{ $post->user->avatar_url }}" alt="">
                 @else
                     <span>{{ mb_strtoupper(mb_substr($post->user->username, 0, 1)) }}</span>
                 @endif
@@ -999,8 +999,8 @@
             <div class="comment-form-wrap">
                 <div class="comment-form-avi">
                     <div class="comment-form-avi-inner">
-                        @if(auth()->user()->avatar)
-                            <img src="{{ Storage::disk('public')->url(auth()->user()->avatar) }}" alt="">
+                        @if(auth()->user()->avatar_url)
+                            <img src="{{ auth()->user()->avatar_url }}" alt="">
                         @else
                             {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                         @endif

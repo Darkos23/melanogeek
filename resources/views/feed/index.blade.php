@@ -569,8 +569,8 @@
             <div class="suggestion-item">
                 <a href="{{ route('profile.show', $user->username) }}" class="suggestion-avatar">
                     <div class="suggestion-avatar-inner">
-                        @if($user->avatar)
-                            <img src="{{ Storage::disk('public')->url($user->avatar) }}" alt="{{ $user->name }}">
+                        @if($user->avatar_url)
+                            <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}">
                         @else
                             {{ mb_strtoupper(mb_substr($user->name, 0, 1)) }}
                         @endif

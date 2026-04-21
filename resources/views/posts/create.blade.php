@@ -518,8 +518,8 @@
             <div class="author-row">
                 <div class="author-avatar">
                     <div class="author-avatar-inner">
-                        @if(auth()->user()->avatar)
-                            <img src="{{ Storage::disk('public')->url(auth()->user()->avatar) }}" alt="">
+                        @if(auth()->user()->avatar_url)
+                            <img src="{{ auth()->user()->avatar_url }}" alt="">
                         @else
                             {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                         @endif

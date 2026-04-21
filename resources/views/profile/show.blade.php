@@ -11,8 +11,8 @@
 
     <!-- ══ COVER ══ -->
     <div class="profile-cover">
-        @if($user->cover_photo)
-            <img src="{{ Storage::disk('public')->url($user->cover_photo) }}" alt="Cover">
+        @if($user->cover_photo_url)
+            <img src="{{ $user->cover_photo_url }}" alt="Cover">
         @endif
         <div class="profile-cover-overlay"></div>
         @auth
@@ -28,8 +28,8 @@
         <!-- Avatar -->
         <div class="profile-avatar-wrap">
             <div class="profile-avatar">
-                @if($user->avatar)
-                    <img src="{{ Storage::disk('public')->url($user->avatar) }}" alt="{{ $user->name }}">
+                @if($user->avatar_url)
+                    <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}">
                 @else
                     <div class="profile-avatar-inner">{{ mb_strtoupper(mb_substr($user->name,0,1)) }}</div>
                 @endif

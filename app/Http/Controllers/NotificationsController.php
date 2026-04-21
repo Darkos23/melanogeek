@@ -58,13 +58,16 @@ class NotificationsController extends Controller
             'unread' => $unread,
             'items'  => $notifications->map(function ($n) {
                 $avatar = $n->data['avatar'] ?? null;
+                $avatarUrl = $avatar && Storage::disk('public')->exists($avatar)
+                    ? Storage::disk('public')->url($avatar)
+                    : null;
 
                 return [
                     'id'         => $n->id,
                     'type'       => $n->data['type']     ?? 'unknown',
                     'name'       => $n->data['name']     ?? null,
                     'username'   => $n->data['username'] ?? null,
-                    'avatar'     => $avatar ? Storage::disk('public')->url($avatar) : null,
+                    'avatar'     => $avatarUrl,
                     'post_id'    => $n->data['post_id']  ?? null,
                     'post_title' => $n->data['post_title'] ?? null,
                     'comment_body' => $n->data['comment_body'] ?? null,

@@ -91,8 +91,8 @@
                     <div style="display:flex;align-items:center;gap:10px;">
                         <div class="user-avatar-mini">
                             <div class="user-avatar-mini-inner">
-                                @if($u->avatar)
-                                    <img src="{{ Storage::disk('public')->url($u->avatar) }}" alt="">
+                                @if($u->avatar_url)
+                                    <img src="{{ $u->avatar_url }}" alt="">
                                 @else
                                     {{ mb_strtoupper(mb_substr($u->name, 0, 1)) }}
                                 @endif

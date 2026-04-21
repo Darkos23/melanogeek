@@ -450,8 +450,8 @@
             <div class="mg-user-menu" id="mgUserMenu">
                 <button class="mg-user-btn" id="mgUserBtn" type="button">
                     <div class="mg-user-avi">
-                        @if(auth()->user()->avatar)
-                            <img src="{{ Storage::disk('public')->url(auth()->user()->avatar) }}" alt="" width="28" height="28" style="width:28px;height:28px;border-radius:50%;object-fit:cover;display:block;">
+                        @if(auth()->user()->avatar_url)
+                            <img src="{{ auth()->user()->avatar_url }}" alt="" width="28" height="28" style="width:28px;height:28px;border-radius:50%;object-fit:cover;display:block;">
                         @else
                             {{ mb_strtoupper(mb_substr(auth()->user()->username, 0, 1)) }}
                         @endif

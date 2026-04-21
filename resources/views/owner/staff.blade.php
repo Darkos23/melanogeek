@@ -65,7 +65,7 @@
                                 <div style="display:flex;align-items:center;gap:10px;">
                                     <div class="owner-staff-avatar">
                                         <div class="owner-staff-avatar-inner">
-                                            @if($admin->avatar)<img src="{{ Storage::disk('public')->url($admin->avatar) }}" alt="">@else{{ mb_strtoupper(mb_substr($admin->name,0,1)) }}@endif
+                                            @if($admin->avatar_url)<img src="{{ $admin->avatar_url }}" alt="">@else{{ mb_strtoupper(mb_substr($admin->name,0,1)) }}@endif
                                         </div>
                                     </div>
                                     <div>
@@ -109,7 +109,7 @@
                                 <div style="display:flex;align-items:center;gap:10px;">
                                     <div class="owner-staff-avatar owner-staff-avatar-cm">
                                         <div class="owner-staff-avatar-inner">
-                                            @if($cm->avatar)<img src="{{ Storage::disk('public')->url($cm->avatar) }}" alt="">@else{{ mb_strtoupper(mb_substr($cm->name,0,1)) }}@endif
+                                            @if($cm->avatar_url)<img src="{{ $cm->avatar_url }}" alt="">@else{{ mb_strtoupper(mb_substr($cm->name,0,1)) }}@endif
                                         </div>
                                     </div>
                                     <div>

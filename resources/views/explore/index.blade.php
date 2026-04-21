@@ -459,8 +459,8 @@
                     <div class="explore-item-author">
                         <div class="explore-author-avi">
                             <div class="explore-author-avi-inner">
-                                @if($post->user->avatar)
-                                    <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="">
+                                @if($post->user->avatar_url)
+                                    <img src="{{ $post->user->avatar_url }}" alt="">
                                 @else
                                     {{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}
                                 @endif

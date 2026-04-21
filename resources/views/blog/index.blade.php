@@ -352,8 +352,8 @@
         </div>
         <div class="featured-content-bottom">
             <div class="featured-meta">
-                @if($featured->user->avatar)
-                    <img src="{{ Storage::disk('public')->url($featured->user->avatar) }}" class="featured-avi" alt="">
+                @if($featured->user->avatar_url)
+                    <img src="{{ $featured->user->avatar_url }}" class="featured-avi" alt="">
                 @else
                     <div class="featured-avi featured-avi-initial">{{ strtoupper(substr($featured->user->name,0,1)) }}</div>
                 @endif
@@ -419,8 +419,8 @@
             @endif
             <div class="post-card-meta">
                 <div class="post-card-avi">
-                    @if($post->user->avatar)
-                        <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="">
+                    @if($post->user->avatar_url)
+                        <img src="{{ $post->user->avatar_url }}" alt="">
                     @else
                         {{ $initial }}
                     @endif

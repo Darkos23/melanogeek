@@ -5,8 +5,8 @@
         <a href="{{ route('profile.show', $post->user->username) }}" class="feed-card-author">
             <div class="feed-avatar">
                 <div class="feed-avatar-inner">
-                    @if($post->user->avatar)
-                        <img src="{{ Storage::disk('public')->url($post->user->avatar) }}" alt="{{ $post->user->name }}">
+                    @if($post->user->avatar_url)
+                        <img src="{{ $post->user->avatar_url }}" alt="{{ $post->user->name }}">
                     @else
                         {{ mb_strtoupper(mb_substr($post->user->name, 0, 1)) }}
                     @endif

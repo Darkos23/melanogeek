@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -176,6 +177,20 @@ class User extends Authenticatable
     public function getUnreadNotificationsCountAttribute(): int
     {
         return $this->unreadNotifications()->count();
+    }
+
+    public function getAvatarUrlAttribute(): ?string
+    {
+        return $this->avatar && Storage::disk('public')->exists($this->avatar)
+            ? Storage::disk('public')->url($this->avatar)
+            : null;
+    }
+
+    public function getCoverPhotoUrlAttribute(): ?string
+    {
+        return $this->cover_photo && Storage::disk('public')->exists($this->cover_photo)
+            ? Storage::disk('public')->url($this->cover_photo)
+            : null;
     }
 
     // Route model binding par username
