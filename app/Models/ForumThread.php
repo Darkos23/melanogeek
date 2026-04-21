@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Models;
 
@@ -24,12 +24,15 @@ class ForumThread extends Model
     }
 
     public const CATEGORIES = [
-        'manga-anime'    => ['label' => 'Manga & Animé',      'icon' => '🎌'],
-        'gaming'         => ['label' => 'Gaming',              'icon' => '🎮'],
-        'tech'           => ['label' => 'Tech & IA',           'icon' => '🤖'],
-        'culture'        => ['label' => 'Afrofuturisme',        'icon' => '🚀'],
-        'cosplay'        => ['label' => 'Cosplay',             'icon' => '🎭'],
-        'off-topic'      => ['label' => 'Off-topic',           'icon' => '☕'],
+        'manga-anime'   => ['label' => 'Animés & mangas',             'icon' => '🎌'],
+        'gaming'        => ['label' => 'Gaming & E-sport',            'icon' => '🎮'],
+        'cinema-series' => ['label' => 'Cinéma & séries',             'icon' => '🎬'],
+        'tech'          => ['label' => 'Tech, geek & IA',             'icon' => '🤖'],
+        'web3-economie' => ['label' => 'Web3 & économie numérique',   'icon' => '₿'],
+        'lore-africain' => ['label' => 'Pop culture & lore africain', 'icon' => '📚'],
+        'hardware'      => ['label' => 'Hardware & PC building',      'icon' => '🖥️'],
+        'carriere'      => ['label' => 'Carrière & métiers',          'icon' => '💼'],
+        'off-topic'     => ['label' => 'Off-topic',                   'icon' => '☕'],
     ];
 
     public function user()
@@ -49,6 +52,7 @@ class ForumThread extends Model
 
     public function getCategoryIconAttribute(): string
     {
-        return self::CATEGORIES[$this->category]['icon'] ?? '💬';
+        return self::CATEGORIES[$this->category]['icon'] ?? 'ðŸ’¬';
     }
 }
+

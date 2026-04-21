@@ -774,7 +774,7 @@
 /* ══ CATÉGORIES — CARTES GRADIENT ══ */
 .cat-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
 }
 @media (max-width: 1024px) { .cat-grid { grid-template-columns: repeat(4, 1fr); justify-items: stretch; } }
@@ -811,6 +811,10 @@
 .cat-card[href*="gaming"]::after        { background: linear-gradient(145deg, #16a34a, #4ade80); display: block; }
 .cat-card[href*="tech"]::after          { background: linear-gradient(145deg, #2563eb, #60a5fa); display: block; }
 .cat-card[href*="dev"]::after           { background: linear-gradient(145deg, #d97706, #fbbf24); display: block; }
+.cat-card[href*="web3-economie"]::after { background: linear-gradient(145deg, #0f766e, #2dd4bf); display: block; }
+.cat-card[href*="lore-africain"]::after { background: linear-gradient(145deg, #7c2d12, #fb923c); display: block; }
+.cat-card[href*="hardware"]::after      { background: linear-gradient(145deg, #334155, #94a3b8); display: block; }
+.cat-card[href*="carriere"]::after      { background: linear-gradient(145deg, #7e22ce, #d8b4fe); display: block; }
 .cat-card[href*="cinema"]::after        { background: linear-gradient(145deg, #dc2626, #f87171); display: block; }
 .cat-card[href*="culture"]::after       { background: linear-gradient(145deg, #059669, #34d399); display: block; }
 .cat-card[href*="debat"]::after         { background: linear-gradient(145deg, #7c3aed, #c084fc); display: block; }
@@ -832,6 +836,10 @@
 .cat-card[href*="gaming"] .cat-icon      { color: #4ade80; }
 .cat-card[href*="tech"] .cat-icon        { color: #60a5fa; }
 .cat-card[href*="dev"] .cat-icon         { color: #fbbf24; }
+.cat-card[href*="web3-economie"] .cat-icon { color: #2dd4bf; }
+.cat-card[href*="lore-africain"] .cat-icon { color: #fb923c; }
+.cat-card[href*="hardware"] .cat-icon      { color: #cbd5e1; }
+.cat-card[href*="carriere"] .cat-icon      { color: #d8b4fe; }
 .cat-card[href*="cinema"] .cat-icon      { color: #f87171; }
 .cat-card[href*="culture"] .cat-icon     { color: #34d399; }
 .cat-card[href*="debat"] .cat-icon       { color: #c084fc; }
@@ -1119,9 +1127,9 @@
         <hr class="lp-hero-rule">
 
         <p class="lp-sub">
-            Articles, débats, reviews et conversations
-            autour du manga, du gaming, du développement, de la tech et de
-            la culture nerd — par et pour la communauté africaine.
+            Articles, débats, reviews et conversations autour des animés, du gaming,
+            du cinéma, de la tech, du Web3, du hardware et des mythos africains
+            — par et pour la communauté geek africaine.
         </p>
 
         <div class="lp-ctas">
@@ -1328,13 +1336,14 @@
     </div>
     @php
         $cats = [
-            'manga-anime'   => ['🎌', 'Manga & Animé'],
-            'gaming'        => ['🎮', 'Gaming'],
-            'tech'          => ['🤖', 'Tech & IA'],
-            'dev'           => ['💻', 'Développement'],
-            'cinema-series' => ['🎬', 'Cinéma & Séries'],
-            'culture'       => ['🚀', 'Afrofuturisme'],
-            'debat'         => ['💬', 'Débat'],
+            'manga-anime'   => ['🎌', 'Animés & mangas'],
+            'gaming'        => ['🎮', 'Gaming & E-sport'],
+            'cinema-series' => ['🎬', 'Cinéma & séries'],
+            'tech'          => ['🤖', 'Tech, geek & IA'],
+            'web3-economie' => ['₿', 'Web3 & économie numérique'],
+            'lore-africain' => ['📚', 'Pop culture & lore africain'],
+            'hardware'      => ['🖥️', 'Hardware & PC building'],
+            'carriere'      => ['💼', 'Carrière & métiers'],
         ];
     @endphp
     <div class="cat-grid">

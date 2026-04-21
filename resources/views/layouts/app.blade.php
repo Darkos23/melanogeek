@@ -496,11 +496,11 @@
         <strong>MelanoGeek</strong> · Vol. I · Éd. Printemps {{ date('Y') }} · La culture geek, vue d'Afrique
     </div>
     <ul class="mg-editorial-links">
-        <li><a href="{{ route('blog.index') }}?category=manga-anime" class="{{ request('category') === 'manga-anime' ? 'active' : '' }}">Manga</a></li>
-        <li><a href="{{ route('blog.index') }}?category=gaming"      class="{{ request('category') === 'gaming'      ? 'active' : '' }}">Gaming</a></li>
-        <li><a href="{{ route('blog.index') }}?category=dev"         class="{{ request('category') === 'dev'         ? 'active' : '' }}">Développement</a></li>
-        <li><a href="{{ route('blog.index') }}?category=tech"        class="{{ request('category') === 'tech'        ? 'active' : '' }}">Tech &amp; IA</a></li>
-        <li><a href="{{ route('blog.index') }}?category=cinema-series" class="{{ request('category') === 'cinema-series' ? 'active' : '' }}">Cinéma</a></li>
+        <li><a href="{{ route('blog.index') }}?category=manga-anime">Animés &amp; mangas</a></li>
+        <li><a href="{{ route('blog.index') }}?category=gaming">Gaming &amp; E-sport</a></li>
+        <li><a href="{{ route('blog.index') }}?category=cinema-series">Cinéma &amp; séries</a></li>
+        <li><a href="{{ route('blog.index') }}?category=tech">Tech, IA</a></li>
+        <li><a href="{{ route('blog.index') }}?category=hardware">Hardware</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
     </ul>
 </div>

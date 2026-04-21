@@ -155,6 +155,10 @@
 .post-card-banner.cat-tech         { background: linear-gradient(135deg,#0a1628,#0d3060,#1a5cb8); }
 .post-card-banner.cat-dev          { background: linear-gradient(135deg,#1a1200,#4a3400,#8b6200); }
 .post-card-banner.cat-cinema-series{ background: linear-gradient(135deg,#1a0808,#4a1010,#9b1a1a); }
+.post-card-banner.cat-web3-economie{ background: linear-gradient(135deg,#062a24,#0d6a5f,#1bc4a8); }
+.post-card-banner.cat-lore-africain{ background: linear-gradient(135deg,#271005,#7c2d12,#fb923c); }
+.post-card-banner.cat-hardware     { background: linear-gradient(135deg,#111827,#475569,#94a3b8); }
+.post-card-banner.cat-carriere     { background: linear-gradient(135deg,#2e1065,#7e22ce,#d8b4fe); }
 .post-card-banner.cat-culture      { background: linear-gradient(135deg,#0a1a0a,#1a3a10,#2d6b1a); }
 .post-card-banner.cat-debat        { background: linear-gradient(135deg,#1a1218,#3a1a38,#6b2060); }
 .post-card-banner.cat-default      { background: linear-gradient(135deg,var(--bg-card2),var(--bg-hover)); }
@@ -239,7 +243,7 @@
         Culture geek,<br><span style="color:var(--gold)">vue d'Afrique.</span>
     </h1>
     <p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.65;max-width:460px;font-family:'Inter',sans-serif">
-        Articles, reviews, analyses et coups de cœur autour du manga, du gaming, du développement, de la tech et de la culture nerd africaine.
+        Articles, analyses et coups de cœur autour du divertissement, du savoir, de l'identité et de la pratique geek africaine.
     </p>
 
     @auth
@@ -256,13 +260,14 @@
     @php
     $cats = [
         ''               => 'Tous les articles',
-        'manga-anime'    => 'Manga',
-        'gaming'         => 'Gaming',
+        'manga-anime'    => 'Animés & mangas',
+        'gaming'         => 'Gaming & E-sport',
+        'cinema-series'  => 'Cinéma & séries',
         'tech'           => 'Tech & IA',
-        'dev'            => 'Dev',
-        'cinema-series'  => 'Cinema',
-        'culture'        => 'Culture',
-        'debat'          => 'Debat',
+        'carriere'       => 'Éducation & carrière',
+        'culture'        => 'Afrofuturisme',
+        'hardware'       => 'Hardware & setup',
+        'web3-economie'  => 'Économie numérique',
     ];
     @endphp
 
@@ -388,6 +393,10 @@
             'tech'          => '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
             'dev'           => '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
             'cinema-series' => '<rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>',
+            'web3-economie' => '<circle cx="12" cy="12" r="9"/><path d="M9 9h5a2 2 0 1 1 0 4H10a2 2 0 1 0 0 4h5"/><path d="M12 7v10"/>',
+            'lore-africain' => '<path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"/><path d="M9 12h6"/>',
+            'hardware'      => '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/><rect x="9" y="9" width="6" height="6"/>',
+            'carriere'      => '<path d="M3 7h18v11H3z"/><path d="M8 7V5h8v2"/><path d="M3 12h18"/>',
             'culture'       => '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
             'debat'         => '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
         ];
@@ -470,4 +479,3 @@
 @endif {{-- end $posts->isEmpty() --}}
 
 @endsection
-

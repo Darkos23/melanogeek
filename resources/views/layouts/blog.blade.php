@@ -1,9 +1,9 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @push('styles')
 <style>
 
-/* ── LAYOUT PRINCIPAL ── */
+/* â”€â”€ LAYOUT PRINCIPAL â”€â”€ */
 .blog-wrap {
     max-width: 1280px;
     margin: 0 auto;
@@ -15,7 +15,7 @@
 }
 .blog-main { min-width: 0; }
 
-/* ── SIDEBAR ── */
+/* â”€â”€ SIDEBAR â”€â”€ */
 .blog-sidebar { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 28px; }
 
 .sidebar-block {
@@ -86,7 +86,7 @@
 }
 .sb-newsletter button:hover { background: #fff; }
 
-/* ── BREADCRUMB ── */
+/* â”€â”€ BREADCRUMB â”€â”€ */
 .blog-breadcrumb {
     display: flex; align-items: center; gap: 6px;
     font-size: .63rem; color: var(--text-faint);
@@ -97,7 +97,7 @@
 .blog-breadcrumb a:hover { color: var(--text); }
 .blog-breadcrumb-sep { color: var(--text-faint); }
 
-/* ── FOOTER ── */
+/* â”€â”€ FOOTER â”€â”€ */
 .blog-footer {
     border-top: 1px solid var(--border);
     padding: 28px 52px;
@@ -109,7 +109,7 @@
 .blog-footer-links a { color: var(--text-muted); text-decoration: none; transition: color .16s; }
 .blog-footer-links a:hover { color: var(--text); }
 
-/* ── RESPONSIVE ── */
+/* â”€â”€ RESPONSIVE â”€â”€ */
 @media (max-width: 1024px) {
     .blog-wrap { grid-template-columns: 1fr; padding: 32px 28px 56px; }
     .blog-sidebar { display: none; }
@@ -124,14 +124,14 @@
 
 @section('content')
 
-{{-- ══ TWO-COLUMN LAYOUT ══ --}}
+{{-- â•â• TWO-COLUMN LAYOUT â•â• --}}
 <div class="blog-wrap">
     <main class="blog-main">
         @if(isset($breadcrumbs))
         <div class="blog-breadcrumb">
             <a href="{{ route('home') }}">Accueil</a>
             @foreach($breadcrumbs as $label => $url)
-                <span class="blog-breadcrumb-sep">›</span>
+                <span class="blog-breadcrumb-sep">â€º</span>
                 @if($loop->last)
                     <span>{{ $label }}</span>
                 @else
@@ -148,44 +148,48 @@
         @hasSection('sidebar')
             @yield('sidebar')
         @else
-            {{-- Sidebar par défaut --}}
+            {{-- Sidebar par dÃ©faut --}}
             <div class="sidebar-block">
-                <div class="sidebar-block-head">Catégories</div>
+                <div class="sidebar-block-head">CatÃ©gories</div>
                 <div class="sidebar-block-body">
-                    @php $activeCategory = request('category'); @endphp
-                    <a href="{{ route('blog.index') }}" class="sb-item {{ !$activeCategory ? 'active' : '' }}">
-                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>
-                        <span class="sb-item-name">Tout</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?category=manga-anime" class="sb-item {{ $activeCategory === 'manga-anime' ? 'active' : '' }}">
-                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
-                        <span class="sb-item-name">Manga &amp; Animé</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?category=gaming" class="sb-item {{ $activeCategory === 'gaming' ? 'active' : '' }}">
-                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="10" r="1" fill="currentColor"/><circle cx="18" cy="12" r="1" fill="currentColor"/></svg></span>
-                        <span class="sb-item-name">Gaming</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?category=tech" class="sb-item {{ $activeCategory === 'tech' ? 'active' : '' }}">
-                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
-                        <span class="sb-item-name">Tech &amp; IA</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?category=dev" class="sb-item {{ $activeCategory === 'dev' ? 'active' : '' }}">
-                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
-                        <span class="sb-item-name">Développement</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?category=cinema-series" class="sb-item {{ $activeCategory === 'cinema-series' ? 'active' : '' }}">
-                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M17 7h5M2 17h5M17 17h5"/></svg></span>
-                        <span class="sb-item-name">Cinéma &amp; Séries</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?category=culture" class="sb-item {{ $activeCategory === 'culture' ? 'active' : '' }}">
-                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 7.5H22l-6 4.5 2.5 7.5L12 17l-6.5 4.5L8 14 2 9.5h7.5z"/></svg></span>
-                        <span class="sb-item-name">Afrofuturisme</span>
-                    </a>
-                    <a href="{{ route('blog.index') }}?category=debat" class="sb-item {{ $activeCategory === 'debat' ? 'active' : '' }}">
-                        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-                        <span class="sb-item-name">Débat</span>
-                    </a>
-                </div>
+    @php $activeCategory = request('category'); @endphp
+    <a href="{{ route('blog.index') }}" class="sb-item {{ !$activeCategory ? 'active' : '' }}">
+        <span class="sb-item-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>
+        <span class="sb-item-name">Tout</span>
+    </a>
+    <a href="{{ route('blog.index') }}?category=manga-anime" class="sb-item {{ $activeCategory === 'manga-anime' ? 'active' : '' }}">
+        <span class="sb-item-icon">🎌</span>
+        <span class="sb-item-name">Animés &amp; mangas</span>
+    </a>
+    <a href="{{ route('blog.index') }}?category=gaming" class="sb-item {{ $activeCategory === 'gaming' ? 'active' : '' }}">
+        <span class="sb-item-icon">🎮</span>
+        <span class="sb-item-name">Gaming &amp; E-sport</span>
+    </a>
+    <a href="{{ route('blog.index') }}?category=cinema-series" class="sb-item {{ $activeCategory === 'cinema-series' ? 'active' : '' }}">
+        <span class="sb-item-icon">🎬</span>
+        <span class="sb-item-name">Cinéma &amp; séries</span>
+    </a>
+    <a href="{{ route('blog.index') }}?category=tech" class="sb-item {{ $activeCategory === 'tech' ? 'active' : '' }}">
+        <span class="sb-item-icon">🤖</span>
+        <span class="sb-item-name">Tech &amp; IA</span>
+    </a>
+    <a href="{{ route('blog.index') }}?category=carriere" class="sb-item {{ $activeCategory === 'carriere' ? 'active' : '' }}">
+        <span class="sb-item-icon">💼</span>
+        <span class="sb-item-name">Éducation &amp; carrière</span>
+    </a>
+    <a href="{{ route('blog.index') }}?category=culture" class="sb-item {{ $activeCategory === 'culture' ? 'active' : '' }}">
+        <span class="sb-item-icon">🚀</span>
+        <span class="sb-item-name">Afrofuturisme</span>
+    </a>
+    <a href="{{ route('blog.index') }}?category=hardware" class="sb-item {{ $activeCategory === 'hardware' ? 'active' : '' }}">
+        <span class="sb-item-icon">🖥️</span>
+        <span class="sb-item-name">Hardware &amp; setup</span>
+    </a>
+    <a href="{{ route('blog.index') }}?category=web3-economie" class="sb-item {{ $activeCategory === 'web3-economie' ? 'active' : '' }}">
+        <span class="sb-item-icon">₿</span>
+        <span class="sb-item-name">Économie numérique</span>
+    </a>
+</div>
             </div>
 
             @php
@@ -213,7 +217,7 @@
             <div class="sidebar-block">
                 <div class="sidebar-block-head">Newsletter</div>
                 <div class="sb-newsletter">
-                    <p>Reçois les meilleurs articles de la semaine directement dans ta boîte mail.</p>
+                    <p>ReÃ§ois les meilleurs articles de la semaine directement dans ta boÃ®te mail.</p>
                     <input type="email" placeholder="ton@email.com">
                     <button type="button">S'abonner</button>
                 </div>
@@ -222,17 +226,18 @@
     </aside>
 </div>
 
-{{-- ══ FOOTER ══ --}}
+{{-- â•â• FOOTER â•â• --}}
 <footer class="blog-footer">
-    <span>© {{ date('Y') }} MelanoGeek – La culture geek, vue d'Afrique.</span>
+    <span>Â© {{ date('Y') }} MelanoGeek â€“ La culture geek, vue d'Afrique.</span>
     <ul class="blog-footer-links">
         <li><a href="{{ route('home') }}">Accueil</a></li>
         <li><a href="{{ route('blog.index') }}">Blog</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
-        <li><a href="{{ route('community') }}">Communauté</a></li>
-        <li><a href="{{ route('about') }}">À propos</a></li>
+        <li><a href="{{ route('community') }}">CommunautÃ©</a></li>
+        <li><a href="{{ route('about') }}">Ã€ propos</a></li>
     </ul>
-    {{-- Développé par Korilab — masqué temporairement --}}
+    {{-- DÃ©veloppÃ© par Korilab â€” masquÃ© temporairement --}}
 </footer>
 
 @endsection
+

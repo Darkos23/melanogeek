@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Models;
 
@@ -27,13 +27,17 @@ class Post extends Model
     ];
 
     const CATEGORIES = [
-        'manga-anime'    => 'Manga & Animé',
-        'gaming'         => 'Gaming',
-        'tech'           => 'Tech & IA',
-        'dev'            => 'Développement',
-        'cinema-series'  => 'Cinéma & Séries',
-        'culture'        => 'Afrofuturisme',
-        'debat'          => 'Débat',
+        'manga-anime'    => 'Animés & mangas',
+        'gaming'         => 'Gaming & E-sport',
+        'cinema-series'  => 'Cinéma & séries',
+        'tech'           => 'Tech, geek & IA',
+        'dev'            => 'Développement web',
+        'web3-economie'  => 'Web3 & économie numérique',
+        'lore-africain'  => 'Pop culture & lore africain',
+        'hardware'       => 'Hardware & PC building',
+        'carriere'       => 'Carrière & métiers',
+        'culture'        => 'Mythos africains',
+        'debat'          => 'Débats & pop culture',
     ];
 
     public function user()
@@ -56,7 +60,7 @@ class Post extends Model
         return $this->hasMany(PostMedia::class)->orderBy('sort_order');
     }
 
-    // ── Scopes ────────────────────────────────────────────────────
+    // â”€â”€ Scopes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     public function scopePublished($query)
     {
         return $query->where('is_published', true)->where('pending_review', false);
@@ -72,7 +76,7 @@ class Post extends Model
         return $query->where('category', $category);
     }
 
-    // ── Helpers ───────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     public function getCategoryLabelAttribute(): string
     {
         return self::CATEGORIES[$this->category] ?? '';
@@ -99,3 +103,4 @@ class Post extends Model
         return null;
     }
 }
+
