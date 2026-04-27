@@ -8,1196 +8,636 @@
 
 @push('styles')
 <style>
-/* ═══════════════════════════════════════════════════
-   LANDING PAGE — DARK EDITORIAL
-   Inspiré Pitchfork dark · Vercel · The Ringer
-   Police titre : var(--font-head)
-   Accent primaire : or (#D4A843)
-═══════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   HOMEPAGE REDESIGN — V1 Dark × V2 Structure
+═══════════════════════════════════════════════ */
 
-/* ── Fond neutre, pas de motifs hérités ── */
+.hp { overflow-x: hidden; }
 
-/* ── Variable serif ── */
-.lp { --serif: 'DM Serif Display', 'Georgia', serif; overflow-x: hidden; width: 100%; }
-
-/* ══ HERO — EDITORIAL ASYMÉTRIQUE ══ */
-.lp-hero {
+/* ══ HERO ══ */
+.hp-hero {
+    max-width: 1280px; margin: 0 auto;
+    padding: 52px 52px 64px;
     display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 0;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 56px 52px 80px;
-    position: relative;
-    overflow: hidden;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
     align-items: center;
+    position: relative;
 }
-.lp-hero::before {
+.hp-hero::before {
     content: '';
     position: absolute; inset: 0;
     background:
-        radial-gradient(ellipse 70% 80% at 15% 60%, rgba(200,82,42,0.09) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 70% at 85% 30%, rgba(212,168,67,0.06) 0%, transparent 60%);
+        radial-gradient(ellipse 60% 70% at 10% 70%, rgba(200,82,42,.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 90% 20%, rgba(212,168,67,.07) 0%, transparent 55%);
     pointer-events: none; z-index: 0;
 }
-.lp-hero > * { position: relative; z-index: 1; }
-@media (max-width: 1100px) {
-    .lp-hero { grid-template-columns: 1fr; padding: 44px 28px 60px; }
-    .lp-hero-right { display: none; }
+.hp-hero > * { position: relative; z-index: 1; }
+@media (max-width: 1024px) {
+    .hp-hero { grid-template-columns: 1fr; padding: 40px 28px 52px; }
+    .hp-hero-right { display: none; }
 }
-@media (max-width: 600px) { .lp-hero { padding: 34px 20px 52px; } }
+@media (max-width: 600px) { .hp-hero { padding: 32px 16px 44px; } }
 
-.lp-hero-left {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    padding-right: 64px;
-}
-@media (max-width: 1100px) { .lp-hero-left { padding-right: 0; } }
-
-/* Vol. label */
-.lp-vol {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
+.hp-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: .62rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--gold);
+    font-size: .58rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 20px;
 }
-.lp-vol::before {
-    content: '';
-    display: block;
-    width: 28px;
-    height: 1px;
-    background: var(--gold);
-    opacity: .7;
+.hp-hero-eyebrow::before {
+    content: ''; display: block;
+    width: 22px; height: 1px; background: var(--terra); opacity: .8;
 }
-
-/* Titre principal */
-.lp-h1 {
+.hp-h1 {
     font-family: var(--font-head);
-    font-size: clamp(2.8rem, 5vw, 4.6rem);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -.04em;
-    color: rgba(255,255,255,.94);
-    margin: 0;
+    font-size: clamp(2.6rem, 5vw, 4.4rem);
+    font-weight: 800; line-height: 1.04; letter-spacing: -.04em;
+    color: rgba(255,255,255,.93); margin: 0 0 20px;
 }
-.lp-h1-gold {
+.hp-h1-accent {
     background: linear-gradient(135deg, #D4A843 0%, #f0c060 40%, #C8522A 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-
-/* Filet or sous le titre */
-.lp-hero-rule {
-    width: 64px;
-    height: 2px;
-    background: var(--gold);
-    opacity: .6;
-    border: none;
-    margin: 0;
+.hp-sub {
+    font-size: 1rem; line-height: 1.7; color: rgba(255,255,255,.45);
+    max-width: 480px; margin: 0 0 32px;
 }
-
-/* Sous-titre */
-.lp-sub {
-    font-family: var(--font-body);
-    font-size: 1.05rem;
-    line-height: 1.65;
-    color: rgba(255,255,255,.50);
-    max-width: 440px;
-    margin: 0;
-}
-
-/* CTAs */
-.lp-ctas {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-/* Bouton principal — blanc pill avec halo coloré (identique ngrok) */
-.lp-btn-main {
-    position: relative;
-    background: rgba(255,255,255,.90);
-    color: rgba(0,0,0,.90) !important;
-    border: none;
-    padding: 0 22px;
-    height: 46px;
-    border-radius: 9999px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .78rem;
-    font-weight: 500;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.hp-ctas { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.hp-btn-main {
+    background: var(--terra); color: white !important;
+    border: none; padding: 0 24px; height: 46px; border-radius: 9999px;
+    font-family: var(--font-head); font-size: .85rem; font-weight: 700;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
     transition: background .15s, transform .15s;
-    overflow: visible;
-    user-select: none;
 }
-.lp-btn-main::after {
-    content: '';
-    position: absolute;
-    inset: 1px;
-    border-radius: 9999px;
-    background: conic-gradient(
-        rgb(252,211,77),
-        rgb(190,242,100),
-        rgb(110,231,183),
-        rgb(125,211,252),
-        rgb(216,180,254),
-        rgb(253,164,175),
-        rgb(252,211,77)
-    );
-    filter: url(#btn-glow-blur);
-    opacity: .85;
-    z-index: -1;
-    transition: transform .2s;
-}
-.lp-btn-main:hover { background: #fff; }
-.lp-btn-main:hover::after { transform: scale(1.06); }
-.lp-btn-main:active { transform: scale(.97); }
-
-/* Bouton secondaire — ghost sobre */
-.lp-btn-ghost {
-    background: transparent;
-    color: rgba(255,255,255,.55) !important;
-    border: 1px solid rgba(255,255,255,.14);
-    padding: 0 22px;
-    height: 46px;
-    border-radius: 9999px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .78rem;
-    font-weight: 500;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+.hp-btn-main:hover { background: var(--accent); transform: translateY(-1px); }
+.hp-btn-ghost {
+    background: transparent; color: rgba(255,255,255,.5) !important;
+    border: 1px solid rgba(255,255,255,.14); padding: 0 22px; height: 46px; border-radius: 9999px;
+    font-family: var(--font-head); font-size: .85rem; font-weight: 600;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
     transition: color .15s, border-color .15s;
 }
-.lp-btn-ghost:hover {
-    color: rgba(255,255,255,.85) !important;
-    border-color: rgba(255,255,255,.28);
-}
+.hp-btn-ghost:hover { color: rgba(255,255,255,.85) !important; border-color: rgba(255,255,255,.28); }
 
-/* Scroll hint */
-.lp-scroll-hint {
-    width: 26px; height: 42px;
-    border: 1.5px solid rgba(255,255,255,0.15);
-    border-radius: 100px;
-    display: flex; align-items: flex-start;
-    justify-content: center; padding-top: 5px;
-    margin-top: 8px;
-}
-.lp-scroll-dot {
-    width: 4px; height: 8px;
-    background: rgba(255,255,255,0.45);
-    border-radius: 100px;
-    animation: scrollBounce 1.8s ease-in-out infinite;
-}
-@keyframes scrollBounce {
-    0%, 100% { transform: translateY(0); opacity: .45; }
-    50%       { transform: translateY(12px); opacity: .9; }
-}
-@media (prefers-reduced-motion: reduce) { .lp-scroll-dot { animation: none; } }
-
-/* ── Colonne droite — encart éditorial ── */
-.lp-hero-right {
-    border-left: 1px solid var(--border);
-    padding-left: 52px;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    align-self: stretch;
-    justify-content: center;
-}
-.lp-ed-pullquote {
-    border-left: 2px solid var(--gold);
-    padding-left: 18px;
-}
-.lp-ed-pullquote-text {
-    font-family: var(--serif);
-    font-size: 1.05rem;
-    font-style: italic;
-    line-height: 1.55;
-    color: rgba(255,255,255,.65);
-}
-.lp-ed-pullquote-attr {
-    margin-top: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-}
-.lp-ed-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-.lp-ed-stat {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 12px;
-}
-.lp-ed-stat:last-child { border-bottom: none; padding-bottom: 0; }
-.lp-ed-stat-n {
-    font-family: var(--serif);
-    font-size: 1.6rem;
-    color: rgba(255,255,255,.80);
-    line-height: 1;
-}
-.lp-ed-stat-l {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    text-align: right;
-}
-
-/* ══ TICKER ACTIVITÉ ══ */
-.lp-ticker {
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    display: flex;
-    align-items: stretch;
-    max-width: 100vw;
-    width: 100%;
-}
-.lp-ticker-label {
-    flex-shrink: 0;
-    display: flex; align-items: center;
-    padding: 0 18px;
-    background: var(--terra);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem; font-weight: 700;
-    letter-spacing: .12em; text-transform: uppercase;
-    color: white;
-    gap: 7px;
-    z-index: 3;
-}
-.lp-ticker-label-dot {
-    width: 6px; height: 6px;
-    background: white; border-radius: 50%;
-    animation: tickerPulse 1.4s ease-in-out infinite;
-}
-@keyframes tickerPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%       { opacity: .4; transform: scale(.7); }
-}
-.lp-ticker-track {
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-}
-.lp-ticker-track::after {
-    content: ''; position: absolute;
-    right: 0; top: 0; bottom: 0; width: 60px; z-index: 2;
-    background: linear-gradient(-90deg, var(--bg-card), transparent);
-}
-.lp-ticker-t { display: inline-flex; animation: tickr 40s linear infinite; padding: 11px 0; }
-.lp-ticker-t:hover { animation-play-state: paused; }
-@keyframes tickr { from { transform: translateX(0) } to { transform: translateX(-50%) } }
-.lp-tt {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .6rem;
-    font-weight: 500;
-    letter-spacing: .06em;
-    color: var(--text-muted);
-    padding: 0 32px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    transition: color .18s;
-}
-.lp-tt:hover { color: var(--cream); }
-.lp-tt-type {
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    font-size: .55rem;
-    flex-shrink: 0;
-}
-.lp-tt-type.blog   { color: var(--terra); }
-.lp-tt-type.forum  { color: var(--gold); }
-.lp-tt-title { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.lp-tt-sep { color: var(--border); flex-shrink: 0; }
-
-/* ══ STRUCTURE SECTIONS ══ */
-.lp-section {
-    padding: 72px 52px;
-    max-width: 1280px;
-    margin: 0 auto;
-}
-.lp-section-full {
-    padding: 72px 52px;
-}
-.lp-section-full .lp-section-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-}
-@media (max-width: 1024px) {
-    .lp-section { padding: 52px 28px; }
-    .lp-section-full { padding: 52px 28px; }
-}
-@media (max-width: 768px) {
-    .lp-section { padding: 44px 16px; }
-    .lp-section-full { padding: 44px 16px; }
-    .lp-ed-header { margin-bottom: 28px; }
-}
-
-/* ── En-tête éditorial de section (trait + numéro + titre) ── */
-.lp-ed-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 48px;
-}
-.lp-ed-header-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .6rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--gold);
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-.lp-ed-header-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .68rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-.lp-ed-header-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-}
-.lp-ed-header-link {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .6rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--text-faint) !important;
-    text-decoration: none;
-    white-space: nowrap;
-    flex-shrink: 0;
-    transition: color .18s;
-}
-.lp-ed-header-link:hover { color: var(--gold) !important; }
-
-/* ── ARTICLES POPULAIRES ── */
-.lp-popular-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 0;
-    border-top: 1px solid rgba(255,255,255,.06);
-}
-.lp-popular-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 18px;
-    padding: 18px 4px;
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    text-decoration: none;
-    transition: background .2s;
-}
-.lp-popular-item:hover { background: rgba(255,255,255,.015); }
-.lp-popular-item:hover .lp-popular-title { color: var(--gold); }
-.lp-popular-rank {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--terra);
-    opacity: .55;
-    line-height: 1;
-    min-width: 42px;
-    letter-spacing: -.02em;
-}
-.lp-popular-content { flex: 1; min-width: 0; }
-.lp-popular-title {
-    font-family: var(--font-head, 'Bricolage Grotesque', sans-serif);
-    font-size: 1.02rem;
-    font-weight: 600;
-    color: rgba(255,255,255,.88);
-    line-height: 1.35;
-    letter-spacing: -.01em;
-    margin-bottom: 6px;
-    transition: color .2s;
-}
-.lp-popular-meta {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .7rem;
-    color: rgba(255,255,255,.35);
-    letter-spacing: .03em;
-}
-.lp-popular-dot { opacity: .5; }
-@media (max-width: 640px) {
-    .lp-popular-grid { grid-template-columns: 1fr; }
-    .lp-popular-rank { font-size: 1.3rem; min-width: 34px; }
-    .lp-popular-title { font-size: .92rem; }
-}
-
-/* ══ ARTICLES — GRILLE ÉDITORIALE ══ */
-
-/* ── Cover Story (full-width magazine cover) ── */
-.cover-story {
-    display: block;
-    text-decoration: none;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    overflow: hidden;
-    transition: border-color .25s, box-shadow .25s, transform .25s;
-    margin-bottom: 48px;
-}
-.cover-story:hover {
-    border-color: var(--border-hover);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    transform: translateY(-3px);
-}
-.cover-story-thumb {
-    width: 100%;
-    aspect-ratio: 21/9;
+/* Hero right — featured image card */
+.hp-hero-card {
+    display: block; text-decoration: none;
+    border-radius: 22px; overflow: hidden;
     background: var(--bg-card2);
-    overflow: hidden;
-    position: relative;
-}
-.cover-story-thumb img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform .8s cubic-bezier(.2,.8,.2,1);
-}
-.cover-story:hover .cover-story-thumb img { transform: scale(1.03); }
-.cover-story-placeholder {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, var(--bg-card2), var(--bg-hover));
-    color: var(--text-faint);
-    opacity: .25;
-}
-.cover-story-body {
-    padding: 40px 48px 44px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
-.cover-story-tags {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .62rem;
-    font-weight: 600;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-}
-.cover-story-label {
-    color: var(--terra);
-    padding: 4px 10px;
-    border: 1px solid var(--terra);
-    border-radius: 3px;
-}
-.cover-story-sep { color: var(--text-faint); }
-.cover-story-cat { color: var(--text-dim); }
-.cover-story-title {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
-    line-height: 1.15;
-    color: var(--text);
-    margin: 0;
-    letter-spacing: -0.01em;
-}
-.cover-story:hover .cover-story-title { color: var(--terra); }
-.cover-story-excerpt {
-    font-family: var(--serif);
-    font-size: 1.05rem;
-    line-height: 1.55;
-    color: var(--text-dim);
-    margin: 0;
-    max-width: 78ch;
-}
-.cover-story-byline {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .7rem;
-    color: var(--text-faint);
-    padding-top: 8px;
-    border-top: 1px solid var(--border);
-    margin-top: 8px;
-}
-.cover-story-author { color: var(--text-dim); font-weight: 600; }
-
-@media (max-width: 768px) {
-    .cover-story-thumb { aspect-ratio: 16/10; }
-    .cover-story-body { padding: 28px 24px 32px; gap: 14px; }
-    .cover-story-excerpt { font-size: .95rem; }
-    .cover-story-byline { flex-wrap: wrap; font-size: .62rem; }
-}
-
-/* ── À lire aussi : 3 colonnes ── */
-.cover-story-related { margin-top: 16px; }
-.cover-story-related-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-}
-.cover-story-related-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .72rem;
-    font-weight: 600;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-}
-.cover-story-related-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-}
-.cover-story-related-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-@media (max-width: 960px) { .cover-story-related-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .cover-story-related-grid { grid-template-columns: 1fr; } }
-
-/* ── Legacy featured grid (conservée au cas où) ── */
-.art-grid-featured {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 16px;
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    overflow: visible;
-}
-@media (max-width: 1024px) { .art-grid-featured { grid-template-columns: 1fr; } }
-
-.art-featured {
-    background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 0;
-    text-decoration: none;
-    display: flex; flex-direction: column;
-    transition: border-color .2s, box-shadow .2s, transform .2s;
-    overflow: hidden;
+    aspect-ratio: 3/4; position: relative;
+    transition: border-color .25s, box-shadow .25s;
 }
-.art-featured:hover {
-    border-color: var(--border-hover);
-    box-shadow: 0 12px 36px rgba(0,0,0,0.45);
-    transform: translateY(-2px);
-    background: var(--bg-card);
-}
-.art-featured-inner { padding: 24px 28px 28px; display: flex; flex-direction: column; flex: 1; }
-
-.art-side {
-    display: flex; flex-direction: column;
-    gap: 12px; background: transparent;
-}
-.art-side-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px 22px;
-    text-decoration: none;
-    display: flex; flex-direction: column;
-    flex: 1; transition: border-color .2s, box-shadow .2s, transform .2s;
-    position: relative; overflow: hidden;
-}
-.art-side-card::before {
-    content: ''; position: absolute;
-    left: 0; top: 0; bottom: 0; width: 3px;
-    background: var(--terra); opacity: 0; transition: opacity .2s;
-    border-radius: 0;
-}
-.art-side-card:hover {
-    border-color: var(--border-hover);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-    transform: translateY(-1px);
-}
-.art-side-card:hover::before { opacity: 1; }
-
-/* Numéro éditorial sur les side cards */
-.art-side-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .55rem;
-    letter-spacing: .14em;
-    color: var(--text-faint);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.art-side-num::after {
-    content: '';
-    display: block;
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-}
-
-/* Grille 3 colonnes pour les récents */
-.art-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-}
-@media (max-width: 1024px) { .art-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px)  { .art-grid { grid-template-columns: 1fr; } }
-
-.art-card {
-    background: var(--bg-card);
-    padding: 28px;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    transition: background .2s;
-}
-.art-card:hover { background: var(--bg-hover); }
-
-/* Catégorie tag */
-.art-cat {
-    display: inline-flex;
-    align-items: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .56rem;
-    font-weight: 600;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--terra);
-    margin-bottom: 14px;
-    width: fit-content;
-}
-
-/* Miniature */
-.art-thumb {
-    width: 100%;
-    aspect-ratio: 16/9;
-    border-radius: 6px;
-    background: var(--bg-card2);
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-.art-featured .art-thumb { aspect-ratio: 16/8; margin-bottom: 0; }
-.art-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.art-thumb-placeholder {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2.4rem;
-    background: linear-gradient(135deg, var(--bg-card2), var(--bg-hover));
-}
-
-/* Titre article — DM Serif */
-.art-title {
-    font-family: var(--serif);
-    font-size: 1.05rem;
-    font-weight: 400;
-    line-height: 1.35;
-    color: rgba(255,255,255,.90);
-    margin-bottom: 10px;
-    transition: color .2s;
-    flex: 1;
-}
-.art-featured .art-title { font-size: 1.4rem; line-height: 1.25; }
-.art-side-card .art-title { font-size: .92rem; }
-.art-featured:hover .art-title,
-.art-side-card:hover .art-title,
-.art-card:hover .art-title { color: var(--gold); }
-
-.art-excerpt {
-    font-size: .78rem;
-    line-height: 1.65;
-    color: var(--text-muted);
-    margin-bottom: 18px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.art-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem;
-    letter-spacing: .06em;
-    color: var(--text-faint);
-    margin-top: auto;
-}
-.art-avi {
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--terra), var(--gold));
-    display: flex; align-items: center; justify-content: center;
-    font-size: .52rem; font-weight: 700; color: white; flex-shrink: 0;
-}
-.art-dot { width: 2px; height: 2px; background: var(--text-faint); border-radius: 50%; }
-
-/* ══ CATÉGORIES — CARTES GRADIENT ══ */
-.cat-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-}
-@media (max-width: 1024px) { .cat-grid { grid-template-columns: repeat(4, 1fr); justify-items: stretch; } }
-@media (max-width: 600px)  { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
-/* Dernière carte seule → pleine largeur sur mobile */
-@media (max-width: 600px)  { .cat-grid > a:last-child:nth-child(odd) { grid-column: span 2; } }
-
-.cat-card {
-    padding: 24px 20px;
-    text-decoration: none;
-    display: flex; flex-direction: column;
-    gap: 0; border-radius: 14px;
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    position: relative; overflow: hidden;
-    transition: transform .22s, box-shadow .22s, border-color .22s, background .22s;
-    min-height: 130px; justify-content: flex-end;
-}
-.cat-card::after {
-    content: '';
+.hp-hero-card:hover { border-color: var(--border-hover); box-shadow: 0 24px 64px rgba(0,0,0,.6); }
+.hp-hero-card-img { position: absolute; inset: 0; }
+.hp-hero-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+.hp-hero-card:hover .hp-hero-card-img img { transform: scale(1.05); }
+.hp-hero-card-gradient {
     position: absolute; inset: 0;
-    opacity: 0.06;
-    transition: opacity .22s;
-    border-radius: 14px;
+    background: linear-gradient(135deg,#1a0a04,#5a2010,#c84818);
 }
-.cat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    border-color: var(--border-hover);
+.hp-hero-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(8,4,2,.97) 0%, rgba(8,4,2,.5) 50%, rgba(8,4,2,.05) 100%);
 }
-.cat-card:hover::after { opacity: 0.12; }
-/* Teinte subtile par catégorie */
-.cat-card[href*="manga-anime"]::after   { background: linear-gradient(145deg, #7c3aed, #a855f7); display: block; }
-.cat-card[href*="gaming"]::after        { background: linear-gradient(145deg, #16a34a, #4ade80); display: block; }
-.cat-card[href*="tech"]::after          { background: linear-gradient(145deg, #2563eb, #60a5fa); display: block; }
-.cat-card[href*="dev"]::after           { background: linear-gradient(145deg, #d97706, #fbbf24); display: block; }
-.cat-card[href*="web3-economie"]::after { background: linear-gradient(145deg, #0f766e, #2dd4bf); display: block; }
-.cat-card[href*="lore-africain"]::after { background: linear-gradient(145deg, #7c2d12, #fb923c); display: block; }
-.cat-card[href*="hardware"]::after      { background: linear-gradient(145deg, #334155, #94a3b8); display: block; }
-.cat-card[href*="carriere"]::after      { background: linear-gradient(145deg, #7e22ce, #d8b4fe); display: block; }
-.cat-card[href*="cinema"]::after        { background: linear-gradient(145deg, #dc2626, #f87171); display: block; }
-.cat-card[href*="culture"]::after       { background: linear-gradient(145deg, #059669, #34d399); display: block; }
-.cat-card[href*="debat"]::after         { background: linear-gradient(145deg, #7c3aed, #c084fc); display: block; }
-/* Overlay hover lumineux */
-.cat-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%);
-    opacity: 0; transition: opacity .22s;
-}
-.cat-card:hover::before { opacity: 1; }
-
-/* Couleur icône par catégorie */
-.cat-icon {
-    font-size: 2rem; line-height: 1;
-    margin-bottom: 12px;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
-}
-.cat-card[href*="manga-anime"] .cat-icon { color: #a855f7; }
-.cat-card[href*="gaming"] .cat-icon      { color: #4ade80; }
-.cat-card[href*="tech"] .cat-icon        { color: #60a5fa; }
-.cat-card[href*="dev"] .cat-icon         { color: #fbbf24; }
-.cat-card[href*="web3-economie"] .cat-icon { color: #2dd4bf; }
-.cat-card[href*="lore-africain"] .cat-icon { color: #fb923c; }
-.cat-card[href*="hardware"] .cat-icon      { color: #cbd5e1; }
-.cat-card[href*="carriere"] .cat-icon      { color: #d8b4fe; }
-.cat-card[href*="cinema"] .cat-icon      { color: #f87171; }
-.cat-card[href*="culture"] .cat-icon     { color: #34d399; }
-.cat-card[href*="debat"] .cat-icon       { color: #c084fc; }
-.cat-name {
-    font-family: var(--font-head);
-    font-size: .95rem; font-weight: 700;
-    color: rgba(255,255,255,.88);
-    transition: color .2s;
-    letter-spacing: -.01em;
-}
-.cat-card:hover .cat-name { color: white; }
-.cat-count {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem; letter-spacing: .08em;
-    color: rgba(255,255,255,0.35); text-transform: uppercase;
-    margin-top: 4px;
-}
-
-/* ══ FORUM PREVIEW ══ */
-.lp-section-forum { background: var(--bg-card); }
-
-.forum-grid {
-    display: grid;
-    grid-template-columns: 1.6fr 1fr;
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-}
-@media (max-width: 900px) { .forum-grid { grid-template-columns: 1fr; } }
-
-.forum-threads { background: var(--bg-card); }
-.forum-thread {
-    padding: 18px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 14px;
-    text-decoration: none;
-    transition: background .18s;
-    align-items: flex-start;
-}
-.forum-thread:last-child { border-bottom: none; }
-.forum-thread:hover { background: var(--bg-hover); }
-
-.ft-avi {
-    width: 32px; height: 32px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, var(--terra), var(--gold));
-    display: flex; align-items: center; justify-content: center;
-    font-size: .78rem; font-weight: 700; color: white; flex-shrink: 0;
-    margin-top: 2px;
-}
-.ft-body { flex: 1; min-width: 0; }
-.ft-cat {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .54rem; font-weight: 600;
+.hp-hero-card-badge {
+    position: absolute; top: 16px; left: 16px; z-index: 3;
+    font-family: 'JetBrains Mono', monospace; font-size: .5rem; font-weight: 700;
     letter-spacing: .1em; text-transform: uppercase;
-    color: var(--terra);
-    margin-bottom: 4px;
+    padding: 4px 10px; border-radius: 100px;
+    background: var(--terra); color: white;
 }
-.ft-title {
-    font-family: var(--serif);
-    font-size: .9rem; font-weight: 400;
-    color: rgba(255,255,255,.80);
-    line-height: 1.35; margin-bottom: 6px;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+.hp-hero-card-new {
+    position: absolute; top: 16px; right: 16px; z-index: 3;
+    font-family: 'JetBrains Mono', monospace; font-size: .5rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 100px;
+    background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.6);
+    display: flex; align-items: center; gap: 5px;
+}
+.hp-hero-card-new-dot {
+    width: 5px; height: 5px; border-radius: 50%; background: #22c55e;
+    box-shadow: 0 0 6px rgba(34,197,94,.7);
+}
+.hp-hero-card-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 22px 20px; z-index: 2;
+}
+.hp-hero-card-cat {
+    font-family: 'JetBrains Mono', monospace; font-size: .52rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--terra);
+    display: block; margin-bottom: 8px;
+}
+.hp-hero-card-title {
+    font-family: var(--font-head); font-size: 1.05rem; font-weight: 700;
+    line-height: 1.3; color: rgba(255,255,255,.9);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.hp-hero-card-meta {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    font-family: 'JetBrains Mono', monospace; font-size: .55rem; color: rgba(255,255,255,.3);
+    display: flex; align-items: center; gap: 7px;
+}
+
+/* ══ TICKER ══ */
+.hp-ticker {
+    background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    overflow: hidden; white-space: nowrap; position: relative;
+    display: flex; align-items: stretch; width: 100%;
+}
+.hp-ticker-label {
+    flex-shrink: 0; display: flex; align-items: center;
+    padding: 0 18px; background: var(--terra);
+    font-family: 'JetBrains Mono', monospace; font-size: .58rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: white; gap: 7px; z-index: 3;
+}
+.hp-ticker-dot { width: 6px; height: 6px; background: white; border-radius: 50%; animation: tickerPulse 1.4s ease-in-out infinite; }
+@keyframes tickerPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+.hp-ticker-track { flex: 1; overflow: hidden; position: relative; }
+.hp-ticker-track::after { content:'';position:absolute;right:0;top:0;bottom:0;width:60px;z-index:2;background:linear-gradient(-90deg,var(--bg-card),transparent); }
+.hp-ticker-t { display:inline-flex;animation:tickr 40s linear infinite;padding:11px 0; }
+.hp-ticker-t:hover { animation-play-state:paused; }
+@keyframes tickr { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.hp-tt {
+    font-family:'JetBrains Mono',monospace; font-size:.6rem; font-weight:500;
+    letter-spacing:.06em; color:var(--text-muted);
+    padding:0 32px; display:inline-flex; align-items:center; gap:12px;
+    text-decoration:none; transition:color .18s;
+}
+.hp-tt:hover { color:var(--cream); }
+.hp-tt-type { font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.55rem;flex-shrink:0; }
+.hp-tt-type.blog  { color:var(--terra); }
+.hp-tt-type.forum { color:var(--gold); }
+.hp-tt-title { max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+
+/* ══ STATS BAR ══ */
+.hp-stats {
+    display: flex; align-items: stretch; border-bottom: 1px solid var(--border);
+    overflow-x: auto; scrollbar-width: none;
+}
+.hp-stats::-webkit-scrollbar { display: none; }
+.hp-stats-item {
+    flex: 1; min-width: 90px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 14px 12px; border-right: 1px solid var(--border); text-align: center;
+}
+.hp-stats-item:last-child { border-right: none; }
+.hp-stats-n {
+    font-family: 'DM Serif Display', serif; font-size: 1.3rem;
+    color: rgba(255,255,255,.8); line-height: 1;
+}
+.hp-stats-l {
+    font-family: 'JetBrains Mono', monospace; font-size: .5rem;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--text-faint); margin-top: 4px;
+}
+
+/* ══ LAYOUT PRINCIPAL : 8 + 4 ══ */
+.hp-main {
+    max-width: 1280px; margin: 0 auto;
+    padding: 56px 52px 72px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 52px;
+    align-items: start;
+}
+@media (max-width: 1024px) { .hp-main { grid-template-columns: 1fr; padding: 40px 28px 56px; gap: 40px; } }
+@media (max-width: 600px)  { .hp-main { padding: 32px 16px 48px; } }
+
+/* ── Section header ── */
+.hp-sec-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+}
+.hp-sec-num {
+    font-family: 'JetBrains Mono', monospace; font-size: .58rem;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--terra); flex-shrink: 0;
+}
+.hp-sec-title {
+    font-family: 'JetBrains Mono', monospace; font-size: .65rem;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); flex-shrink: 0;
+}
+.hp-sec-line { flex: 1; height: 1px; background: var(--border); }
+.hp-sec-link {
+    font-family: 'JetBrains Mono', monospace; font-size: .58rem;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-faint) !important; text-decoration: none; white-space: nowrap; flex-shrink: 0;
     transition: color .18s;
 }
-.forum-thread:hover .ft-title { color: var(--gold); }
-.ft-meta {
+.hp-sec-link:hover { color: var(--terra) !important; }
+
+/* ── Category pills ── */
+.hp-pills {
+    display: flex; gap: 6px; flex-wrap: nowrap;
+    overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; margin-bottom: 28px;
+}
+.hp-pills::-webkit-scrollbar { display: none; }
+.hp-pill {
+    flex-shrink: 0; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 6px 14px; border-radius: 100px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: .56rem; color: var(--text-faint);
-    display: flex; align-items: center; gap: 8px;
+    font-size: .58rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    text-decoration: none; border: 1px solid var(--border);
+    background: transparent; color: rgba(255,255,255,.38);
+    transition: all .18s;
 }
-.ft-replies {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; padding: 0 12px; min-width: 44px; flex-shrink: 0;
-}
-.ft-r-n {
-    font-family: var(--serif);
-    font-size: 1rem; color: var(--text-muted); line-height: 1;
-}
-.ft-r-l { font-family: 'JetBrains Mono', monospace; font-size: .5rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: .07em; }
+.hp-pill:hover { border-color: rgba(255,255,255,.2); color: rgba(255,255,255,.75); background: rgba(255,255,255,.04); }
+.hp-pill.active { background: var(--terra); border-color: var(--terra); color: white; }
 
-.forum-cats { background: var(--bg-card); display: flex; flex-direction: column; }
-.forum-cat-item {
-    padding: 16px 22px;
-    border-bottom: 1px solid var(--border);
-    text-decoration: none;
-    display: flex; align-items: center; gap: 12px;
-    transition: background .18s;
+/* ── Cover story (featured) ── */
+.hp-cover {
+    display: block; text-decoration: none;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px;
+    overflow: hidden; margin-bottom: 28px;
+    transition: border-color .25s, box-shadow .25s, transform .25s;
 }
-.forum-cat-item:last-child { border-bottom: none; }
-.forum-cat-item:hover { background: var(--bg-hover); }
-.fci-icon { width: 32px; height: 32px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: var(--bg-card2); flex-shrink: 0; }
-.fci-info { flex: 1; min-width: 0; }
-.fci-name { font-family: var(--serif); font-size: .82rem; color: rgba(255,255,255,.75); transition: color .18s; }
-.forum-cat-item:hover .fci-name { color: var(--gold); }
-.fci-desc { font-family: 'JetBrains Mono', monospace; font-size: .54rem; letter-spacing: .06em; color: var(--text-faint); margin-top: 2px; }
-.fci-count { font-family: var(--serif); font-size: .85rem; color: var(--text-faint); margin-left: auto; flex-shrink: 0; }
+.hp-cover:hover { border-color: var(--border-hover); box-shadow: 0 20px 56px rgba(0,0,0,.5); transform: translateY(-2px); }
+.hp-cover-img {
+    width: 100%; aspect-ratio: 21/9;
+    background: linear-gradient(135deg,#1a0a04,#5a2010,#c84818);
+    overflow: hidden; position: relative;
+}
+.hp-cover-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2,.8,.2,1); }
+.hp-cover:hover .hp-cover-img img { transform: scale(1.03); }
+.hp-cover-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,6,3,.7) 0%, transparent 50%);
+}
+.hp-cover-body { padding: 28px 32px 32px; }
+.hp-cover-tags {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: .58rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px;
+}
+.hp-cover-label { color: var(--terra); padding: 3px 9px; border: 1px solid var(--terra); border-radius: 3px; }
+.hp-cover-cat { color: var(--text-faint); }
+.hp-cover-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+    font-weight: 800; line-height: 1.1; letter-spacing: -.03em;
+    color: var(--text); margin: 0 0 12px;
+    transition: color .2s;
+}
+.hp-cover:hover .hp-cover-title { color: var(--terra); }
+.hp-cover-excerpt {
+    font-size: .88rem; line-height: 1.65; color: var(--text-muted);
+    margin: 0 0 18px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.hp-cover-byline {
+    display: flex; align-items: center; gap: 9px;
+    font-family: 'JetBrains Mono', monospace; font-size: .6rem; color: var(--text-faint);
+    padding-top: 14px; border-top: 1px solid var(--border);
+}
+.hp-cover-avi {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: .55rem; font-weight: 700; color: white; flex-shrink: 0; overflow: hidden;
+}
+.hp-cover-avi img { width: 100%; height: 100%; object-fit: cover; }
 
-/* ══ CTA SECTION ══ */
-.lp-cta-section {
-    padding: 96px 52px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+/* ── Article grid (3 cols) ── */
+.hp-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
 }
-.lp-cta-section::before {
-    content: '';
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 800px; height: 600px;
-    background: radial-gradient(ellipse, rgba(212,168,67,.10) 0%, transparent 65%);
+@media (max-width: 900px) { .hp-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 500px) { .hp-grid { grid-template-columns: 1fr; } }
+
+.hp-card {
+    background: var(--bg-card); padding: 0;
+    text-decoration: none; display: flex; flex-direction: column;
+    transition: background .2s;
+}
+.hp-card:hover { background: var(--bg-hover); }
+.hp-card-thumb {
+    width: 100%; aspect-ratio: 16/9; overflow: hidden; position: relative; flex-shrink: 0;
+}
+.hp-card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.hp-card:hover .hp-card-thumb img { transform: scale(1.04); }
+.hp-card-thumb-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+}
+.hp-card-badge {
+    position: absolute; top: 8px; left: 8px; z-index: 2;
+    font-family: 'JetBrains Mono', monospace; font-size: .5rem; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 100px;
+    background: rgba(0,0,0,.55); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.8);
+}
+.hp-card-body { padding: 16px 18px 18px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.hp-card-cat {
+    font-family: 'JetBrains Mono', monospace; font-size: .54rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--terra);
+}
+.hp-card-title {
+    font-family: var(--font-head); font-size: .95rem; font-weight: 700;
+    line-height: 1.3; color: rgba(255,255,255,.88);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    transition: color .2s; flex: 1;
+}
+.hp-card:hover .hp-card-title { color: var(--gold); }
+.hp-card-meta {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', monospace; font-size: .56rem; color: var(--text-faint);
+    padding-top: 10px; border-top: 1px solid var(--border); margin-top: auto;
+}
+.hp-card-dot { width: 2px; height: 2px; background: var(--text-faint); border-radius: 50%; }
+
+/* ══ SIDEBAR ══ */
+.hp-sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 24px; }
+
+.hp-widget {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden;
+}
+.hp-widget-head {
+    padding: 11px 16px; border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace; font-size: .58rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+    display: flex; align-items: center; justify-content: space-between;
+}
+.hp-widget-live {
+    display: flex; align-items: center; gap: 5px;
+    font-size: .52rem; color: rgba(255,255,255,.3);
+}
+.hp-widget-live-dot {
+    width: 5px; height: 5px; border-radius: 50%; background: #22c55e;
+    box-shadow: 0 0 5px rgba(34,197,94,.6);
+    animation: tickerPulse 2s ease-in-out infinite;
+}
+
+/* Forum threads in sidebar */
+.hp-thread {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 16px; border-bottom: 1px solid var(--border);
+    text-decoration: none; transition: background .15s;
+}
+.hp-thread:last-child { border-bottom: none; }
+.hp-thread:hover { background: rgba(255,255,255,.03); }
+.hp-thread-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: rgba(255,255,255,.05); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .9rem; flex-shrink: 0; margin-top: 1px;
+}
+.hp-thread-body { flex: 1; min-width: 0; }
+.hp-thread-title {
+    font-size: .7rem; font-weight: 600; line-height: 1.35; color: rgba(255,255,255,.72);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    transition: color .15s;
+}
+.hp-thread:hover .hp-thread-title { color: rgba(255,255,255,.95); }
+.hp-thread-meta {
+    font-family: 'JetBrains Mono', monospace; font-size: .54rem; color: var(--text-faint);
+    margin-top: 4px; display: flex; align-items: center; gap: 6px;
+}
+.hp-thread-replies {
+    background: rgba(255,255,255,.06); border-radius: 4px;
+    padding: 1px 6px; font-size: .52rem; color: var(--text-muted); font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+}
+.hp-widget-footer {
+    padding: 10px 16px; border-top: 1px solid var(--border);
+}
+.hp-widget-footer a {
+    font-family: 'JetBrains Mono', monospace; font-size: .56rem; font-weight: 700;
+    letter-spacing: .07em; text-transform: uppercase; color: var(--terra) !important;
+    text-decoration: none; display: flex; align-items: center; gap: 6px;
+    transition: opacity .15s;
+}
+.hp-widget-footer a:hover { opacity: .75; }
+
+/* Popular posts in sidebar */
+.hp-popular-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    text-decoration: none; transition: background .15s;
+}
+.hp-popular-item:last-child { border-bottom: none; }
+.hp-popular-item:hover { background: rgba(255,255,255,.03); }
+.hp-popular-rank {
+    font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400;
+    color: var(--terra); opacity: .55; line-height: 1; min-width: 28px; flex-shrink: 0;
+}
+.hp-popular-title {
+    font-size: .7rem; font-weight: 600; line-height: 1.35; color: rgba(255,255,255,.72);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    transition: color .15s;
+}
+.hp-popular-item:hover .hp-popular-title { color: var(--gold); }
+.hp-popular-meta {
+    font-family: 'JetBrains Mono', monospace; font-size: .53rem; color: var(--text-faint); margin-top: 4px;
+}
+
+/* ══ CATÉGORIES (full width) ══ */
+.hp-cats-section { border-top: 1px solid var(--border); padding: 56px 52px; }
+.hp-cats-inner { max-width: 1280px; margin: 0 auto; }
+@media (max-width: 1024px) { .hp-cats-section { padding: 44px 28px; } }
+@media (max-width: 600px)  { .hp-cats-section { padding: 36px 16px; } }
+
+.hp-cat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+}
+@media (max-width: 1024px) { .hp-cat-grid { grid-template-columns: repeat(4,1fr); } }
+@media (max-width: 640px)  { .hp-cat-grid { grid-template-columns: repeat(2,1fr); } }
+
+.hp-cat-card {
+    padding: 20px 18px 18px; border-radius: 12px;
+    border: 1px solid var(--border); background: var(--bg-card);
+    text-decoration: none; display: flex; flex-direction: column; gap: 0;
+    position: relative; overflow: hidden; min-height: 110px; justify-content: flex-end;
+    transition: transform .22s, box-shadow .22s, border-color .22s;
+}
+.hp-cat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.3); border-color: var(--border-hover); }
+.hp-cat-icon { font-size: 1.8rem; line-height: 1; margin-bottom: 10px; }
+.hp-cat-name { font-family: var(--font-head); font-size: .9rem; font-weight: 700; color: rgba(255,255,255,.85); letter-spacing: -.01em; }
+.hp-cat-count { font-family: 'JetBrains Mono', monospace; font-size: .54rem; letter-spacing: .08em; color: rgba(255,255,255,.3); text-transform: uppercase; margin-top: 3px; }
+
+/* ══ CTA ══ */
+.hp-cta-section {
+    padding: 80px 52px; text-align: center; position: relative; overflow: hidden;
+    border-top: 1px solid var(--border);
+}
+.hp-cta-section::before {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%); width: 700px; height: 500px;
+    background: radial-gradient(ellipse, rgba(212,168,67,.09) 0%, transparent 65%);
     pointer-events: none;
 }
-.lp-cta-inner {
-    position: relative; z-index: 1;
-    max-width: 560px; margin: 0 auto;
+.hp-cta-inner { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; }
+.hp-cta-eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: .58rem; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
 }
-.lp-cta-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 20px;
+.hp-cta-title {
+    font-family: var(--font-head); font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800; line-height: 1.1; letter-spacing: -.04em;
+    color: rgba(255,255,255,.92); margin-bottom: 14px;
 }
-.lp-cta-title {
-    font-family: var(--serif);
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 400;
-    line-height: 1.15;
-    color: rgba(255,255,255,.92);
-    margin-bottom: 16px;
-    letter-spacing: -.01em;
-}
-.lp-cta-desc {
-    font-size: .88rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-    margin-bottom: 32px;
-    max-width: 440px;
-    margin-left: auto; margin-right: auto;
-}
+.hp-cta-desc { font-size: .9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 28px; }
 
 /* ══ NEWSLETTER ══ */
-.lp-newsletter {
+.hp-newsletter {
     border-top: 1px solid var(--border);
-    padding: 72px 52px;
-    max-width: 1280px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    align-items: center;
+    padding: 64px 52px; max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
 }
-@media (max-width: 768px) {
-    .lp-newsletter { grid-template-columns: 1fr; padding: 48px 20px; gap: 28px; }
+@media (max-width: 768px) { .hp-newsletter { grid-template-columns:1fr; padding:44px 20px; gap:24px; } }
+@media (max-width: 1024px) { .hp-newsletter { padding:52px 28px; } }
+.hp-nl-eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: .56rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
 }
-.lp-newsletter-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem; font-weight: 600;
-    letter-spacing: .14em; text-transform: uppercase;
-    color: var(--gold);
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 14px;
+.hp-nl-eyebrow::before { content:'';display:block;width:18px;height:1px;background:var(--gold);opacity:.7; }
+.hp-nl-title {
+    font-family: var(--font-head); font-size: clamp(1.4rem,2.5vw,1.9rem);
+    font-weight: 800; letter-spacing: -.04em; line-height: 1.1; color: var(--cream);
 }
-.lp-newsletter-eyebrow::before {
-    content: ''; display: block;
-    width: 20px; height: 1px; background: var(--gold); opacity: .7;
+.hp-nl-title span { color: var(--terra); }
+.hp-nl-sub { font-size: .85rem; color: var(--text-muted); line-height: 1.65; margin-top: 8px; }
+.hp-nl-form { display:flex; gap:8px; flex-wrap:wrap; margin-top:4px; }
+.hp-nl-input {
+    flex:1; background:var(--bg-card); border:1px solid var(--border);
+    border-radius:100px; padding:12px 22px; color:var(--text);
+    font-family:var(--font-body); font-size:.88rem; outline:none;
+    transition:border-color .2s, box-shadow .2s; min-width: 180px;
 }
-.lp-newsletter-title {
-    font-family: var(--font-head);
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    font-weight: 800;
-    letter-spacing: -.04em;
-    line-height: 1.1;
-    color: var(--cream);
-    margin-bottom: 10px;
+.hp-nl-input:focus { border-color:var(--terra); box-shadow:0 0 0 3px rgba(200,82,42,.1); }
+.hp-nl-btn {
+    background:var(--terra); color:white; border:none; border-radius:100px;
+    padding:12px 24px; font-family:var(--font-body); font-size:.88rem; font-weight:700;
+    cursor:pointer; transition:background .2s, transform .15s; white-space:nowrap;
 }
-.lp-newsletter-title span { color: var(--terra); }
-.lp-newsletter-sub {
-    font-size: .85rem;
-    color: var(--text-muted);
-    line-height: 1.65;
-}
-.lp-newsletter-form { display: flex; flex-direction: column; gap: 10px; }
-.lp-newsletter-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.lp-newsletter-input {
-    flex: 1;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 13px 22px;
-    color: var(--text);
-    font-family: var(--font-body); font-size: .88rem;
-    outline: none;
-    transition: border-color .2s, box-shadow .2s;
-}
-.lp-newsletter-input::placeholder { color: var(--text-faint); }
-.lp-newsletter-input:focus {
-    border-color: var(--terra);
-    box-shadow: 0 0 0 3px rgba(200,82,42,.1);
-}
-.lp-newsletter-btn {
-    background: var(--terra); color: white;
-    border: none; border-radius: 100px;
-    padding: 13px 24px;
-    font-family: var(--font-body); font-size: .88rem; font-weight: 700;
-    cursor: pointer; white-space: nowrap;
-    transition: background .2s, transform .15s;
-}
-.lp-newsletter-btn:hover { background: var(--accent); transform: translateY(-1px); }
-.lp-newsletter-note {
-    font-size: .72rem;
-    color: var(--text-faint);
-    padding-left: 8px;
-}
-.lp-newsletter-note strong { color: var(--gold); }
+.hp-nl-btn:hover { background:var(--accent); transform:translateY(-1px); }
+.hp-nl-note { font-size:.7rem; color:var(--text-faint); margin-top:8px; }
+.hp-nl-note strong { color:var(--gold); }
 
 /* ══ FOOTER ══ */
-.lp-footer {
+.hp-footer {
     border-top: 1px solid var(--border);
-    padding: 32px 52px;
+    padding: 28px 52px; max-width: 1280px; margin: 0 auto;
     display: flex; align-items: center; justify-content: space-between;
-    gap: 20px; flex-wrap: wrap;
-    max-width: 1280px; margin: 0 auto;
+    gap: 16px; flex-wrap: wrap;
 }
-.lp-footer-copy {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem; letter-spacing: .08em; color: var(--text-faint);
+.hp-footer-copy { font-family:'JetBrains Mono',monospace; font-size:.56rem; letter-spacing:.08em; color:var(--text-faint); }
+.hp-footer-links { display:flex; gap:20px; list-style:none; }
+.hp-footer-links a { font-family:'JetBrains Mono',monospace; font-size:.56rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint); text-decoration:none; transition:color .15s; }
+.hp-footer-links a:hover { color:var(--gold); }
+@media (max-width: 640px) { .hp-footer { flex-direction:column; text-align:center; padding:24px 16px; } .hp-footer-links { flex-wrap:wrap; justify-content:center; } }
+@media (max-width: 1024px) { .hp-cta-section { padding:60px 28px; } }
+
+/* ══ MOBILE BOTTOM NAV ══ */
+.hp-mbnav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(18,12,8,.94); backdrop-filter: blur(16px) saturate(1.5);
+    border-top: 1px solid var(--border);
+    padding: 6px 0 max(6px, env(safe-area-inset-bottom));
 }
-.lp-footer-links { display: flex; gap: 22px; list-style: none; }
-.lp-footer-links a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .58rem; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--text-faint); text-decoration: none; transition: color .18s;
+@media (max-width: 768px) { .hp-mbnav { display: flex; } body { padding-bottom: 62px; } }
+.mbn-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px 4px; text-decoration: none;
+    color: rgba(255,255,255,.3); font-family:'JetBrains Mono',monospace;
+    font-size: .48rem; letter-spacing: .06em; text-transform: uppercase; transition: color .15s;
 }
-.lp-footer-links a:hover { color: var(--gold); }
-@media (max-width: 640px) {
-    .lp-footer { flex-direction: column; text-align: center; padding: 28px 20px; }
-    .lp-footer-links { flex-wrap: wrap; justify-content: center; }
-}
-@media (max-width: 1024px) {
-    .lp-cta-section { padding: 72px 28px; }
-    .lp-newsletter { padding: 52px 28px; }
-}
-@media (max-width: 768px) {
-    .lp-cta-section { padding: 52px 16px; }
-    .lp-newsletter { padding: 44px 16px; }
-    .art-grid-featured { gap: 12px; }
-    .art-side { gap: 12px; }
-    .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .lp-newsletter-row { flex-direction: column; }
-    .lp-newsletter-btn { width: 100%; }
-    .lp-section, .lp-section-full, .lp-cta-section, .lp-newsletter { max-width: 100vw; box-sizing: border-box; }
-}
+.mbn-item.active, .mbn-item:hover { color: var(--terra); }
+.mbn-item svg { width:20px; height:20px; }
 </style>
 @endpush
 
 @section('content')
-<div class="lp">
-
-{{-- SVG filter pour le halo du bouton principal --}}
-<svg width="0" height="0" style="position:absolute;pointer-events:none">
-    <defs>
-        <filter id="btn-glow-blur" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
-        </filter>
-    </defs>
-</svg>
+<div class="hp">
 
 {{-- ══ HERO ══ --}}
-<section class="lp-hero">
-    <div class="lp-hero-left">
-        <div class="lp-vol">Vol. I · {{ date('Y') }}</div>
-
-        <h1 class="lp-h1">
-            La culture geek,<br>
-            <span class="lp-h1-gold">vue d'Afrique.</span>
+<section class="hp-hero">
+    {{-- Gauche --}}
+    <div>
+        <div class="hp-hero-eyebrow">La culture geek africaine</div>
+        <h1 class="hp-h1">
+            Articles, débats<br>
+            <span class="hp-h1-accent">vue d'Afrique.</span>
         </h1>
-
-        <hr class="lp-hero-rule">
-
-        <p class="lp-sub">
-            Articles, débats, reviews et conversations autour des animés, du gaming,
-            du cinéma, de la tech, du Web3, du hardware et des mythos africains
-            — par et pour la communauté geek africaine.
+        <p class="hp-sub">
+            Animés, gaming, cinéma, tech, Web3 et mythologies africaines —
+            par et pour la communauté geek du continent.
         </p>
-
-        <div class="lp-ctas">
-            <a href="{{ route('register') }}" class="lp-btn-main">
-                Rejoindre la communauté
+        <div class="hp-ctas">
+            <a href="{{ route('blog.index') }}" class="hp-btn-main">
+                Explorer les articles
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            <a href="{{ route('blog.index') }}" class="lp-btn-ghost">
-                Lire le blog
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <a href="{{ route('forum.index') }}" class="hp-btn-ghost">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Forum communautaire
             </a>
-        </div>
-        <div class="lp-scroll-hint" aria-hidden="true">
-            <div class="lp-scroll-dot"></div>
         </div>
     </div>
 
-    {{-- Colonne droite — encart éditorial --}}
-    <div class="lp-hero-right">
-        <div class="lp-ed-pullquote">
-            <div class="lp-ed-pullquote-text">
-                "L'Afrique n'a pas besoin d'emprunter l'imaginaire des autres — elle en a un qui lui est propre, immense et inexploré."
+    {{-- Droite — featured article card --}}
+    <div class="hp-hero-right">
+        @if($featured)
+        @php $featMins = max(1,(int)ceil(str_word_count(strip_tags($featured->body??''))/200)); @endphp
+        <a href="{{ route('posts.show', $featured->id) }}" class="hp-hero-card">
+            <div class="hp-hero-card-img">
+                @if($featured->primary_image_url)
+                    <img src="{{ $featured->primary_image_url }}" alt="{{ $featured->title }}">
+                @else
+                    <div class="hp-hero-card-gradient"></div>
+                @endif
             </div>
-            <div class="lp-ed-pullquote-attr">— Éditorial · MelanoGeek</div>
-        </div>
-        <div class="lp-ed-stats">
-            <div class="lp-ed-stat">
-                <span class="lp-ed-stat-n" data-count="{{ $stats['users'] }}">{{ $stats['users'] }}</span>
-                <span class="lp-ed-stat-l">Membres<br>inscrits</span>
+            <div class="hp-hero-card-overlay"></div>
+            @if($featured->category)
+            <div class="hp-hero-card-badge">{{ $featured->category_label }}</div>
+            @endif
+            <div class="hp-hero-card-new">
+                <span class="hp-hero-card-new-dot"></span> Nouveau
             </div>
-            <div class="lp-ed-stat">
-                <span class="lp-ed-stat-n" data-count="{{ $stats['posts'] }}">{{ $stats['posts'] }}</span>
-                <span class="lp-ed-stat-l">Articles<br>publiés</span>
+            <div class="hp-hero-card-info">
+                <div class="hp-hero-card-title">{{ $featured->title }}</div>
+                <div class="hp-hero-card-meta">
+                    <span>{{ $featured->user->name }}</span>
+                    <span>·</span>
+                    <span>{{ $featMins }} min</span>
+                    <span>·</span>
+                    <span>{{ $featured->created_at->diffForHumans(null, true) }}</span>
+                </div>
             </div>
-            <div class="lp-ed-stat">
-                <span class="lp-ed-stat-n" data-count="{{ $stats['comments'] }}">{{ $stats['comments'] }}</span>
-                <span class="lp-ed-stat-l">Contributions<br>communauté</span>
-            </div>
-            <div class="lp-ed-stat">
-                <span class="lp-ed-stat-n" data-count="{{ $stats['visits'] }}">{{ $stats['visits'] }}</span>
-                <span class="lp-ed-stat-l">Visites<br>du site</span>
-            </div>
-        </div>
+        </a>
+        @endif
     </div>
 </section>
 
 {{-- ══ TICKER ══ --}}
-<div class="lp-ticker">
-    <div class="lp-ticker-label">
-        <span class="lp-ticker-label-dot"></span>
-        Live
+<div class="hp-ticker">
+    <div class="hp-ticker-label">
+        <span class="hp-ticker-dot"></span> Live
     </div>
-    <div class="lp-ticker-track">
-        <div class="lp-ticker-t">
+    <div class="hp-ticker-track">
+        <div class="hp-ticker-t">
             @foreach(array_fill(0, 2, null) as $_)
             @foreach($recentPosts as $rp)
-            <a href="{{ route('posts.show', $rp->id) }}" class="lp-tt">
-                <span class="lp-tt-type blog">Blog</span>
-                <span class="lp-tt-title">{{ $rp->title }}</span>
-                <span class="lp-tt-sep">·</span>
-                <span style="color:var(--text-faint);font-size:.56rem">{{ $rp->created_at->diffForHumans(null, true) }}</span>
+            <a href="{{ route('posts.show', $rp->id) }}" class="hp-tt">
+                <span class="hp-tt-type blog">Blog</span>
+                <span class="hp-tt-title">{{ $rp->title }}</span>
+                <span style="color:var(--text-faint)">·</span>
+                <span style="color:var(--text-faint);font-size:.55rem">{{ $rp->created_at->diffForHumans(null,true) }}</span>
             </a>
             @endforeach
             @foreach($recentThreads as $rt)
-            <a href="{{ route('forum.show', $rt) }}" class="lp-tt">
-                <span class="lp-tt-type forum">Forum</span>
-                <span class="lp-tt-title">{{ $rt->title }}</span>
-                <span class="lp-tt-sep">·</span>
-                <span style="color:var(--text-faint);font-size:.56rem">{{ $rt->created_at->diffForHumans(null, true) }}</span>
+            <a href="{{ route('forum.show', $rt) }}" class="hp-tt">
+                <span class="hp-tt-type forum">Forum</span>
+                <span class="hp-tt-title">{{ $rt->title }}</span>
+                <span style="color:var(--text-faint)">·</span>
+                <span style="color:var(--text-faint);font-size:.55rem">{{ $rt->created_at->diffForHumans(null,true) }}</span>
             </a>
             @endforeach
             @endforeach
@@ -1205,345 +645,333 @@
     </div>
 </div>
 
-{{-- ══ ARTICLES À LA UNE ══ --}}
-<section class="lp-section">
-    <div class="lp-ed-header">
-        <span class="lp-ed-header-num">§ 01</span>
-        <span class="lp-ed-header-title">À la une</span>
-        <div class="lp-ed-header-line"></div>
-        <a href="{{ route('blog.index') }}" class="lp-ed-header-link">Tous les articles →</a>
+{{-- ══ STATS BAR ══ --}}
+<div class="hp-stats">
+    <div class="hp-stats-item">
+        <div class="hp-stats-n" data-count="{{ $stats['users'] }}">{{ $stats['users'] }}</div>
+        <div class="hp-stats-l">Membres</div>
     </div>
+    <div class="hp-stats-item">
+        <div class="hp-stats-n" data-count="{{ $stats['posts'] }}">{{ $stats['posts'] }}</div>
+        <div class="hp-stats-l">Articles</div>
+    </div>
+    <div class="hp-stats-item">
+        <div class="hp-stats-n" data-count="{{ $stats['comments'] }}">{{ $stats['comments'] }}</div>
+        <div class="hp-stats-l">Contributions</div>
+    </div>
+    <div class="hp-stats-item">
+        <div class="hp-stats-n" data-count="{{ $stats['visits'] }}">{{ $stats['visits'] }}</div>
+        <div class="hp-stats-l">Visites</div>
+    </div>
+</div>
 
-    @if($featured || $side_posts->isNotEmpty())
-    <div class="art-grid-featured" @if($side_posts->isEmpty()) style="grid-template-columns:1fr" @endif>
-        {{-- Article featured --}}
+{{-- ══ LAYOUT PRINCIPAL 8+4 ══ --}}
+<div class="hp-main">
+
+    {{-- Colonne contenu (gauche) --}}
+    <div>
+        {{-- Section header --}}
+        <div class="hp-sec-header">
+            <span class="hp-sec-num">§ 01</span>
+            <span class="hp-sec-title">À la une</span>
+            <div class="hp-sec-line"></div>
+            <a href="{{ route('blog.index') }}" class="hp-sec-link">Tous les articles →</a>
+        </div>
+
+        {{-- Pills catégories --}}
+        <div class="hp-pills">
+            <a href="{{ route('blog.index') }}" class="hp-pill active">✦ Tous</a>
+            <a href="{{ route('blog.index') }}?category=manga-anime"   class="hp-pill">🎌 Animés</a>
+            <a href="{{ route('blog.index') }}?category=gaming"        class="hp-pill">🎮 Gaming</a>
+            <a href="{{ route('blog.index') }}?category=cinema-series" class="hp-pill">🎬 Cinéma</a>
+            <a href="{{ route('blog.index') }}?category=tech"          class="hp-pill">🤖 Tech</a>
+            <a href="{{ route('blog.index') }}?category=culture"       class="hp-pill">🚀 Afrofuturisme</a>
+            <a href="{{ route('blog.index') }}?category=web3-economie" class="hp-pill">₿ Web3</a>
+            <a href="{{ route('blog.index') }}?category=hardware"      class="hp-pill">🖥️ Hardware</a>
+        </div>
+
+        {{-- Cover story --}}
         @if($featured)
         @php
-            $featExcerpt  = Str::limit(strip_tags($featured->body ?? ''), 140);
-            $featMins     = max(1, (int) ceil(str_word_count(strip_tags($featured->body ?? '')) / 200));
-            $featInitial  = strtoupper(substr($featured->user->name ?? '?', 0, 1));
+            $featExcerpt = Str::limit(strip_tags($featured->body ?? ''), 160);
+            $featMins    = max(1,(int)ceil(str_word_count(strip_tags($featured->body??''))/200));
         @endphp
-        <a href="{{ route('posts.show', $featured->id) }}" class="art-featured" data-reveal>
-            <div class="art-thumb">
+        <a href="{{ route('posts.show', $featured->id) }}" class="hp-cover" data-reveal>
+            <div class="hp-cover-img">
                 @if($featured->primary_image_url)
                     <img src="{{ $featured->primary_image_url }}" alt="{{ $featured->title }}">
-                @else
-                    <div class="art-thumb-placeholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;opacity:.18;"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+                    <div class="hp-cover-img-overlay"></div>
                 @endif
             </div>
-            <div class="art-featured-inner">
-                @if($featured->category)
-                <div class="art-cat">{{ $featured->category_label }}</div>
-                @endif
-                <div class="art-title">{{ $featured->title }}</div>
-                @if($featExcerpt)
-                <div class="art-excerpt">{{ $featExcerpt }}</div>
-                @endif
-                <div class="art-meta" style="margin-top:auto">
-                    @if($featured->user->avatar_url)
-                        <img src="{{ $featured->user->avatar_url }}" class="art-avi" style="object-fit:cover" alt="">
-                    @else
-                        <div class="art-avi">{{ $featInitial }}</div>
+            <div class="hp-cover-body">
+                <div class="hp-cover-tags">
+                    <span class="hp-cover-label">À la une</span>
+                    @if($featured->category)
+                    <span style="color:var(--text-faint)">·</span>
+                    <span class="hp-cover-cat">{{ $featured->category_label }}</span>
                     @endif
-                    <span>{{ $featured->user->name }}</span>
-                    <span class="art-dot"></span>
+                </div>
+                <h2 class="hp-cover-title">{{ $featured->title }}</h2>
+                @if($featExcerpt)
+                <p class="hp-cover-excerpt">{{ $featExcerpt }}</p>
+                @endif
+                <div class="hp-cover-byline">
+                    <div class="hp-cover-avi">
+                        @if($featured->user->avatar_url)
+                            <img src="{{ $featured->user->avatar_url }}" alt="">
+                        @else
+                            {{ strtoupper(substr($featured->user->name??'?',0,1)) }}
+                        @endif
+                    </div>
+                    <span style="color:var(--text-muted)">{{ $featured->user->name }}</span>
+                    <span>·</span>
                     <span>{{ $featured->created_at->format('d M Y') }}</span>
-                    <span class="art-dot"></span>
+                    <span>·</span>
                     <span>{{ $featMins }} min</span>
                 </div>
             </div>
         </a>
         @endif
 
-        {{-- Articles côté --}}
+        {{-- Grille articles --}}
         @if($side_posts->isNotEmpty())
-        <div class="art-side">
-            @foreach($side_posts as $post)
+        <div class="hp-grid">
+            @foreach($side_posts->concat($popularPosts->take(3)) as $post)
             @php
-                $excerpt = Str::limit(strip_tags($post->body ?? ''), 100);
-                $mins    = max(1, (int) ceil(str_word_count(strip_tags($post->body ?? '')) / 200));
-                $initial = strtoupper(substr($post->user->name ?? '?', 0, 1));
+                $mins    = max(1,(int)ceil(str_word_count(strip_tags($post->body??''))/200));
+                $initial = strtoupper(substr($post->user->name??'?',0,1));
+                $catGradients = [
+                    'manga-anime'   => 'linear-gradient(135deg,#1a0a2e,#4a1a6e)',
+                    'gaming'        => 'linear-gradient(135deg,#0a1a0a,#1a5a25)',
+                    'tech'          => 'linear-gradient(135deg,#0a1628,#1a4cb8)',
+                    'cinema-series' => 'linear-gradient(135deg,#1a0808,#7a1a1a)',
+                    'web3-economie' => 'linear-gradient(135deg,#062a24,#0d6a5f)',
+                    'culture'       => 'linear-gradient(135deg,#1a0a04,#7c3012)',
+                    'hardware'      => 'linear-gradient(135deg,#111827,#374151)',
+                    'carriere'      => 'linear-gradient(135deg,#2e1065,#7e22ce)',
+                ];
+                $cardBg = $catGradients[$post->category] ?? 'linear-gradient(135deg,#1a1a1a,#2a2a2a)';
             @endphp
-            <a href="{{ route('posts.show', $post->id) }}" class="art-side-card" data-reveal data-delay="{{ $loop->iteration }}">
-                <div class="art-side-num">0{{ $loop->iteration }}</div>
-                @if($post->category)
-                <div class="art-cat">{{ $post->category_label }}</div>
-                @endif
-                <div class="art-title" style="font-size:1rem;line-height:1.3;margin-bottom:10px">{{ $post->title }}</div>
-                @if($excerpt)
-                <div class="art-excerpt" style="font-size:.78rem;-webkit-line-clamp:2">{{ $excerpt }}</div>
-                @endif
-                <div class="art-meta" style="margin-top:auto;padding-top:12px">
-                    @if($post->user->avatar_url)
-                        <img src="{{ $post->user->avatar_url }}" class="art-avi" style="object-fit:cover" alt="">
-                    @else
-                        <div class="art-avi">{{ $initial }}</div>
+            <a href="{{ route('posts.show', $post->id) }}" class="hp-card" data-reveal>
+                <div class="hp-card-thumb" style="background:{{ $cardBg }}">
+                    @if($post->primary_image_url)
+                        <img src="{{ $post->primary_image_url }}" alt="{{ $post->title }}">
                     @endif
-                    <span>{{ $post->user->name }}</span>
-                    <span class="art-dot"></span>
-                    <span>{{ $mins }} min</span>
+                    @if($post->category)
+                    <div class="hp-card-badge">{{ $post->category_label }}</div>
+                    @endif
+                </div>
+                <div class="hp-card-body">
+                    <div class="hp-card-title">{{ $post->title }}</div>
+                    <div class="hp-card-meta">
+                        <span>{{ $post->user->name }}</span>
+                        <span class="hp-card-dot"></span>
+                        <span>{{ $mins }} min</span>
+                    </div>
                 </div>
             </a>
             @endforeach
         </div>
         @endif
     </div>
-    @else
-    <div style="text-align:center;padding:64px 0;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.08em">
-        Aucun article publié pour le moment.
-    </div>
-    @endif
-</section>
 
-{{-- ══ ARTICLES POPULAIRES ══ --}}
-@if(isset($popularPosts) && $popularPosts->isNotEmpty())
-<section class="lp-section" style="padding-top:0">
-    <div class="lp-ed-header">
-        <span class="lp-ed-header-num">§ 02</span>
-        <span class="lp-ed-header-title">Les plus lus · 30 derniers jours</span>
-        <div class="lp-ed-header-line"></div>
-    </div>
-    <div class="lp-popular-grid">
-        @foreach($popularPosts as $i => $pp)
-        <a href="{{ route('posts.show', $pp->id) }}" class="lp-popular-item">
-            <div class="lp-popular-rank">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</div>
-            <div class="lp-popular-content">
-                <div class="lp-popular-title">{{ $pp->title }}</div>
-                <div class="lp-popular-meta">
-                    <span>{{ $pp->user->name }}</span>
-                    <span class="lp-popular-dot">·</span>
-                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> {{ number_format($pp->views_count) }}</span>
-                    @if($pp->likes_count > 0)
-                    <span class="lp-popular-dot">·</span>
-                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> {{ number_format($pp->likes_count) }}</span>
-                    @endif
-                </div>
+    {{-- Sidebar (droite) --}}
+    <aside class="hp-sidebar">
+
+        {{-- Forum actif --}}
+        @php
+            $sideThreads = \App\Models\ForumThread::with('user')->orderByDesc('last_reply_at')->limit(5)->get();
+        @endphp
+        @if($sideThreads->isNotEmpty())
+        <div class="hp-widget">
+            <div class="hp-widget-head">
+                Forum actif
+                <span class="hp-widget-live"><span class="hp-widget-live-dot"></span> Live</span>
             </div>
-        </a>
-        @endforeach
-    </div>
-</section>
-@endif
+            @foreach($sideThreads as $t)
+            <a href="{{ route('forum.show', $t->id) }}" class="hp-thread">
+                <div class="hp-thread-icon">{{ $t->category_icon }}</div>
+                <div class="hp-thread-body">
+                    <div class="hp-thread-title">{{ $t->title }}</div>
+                    <div class="hp-thread-meta">
+                        <span class="hp-thread-replies">{{ $t->replies_count }} rép.</span>
+                        <span>{{ ($t->last_reply_at ?? $t->created_at)->diffForHumans() }}</span>
+                    </div>
+                </div>
+            </a>
+            @endforeach
+            <div class="hp-widget-footer">
+                <a href="{{ route('forum.index') }}">
+                    Voir tout le forum
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+        @endif
+
+        {{-- Plus lus --}}
+        @if(isset($popularPosts) && $popularPosts->isNotEmpty())
+        <div class="hp-widget">
+            <div class="hp-widget-head">Plus lus</div>
+            @foreach($popularPosts->take(5) as $i => $pp)
+            <a href="{{ route('posts.show', $pp->id) }}" class="hp-popular-item">
+                <div class="hp-popular-rank">{{ str_pad($i+1,2,'0',STR_PAD_LEFT) }}</div>
+                <div>
+                    <div class="hp-popular-title">{{ $pp->title }}</div>
+                    <div class="hp-popular-meta">{{ $pp->user->name }} · {{ number_format($pp->views_count) }} vues</div>
+                </div>
+            </a>
+            @endforeach
+        </div>
+        @endif
+
+        {{-- Écrire --}}
+        @auth
+        <div class="hp-widget" style="padding:18px">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.56rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">Créer</div>
+            <a href="{{ route('posts.create') }}" style="display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--terra);color:white;text-decoration:none;border-radius:100px;font-family:var(--font-head);font-size:.82rem;font-weight:700;transition:background .2s" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--terra)'">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Écrire un article
+            </a>
+        </div>
+        @endauth
+
+    </aside>
+</div>
 
 {{-- ══ CATÉGORIES ══ --}}
-<section class="lp-section" style="padding-top:0">
-    <div class="lp-ed-header">
-        <span class="lp-ed-header-num">§ 03</span>
-        <span class="lp-ed-header-title">Explorer par thème</span>
-        <div class="lp-ed-header-line"></div>
-    </div>
-    @php
-        $cats = [
-            'manga-anime'   => ['🎌', 'Animés & mangas'],
-            'gaming'        => ['🎮', 'Gaming & E-sport'],
-            'cinema-series' => ['🎬', 'Cinéma & séries'],
-            'tech'          => ['🤖', 'Tech, geek & IA'],
-            'web3-economie' => ['₿', 'Web3 & économie numérique'],
-            'lore-africain' => ['📚', 'Pop culture & lore africain'],
-            'hardware'      => ['🖥️', 'Hardware & PC building'],
-            'carriere'      => ['💼', 'Carrière & métiers'],
+<section class="hp-cats-section">
+    <div class="hp-cats-inner">
+        <div class="hp-sec-header" style="margin-bottom:24px">
+            <span class="hp-sec-num">§ 02</span>
+            <span class="hp-sec-title">Explorer par thème</span>
+            <div class="hp-sec-line"></div>
+        </div>
+        @php
+        $hpCats = [
+            'manga-anime'   => ['🎌','Animés & mangas'],
+            'gaming'        => ['🎮','Gaming & E-sport'],
+            'cinema-series' => ['🎬','Cinéma & séries'],
+            'tech'          => ['🤖','Tech & IA'],
+            'web3-economie' => ['₿','Web3'],
+            'culture'       => ['🚀','Afrofuturisme'],
+            'hardware'      => ['🖥️','Hardware'],
+            'carriere'      => ['💼','Carrière'],
         ];
-    @endphp
-    <div class="cat-grid">
-        @foreach($cats as $slug => [$icon, $label])
-        @php $count = $category_counts[$slug] ?? 0; @endphp
-        <a href="{{ route('blog.index') }}?category={{ $slug }}" class="cat-card" data-reveal data-delay="{{ $loop->iteration }}">
-            <div class="cat-icon" style="font-size:2rem;line-height:1;margin-bottom:12px">{{ $icon }}</div>
-            <div class="cat-name">{{ $label }}</div>
-            @if($count > 0)
-            <div class="cat-count">{{ $count }} article{{ $count > 1 ? 's' : '' }}</div>
-            @endif
-        </a>
-        @endforeach
-    </div>
-</section>
-
-{{-- ══ FORUM PREVIEW ══ --}}
-<section class="lp-section-full lp-section-forum" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-    <div class="lp-section-inner">
-        <div style="padding-top:72px;padding-bottom:72px">
-            <div class="lp-ed-header">
-                <span class="lp-ed-header-num">§ 04</span>
-                <span class="lp-ed-header-title">Forum</span>
-                <div class="lp-ed-header-line"></div>
-                <a href="{{ route('forum.index') }}" class="lp-ed-header-link">Accéder au forum →</a>
-            </div>
-
-            <div class="forum-grid">
-                <div class="forum-threads">
-                    @forelse($discussions as $disc)
-                    @php
-                        $discInitial = strtoupper(substr($disc->user->name ?? '?', 0, 1));
-                        $discLabel   = $disc->title ? Str::limit($disc->title, 80) : Str::limit(strip_tags($disc->body ?? ''), 80);
-                    @endphp
-                    <a href="{{ route('forum.index') }}" class="forum-thread">
-                        @if($disc->user->avatar_url)
-                            <img src="{{ $disc->user->avatar_url }}" class="ft-avi" style="object-fit:cover" alt="">
-                        @else
-                            <div class="ft-avi">{{ $discInitial }}</div>
-                        @endif
-                        <div class="ft-body">
-                            <div class="ft-title">{{ $discLabel }}</div>
-                            <div class="ft-meta">
-                                <span>{{ $disc->user->name }}</span>
-                                <span>·</span>
-                                <span>{{ $disc->created_at->diffForHumans() }}</span>
-                            </div>
-                        </div>
-                        <div class="ft-replies">
-                            <div class="ft-r-n">{{ $disc->comments_count }}</div>
-                            <div class="ft-r-l">rép.</div>
-                        </div>
-                    </a>
-                    @empty
-                    <div style="padding:40px 24px;text-align:center;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em">
-                        Aucune discussion pour le moment.
-                    </div>
-                    @endforelse
-                </div>
-
-                <div class="forum-cats">
-                    <div style="padding:16px 22px;border-bottom:1px solid var(--border)">
-                        <span style="font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)">Thèmes</span>
-                    </div>
-                    @foreach(\App\Models\ForumThread::CATEGORIES as $slug => $cat)
-                    <a href="{{ route('forum.index') }}?cat={{ $slug }}" class="forum-cat-item">
-                        <div class="fci-icon">{{ $cat['icon'] }}</div>
-                        <div class="fci-info">
-                            <div class="fci-name">{{ $cat['label'] }}</div>
-                            <div class="fci-desc">{{ $forum_cat_counts[$slug] ?? 0 }} discussion{{ ($forum_cat_counts[$slug] ?? 0) != 1 ? 's' : '' }}</div>
-                        </div>
-                    </a>
-                    @endforeach
-                </div>
-            </div>
+        @endphp
+        <div class="hp-cat-grid">
+            @foreach($hpCats as $slug => [$icon, $label])
+            @php $count = $category_counts[$slug] ?? 0; @endphp
+            <a href="{{ route('blog.index') }}?category={{ $slug }}" class="hp-cat-card" data-reveal data-delay="{{ $loop->iteration }}">
+                <div class="hp-cat-icon">{{ $icon }}</div>
+                <div class="hp-cat-name">{{ $label }}</div>
+                @if($count > 0)
+                <div class="hp-cat-count">{{ $count }} article{{ $count > 1 ? 's' : '' }}</div>
+                @endif
+            </a>
+            @endforeach
         </div>
     </div>
 </section>
 
-{{-- ══ CTA REJOINDRE ══ --}}
-<section class="lp-cta-section">
-    <div class="lp-cta-inner">
-        <div class="lp-cta-label">Rejoindre</div>
-        <div class="lp-cta-title">Tu es geek et africain·e ?<br>Tu es chez toi ici.</div>
-        <p class="lp-cta-desc">
-            Rejoins une communauté qui célèbre la culture geek africaine —
-            sans complexe, sans filtre. Crée ton compte gratuitement et
-            commence à lire, écrire et débattre dès aujourd'hui.
-        </p>
-        <div class="lp-ctas" style="justify-content:center">
-            <a href="{{ route('register') }}" class="lp-btn-main">
-                Créer mon compte gratuit
-            </a>
-            <a href="{{ route('login') }}" class="lp-btn-ghost">
-                Se connecter
-            </a>
+{{-- ══ CTA ══ --}}
+@guest
+<section class="hp-cta-section">
+    <div class="hp-cta-inner">
+        <div class="hp-cta-eyebrow">Rejoindre</div>
+        <div class="hp-cta-title">Tu es geek et africain·e ?<br>Tu es chez toi ici.</div>
+        <p class="hp-cta-desc">Rejoins une communauté qui célèbre la culture geek africaine sans complexe. Crée ton compte gratuitement et commence à lire, écrire et débattre.</p>
+        <div class="hp-ctas" style="justify-content:center">
+            <a href="{{ route('register') }}" class="hp-btn-main">Créer mon compte gratuit</a>
+            <a href="{{ route('login') }}" class="hp-btn-ghost">Se connecter</a>
         </div>
     </div>
 </section>
+@endguest
 
 {{-- ══ NEWSLETTER ══ --}}
-<div class="lp-newsletter" data-reveal>
+<div class="hp-newsletter" data-reveal>
     <div>
-        <div class="lp-newsletter-eyebrow">Newsletter</div>
-        <div class="lp-newsletter-title">Reste dans<br>la <span>boucle.</span></div>
-        <p class="lp-newsletter-sub">
-            Les meilleurs articles, débats chauds et sorties geek — directement dans ta boîte mail. Pas de spam, jamais.
-        </p>
+        <div class="hp-nl-eyebrow">Newsletter</div>
+        <div class="hp-nl-title">Reste dans<br>la <span>boucle.</span></div>
+        <p class="hp-nl-sub">Les meilleurs articles, débats et sorties geek — directement dans ta boîte mail. Pas de spam, jamais.</p>
     </div>
     <div>
-        <form class="lp-newsletter-form" onsubmit="handleNewsletterSubmit(event)">
-            <div class="lp-newsletter-row">
-                <input type="email" class="lp-newsletter-input" id="nlEmail"
-                    placeholder="ton@email.com" required autocomplete="email">
-                <button type="submit" class="lp-newsletter-btn">S'inscrire</button>
-            </div>
-            <div class="lp-newsletter-note" id="nlNote">
-                Rejoins <strong>{{ $stats['users'] }} membres</strong> — désinscription en 1 clic.
-            </div>
+        <form class="hp-nl-form" onsubmit="handleNl(event)">
+            <input type="email" class="hp-nl-input" id="nlEmail" placeholder="ton@email.com" required autocomplete="email">
+            <button type="submit" class="hp-nl-btn">S'inscrire</button>
         </form>
+        <div class="hp-nl-note" id="nlNote">
+            Rejoins <strong>{{ $stats['users'] }} membres</strong> — désinscription en 1 clic.
+        </div>
     </div>
 </div>
 
 {{-- ══ FOOTER ══ --}}
-<footer class="lp-footer">
-    <div class="lp-footer-copy">© {{ date('Y') }} MelanoGeek — La culture geek, vue d'Afrique.</div>
-    <ul class="lp-footer-links">
+<footer class="hp-footer">
+    <div class="hp-footer-copy">© {{ date('Y') }} MelanoGeek — La culture geek, vue d'Afrique.</div>
+    <ul class="hp-footer-links">
         <li><a href="{{ route('blog.index') }}">Blog</a></li>
         <li><a href="{{ route('forum.index') }}">Forum</a></li>
         <li><a href="{{ route('about') }}">À propos</a></li>
-        <li><a href="#">Mentions légales</a></li>
     </ul>
-    {{-- Développé par Korilab — masqué temporairement --}}
 </footer>
+
+{{-- ══ MOBILE BOTTOM NAV ══ --}}
+<nav class="hp-mbnav">
+    <a href="{{ route('home') }}" class="mbn-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Accueil
+    </a>
+    <a href="{{ route('blog.index') }}" class="mbn-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Articles
+    </a>
+    <a href="{{ route('forum.index') }}" class="mbn-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Forum
+    </a>
+    @auth
+    <a href="{{ route('profile.show', auth()->user()->username ?? auth()->id()) }}" class="mbn-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profil
+    </a>
+    @else
+    <a href="{{ route('register') }}" class="mbn-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        Rejoindre
+    </a>
+    @endauth
+</nav>
 
 </div>
 @endsection
 
 @push('scripts')
 <script>
-(function () {
-    /* ══ COMPTEURS ANIMÉS — stats hero ══ */
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        function animateCount(el) {
-            const target = parseInt(el.textContent.replace(/\D/g, ''), 10);
-            if (isNaN(target) || target === 0) return;
-            const duration = 1200;
-            const start    = performance.now();
-            const easeOut  = function (t) { return 1 - Math.pow(1 - t, 3); };
-            function tick(now) {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                el.textContent = Math.round(easeOut(progress) * target);
-                if (progress < 1) requestAnimationFrame(tick);
-                else el.textContent = target;
-            }
-            requestAnimationFrame(tick);
+(function(){
+    /* Compteurs animés */
+    if (!window.matchMedia('(prefers-reduced-motion:reduce)').matches) {
+        function animCount(el) {
+            const t = parseInt(el.textContent.replace(/\D/g,''),10);
+            if (!t) return;
+            const dur = 1200, s = performance.now(), ease = t => 1-Math.pow(1-t,3);
+            (function tick(now){
+                const p = Math.min((now-s)/dur,1);
+                el.textContent = Math.round(ease(p)*t);
+                if (p<1) requestAnimationFrame(tick); else el.textContent = t;
+            })(performance.now());
         }
-
-        const statEls = document.querySelectorAll('.lp-ed-stat-n, .forum-widget-stat-val');
-        const countObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    animateCount(entry.target);
-                    countObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        statEls.forEach(function (el) { countObserver.observe(el); });
+        const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){animCount(x.target);obs.unobserve(x.target);}}),{threshold:.5});
+        document.querySelectorAll('.hp-stats-n').forEach(el=>obs.observe(el));
     }
 
-    /* ══ TILT 3D — cards ══ */
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
-        !window.matchMedia('(pointer: coarse)').matches) {
-        const tiltSel = '.post-card, .art-featured, .art-side-card, .featured-card, .cat-card';
-        document.querySelectorAll(tiltSel).forEach(function (card) {
-            card.style.transition = 'transform .12s ease, box-shadow .12s ease';
-            card.addEventListener('mousemove', function (e) {
-                const rect = card.getBoundingClientRect();
-                const cx   = rect.left + rect.width  / 2;
-                const cy   = rect.top  + rect.height / 2;
-                const dx   = (e.clientX - cx) / (rect.width  / 2);
-                const dy   = (e.clientY - cy) / (rect.height / 2);
-                const rotX = dy * -4;
-                const rotY = dx *  5;
-                card.style.transform = 'perspective(600px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(1.015)';
-            });
-            card.addEventListener('mouseleave', function () {
-                card.style.transform = '';
-            });
-        });
-    }
-
-    /* ══ NEWSLETTER — feedback visuel ══ */
-    window.handleNewsletterSubmit = function (e) {
+    /* Newsletter */
+    window.handleNl = function(e){
         e.preventDefault();
-        const note = document.getElementById('nlNote');
-        const btn  = e.target.querySelector('.lp-newsletter-btn');
-        btn.textContent  = '✓ Inscrit !';
-        btn.style.background = '#2A7A48';
-        btn.disabled = true;
-        if (note) note.innerHTML = 'Tu es sur la liste. On se retrouve dans ta boîte mail bientôt.';
+        const btn=e.target.querySelector('.hp-nl-btn'), note=document.getElementById('nlNote');
+        btn.textContent='✓ Inscrit !'; btn.style.background='#2A7A48'; btn.disabled=true;
+        if(note) note.innerHTML='Tu es sur la liste. À bientôt dans ta boîte mail.';
     };
 })();
 </script>
