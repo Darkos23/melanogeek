@@ -1,947 +1,1550 @@
-<!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<title>MelanoGeek — La culture geek, vue d'Afrique</title>
-<meta name="description" content="Articles, débats, reviews et actualités. De la scène esport africaine aux mythologies africaines dans le Web3.">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta name="theme-color" content="#ff5a1f">
+@extends('layouts.app')
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
+@section('title', 'MelanoGeek — La Culture Geek, Vue d\'Afrique')
+@section('meta_description', 'MelanoGeek — La culture geek vue d\'Afrique. Articles, débats et reviews autour du manga, gaming, tech, cinéma et de la culture nerd africaine.')
+@section('og_title', 'MelanoGeek — La Culture Geek, Vue d\'Afrique')
+@section('og_description', 'Articles, débats et reviews autour du manga, gaming, tech, cinéma et de la culture nerd africaine.')
+@section('canonical', route('home'))
 
+@push('styles')
 <style>
-/* ══════════════════════════════════════════
-   MIX — V1 Soul · V2 Structure
-══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   LANDING PAGE — DARK EDITORIAL
+   Inspiré Pitchfork dark · Vercel · The Ringer
+   Police titre : var(--font-head)
+   Accent primaire : or (#D4A843)
+═══════════════════════════════════════════════════ */
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: hidden; }
+/* ── Fond neutre, pas de motifs hérités ── */
 
-:root {
-    --obsidian:    #0d0d14;
-    --carbon:      #13131c;
-    --obsidian-2:  #18181f;
-    --sunrise:     #ff5a1f;
-    --sunrise-2:   #e04010;
-    --cyan:        #22d3ee;
-    --ochre:       #d97706;
-    --glass-bg:    rgba(255,255,255,.07);
-    --glass-bg2:   rgba(255,255,255,.04);
-    --glass-b:     rgba(255,255,255,.10);
-    --glass-b2:    rgba(255,255,255,.06);
-    --text:        rgba(255,255,255,.85);
-    --text-muted:  rgba(255,255,255,.45);
-    --text-dim:    rgba(255,255,255,.28);
-    --font-disp:   'Bricolage Grotesque', sans-serif;
-    --font-body:   'Inter', sans-serif;
-    --font-mono:   'JetBrains Mono', monospace;
+/* ── Variable serif ── */
+.lp { --serif: 'DM Serif Display', 'Georgia', serif; overflow-x: hidden; width: 100%; }
+
+/* ══ HERO — EDITORIAL ASYMÉTRIQUE ══ */
+.lp-hero {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 0;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 56px 52px 80px;
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+}
+.lp-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse 70% 80% at 15% 60%, rgba(200,82,42,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 70% at 85% 30%, rgba(212,168,67,0.06) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+}
+.lp-hero > * { position: relative; z-index: 1; }
+@media (max-width: 1100px) {
+    .lp-hero { grid-template-columns: 1fr; padding: 44px 28px 60px; }
+    .lp-hero-right { display: none; }
+}
+@media (max-width: 600px) { .lp-hero { padding: 34px 20px 52px; } }
+
+.lp-hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-right: 64px;
+}
+@media (max-width: 1100px) { .lp-hero-left { padding-right: 0; } }
+
+/* Vol. label */
+.lp-vol {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .62rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+.lp-vol::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    opacity: .7;
 }
 
-body {
-    background: var(--obsidian);
-    color: var(--text);
+/* Titre principal */
+.lp-h1 {
+    font-family: var(--font-head);
+    font-size: clamp(2.8rem, 5vw, 4.6rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -.04em;
+    color: rgba(255,255,255,.94);
+    margin: 0;
+}
+.lp-h1-gold {
+    background: linear-gradient(135deg, #D4A843 0%, #f0c060 40%, #C8522A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Filet or sous le titre */
+.lp-hero-rule {
+    width: 64px;
+    height: 2px;
+    background: var(--gold);
+    opacity: .6;
+    border: none;
+    margin: 0;
+}
+
+/* Sous-titre */
+.lp-sub {
     font-family: var(--font-body);
-    overflow-x: hidden;
-    min-height: 100dvh;
-    padding-top: 88px;
-    padding-bottom: 16px;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,.50);
+    max-width: 440px;
+    margin: 0;
+}
+
+/* CTAs */
+.lp-ctas {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Bouton principal — blanc pill avec halo coloré (identique ngrok) */
+.lp-btn-main {
+    position: relative;
+    background: rgba(255,255,255,.90);
+    color: rgba(0,0,0,.90) !important;
+    border: none;
+    padding: 0 22px;
+    height: 46px;
+    border-radius: 9999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s, transform .15s;
+    overflow: visible;
+    user-select: none;
+}
+.lp-btn-main::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: 9999px;
+    background: conic-gradient(
+        rgb(252,211,77),
+        rgb(190,242,100),
+        rgb(110,231,183),
+        rgb(125,211,252),
+        rgb(216,180,254),
+        rgb(253,164,175),
+        rgb(252,211,77)
+    );
+    filter: url(#btn-glow-blur);
+    opacity: .85;
+    z-index: -1;
+    transition: transform .2s;
+}
+.lp-btn-main:hover { background: #fff; }
+.lp-btn-main:hover::after { transform: scale(1.06); }
+.lp-btn-main:active { transform: scale(.97); }
+
+/* Bouton secondaire — ghost sobre */
+.lp-btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,.55) !important;
+    border: 1px solid rgba(255,255,255,.14);
+    padding: 0 22px;
+    height: 46px;
+    border-radius: 9999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color .15s, border-color .15s;
+}
+.lp-btn-ghost:hover {
+    color: rgba(255,255,255,.85) !important;
+    border-color: rgba(255,255,255,.28);
+}
+
+/* Scroll hint */
+.lp-scroll-hint {
+    width: 26px; height: 42px;
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 100px;
+    display: flex; align-items: flex-start;
+    justify-content: center; padding-top: 5px;
+    margin-top: 8px;
+}
+.lp-scroll-dot {
+    width: 4px; height: 8px;
+    background: rgba(255,255,255,0.45);
+    border-radius: 100px;
+    animation: scrollBounce 1.8s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); opacity: .45; }
+    50%       { transform: translateY(12px); opacity: .9; }
+}
+@media (prefers-reduced-motion: reduce) { .lp-scroll-dot { animation: none; } }
+
+/* ── Colonne droite — encart éditorial ── */
+.lp-hero-right {
+    border-left: 1px solid var(--border);
+    padding-left: 52px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    align-self: stretch;
+    justify-content: center;
+}
+.lp-ed-pullquote {
+    border-left: 2px solid var(--gold);
+    padding-left: 18px;
+}
+.lp-ed-pullquote-text {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.55;
+    color: rgba(255,255,255,.65);
+}
+.lp-ed-pullquote-attr {
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+.lp-ed-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.lp-ed-stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+.lp-ed-stat:last-child { border-bottom: none; padding-bottom: 0; }
+.lp-ed-stat-n {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: rgba(255,255,255,.80);
+    line-height: 1;
+}
+.lp-ed-stat-l {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    text-align: right;
+}
+
+/* ══ TICKER ACTIVITÉ ══ */
+.lp-ticker {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    max-width: 100vw;
+    width: 100%;
+}
+.lp-ticker-label {
+    flex-shrink: 0;
+    display: flex; align-items: center;
+    padding: 0 18px;
+    background: var(--terra);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: white;
+    gap: 7px;
+    z-index: 3;
+}
+.lp-ticker-label-dot {
+    width: 6px; height: 6px;
+    background: white; border-radius: 50%;
+    animation: tickerPulse 1.4s ease-in-out infinite;
+}
+@keyframes tickerPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: .4; transform: scale(.7); }
+}
+.lp-ticker-track {
+    flex: 1;
+    overflow: hidden;
     position: relative;
 }
-
-::selection { background: var(--sunrise); color: white; }
-
-/* ── Ambient glows ── */
-.amb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
-.amb-1 { top: -20%; left: -10%; width: 55%; height: 55%; background: radial-gradient(ellipse, rgba(255,90,31,.16) 0%, transparent 70%); filter: blur(100px); }
-.amb-2 { bottom: -20%; right: -10%; width: 45%; height: 45%; background: radial-gradient(ellipse, rgba(34,211,238,.09) 0%, transparent 70%); filter: blur(100px); }
-
-/* ── Glass ── */
-.glass {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-b);
-    backdrop-filter: blur(16px) saturate(1.4);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+.lp-ticker-track::after {
+    content: ''; position: absolute;
+    right: 0; top: 0; bottom: 0; width: 60px; z-index: 2;
+    background: linear-gradient(-90deg, var(--bg-card), transparent);
 }
+.lp-ticker-t { display: inline-flex; animation: tickr 40s linear infinite; padding: 11px 0; }
+.lp-ticker-t:hover { animation-play-state: paused; }
+@keyframes tickr { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.lp-tt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .06em;
+    color: var(--text-muted);
+    padding: 0 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    transition: color .18s;
+}
+.lp-tt:hover { color: var(--cream); }
+.lp-tt-type {
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-size: .55rem;
+    flex-shrink: 0;
+}
+.lp-tt-type.blog   { color: var(--terra); }
+.lp-tt-type.forum  { color: var(--gold); }
+.lp-tt-title { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-tt-sep { color: var(--border); flex-shrink: 0; }
 
-/* ══════════════════════════════════════════
-   NAV
-══════════════════════════════════════════ */
-.v1-nav {
-    position: fixed; top: 0; left: 0; width: 100%;
-    z-index: 50; padding: 16px 32px;
+/* ══ STRUCTURE SECTIONS ══ */
+.lp-section {
+    padding: 72px 52px;
+    max-width: 1280px;
+    margin: 0 auto;
 }
-.v1-nav-inner {
-    max-width: 1280px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 24px;
-    border-radius: 9999px;
+.lp-section-full {
+    padding: 72px 52px;
 }
-
-.v1-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.v1-logo-diamond {
-    width: 32px; height: 32px; background: var(--sunrise); border-radius: 4px;
-    display: flex; align-items: center; justify-content: center;
-    transform: rotate(45deg); transition: transform .5s ease; flex-shrink: 0;
+.lp-section-full .lp-section-inner {
+    max-width: 1280px;
+    margin: 0 auto;
 }
-.v1-logo:hover .v1-logo-diamond { transform: rotate(90deg); }
-.v1-logo-diamond-inner {
-    width: 12px; height: 12px; background: var(--obsidian); border-radius: 2px;
-    transform: rotate(-45deg);
-}
-.v1-logo-text { font-family: var(--font-disp); font-weight: 800; font-size: 1.25rem; letter-spacing: -.03em; color: white; }
-.v1-logo-text span { color: var(--sunrise); }
-
-.v1-nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
-.v1-nav-links a {
-    font-size: .875rem; font-weight: 500; color: var(--text-muted);
-    text-decoration: none; transition: color .25s; position: relative;
-}
-.v1-nav-links a:hover { color: white; }
-.v1-nav-links .forum { color: var(--ochre); }
-.v1-nav-links .forum:hover { color: var(--sunrise); }
-.mythos-dot {
-    position: absolute; top: -8px; right: -10px;
-    width: 6px; height: 6px; border-radius: 50%; background: var(--cyan);
-    animation: pulse-dot 2s ease-in-out infinite;
-}
-@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
-@media (max-width: 1024px) { .v1-nav-links { display: none; } }
-
-.v1-nav-cta {
-    display: flex; align-items: center; gap: 8px;
-    padding: 9px 20px; border-radius: 9999px;
-    background: white; color: var(--obsidian);
-    font-size: .875rem; font-weight: 700;
-    text-decoration: none; transition: background .2s; white-space: nowrap;
-}
-.v1-nav-cta:hover { background: #e0e0e0; }
-@media (max-width: 640px) { .v1-nav-cta { display: none; } }
-
-.v1-nav-mobile { display: none; }
 @media (max-width: 1024px) {
-    .v1-nav-mobile { display: flex; align-items: center; color: white; font-size: 1.5rem; background: none; border: none; cursor: pointer; }
+    .lp-section { padding: 52px 28px; }
+    .lp-section-full { padding: 52px 28px; }
+}
+@media (max-width: 768px) {
+    .lp-section { padding: 44px 16px; }
+    .lp-section-full { padding: 44px 16px; }
+    .lp-ed-header { margin-bottom: 28px; }
 }
 
-/* ══════════════════════════════════════════
-   MAIN WRAPPER
-══════════════════════════════════════════ */
-.v1-main {
-    position: relative; z-index: 10;
-    max-width: 1280px; margin: 0 auto; padding: 0 32px;
+/* ── En-tête éditorial de section (trait + numéro + titre) ── */
+.lp-ed-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
 }
-@media (max-width: 768px) { .v1-main { padding: 0 16px; } }
+.lp-ed-header-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.lp-ed-header-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.lp-ed-header-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+.lp-ed-header-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .6rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-faint) !important;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: color .18s;
+}
+.lp-ed-header-link:hover { color: var(--gold) !important; }
 
-/* ══════════════════════════════════════════
-   HERO — compact text block
-══════════════════════════════════════════ */
-.mix-hero {
-    padding: 52px 0 44px;
+/* ── ARTICLES POPULAIRES ── */
+.lp-popular-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,.06);
 }
-.v1-hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 5px 14px; border-radius: 9999px;
-    background: rgba(255,90,31,.1); border: 1px solid rgba(255,90,31,.2);
-    color: var(--sunrise); font-size: .75rem; font-weight: 700;
-    letter-spacing: .08em; text-transform: uppercase;
-    margin-bottom: 22px;
+.lp-popular-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 18px 4px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    text-decoration: none;
+    transition: background .2s;
 }
-.v1-h1 {
-    font-family: var(--font-disp);
-    font-size: clamp(2.6rem, 5.5vw, 4.8rem);
-    font-weight: 800; line-height: 1.06; letter-spacing: -.05em;
-    color: white; margin-bottom: 20px;
+.lp-popular-item:hover { background: rgba(255,255,255,.015); }
+.lp-popular-item:hover .lp-popular-title { color: var(--gold); }
+.lp-popular-rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--terra);
+    opacity: .55;
+    line-height: 1;
+    min-width: 42px;
+    letter-spacing: -.02em;
 }
-.v1-h1-outline {
-    display: block; margin-top: 6px;
-    -webkit-text-stroke: 2px rgba(255,255,255,.65);
-    color: transparent;
-    transition: -webkit-text-stroke-color .3s;
+.lp-popular-content { flex: 1; min-width: 0; }
+.lp-popular-title {
+    font-family: var(--font-head, 'Bricolage Grotesque', sans-serif);
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: rgba(255,255,255,.88);
+    line-height: 1.35;
+    letter-spacing: -.01em;
+    margin-bottom: 6px;
+    transition: color .2s;
 }
-.mix-hero:hover .v1-h1-outline { -webkit-text-stroke-color: white; }
-.v1-hero-sub {
-    font-size: 1rem; line-height: 1.75; color: var(--text-muted);
-    max-width: 560px; margin-bottom: 28px; font-weight: 300;
+.lp-popular-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    color: rgba(255,255,255,.35);
+    letter-spacing: .03em;
 }
-.v1-hero-ctas { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lp-popular-dot { opacity: .5; }
+@media (max-width: 640px) {
+    .lp-popular-grid { grid-template-columns: 1fr; }
+    .lp-popular-rank { font-size: 1.3rem; min-width: 34px; }
+    .lp-popular-title { font-size: .92rem; }
+}
 
-.v1-btn-primary {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 24px; border-radius: 9999px;
-    background: var(--sunrise); color: white;
-    font-size: .9rem; font-weight: 700; text-decoration: none;
-    transition: background .2s, box-shadow .2s, transform .15s;
-}
-.v1-btn-primary:hover { background: var(--sunrise-2); box-shadow: 0 0 22px rgba(255,90,31,.4); transform: translateY(-1px); }
-.v1-btn-primary:active { transform: scale(.97); }
+/* ══ ARTICLES — GRILLE ÉDITORIALE ══ */
 
-.v1-btn-ghost {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 24px; border-radius: 9999px;
-    color: white; font-size: .9rem; font-weight: 700; text-decoration: none;
-    transition: background .2s, transform .15s;
+/* ── Cover Story (full-width magazine cover) ── */
+.cover-story {
+    display: block;
+    text-decoration: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: border-color .25s, box-shadow .25s, transform .25s;
+    margin-bottom: 48px;
 }
-.v1-btn-ghost:hover { background: rgba(255,255,255,.1); }
-.v1-btn-ghost:active { transform: scale(.97); }
+.cover-story:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    transform: translateY(-3px);
+}
+.cover-story-thumb {
+    width: 100%;
+    aspect-ratio: 21/9;
+    background: var(--bg-card2);
+    overflow: hidden;
+    position: relative;
+}
+.cover-story-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .8s cubic-bezier(.2,.8,.2,1);
+}
+.cover-story:hover .cover-story-thumb img { transform: scale(1.03); }
+.cover-story-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--bg-card2), var(--bg-hover));
+    color: var(--text-faint);
+    opacity: .25;
+}
+.cover-story-body {
+    padding: 40px 48px 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.cover-story-tags {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+}
+.cover-story-label {
+    color: var(--terra);
+    padding: 4px 10px;
+    border: 1px solid var(--terra);
+    border-radius: 3px;
+}
+.cover-story-sep { color: var(--text-faint); }
+.cover-story-cat { color: var(--text-dim); }
+.cover-story-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    line-height: 1.15;
+    color: var(--text);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+.cover-story:hover .cover-story-title { color: var(--terra); }
+.cover-story-excerpt {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--text-dim);
+    margin: 0;
+    max-width: 78ch;
+}
+.cover-story-byline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .7rem;
+    color: var(--text-faint);
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+}
+.cover-story-author { color: var(--text-dim); font-weight: 600; }
 
-/* ══════════════════════════════════════════
-   MARQUEE
-══════════════════════════════════════════ */
-.v1-marquee-wrap {
-    transform: rotate(-1deg) scaleX(1.05);
-    margin: 0 -32px 48px;
-    border-top: 1px solid rgba(255,255,255,.05);
-    border-bottom: 1px solid rgba(255,255,255,.05);
+@media (max-width: 768px) {
+    .cover-story-thumb { aspect-ratio: 16/10; }
+    .cover-story-body { padding: 28px 24px 32px; gap: 14px; }
+    .cover-story-excerpt { font-size: .95rem; }
+    .cover-story-byline { flex-wrap: wrap; font-size: .62rem; }
+}
+
+/* ── À lire aussi : 3 colonnes ── */
+.cover-story-related { margin-top: 16px; }
+.cover-story-related-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.cover-story-related-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+.cover-story-related-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+.cover-story-related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+@media (max-width: 960px) { .cover-story-related-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .cover-story-related-grid { grid-template-columns: 1fr; } }
+
+/* ── Legacy featured grid (conservée au cas où) ── */
+.art-grid-featured {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 16px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+}
+@media (max-width: 1024px) { .art-grid-featured { grid-template-columns: 1fr; } }
+
+.art-featured {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 0;
+    text-decoration: none;
+    display: flex; flex-direction: column;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
     overflow: hidden;
 }
-.v1-marquee-track {
-    display: flex; align-items: center;
-    padding: 11px 0; white-space: nowrap;
-    animation: v1marquee 24s linear infinite;
+.art-featured:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.45);
+    transform: translateY(-2px);
+    background: var(--bg-card);
 }
-@keyframes v1marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-.v1-marquee-track:hover { animation-play-state: paused; }
-.v1-marquee-item {
-    font-family: var(--font-mono); font-size: .72rem; font-weight: 700;
-    letter-spacing: .1em; text-transform: uppercase;
-    color: rgba(255,255,255,.22); padding: 0 24px;
-    display: inline-flex; align-items: center; gap: 24px;
-}
-.v1-marquee-item.bright { color: white; }
-.v1-marquee-star { color: var(--sunrise); font-size: .6rem; }
+.art-featured-inner { padding: 24px 28px 28px; display: flex; flex-direction: column; flex: 1; }
 
-/* ══════════════════════════════════════════
-   8 + 4 LAYOUT
-══════════════════════════════════════════ */
-.mix-layout {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 36px;
-    align-items: start;
-    margin-bottom: 80px;
-}
-@media (max-width: 1024px) {
-    .mix-layout { grid-template-columns: 1fr; }
-    .mix-sidebar { display: none; }
-}
-
-/* ══════════════════════════════════════════
-   FEATURED HERO CARD
-══════════════════════════════════════════ */
-.mix-feat-card {
-    position: relative; height: 380px;
-    border-radius: 28px; overflow: hidden;
-    text-decoration: none; display: block;
-    margin-bottom: 20px;
-    transition: transform .35s, box-shadow .3s;
-    border: 1px solid rgba(255,255,255,.08);
-}
-.mix-feat-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
-
-.mix-feat-bg {
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, #ff5a1f 0%, #c84818 35%, #3d150a 70%, var(--obsidian) 100%);
-}
-.mix-feat-bg img {
-    width: 100%; height: 100%; object-fit: cover;
-    mix-blend-mode: luminosity; opacity: .55;
-    filter: contrast(1.2) saturate(1.4);
-}
-.mix-feat-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, var(--obsidian) 0%, rgba(13,13,20,.55) 45%, transparent 100%);
-}
-
-.mix-feat-badge {
-    position: absolute; top: 20px; left: 20px; z-index: 5;
-    padding: 4px 12px; border-radius: 9999px;
-    background: var(--cyan); color: var(--obsidian);
-    font-family: var(--font-mono); font-size: .58rem; font-weight: 700;
-    letter-spacing: .08em; text-transform: uppercase;
-}
-.mix-feat-arrow {
-    position: absolute; top: 20px; right: 20px; z-index: 5;
-    width: 38px; height: 38px; border-radius: 50%;
-    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18);
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 1rem;
-    transition: background .2s, color .2s, transform .3s;
-}
-.mix-feat-card:hover .mix-feat-arrow {
-    background: white; color: var(--obsidian); transform: rotate(45deg);
-}
-
-.mix-feat-body {
-    position: absolute; bottom: 0; left: 0; right: 0; z-index: 5;
-    padding: 24px 28px;
-}
-.mix-feat-title {
-    font-family: var(--font-disp);
-    font-size: clamp(1.25rem, 2.2vw, 1.7rem);
-    font-weight: 700; color: white; line-height: 1.2; margin-bottom: 14px;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    transition: color .2s;
-}
-.mix-feat-card:hover .mix-feat-title { color: var(--cyan); }
-.mix-feat-meta {
-    display: flex; align-items: center; justify-content: space-between;
-}
-.mix-feat-author { display: flex; align-items: center; gap: 10px; }
-.mix-feat-avi {
-    width: 30px; height: 30px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: .62rem; font-weight: 700; color: white;
-}
-.mix-feat-avi img { width: 100%; height: 100%; object-fit: cover; }
-.mix-feat-author-name { font-size: .8rem; color: rgba(255,255,255,.65); }
-.mix-feat-stats {
-    display: flex; align-items: center; gap: 12px;
-    font-family: var(--font-mono); font-size: .65rem; color: rgba(255,255,255,.38);
-}
-
-/* ══════════════════════════════════════════
-   CATEGORY PILLS
-══════════════════════════════════════════ */
-.mix-cat-pills {
-    display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 16px;
-    scrollbar-width: none; -webkit-overflow-scrolling: touch;
-    margin-bottom: 28px;
-}
-.mix-cat-pills::-webkit-scrollbar { display: none; }
-
-.mix-pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; border-radius: 9999px; white-space: nowrap;
-    font-size: .8rem; font-weight: 600; text-decoration: none;
-    transition: all .18s; flex-shrink: 0;
-}
-.mix-pill-on {
-    background: white; color: var(--obsidian);
-    box-shadow: 0 2px 12px rgba(255,255,255,.12);
-}
-.mix-pill-off {
-    background: var(--glass-bg); border: 1px solid var(--glass-b);
-    color: var(--text-muted);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-}
-.mix-pill-off:hover { color: white; border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.1); }
-
-/* ══════════════════════════════════════════
-   ARTICLES SECTION
-══════════════════════════════════════════ */
-.mix-section-hd {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 18px;
-}
-.mix-section-title {
-    font-family: var(--font-disp); font-size: 1.35rem; font-weight: 700;
-    letter-spacing: -.03em; color: white;
-}
-.mix-see-all {
-    display: flex; align-items: center; gap: 5px;
-    font-size: .78rem; font-weight: 600; color: var(--sunrise);
-    text-decoration: none; transition: color .2s; white-space: nowrap;
-}
-.mix-see-all:hover { color: white; }
-
-.mix-articles {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-}
-@media (max-width: 600px) { .mix-articles { grid-template-columns: 1fr; } }
-
-.mix-art-card {
+.art-side {
     display: flex; flex-direction: column;
-    border-radius: 20px; overflow: hidden; text-decoration: none;
-    transition: transform .3s, box-shadow .2s;
+    gap: 12px; background: transparent;
 }
-.mix-art-card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,.4); }
-
-.mix-art-img {
-    position: relative; height: 175px; overflow: hidden;
-    background: var(--obsidian-2);
-    flex-shrink: 0;
-}
-.mix-art-img img {
-    width: 100%; height: 100%; object-fit: cover;
-    filter: saturate(.65); transition: filter .45s, transform .5s;
-}
-.mix-art-card:hover .mix-art-img img { filter: saturate(1); transform: scale(1.04); }
-
-.mix-art-badge {
-    position: absolute; top: 11px; left: 11px; z-index: 2;
-    padding: 3px 10px; border-radius: 9999px;
-    font-family: var(--font-mono); font-size: .56rem; font-weight: 700;
-    letter-spacing: .07em; text-transform: uppercase;
-    background: var(--sunrise); color: white;
-}
-
-.mix-art-body {
-    flex: 1; padding: 14px 16px 10px;
-}
-.mix-art-title {
-    font-family: var(--font-disp); font-size: .92rem; font-weight: 700;
-    color: white; line-height: 1.3; margin-bottom: 6px;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    transition: color .2s;
-}
-.mix-art-card:hover .mix-art-title { color: var(--sunrise); }
-.mix-art-excerpt {
-    font-size: .75rem; color: var(--text-muted); line-height: 1.55;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-.mix-art-footer {
-    padding: 8px 16px 13px;
-    display: flex; align-items: center; justify-content: space-between;
-    font-family: var(--font-mono); font-size: .58rem; color: var(--text-dim);
-    border-top: 1px solid rgba(255,255,255,.06); margin-top: 8px;
-}
-
-/* ══════════════════════════════════════════
-   SIDEBAR
-══════════════════════════════════════════ */
-.mix-sidebar { position: sticky; top: 104px; }
-
-.mix-forum-widget {
-    border-radius: 20px; overflow: hidden; padding: 20px;
-}
-.mix-fw-head {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 18px;
-}
-.mix-fw-title {
-    font-family: var(--font-disp); font-size: 1.05rem; font-weight: 700;
-    color: white; display: flex; align-items: center; gap: 8px;
-}
-.mix-fw-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--cyan);
-    animation: pulse-dot 2s ease-in-out infinite;
-}
-.mix-fw-btn {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: rgba(255,255,255,.06); border: 1px solid var(--glass-b);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--text-muted); text-decoration: none; transition: all .15s;
-}
-.mix-fw-btn:hover { background: rgba(255,255,255,.12); color: white; }
-
-.mix-fw-threads { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-
-.mix-fw-thread {
-    display: flex; align-items: center; gap: 11px;
-    padding: 11px 12px; border-radius: 14px;
-    background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
-    text-decoration: none; transition: background .15s, border-color .15s;
-}
-.mix-fw-thread:hover { background: rgba(255,255,255,.065); border-color: rgba(255,255,255,.13); }
-
-.mix-fw-thread-ico {
-    width: 38px; height: 38px; flex-shrink: 0; border-radius: 11px;
-    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
-    display: flex; align-items: center; justify-content: center; font-size: 1rem;
-    transition: background .15s;
-}
-.mix-fw-thread:hover .mix-fw-thread-ico { background: rgba(255,90,31,.14); }
-
-.mix-fw-thread-body { flex: 1; min-width: 0; }
-.mix-fw-thread-title {
-    font-size: .78rem; font-weight: 600; color: rgba(255,255,255,.78); line-height: 1.3;
-    display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
-    transition: color .15s;
-}
-.mix-fw-thread:hover .mix-fw-thread-title { color: white; }
-.mix-fw-thread-meta { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
-.mix-fw-count {
-    font-family: var(--font-mono); font-size: .56rem; font-weight: 600;
-    background: rgba(255,255,255,.08); border-radius: 4px;
-    padding: 1px 5px; color: var(--text-muted);
-}
-.mix-fw-time { font-family: var(--font-mono); font-size: .54rem; color: var(--text-dim); }
-
-/* Divider online */
-.mix-fw-online {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 0; margin-bottom: 14px;
-    border-top: 1px solid rgba(255,255,255,.07);
-    border-bottom: 1px solid rgba(255,255,255,.07);
-}
-.mix-fw-avis { display: flex; }
-.mix-fw-avi {
-    width: 24px; height: 24px; border-radius: 50%;
-    border: 2px solid var(--obsidian); background: rgba(255,255,255,.1);
-    margin-left: -7px; display: flex; align-items: center; justify-content: center;
-    font-size: .52rem; font-weight: 700; color: white; overflow: hidden;
-    flex-shrink: 0;
-}
-.mix-fw-avi:first-child { margin-left: 0; }
-.mix-fw-avi img { width: 100%; height: 100%; object-fit: cover; }
-.mix-fw-live {
-    display: flex; align-items: center; gap: 5px;
-    font-family: var(--font-mono); font-size: .62rem; color: var(--text-muted);
-}
-.mix-fw-greendot {
-    width: 6px; height: 6px; border-radius: 50%; background: #22c55e;
-    box-shadow: 0 0 6px rgba(34,197,94,.6); flex-shrink: 0;
-}
-
-/* Input */
-.mix-fw-input-row {
-    display: flex; gap: 0;
-    background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
-    border-radius: 11px; overflow: hidden; padding: 4px;
-    margin-bottom: 12px;
-}
-.mix-fw-input {
-    flex: 1; background: transparent; border: none; outline: none;
-    padding: 8px 10px; color: white;
-    font-family: var(--font-body); font-size: .78rem;
-    min-width: 0;
-}
-.mix-fw-input::placeholder { color: var(--text-dim); }
-.mix-fw-post {
-    flex-shrink: 0; padding: 7px 13px; border-radius: 7px;
-    background: var(--sunrise); color: white; border: none;
-    font-family: var(--font-mono); font-size: .6rem; font-weight: 700;
-    letter-spacing: .05em; text-transform: uppercase; cursor: pointer;
-    transition: background .15s;
-}
-.mix-fw-post:hover { background: var(--sunrise-2); }
-
-.mix-fw-all-link {
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 9px; border-radius: 9px;
-    background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
-    text-decoration: none; color: var(--sunrise);
-    font-family: var(--font-mono); font-size: .6rem; font-weight: 600;
-    letter-spacing: .07em; text-transform: uppercase;
-    transition: all .15s;
-}
-.mix-fw-all-link:hover { background: rgba(255,255,255,.07); color: white; }
-
-/* ══════════════════════════════════════════
-   NEWSLETTER
-══════════════════════════════════════════ */
-.v1-newsletter {
-    max-width: 960px; margin: 0 auto 80px;
-    padding: 44px 52px; border-radius: 32px;
-    border-color: rgba(34,211,238,.2) !important;
-    display: flex; align-items: center; justify-content: space-between; gap: 40px;
+.art-side-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    text-decoration: none;
+    display: flex; flex-direction: column;
+    flex: 1; transition: border-color .2s, box-shadow .2s, transform .2s;
     position: relative; overflow: hidden;
 }
-.v1-newsletter-glow {
-    position: absolute; left: -32px; bottom: -32px;
-    width: 240px; height: 240px; border-radius: 50%;
-    background: rgba(34,211,238,.08); filter: blur(50px); pointer-events: none;
+.art-side-card::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--terra); opacity: 0; transition: opacity .2s;
+    border-radius: 0;
 }
-.v1-newsletter-left { position: relative; z-index: 1; flex: 1; min-width: 0; }
-.v1-nl-icon { font-size: 2.4rem; color: var(--cyan); margin-bottom: 10px; display: block; }
-.v1-nl-title {
-    font-family: var(--font-disp); font-size: clamp(1.4rem, 2.4vw, 2rem);
-    font-weight: 800; letter-spacing: -.04em; color: white; margin-bottom: 8px;
+.art-side-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    transform: translateY(-1px);
 }
-.v1-nl-sub { font-size: .88rem; color: var(--text-muted); line-height: 1.6; }
-.v1-newsletter-right { position: relative; z-index: 1; flex: 1; min-width: 220px; }
-.v1-nl-form { display: flex; flex-direction: column; gap: 10px; }
-.v1-nl-row { display: flex; gap: 10px; }
-.v1-nl-input {
-    flex: 1; background: rgba(13,13,20,.6); border: 1px solid rgba(255,255,255,.1);
-    border-radius: 9999px; padding: 13px 20px; color: white;
-    font-size: .88rem; outline: none; transition: border-color .2s;
+.art-side-card:hover::before { opacity: 1; }
+
+/* Numéro éditorial sur les side cards */
+.art-side-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .55rem;
+    letter-spacing: .14em;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
-.v1-nl-input:focus { border-color: var(--cyan); }
-.v1-nl-input::placeholder { color: var(--text-dim); }
-.v1-nl-btn {
-    flex-shrink: 0; padding: 13px 22px; border-radius: 9999px;
-    background: white; color: var(--obsidian); border: none;
-    font-size: .88rem; font-weight: 700; cursor: pointer;
-    transition: background .2s; white-space: nowrap;
-}
-.v1-nl-btn:hover { background: var(--cyan); }
-.v1-nl-note { font-size: .7rem; color: rgba(255,255,255,.22); text-align: center; }
-@media (max-width: 768px) {
-    .v1-newsletter { flex-direction: column; padding: 28px 22px; }
-    .v1-nl-row { flex-direction: column; }
-    .v1-nl-btn { width: 100%; }
+.art-side-num::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: var(--border);
 }
 
-/* ══════════════════════════════════════════
-   FOOTER
-══════════════════════════════════════════ */
-.v1-footer {
-    border-top: 1px solid rgba(255,255,255,.05);
-    padding: 36px 32px 24px;
-    position: relative; z-index: 10;
+/* Grille 3 colonnes pour les récents */
+.art-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
 }
-.v1-footer-inner {
+@media (max-width: 1024px) { .art-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .art-grid { grid-template-columns: 1fr; } }
+
+.art-card {
+    background: var(--bg-card);
+    padding: 28px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    transition: background .2s;
+}
+.art-card:hover { background: var(--bg-hover); }
+
+/* Catégorie tag */
+.art-cat {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .56rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 14px;
+    width: fit-content;
+}
+
+/* Miniature */
+.art-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 6px;
+    background: var(--bg-card2);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+.art-featured .art-thumb { aspect-ratio: 16/8; margin-bottom: 0; }
+.art-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.art-thumb-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.4rem;
+    background: linear-gradient(135deg, var(--bg-card2), var(--bg-hover));
+}
+
+/* Titre article — DM Serif */
+.art-title {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.35;
+    color: rgba(255,255,255,.90);
+    margin-bottom: 10px;
+    transition: color .2s;
+    flex: 1;
+}
+.art-featured .art-title { font-size: 1.4rem; line-height: 1.25; }
+.art-side-card .art-title { font-size: .92rem; }
+.art-featured:hover .art-title,
+.art-side-card:hover .art-title,
+.art-card:hover .art-title { color: var(--gold); }
+
+.art-excerpt {
+    font-size: .78rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.art-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem;
+    letter-spacing: .06em;
+    color: var(--text-faint);
+    margin-top: auto;
+}
+.art-avi {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--terra), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: .52rem; font-weight: 700; color: white; flex-shrink: 0;
+}
+.art-dot { width: 2px; height: 2px; background: var(--text-faint); border-radius: 50%; }
+
+/* ══ CATÉGORIES — CARTES GRADIENT ══ */
+.cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+@media (max-width: 1024px) { .cat-grid { grid-template-columns: repeat(4, 1fr); justify-items: stretch; } }
+@media (max-width: 600px)  { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+/* Dernière carte seule → pleine largeur sur mobile */
+@media (max-width: 600px)  { .cat-grid > a:last-child:nth-child(odd) { grid-column: span 2; } }
+
+.cat-card {
+    padding: 24px 20px;
+    text-decoration: none;
+    display: flex; flex-direction: column;
+    gap: 0; border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    position: relative; overflow: hidden;
+    transition: transform .22s, box-shadow .22s, border-color .22s, background .22s;
+    min-height: 130px; justify-content: flex-end;
+}
+.cat-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: 0.06;
+    transition: opacity .22s;
+    border-radius: 14px;
+}
+.cat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    border-color: var(--border-hover);
+}
+.cat-card:hover::after { opacity: 0.12; }
+/* Teinte subtile par catégorie */
+.cat-card[href*="manga-anime"]::after   { background: linear-gradient(145deg, #7c3aed, #a855f7); display: block; }
+.cat-card[href*="gaming"]::after        { background: linear-gradient(145deg, #16a34a, #4ade80); display: block; }
+.cat-card[href*="tech"]::after          { background: linear-gradient(145deg, #2563eb, #60a5fa); display: block; }
+.cat-card[href*="dev"]::after           { background: linear-gradient(145deg, #d97706, #fbbf24); display: block; }
+.cat-card[href*="web3-economie"]::after { background: linear-gradient(145deg, #0f766e, #2dd4bf); display: block; }
+.cat-card[href*="lore-africain"]::after { background: linear-gradient(145deg, #7c2d12, #fb923c); display: block; }
+.cat-card[href*="hardware"]::after      { background: linear-gradient(145deg, #334155, #94a3b8); display: block; }
+.cat-card[href*="carriere"]::after      { background: linear-gradient(145deg, #7e22ce, #d8b4fe); display: block; }
+.cat-card[href*="cinema"]::after        { background: linear-gradient(145deg, #dc2626, #f87171); display: block; }
+.cat-card[href*="culture"]::after       { background: linear-gradient(145deg, #059669, #34d399); display: block; }
+.cat-card[href*="debat"]::after         { background: linear-gradient(145deg, #7c3aed, #c084fc); display: block; }
+/* Overlay hover lumineux */
+.cat-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 60%);
+    opacity: 0; transition: opacity .22s;
+}
+.cat-card:hover::before { opacity: 1; }
+
+/* Couleur icône par catégorie */
+.cat-icon {
+    font-size: 2rem; line-height: 1;
+    margin-bottom: 12px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+}
+.cat-card[href*="manga-anime"] .cat-icon { color: #a855f7; }
+.cat-card[href*="gaming"] .cat-icon      { color: #4ade80; }
+.cat-card[href*="tech"] .cat-icon        { color: #60a5fa; }
+.cat-card[href*="dev"] .cat-icon         { color: #fbbf24; }
+.cat-card[href*="web3-economie"] .cat-icon { color: #2dd4bf; }
+.cat-card[href*="lore-africain"] .cat-icon { color: #fb923c; }
+.cat-card[href*="hardware"] .cat-icon      { color: #cbd5e1; }
+.cat-card[href*="carriere"] .cat-icon      { color: #d8b4fe; }
+.cat-card[href*="cinema"] .cat-icon      { color: #f87171; }
+.cat-card[href*="culture"] .cat-icon     { color: #34d399; }
+.cat-card[href*="debat"] .cat-icon       { color: #c084fc; }
+.cat-name {
+    font-family: var(--font-head);
+    font-size: .95rem; font-weight: 700;
+    color: rgba(255,255,255,.88);
+    transition: color .2s;
+    letter-spacing: -.01em;
+}
+.cat-card:hover .cat-name { color: white; }
+.cat-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem; letter-spacing: .08em;
+    color: rgba(255,255,255,0.35); text-transform: uppercase;
+    margin-top: 4px;
+}
+
+/* ══ FORUM PREVIEW ══ */
+.lp-section-forum { background: var(--bg-card); }
+
+.forum-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+@media (max-width: 900px) { .forum-grid { grid-template-columns: 1fr; } }
+
+.forum-threads { background: var(--bg-card); }
+.forum-thread {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 14px;
+    text-decoration: none;
+    transition: background .18s;
+    align-items: flex-start;
+}
+.forum-thread:last-child { border-bottom: none; }
+.forum-thread:hover { background: var(--bg-hover); }
+
+.ft-avi {
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--terra), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: .78rem; font-weight: 700; color: white; flex-shrink: 0;
+    margin-top: 2px;
+}
+.ft-body { flex: 1; min-width: 0; }
+.ft-cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .54rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 4px;
+}
+.ft-title {
+    font-family: var(--serif);
+    font-size: .9rem; font-weight: 400;
+    color: rgba(255,255,255,.80);
+    line-height: 1.35; margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color .18s;
+}
+.forum-thread:hover .ft-title { color: var(--gold); }
+.ft-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .56rem; color: var(--text-faint);
+    display: flex; align-items: center; gap: 8px;
+}
+.ft-replies {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 0 12px; min-width: 44px; flex-shrink: 0;
+}
+.ft-r-n {
+    font-family: var(--serif);
+    font-size: 1rem; color: var(--text-muted); line-height: 1;
+}
+.ft-r-l { font-family: 'JetBrains Mono', monospace; font-size: .5rem; color: var(--text-faint); text-transform: uppercase; letter-spacing: .07em; }
+
+.forum-cats { background: var(--bg-card); display: flex; flex-direction: column; }
+.forum-cat-item {
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 12px;
+    transition: background .18s;
+}
+.forum-cat-item:last-child { border-bottom: none; }
+.forum-cat-item:hover { background: var(--bg-hover); }
+.fci-icon { width: 32px; height: 32px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: var(--bg-card2); flex-shrink: 0; }
+.fci-info { flex: 1; min-width: 0; }
+.fci-name { font-family: var(--serif); font-size: .82rem; color: rgba(255,255,255,.75); transition: color .18s; }
+.forum-cat-item:hover .fci-name { color: var(--gold); }
+.fci-desc { font-family: 'JetBrains Mono', monospace; font-size: .54rem; letter-spacing: .06em; color: var(--text-faint); margin-top: 2px; }
+.fci-count { font-family: var(--serif); font-size: .85rem; color: var(--text-faint); margin-left: auto; flex-shrink: 0; }
+
+/* ══ CTA SECTION ══ */
+.lp-cta-section {
+    padding: 96px 52px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.lp-cta-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse, rgba(212,168,67,.10) 0%, transparent 65%);
+    pointer-events: none;
+}
+.lp-cta-inner {
+    position: relative; z-index: 1;
+    max-width: 560px; margin: 0 auto;
+}
+.lp-cta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .6rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+}
+.lp-cta-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: rgba(255,255,255,.92);
+    margin-bottom: 16px;
+    letter-spacing: -.01em;
+}
+.lp-cta-desc {
+    font-size: .88rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 440px;
+    margin-left: auto; margin-right: auto;
+}
+
+/* ══ NEWSLETTER ══ */
+.lp-newsletter {
+    border-top: 1px solid var(--border);
+    padding: 72px 52px;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+@media (max-width: 768px) {
+    .lp-newsletter { grid-template-columns: 1fr; padding: 48px 20px; gap: 28px; }
+}
+.lp-newsletter-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+}
+.lp-newsletter-eyebrow::before {
+    content: ''; display: block;
+    width: 20px; height: 1px; background: var(--gold); opacity: .7;
+}
+.lp-newsletter-title {
+    font-family: var(--font-head);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -.04em;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 10px;
+}
+.lp-newsletter-title span { color: var(--terra); }
+.lp-newsletter-sub {
+    font-size: .85rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+.lp-newsletter-form { display: flex; flex-direction: column; gap: 10px; }
+.lp-newsletter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.lp-newsletter-input {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 13px 22px;
+    color: var(--text);
+    font-family: var(--font-body); font-size: .88rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+.lp-newsletter-input::placeholder { color: var(--text-faint); }
+.lp-newsletter-input:focus {
+    border-color: var(--terra);
+    box-shadow: 0 0 0 3px rgba(200,82,42,.1);
+}
+.lp-newsletter-btn {
+    background: var(--terra); color: white;
+    border: none; border-radius: 100px;
+    padding: 13px 24px;
+    font-family: var(--font-body); font-size: .88rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: background .2s, transform .15s;
+}
+.lp-newsletter-btn:hover { background: var(--accent); transform: translateY(-1px); }
+.lp-newsletter-note {
+    font-size: .72rem;
+    color: var(--text-faint);
+    padding-left: 8px;
+}
+.lp-newsletter-note strong { color: var(--gold); }
+
+/* ══ FOOTER ══ */
+.lp-footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 52px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
     max-width: 1280px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
 }
-.v1-footer-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
-.v1-footer-diamond {
-    width: 20px; height: 20px; background: white; border-radius: 3px;
-    transform: rotate(45deg);
+.lp-footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem; letter-spacing: .08em; color: var(--text-faint);
 }
-.v1-footer-name {
-    font-family: var(--font-disp); font-weight: 800; letter-spacing: -.03em; color: white;
+.lp-footer-links { display: flex; gap: 22px; list-style: none; }
+.lp-footer-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .58rem; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-faint); text-decoration: none; transition: color .18s;
 }
-.v1-footer-name span { color: rgba(255,255,255,.28); }
-.v1-footer-year { font-size: .78rem; color: rgba(255,255,255,.22); margin-left: 8px; font-family: var(--font-body); font-weight: 400; }
-.v1-footer-socials { display: flex; align-items: center; gap: 18px; }
-.v1-footer-socials a {
-    font-size: 1.25rem; color: rgba(255,255,255,.28);
-    text-decoration: none; transition: color .25s;
+.lp-footer-links a:hover { color: var(--gold); }
+@media (max-width: 640px) {
+    .lp-footer { flex-direction: column; text-align: center; padding: 28px 20px; }
+    .lp-footer-links { flex-wrap: wrap; justify-content: center; }
 }
-.v1-footer-socials a:hover { color: white; }
-@media (max-width: 640px) { .v1-footer-inner { justify-content: center; text-align: center; } }
-
-/* ══════════════════════════════════════════
-   MOBILE BOTTOM NAV
-══════════════════════════════════════════ */
-.v1-mbnav {
-    display: none;
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
-    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-    border-top: 1px solid rgba(255,255,255,.08);
+@media (max-width: 1024px) {
+    .lp-cta-section { padding: 72px 28px; }
+    .lp-newsletter { padding: 52px 28px; }
 }
 @media (max-width: 768px) {
-    .v1-mbnav { display: flex; }
-    body { padding-bottom: 68px; }
+    .lp-cta-section { padding: 52px 16px; }
+    .lp-newsletter { padding: 44px 16px; }
+    .art-grid-featured { gap: 12px; }
+    .art-side { gap: 12px; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .lp-newsletter-row { flex-direction: column; }
+    .lp-newsletter-btn { width: 100%; }
+    .lp-section, .lp-section-full, .lp-cta-section, .lp-newsletter { max-width: 100vw; box-sizing: border-box; }
 }
-.v1-mbn-item {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 6px 4px; text-decoration: none; color: rgba(255,255,255,.28);
-    font-family: var(--font-mono); font-size: .47rem; letter-spacing: .06em; text-transform: uppercase;
-    transition: color .15s;
-}
-.v1-mbn-item.active, .v1-mbn-item:hover { color: var(--sunrise); }
-.v1-mbn-item svg { width: 20px; height: 20px; }
-
-/* ══════════════════════════════════════════
-   REVEAL ANIMATIONS
-══════════════════════════════════════════ */
-[data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .6s, transform .6s; }
-[data-reveal].visible { opacity: 1; transform: none; }
 </style>
-</head>
-<body>
+@endpush
 
-{{-- Ambient glows --}}
-<div class="amb amb-1"></div>
-<div class="amb amb-2"></div>
+@section('content')
+<div class="lp">
 
-{{-- ══ NAV ══ --}}
-<nav class="v1-nav">
-    <div class="v1-nav-inner glass">
-        <a href="{{ route('home') }}" class="v1-logo">
-            <div class="v1-logo-diamond"><div class="v1-logo-diamond-inner"></div></div>
-            <span class="v1-logo-text">Melano<span>Geek</span></span>
-        </a>
+{{-- SVG filter pour le halo du bouton principal --}}
+<svg width="0" height="0" style="position:absolute;pointer-events:none">
+    <defs>
+        <filter id="btn-glow-blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
+        </filter>
+    </defs>
+</svg>
 
-        <ul class="v1-nav-links">
-            <li><a href="{{ route('blog.index') }}?category=manga-anime">Animés</a></li>
-            <li><a href="{{ route('blog.index') }}?category=gaming">Gaming</a></li>
-            <li><a href="{{ route('blog.index') }}?category=tech">Tech &amp; Web3</a></li>
-            <li><a href="{{ route('blog.index') }}?category=culture" style="position:relative">
-                Mythos <span class="mythos-dot"></span>
-            </a></li>
-            <li><a href="{{ route('forum.index') }}" class="forum">Forum</a></li>
-        </ul>
+{{-- ══ HERO ══ --}}
+<section class="lp-hero">
+    <div class="lp-hero-left">
+        <div class="lp-vol">Vol. I · {{ date('Y') }}</div>
 
-        <div style="display:flex;align-items:center;gap:12px">
-            @guest
-            <a href="{{ route('register') }}" class="v1-nav-cta">
-                Rejoindre le Hub <i class="ph-bold ph-arrow-right"></i>
+        <h1 class="lp-h1">
+            La culture geek,<br>
+            <span class="lp-h1-gold">vue d'Afrique.</span>
+        </h1>
+
+        <hr class="lp-hero-rule">
+
+        <p class="lp-sub">
+            Articles, débats, reviews et conversations autour des animés, du gaming,
+            du cinéma, de la tech, du Web3, du hardware et des mythos africains
+            — par et pour la communauté geek africaine.
+        </p>
+
+        <div class="lp-ctas">
+            <a href="{{ route('register') }}" class="lp-btn-main">
+                Rejoindre la communauté
             </a>
-            @else
-            <a href="{{ route('blog.index') }}" class="v1-nav-cta">
-                {{ auth()->user()->name }} <i class="ph-bold ph-arrow-right"></i>
+            <a href="{{ route('blog.index') }}" class="lp-btn-ghost">
+                Lire le blog
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-            @endguest
-            <button class="v1-nav-mobile"><i class="ph-bold ph-list"></i></button>
+        </div>
+        <div class="lp-scroll-hint" aria-hidden="true">
+            <div class="lp-scroll-dot"></div>
         </div>
     </div>
-</nav>
 
-{{-- ══ MAIN ══ --}}
-<main class="v1-main">
-
-    {{-- ══ HERO TEXT — compact ══ --}}
-    <section class="mix-hero" data-reveal>
-        <div class="v1-hero-badge">
-            <i class="ph-fill ph-planet"></i> Le réseau des créateurs
+    {{-- Colonne droite — encart éditorial --}}
+    <div class="lp-hero-right">
+        <div class="lp-ed-pullquote">
+            <div class="lp-ed-pullquote-text">
+                "L'Afrique n'a pas besoin d'emprunter l'imaginaire des autres — elle en a un qui lui est propre, immense et inexploré."
+            </div>
+            <div class="lp-ed-pullquote-attr">— Éditorial · MelanoGeek</div>
         </div>
-        <h1 class="v1-h1">
-            La culture geek,<br>
-            <span class="v1-h1-outline">vue d'Afrique.</span>
-        </h1>
-        <p class="v1-hero-sub">
-            Articles, débats, reviews et actualités. De la scène esport à Dakar
-            aux mythologies africaines dans le Web3 — par et pour la communauté nerd du continent.
-        </p>
-        <div class="v1-hero-ctas">
-            <a href="{{ route('blog.index') }}" class="v1-btn-primary">
-                Explorer les articles <i class="ph-bold ph-arrow-down-right"></i>
-            </a>
-            <a href="{{ route('forum.index') }}" class="v1-btn-ghost glass">
-                <i class="ph-fill ph-chats-circle" style="font-size:1.05rem"></i>
-                Forum Communautaire
-            </a>
+        <div class="lp-ed-stats">
+            <div class="lp-ed-stat">
+                <span class="lp-ed-stat-n" data-count="{{ $stats['users'] }}">{{ $stats['users'] }}</span>
+                <span class="lp-ed-stat-l">Membres<br>inscrits</span>
+            </div>
+            <div class="lp-ed-stat">
+                <span class="lp-ed-stat-n" data-count="{{ $stats['posts'] }}">{{ $stats['posts'] }}</span>
+                <span class="lp-ed-stat-l">Articles<br>publiés</span>
+            </div>
+            <div class="lp-ed-stat">
+                <span class="lp-ed-stat-n" data-count="{{ $stats['comments'] }}">{{ $stats['comments'] }}</span>
+                <span class="lp-ed-stat-l">Contributions<br>communauté</span>
+            </div>
+            <div class="lp-ed-stat">
+                <span class="lp-ed-stat-n" data-count="{{ $stats['visits'] }}">{{ $stats['visits'] }}</span>
+                <span class="lp-ed-stat-l">Visites<br>du site</span>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    {{-- ══ MARQUEE ══ --}}
-    <div class="v1-marquee-wrap glass" data-reveal style="transition-delay:.2s">
-        <div class="v1-marquee-track">
-            @foreach(array_fill(0,2,null) as $_)
-            <span class="v1-marquee-item">ANIMÉ &amp; MANGA</span><span class="v1-marquee-star">✦</span>
-            <span class="v1-marquee-item">ESPORT AFRICAIN</span><span class="v1-marquee-star">✦</span>
-            <span class="v1-marquee-item bright">TECH &amp; WEB3</span><span class="v1-marquee-star">✦</span>
-            <span class="v1-marquee-item">HARDWARE REVIEWS</span><span class="v1-marquee-star">✦</span>
-            <span class="v1-marquee-item">MYTHOLOGIE &amp; CINÉMA</span><span class="v1-marquee-star">✦</span>
+{{-- ══ TICKER ══ --}}
+<div class="lp-ticker">
+    <div class="lp-ticker-label">
+        <span class="lp-ticker-label-dot"></span>
+        Live
+    </div>
+    <div class="lp-ticker-track">
+        <div class="lp-ticker-t">
+            @foreach(array_fill(0, 2, null) as $_)
+            @foreach($recentPosts as $rp)
+            <a href="{{ route('posts.show', $rp->id) }}" class="lp-tt">
+                <span class="lp-tt-type blog">Blog</span>
+                <span class="lp-tt-title">{{ $rp->title }}</span>
+                <span class="lp-tt-sep">·</span>
+                <span style="color:var(--text-faint);font-size:.56rem">{{ $rp->created_at->diffForHumans(null, true) }}</span>
+            </a>
+            @endforeach
+            @foreach($recentThreads as $rt)
+            <a href="{{ route('forum.show', $rt) }}" class="lp-tt">
+                <span class="lp-tt-type forum">Forum</span>
+                <span class="lp-tt-title">{{ $rt->title }}</span>
+                <span class="lp-tt-sep">·</span>
+                <span style="color:var(--text-faint);font-size:.56rem">{{ $rt->created_at->diffForHumans(null, true) }}</span>
+            </a>
+            @endforeach
             @endforeach
         </div>
     </div>
+</div>
 
-    {{-- ══ 8 + 4 LAYOUT ══ --}}
-    <div class="mix-layout">
+{{-- ══ ARTICLES À LA UNE ══ --}}
+<section class="lp-section">
+    <div class="lp-ed-header">
+        <span class="lp-ed-header-num">§ 01</span>
+        <span class="lp-ed-header-title">À la une</span>
+        <div class="lp-ed-header-line"></div>
+        <a href="{{ route('blog.index') }}" class="lp-ed-header-link">Tous les articles →</a>
+    </div>
 
-        {{-- ── MAIN COLUMN ── --}}
-        <div>
-
-            {{-- Featured hero card --}}
-            @if($featured)
-            @php $featMins = max(1,(int)ceil(str_word_count(strip_tags($featured->body??''))/200)); @endphp
-            <a href="{{ route('posts.show', $featured->id) }}" class="mix-feat-card" data-reveal>
-                <div class="mix-feat-bg">
-                    @if($featured->primary_image_url)
-                        <img src="{{ $featured->primary_image_url }}" alt="{{ $featured->title }}">
+    @if($featured || $side_posts->isNotEmpty())
+    <div class="art-grid-featured" @if($side_posts->isEmpty()) style="grid-template-columns:1fr" @endif>
+        {{-- Article featured --}}
+        @if($featured)
+        @php
+            $featExcerpt  = Str::limit(strip_tags($featured->body ?? ''), 140);
+            $featMins     = max(1, (int) ceil(str_word_count(strip_tags($featured->body ?? '')) / 200));
+            $featInitial  = strtoupper(substr($featured->user->name ?? '?', 0, 1));
+        @endphp
+        <a href="{{ route('posts.show', $featured->id) }}" class="art-featured" data-reveal>
+            <div class="art-thumb">
+                @if($featured->primary_image_url)
+                    <img src="{{ $featured->primary_image_url }}" alt="{{ $featured->title }}">
+                @else
+                    <div class="art-thumb-placeholder" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;opacity:.18;"><svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+                @endif
+            </div>
+            <div class="art-featured-inner">
+                @if($featured->category)
+                <div class="art-cat">{{ $featured->category_label }}</div>
+                @endif
+                <div class="art-title">{{ $featured->title }}</div>
+                @if($featExcerpt)
+                <div class="art-excerpt">{{ $featExcerpt }}</div>
+                @endif
+                <div class="art-meta" style="margin-top:auto">
+                    @if($featured->user->avatar_url)
+                        <img src="{{ $featured->user->avatar_url }}" class="art-avi" style="object-fit:cover" alt="">
+                    @else
+                        <div class="art-avi">{{ $featInitial }}</div>
                     @endif
+                    <span>{{ $featured->user->name }}</span>
+                    <span class="art-dot"></span>
+                    <span>{{ $featured->created_at->format('d M Y') }}</span>
+                    <span class="art-dot"></span>
+                    <span>{{ $featMins }} min</span>
                 </div>
-                <div class="mix-feat-overlay"></div>
-                <span class="mix-feat-badge">{{ $featured->category_label ?? 'À la Une' }}</span>
-                <div class="mix-feat-arrow">
-                    <i class="ph-bold ph-arrow-up-right"></i>
-                </div>
-                <div class="mix-feat-body">
-                    <h2 class="mix-feat-title">{{ $featured->title }}</h2>
-                    <div class="mix-feat-meta">
-                        <div class="mix-feat-author">
-                            <div class="mix-feat-avi">
-                                @if($featured->user->avatar_url)
-                                    <img src="{{ $featured->user->avatar_url }}" alt="">
-                                @else
-                                    {{ strtoupper(substr($featured->user->name??'?',0,2)) }}
-                                @endif
-                            </div>
-                            <span class="mix-feat-author-name">Par {{ $featured->user->name }}</span>
-                        </div>
-                        <div class="mix-feat-stats">
-                            <span><i class="ph-bold ph-clock"></i> {{ $featMins }} min</span>
-                        </div>
-                    </div>
+            </div>
+        </a>
+        @endif
+
+        {{-- Articles côté --}}
+        @if($side_posts->isNotEmpty())
+        <div class="art-side">
+            @foreach($side_posts as $post)
+            @php
+                $excerpt = Str::limit(strip_tags($post->body ?? ''), 100);
+                $mins    = max(1, (int) ceil(str_word_count(strip_tags($post->body ?? '')) / 200));
+                $initial = strtoupper(substr($post->user->name ?? '?', 0, 1));
+            @endphp
+            <a href="{{ route('posts.show', $post->id) }}" class="art-side-card" data-reveal data-delay="{{ $loop->iteration }}">
+                <div class="art-side-num">0{{ $loop->iteration }}</div>
+                @if($post->category)
+                <div class="art-cat">{{ $post->category_label }}</div>
+                @endif
+                <div class="art-title" style="font-size:1rem;line-height:1.3;margin-bottom:10px">{{ $post->title }}</div>
+                @if($excerpt)
+                <div class="art-excerpt" style="font-size:.78rem;-webkit-line-clamp:2">{{ $excerpt }}</div>
+                @endif
+                <div class="art-meta" style="margin-top:auto;padding-top:12px">
+                    @if($post->user->avatar_url)
+                        <img src="{{ $post->user->avatar_url }}" class="art-avi" style="object-fit:cover" alt="">
+                    @else
+                        <div class="art-avi">{{ $initial }}</div>
+                    @endif
+                    <span>{{ $post->user->name }}</span>
+                    <span class="art-dot"></span>
+                    <span>{{ $mins }} min</span>
                 </div>
             </a>
-            @endif
-
-            {{-- Category pills --}}
-            <div class="mix-cat-pills" data-reveal style="transition-delay:.1s">
-                <a href="{{ route('blog.index') }}" class="mix-pill mix-pill-on">All Topics</a>
-                <a href="{{ route('blog.index') }}?category=manga-anime" class="mix-pill mix-pill-off">🎌 Animés</a>
-                <a href="{{ route('blog.index') }}?category=gaming" class="mix-pill mix-pill-off">🎮 Gaming</a>
-                <a href="{{ route('blog.index') }}?category=tech" class="mix-pill mix-pill-off">🤖 Tech &amp; IA</a>
-                <a href="{{ route('blog.index') }}?category=cinema-series" class="mix-pill mix-pill-off">🎬 Cinéma</a>
-                <a href="{{ route('blog.index') }}?category=web3-economie" class="mix-pill mix-pill-off">₿ Web3</a>
-                <a href="{{ route('blog.index') }}?category=culture" class="mix-pill mix-pill-off">🚀 Mythos</a>
-                <a href="{{ route('blog.index') }}?category=hardware" class="mix-pill mix-pill-off">🖥️ Hardware</a>
-            </div>
-
-            {{-- Articles grid --}}
-            @if($side_posts->isNotEmpty())
-            <div class="mix-section-hd">
-                <h2 class="mix-section-title">À la Une</h2>
-                <a href="{{ route('blog.index') }}" class="mix-see-all">
-                    Voir tout <i class="ph-bold ph-arrow-right"></i>
-                </a>
-            </div>
-
-            <div class="mix-articles" data-reveal style="transition-delay:.15s">
-                @foreach($side_posts->take(4) as $post)
-                @php $mins = max(1,(int)ceil(str_word_count(strip_tags($post->body??''))/200)); @endphp
-                <a href="{{ route('posts.show', $post->id) }}" class="mix-art-card glass">
-                    <div class="mix-art-img">
-                        @if($post->primary_image_url)
-                            <img src="{{ $post->primary_image_url }}" alt="{{ $post->title }}">
-                        @endif
-                        <span class="mix-art-badge">{{ $post->category_label ?? 'Article' }}</span>
-                    </div>
-                    <div class="mix-art-body">
-                        <h3 class="mix-art-title">{{ $post->title }}</h3>
-                        <p class="mix-art-excerpt">{{ Str::limit(strip_tags($post->body??''), 90) }}</p>
-                    </div>
-                    <div class="mix-art-footer">
-                        <span>{{ $post->user->name }}</span>
-                        <span>{{ $mins }} min</span>
-                    </div>
-                </a>
-                @endforeach
-            </div>
-            @endif
-
+            @endforeach
         </div>
+        @endif
+    </div>
+    @else
+    <div style="text-align:center;padding:64px 0;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.08em">
+        Aucun article publié pour le moment.
+    </div>
+    @endif
+</section>
 
-        {{-- ── SIDEBAR ── --}}
-        <aside class="mix-sidebar" data-reveal style="transition-delay:.25s">
-            <div class="mix-forum-widget glass">
+{{-- ══ ARTICLES POPULAIRES ══ --}}
+@if(isset($popularPosts) && $popularPosts->isNotEmpty())
+<section class="lp-section" style="padding-top:0">
+    <div class="lp-ed-header">
+        <span class="lp-ed-header-num">§ 02</span>
+        <span class="lp-ed-header-title">Les plus lus · 30 derniers jours</span>
+        <div class="lp-ed-header-line"></div>
+    </div>
+    <div class="lp-popular-grid">
+        @foreach($popularPosts as $i => $pp)
+        <a href="{{ route('posts.show', $pp->id) }}" class="lp-popular-item">
+            <div class="lp-popular-rank">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</div>
+            <div class="lp-popular-content">
+                <div class="lp-popular-title">{{ $pp->title }}</div>
+                <div class="lp-popular-meta">
+                    <span>{{ $pp->user->name }}</span>
+                    <span class="lp-popular-dot">·</span>
+                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> {{ number_format($pp->views_count) }}</span>
+                    @if($pp->likes_count > 0)
+                    <span class="lp-popular-dot">·</span>
+                    <span style="display:inline-flex;align-items:center;gap:3px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> {{ number_format($pp->likes_count) }}</span>
+                    @endif
+                </div>
+            </div>
+        </a>
+        @endforeach
+    </div>
+</section>
+@endif
 
-                {{-- Header --}}
-                <div class="mix-fw-head">
-                    <div class="mix-fw-title">
-                        <span class="mix-fw-dot"></span> Le Forum
-                    </div>
-                    <a href="{{ route('forum.index') }}" class="mix-fw-btn">
-                        <i class="ph-bold ph-dots-three"></i>
+{{-- ══ CATÉGORIES ══ --}}
+<section class="lp-section" style="padding-top:0">
+    <div class="lp-ed-header">
+        <span class="lp-ed-header-num">§ 03</span>
+        <span class="lp-ed-header-title">Explorer par thème</span>
+        <div class="lp-ed-header-line"></div>
+    </div>
+    @php
+        $cats = [
+            'manga-anime'   => ['🎌', 'Animés & mangas'],
+            'gaming'        => ['🎮', 'Gaming & E-sport'],
+            'cinema-series' => ['🎬', 'Cinéma & séries'],
+            'tech'          => ['🤖', 'Tech, geek & IA'],
+            'web3-economie' => ['₿', 'Web3 & économie numérique'],
+            'lore-africain' => ['📚', 'Pop culture & lore africain'],
+            'hardware'      => ['🖥️', 'Hardware & PC building'],
+            'carriere'      => ['💼', 'Carrière & métiers'],
+        ];
+    @endphp
+    <div class="cat-grid">
+        @foreach($cats as $slug => [$icon, $label])
+        @php $count = $category_counts[$slug] ?? 0; @endphp
+        <a href="{{ route('blog.index') }}?category={{ $slug }}" class="cat-card" data-reveal data-delay="{{ $loop->iteration }}">
+            <div class="cat-icon" style="font-size:2rem;line-height:1;margin-bottom:12px">{{ $icon }}</div>
+            <div class="cat-name">{{ $label }}</div>
+            @if($count > 0)
+            <div class="cat-count">{{ $count }} article{{ $count > 1 ? 's' : '' }}</div>
+            @endif
+        </a>
+        @endforeach
+    </div>
+</section>
+
+{{-- ══ FORUM PREVIEW ══ --}}
+<section class="lp-section-full lp-section-forum" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="lp-section-inner">
+        <div style="padding-top:72px;padding-bottom:72px">
+            <div class="lp-ed-header">
+                <span class="lp-ed-header-num">§ 04</span>
+                <span class="lp-ed-header-title">Forum</span>
+                <div class="lp-ed-header-line"></div>
+                <a href="{{ route('forum.index') }}" class="lp-ed-header-link">Accéder au forum →</a>
+            </div>
+
+            <div class="forum-grid">
+                <div class="forum-threads">
+                    @forelse($discussions as $disc)
+                    @php
+                        $discInitial = strtoupper(substr($disc->user->name ?? '?', 0, 1));
+                        $discLabel   = $disc->title ? Str::limit($disc->title, 80) : Str::limit(strip_tags($disc->body ?? ''), 80);
+                    @endphp
+                    <a href="{{ route('forum.index') }}" class="forum-thread">
+                        @if($disc->user->avatar_url)
+                            <img src="{{ $disc->user->avatar_url }}" class="ft-avi" style="object-fit:cover" alt="">
+                        @else
+                            <div class="ft-avi">{{ $discInitial }}</div>
+                        @endif
+                        <div class="ft-body">
+                            <div class="ft-title">{{ $discLabel }}</div>
+                            <div class="ft-meta">
+                                <span>{{ $disc->user->name }}</span>
+                                <span>·</span>
+                                <span>{{ $disc->created_at->diffForHumans() }}</span>
+                            </div>
+                        </div>
+                        <div class="ft-replies">
+                            <div class="ft-r-n">{{ $disc->comments_count }}</div>
+                            <div class="ft-r-l">rép.</div>
+                        </div>
                     </a>
+                    @empty
+                    <div style="padding:40px 24px;text-align:center;color:var(--text-faint);font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em">
+                        Aucune discussion pour le moment.
+                    </div>
+                    @endforelse
                 </div>
 
-                {{-- Threads --}}
-                @php
-                    $sbThreads = $recentThreads->isNotEmpty()
-                        ? $recentThreads
-                        : \App\Models\ForumThread::with('user')->orderByDesc('last_reply_at')->limit(4)->get();
-                @endphp
-                <div class="mix-fw-threads">
-                    @foreach($sbThreads->take(4) as $t)
-                    <a href="{{ route('forum.show', $t->id) }}" class="mix-fw-thread">
-                        <div class="mix-fw-thread-ico">{{ $t->category_icon ?? '💬' }}</div>
-                        <div class="mix-fw-thread-body">
-                            <div class="mix-fw-thread-title">{{ $t->title }}</div>
-                            <div class="mix-fw-thread-meta">
-                                <span class="mix-fw-count">{{ $t->replies_count }} rép.</span>
-                                <span class="mix-fw-time">{{ ($t->last_reply_at ?? $t->created_at)->diffForHumans() }}</span>
-                            </div>
+                <div class="forum-cats">
+                    <div style="padding:16px 22px;border-bottom:1px solid var(--border)">
+                        <span style="font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)">Thèmes</span>
+                    </div>
+                    @foreach(\App\Models\ForumThread::CATEGORIES as $slug => $cat)
+                    <a href="{{ route('forum.index') }}?cat={{ $slug }}" class="forum-cat-item">
+                        <div class="fci-icon">{{ $cat['icon'] }}</div>
+                        <div class="fci-info">
+                            <div class="fci-name">{{ $cat['label'] }}</div>
+                            <div class="fci-desc">{{ $forum_cat_counts[$slug] ?? 0 }} discussion{{ ($forum_cat_counts[$slug] ?? 0) != 1 ? 's' : '' }}</div>
                         </div>
                     </a>
                     @endforeach
                 </div>
-
-                {{-- Online row --}}
-                <div class="mix-fw-online">
-                    <div class="mix-fw-avis">
-                        @foreach($sbThreads->take(4) as $t)
-                        <div class="mix-fw-avi">
-                            @if($t->user->avatar_url ?? null)
-                                <img src="{{ $t->user->avatar_url }}" alt="">
-                            @else
-                                {{ strtoupper(substr($t->user->name??'?',0,1)) }}
-                            @endif
-                        </div>
-                        @endforeach
-                    </div>
-                    <div class="mix-fw-live">
-                        <span class="mix-fw-greendot"></span> En direct
-                    </div>
-                </div>
-
-                {{-- Input --}}
-                <form class="mix-fw-input-row" action="{{ route('forum.index') }}" method="GET">
-                    <input type="text" name="q" class="mix-fw-input" placeholder="Lancer un sujet...">
-                    <button type="submit" class="mix-fw-post">Poster</button>
-                </form>
-
-                <a href="{{ route('forum.index') }}" class="mix-fw-all-link">
-                    Voir tout le forum <i class="ph-bold ph-arrow-right"></i>
-                </a>
-
             </div>
-        </aside>
-
-    </div>{{-- end mix-layout --}}
-
-    {{-- ══ NEWSLETTER ══ --}}
-    <section class="v1-newsletter glass" data-reveal>
-        <div class="v1-newsletter-glow"></div>
-        <div class="v1-newsletter-left">
-            <i class="ph-fill ph-envelope-simple-open v1-nl-icon"></i>
-            <div class="v1-nl-title">Le condensé Geek.</div>
-            <p class="v1-nl-sub">Recevez une fois par mois l'essentiel de l'actu nerd, tech et pop culture africaine, directement dans votre boîte mail.</p>
-        </div>
-        <div class="v1-newsletter-right">
-            <form class="v1-nl-form" onsubmit="handleNl(event)">
-                <div class="v1-nl-row">
-                    <input type="email" class="v1-nl-input" placeholder="votre@email.com" required id="nlEmail">
-                    <button type="submit" class="v1-nl-btn">S'abonner</button>
-                </div>
-                <div class="v1-nl-note" id="nlNote">Pas de spam. Promis jury craché.</div>
-            </form>
-        </div>
-    </section>
-
-</main>
-
-{{-- ══ FOOTER ══ --}}
-<footer class="v1-footer">
-    <div class="v1-footer-inner">
-        <a href="{{ route('home') }}" class="v1-footer-logo">
-            <div class="v1-footer-diamond"></div>
-            <span class="v1-footer-name">Melano<span>Geek</span><span class="v1-footer-year">© {{ date('Y') }}</span></span>
-        </a>
-        <div class="v1-footer-socials">
-            <a href="#"><i class="ph-fill ph-twitter-logo"></i></a>
-            <a href="#"><i class="ph-fill ph-discord-logo"></i></a>
-            <a href="#"><i class="ph-fill ph-instagram-logo"></i></a>
-            <a href="#"><i class="ph-fill ph-twitch-logo"></i></a>
         </div>
     </div>
+</section>
+
+{{-- ══ CTA REJOINDRE ══ --}}
+<section class="lp-cta-section">
+    <div class="lp-cta-inner">
+        <div class="lp-cta-label">Rejoindre</div>
+        <div class="lp-cta-title">Tu es geek et africain·e ?<br>Tu es chez toi ici.</div>
+        <p class="lp-cta-desc">
+            Rejoins une communauté qui célèbre la culture geek africaine —
+            sans complexe, sans filtre. Crée ton compte gratuitement et
+            commence à lire, écrire et débattre dès aujourd'hui.
+        </p>
+        <div class="lp-ctas" style="justify-content:center">
+            <a href="{{ route('register') }}" class="lp-btn-main">
+                Créer mon compte gratuit
+            </a>
+            <a href="{{ route('login') }}" class="lp-btn-ghost">
+                Se connecter
+            </a>
+        </div>
+    </div>
+</section>
+
+{{-- ══ NEWSLETTER ══ --}}
+<div class="lp-newsletter" data-reveal>
+    <div>
+        <div class="lp-newsletter-eyebrow">Newsletter</div>
+        <div class="lp-newsletter-title">Reste dans<br>la <span>boucle.</span></div>
+        <p class="lp-newsletter-sub">
+            Les meilleurs articles, débats chauds et sorties geek — directement dans ta boîte mail. Pas de spam, jamais.
+        </p>
+    </div>
+    <div>
+        <form class="lp-newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+            <div class="lp-newsletter-row">
+                <input type="email" class="lp-newsletter-input" id="nlEmail"
+                    placeholder="ton@email.com" required autocomplete="email">
+                <button type="submit" class="lp-newsletter-btn">S'inscrire</button>
+            </div>
+            <div class="lp-newsletter-note" id="nlNote">
+                Rejoins <strong>{{ $stats['users'] }} membres</strong> — désinscription en 1 clic.
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- ══ FOOTER ══ --}}
+<footer class="lp-footer">
+    <div class="lp-footer-copy">© {{ date('Y') }} MelanoGeek — La culture geek, vue d'Afrique.</div>
+    <ul class="lp-footer-links">
+        <li><a href="{{ route('blog.index') }}">Blog</a></li>
+        <li><a href="{{ route('forum.index') }}">Forum</a></li>
+        <li><a href="{{ route('about') }}">À propos</a></li>
+        <li><a href="#">Mentions légales</a></li>
+    </ul>
+    {{-- Développé par Korilab — masqué temporairement --}}
 </footer>
 
-{{-- ══ MOBILE BOTTOM NAV ══ --}}
-<nav class="v1-mbnav glass">
-    <a href="{{ route('home') }}" class="v1-mbn-item active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Accueil
-    </a>
-    <a href="{{ route('blog.index') }}" class="v1-mbn-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Articles
-    </a>
-    <a href="{{ route('forum.index') }}" class="v1-mbn-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Forum
-    </a>
-    @auth
-    <a href="{{ route('profile.show', auth()->user()->username ?? auth()->id()) }}" class="v1-mbn-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Profil
-    </a>
-    @else
-    <a href="{{ route('register') }}" class="v1-mbn-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-        Rejoindre
-    </a>
-    @endauth
-</nav>
+</div>
+@endsection
 
+@push('scripts')
 <script>
-(function(){
-    /* Reveal on scroll */
-    const obs = new IntersectionObserver(e => {
-        e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); obs.unobserve(x.target); } });
-    }, { threshold: .1 });
-    document.querySelectorAll('[data-reveal]').forEach(el => obs.observe(el));
+(function () {
+    /* ══ COMPTEURS ANIMÉS — stats hero ══ */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        function animateCount(el) {
+            const target = parseInt(el.textContent.replace(/\D/g, ''), 10);
+            if (isNaN(target) || target === 0) return;
+            const duration = 1200;
+            const start    = performance.now();
+            const easeOut  = function (t) { return 1 - Math.pow(1 - t, 3); };
+            function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                el.textContent = Math.round(easeOut(progress) * target);
+                if (progress < 1) requestAnimationFrame(tick);
+                else el.textContent = target;
+            }
+            requestAnimationFrame(tick);
+        }
 
-    /* Newsletter */
-    window.handleNl = function(e) {
+        const statEls = document.querySelectorAll('.lp-ed-stat-n, .forum-widget-stat-val');
+        const countObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    animateCount(entry.target);
+                    countObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        statEls.forEach(function (el) { countObserver.observe(el); });
+    }
+
+    /* ══ TILT 3D — cards ══ */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !window.matchMedia('(pointer: coarse)').matches) {
+        const tiltSel = '.post-card, .art-featured, .art-side-card, .featured-card, .cat-card';
+        document.querySelectorAll(tiltSel).forEach(function (card) {
+            card.style.transition = 'transform .12s ease, box-shadow .12s ease';
+            card.addEventListener('mousemove', function (e) {
+                const rect = card.getBoundingClientRect();
+                const cx   = rect.left + rect.width  / 2;
+                const cy   = rect.top  + rect.height / 2;
+                const dx   = (e.clientX - cx) / (rect.width  / 2);
+                const dy   = (e.clientY - cy) / (rect.height / 2);
+                const rotX = dy * -4;
+                const rotY = dx *  5;
+                card.style.transform = 'perspective(600px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) scale(1.015)';
+            });
+            card.addEventListener('mouseleave', function () {
+                card.style.transform = '';
+            });
+        });
+    }
+
+    /* ══ NEWSLETTER — feedback visuel ══ */
+    window.handleNewsletterSubmit = function (e) {
         e.preventDefault();
-        const btn = e.target.querySelector('.v1-nl-btn');
         const note = document.getElementById('nlNote');
-        btn.textContent = '✓ Inscrit !'; btn.style.background = '#22d3ee'; btn.disabled = true;
-        if (note) note.textContent = 'Tu es sur la liste. À bientôt dans ta boîte mail.';
+        const btn  = e.target.querySelector('.lp-newsletter-btn');
+        btn.textContent  = '✓ Inscrit !';
+        btn.style.background = '#2A7A48';
+        btn.disabled = true;
+        if (note) note.innerHTML = 'Tu es sur la liste. On se retrouve dans ta boîte mail bientôt.';
     };
 })();
 </script>
-</body>
-</html>
+@endpush
