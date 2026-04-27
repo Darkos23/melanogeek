@@ -100,11 +100,36 @@
     gap: 16px;
     margin-bottom: 32px;
 }
-/* Barre de filtres scrollable sur mobile */
+/* Barre de filtres pills */
+.cat-filter-bar { scrollbar-width: none; }
 .cat-filter-bar::-webkit-scrollbar { display: none; }
-.cat-filter-bar > a {
+.cat-pill {
     flex-shrink: 0;
     white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 7px 15px;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .6rem; font-weight: 600; letter-spacing: .05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: rgba(255,255,255,.40);
+    transition: all .18s;
+}
+.cat-pill:hover { border-color: rgba(255,255,255,.20); color: rgba(255,255,255,.80); background: rgba(255,255,255,.04); }
+.cat-pill.active { background: var(--terra); border-color: var(--terra); color: #fff; }
+
+/* Badge catégorie sur l'image de la card */
+.post-card-badge {
+    position: absolute; top: 10px; left: 10px; z-index: 2;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .52rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 100px;
+    background: rgba(0,0,0,.55); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.12);
+    color: rgba(255,255,255,.85);
 }
 
 @media (max-width: 860px) {
@@ -234,48 +259,62 @@
 @section('main')
 
 {{-- ── EN-TÊTE PAGE ── --}}
-<div style="margin-bottom:40px">
-    <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px">
-        <span style="display:inline-block;width:24px;height:1px;background:var(--gold);opacity:.7"></span>
-        MelanoGeek · Blog
+<div style="margin-bottom:36px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);margin-bottom:12px;display:flex;align-items:center;gap:10px">
+        <span style="display:inline-block;width:20px;height:1px;background:var(--terra);opacity:.7"></span>
+        La culture geek africaine
     </div>
-    <h1 style="font-family:var(--font-head);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;color:rgba(255,255,255,.92);margin-bottom:16px">
-        Culture geek,<br><span style="color:var(--gold)">vue d'Afrique.</span>
-    </h1>
-    <p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.65;max-width:460px;font-family:'Inter',sans-serif">
-        Articles, analyses et coups de cœur autour du divertissement, du savoir, de l'identité et de la pratique geek africaine.
-    </p>
-
-    @auth
-    <div style="margin-top:18px">
-        <a href="{{ route('posts.create') }}" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);text-decoration:none;font-size:.85rem;font-weight:700;transition:background .2s;background:rgba(255,255,255,.04);">
-            <x-icon name="pen" :size="15"/> Écrire un article
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px">
+        <h1 style="font-family:var(--font-head);font-size:clamp(1.9rem,4vw,3rem);font-weight:800;line-height:1.05;letter-spacing:-.04em;color:rgba(255,255,255,.92);margin:0">
+            Articles &amp; analyses<br><span style="color:var(--gold)">vue d'Afrique.</span>
+        </h1>
+        @auth
+        <a href="{{ route('posts.create') }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--terra);border-radius:999px;color:#fff;text-decoration:none;font-size:.8rem;font-weight:700;transition:opacity .2s;white-space:nowrap" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Écrire un article
         </a>
+        @endauth
     </div>
-    @endauth
+
+    {{-- Marquee ticker --}}
+    <div style="overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:8px 0;margin-bottom:0">
+        <div style="display:flex;gap:24px;white-space:nowrap;animation:marquee-scroll 22s linear infinite;font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint)">
+            @foreach(['Animé & manga','E-sport africain','Tech & IA','Hardware & setup','Afrofuturisme','Web3 & crypto','Cinéma & séries','Débats','Animé & manga','E-sport africain','Tech & IA','Hardware & setup','Afrofuturisme','Web3 & crypto','Cinéma & séries','Débats'] as $tag)
+            <span>{{ $tag }}</span><span style="color:var(--terra);opacity:.7">✦</span>
+            @endforeach
+        </div>
+    </div>
 </div>
 
-{{-- ── FILTRES CATÉGORIES ── --}}
-<div style="display:flex;align-items:center;gap:0;margin-bottom:36px;border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;" class="cat-filter-bar">
-    @php
-    $cats = [
-        ''               => 'Tous les articles',
-        'manga-anime'    => 'Animés & mangas',
-        'gaming'         => 'Gaming & E-sport',
-        'cinema-series'  => 'Cinéma & séries',
-        'tech'           => 'Tech & IA',
-        'carriere'       => 'Éducation & carrière',
-        'culture'        => 'Afrofuturisme',
-        'hardware'       => 'Hardware & setup',
-        'web3-economie'  => 'Économie numérique',
-    ];
-    @endphp
+@push('styles')
+<style>
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+</style>
+@endpush
 
-    @foreach($cats as $slug => $label)
+{{-- ── FILTRES CATÉGORIES (pills) ── --}}
+@php
+$cats = [
+    ''               => ['label' => 'Tous',        'icon' => '✦'],
+    'manga-anime'    => ['label' => 'Animés',       'icon' => '🎌'],
+    'gaming'         => ['label' => 'Gaming',       'icon' => '🎮'],
+    'cinema-series'  => ['label' => 'Cinéma',       'icon' => '🎬'],
+    'tech'           => ['label' => 'Tech & IA',    'icon' => '🤖'],
+    'carriere'       => ['label' => 'Carrière',     'icon' => '💼'],
+    'culture'        => ['label' => 'Afrofuturisme','icon' => '🚀'],
+    'hardware'       => ['label' => 'Hardware',     'icon' => '🖥️'],
+    'web3-economie'  => ['label' => 'Web3',         'icon' => '₿'],
+];
+@endphp
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:32px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;" class="cat-filter-bar">
+    @foreach($cats as $slug => $cat)
     @php $active = $category === ($slug ?: null); @endphp
     <a href="{{ route('blog.index') }}{{ $slug ? '?category='.$slug : '' }}"
-       style="display:inline-flex;align-items:center;padding:10px 16px;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-bottom:2px solid {{ $active ? 'var(--gold)' : 'transparent' }};color:{{ $active ? 'var(--gold)' : 'rgba(255,255,255,.35)' }};margin-bottom:-1px;transition:color .15s;">
-        {{ $label }}
+       class="cat-pill {{ $active ? 'active' : '' }}">
+        <span>{{ $cat['icon'] }}</span> {{ $cat['label'] }}
     </a>
     @endforeach
 </div>
@@ -341,9 +380,14 @@
     {{-- Contenu droite --}}
     <div class="featured-content">
         <div class="featured-content-top">
-            <div class="featured-eyebrow">
-                <span style="display:inline-block;width:20px;height:1px;background:var(--terra);opacity:.8;vertical-align:middle;margin-right:8px;"></span>
-                À la une
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <div class="featured-eyebrow">
+                    <span style="display:inline-block;width:16px;height:1px;background:var(--terra);opacity:.8;vertical-align:middle;margin-right:7px;"></span>
+                    À la une
+                </div>
+                @if($featured->category)
+                <span style="font-family:'JetBrains Mono',monospace;font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:100px;background:rgba(255,255,255,.07);border:1px solid var(--border);color:rgba(255,255,255,.5)">{{ $featured->category_label }}</span>
+                @endif
             </div>
             <h2 class="featured-title">{{ $featured->title }}</h2>
             @if($featuredExcerpt)
@@ -405,6 +449,9 @@
                 <img src="{{ $thumbUrl }}" alt="{{ $post->title }}">
             @else
                 <div class="post-card-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">{!! $catIcon !!}</svg></div>
+            @endif
+            @if($post->category)
+            <div class="post-card-badge">{{ $post->category_label }}</div>
             @endif
         </div>
 

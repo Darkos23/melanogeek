@@ -67,6 +67,46 @@
 }
 .sb-tag:hover { border-color: rgba(255,255,255,.20); color: rgba(255,255,255,.70); }
 
+/* Forum sidebar */
+.sb-thread {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: background .15s;
+}
+.sb-thread:last-child { border-bottom: none; }
+.sb-thread:hover { background: rgba(255,255,255,.03); }
+.sb-thread-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: rgba(255,255,255,.05);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .9rem; flex-shrink: 0; margin-top: 1px;
+    border: 1px solid var(--border);
+}
+.sb-thread-content { flex: 1; min-width: 0; }
+.sb-thread-title {
+    font-size: .68rem; font-weight: 600; line-height: 1.35;
+    color: rgba(255,255,255,.75);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sb-thread:hover .sb-thread-title { color: rgba(255,255,255,.95); }
+.sb-thread-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .55rem; color: var(--text-faint);
+    margin-top: 4px; display: flex; align-items: center; gap: 5px;
+}
+.sb-thread-replies {
+    background: rgba(255,255,255,.06); border-radius: 4px;
+    padding: 1px 5px; font-size: .55rem; color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace; font-weight: 600;
+}
+.sb-online-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: #22c55e; border-radius: 50%;
+    box-shadow: 0 0 6px rgba(34,197,94,.6);
+}
+
 /* Newsletter */
 .sb-newsletter { padding: 16px; }
 .sb-newsletter p { font-size: .7rem; color: var(--text-faint); line-height: 1.55; margin-bottom: 12px; font-family: 'JetBrains Mono', monospace; letter-spacing: .02em; }
@@ -192,24 +232,40 @@
 </div>
             </div>
 
+            {{-- Forum actif --}}
             @php
-                $sbCatCounts = \App\Models\Post::published()
-                    ->whereNotNull('category')
-                    ->selectRaw('category, count(*) as total')
-                    ->groupBy('category')
-                    ->pluck('total', 'category');
+                $sbThreads = \App\Models\ForumThread::with('user')
+                    ->orderByDesc('last_reply_at')
+                    ->limit(4)
+                    ->get();
             @endphp
-            @if($sbCatCounts->isNotEmpty())
+            @if($sbThreads->isNotEmpty())
             <div class="sidebar-block">
-                <div class="sidebar-block-head">Tags</div>
-                <div class="sb-tags">
-                    @foreach(\App\Models\Post::CATEGORIES as $slug => $label)
-                        @if($sbCatCounts->has($slug))
-                        <a href="{{ route('blog.index') }}?category={{ $slug }}" class="sb-tag">
-                            {{ $label }} <span style="opacity:.5;font-size:.8em">({{ $sbCatCounts[$slug] }})</span>
-                        </a>
-                        @endif
+                <div class="sidebar-block-head" style="display:flex;align-items:center;justify-content:space-between;">
+                    <span>Forum actif</span>
+                    <span style="display:flex;align-items:center;gap:5px;font-size:.52rem;color:rgba(255,255,255,.35);">
+                        <span class="sb-online-dot"></span> Live
+                    </span>
+                </div>
+                <div class="sidebar-block-body">
+                    @foreach($sbThreads as $t)
+                    <a href="{{ route('forum.show', $t->id) }}" class="sb-thread">
+                        <div class="sb-thread-icon">{{ $t->category_icon }}</div>
+                        <div class="sb-thread-content">
+                            <div class="sb-thread-title">{{ $t->title }}</div>
+                            <div class="sb-thread-meta">
+                                <span class="sb-thread-replies">{{ $t->replies_count }} rép.</span>
+                                <span>{{ ($t->last_reply_at ?? $t->created_at)->diffForHumans() }}</span>
+                            </div>
+                        </div>
+                    </a>
                     @endforeach
+                </div>
+                <div style="padding:10px 14px;border-top:1px solid var(--border)">
+                    <a href="{{ route('forum.index') }}" style="font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--terra);text-decoration:none;display:flex;align-items:center;gap:6px;">
+                        Voir tout le forum
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
                 </div>
             </div>
             @endif
@@ -217,7 +273,7 @@
             <div class="sidebar-block">
                 <div class="sidebar-block-head">Newsletter</div>
                 <div class="sb-newsletter">
-                    <p>ReÃ§ois les meilleurs articles de la semaine directement dans ta boÃ®te mail.</p>
+                    <p>Reçois les meilleurs articles de la semaine directement dans ta boîte mail.</p>
                     <input type="email" placeholder="ton@email.com">
                     <button type="button">S'abonner</button>
                 </div>
